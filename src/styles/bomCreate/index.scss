@@ -1,0 +1,73 @@
+@import "src/icons/static/iconfont/index";
+// 表格布局
+@mixin bomCreate{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  // 搜索框手势操作
+  .el-input__icon {
+    cursor: pointer;
+  }
+  .icon-jin-rud-ao-bo:hover{
+    cursor:pointer;
+    color: #409eff;
+  }
+  .bom-form{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-bottom: 20px;
+    .materiel-code{
+      font-weight: bold;
+      font-size: 14px;
+      color: #606266;
+      line-height: 40px;
+      padding: 0 12px 0 0;
+    }
+    .input-width{
+      width: 200px;
+      margin-right: 10px;
+    }
+  }
+  .header-card {
+    margin-bottom: 20px;
+    .tool {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      margin-bottom: 10px;
+    }
+  }
+  .input-width ::v-deep .el-input__inner{
+    color: black;
+  }
+  .organization{
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    .text-margin{
+      margin:0 10px;
+    }
+    .input-width {
+      width: 200px;
+    }
+    .summation{
+      margin-left: 10px;
+      .color-text{
+        color: #409eff;
+      }
+    }
+  }
+  .table-content {
+    margin-top: 20px;
+  }
+  .dialogForm {
+    display: flex;
+    flex-direction: row;
+
+    .search-dialog {
+      height: 28px;
+      margin-left: 17px;
+    }
+  }
+}

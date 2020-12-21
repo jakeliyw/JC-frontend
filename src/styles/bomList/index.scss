@@ -1,0 +1,43 @@
+@mixin listBom{
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  // 步骤条样式
+  .font-style ::v-deep .el-step__title {
+    font-size: 12px;
+  }
+  .header {
+    display: flex;
+    flex-wrap: wrap;
+    .header-name{
+      display: flex;
+      align-items: center;
+      // 物料编号
+      .parentItemNo {
+        margin-bottom: 10px;
+      }
+      // 输入框
+      .input-content {
+        margin: 0 10px 10px;
+        width: 300px;
+      }
+      // 按钮样式
+      .btn {
+        margin: 0 10px 10px;
+      }
+    }
+  }
+  .jumpMateriel:hover{
+    color: #409eff;
+    text-decoration: underline;
+    cursor:pointer;
+  }
+  .table-content {
+    margin-top: 20px;
+  }
+  .footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+}

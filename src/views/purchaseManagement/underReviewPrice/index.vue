@@ -1,0 +1,109 @@
+<template>
+  <div class="content">
+    <div class="header">
+      <div class="header-name">
+        <span class="parentItemNo">供应商名称</span>
+        <el-input
+          v-model="fnumber"
+          class="input-content"
+          placeholder="请输入物料编号"
+          @keyup.enter.native="handleQueryUnderReview"
+        />
+        <el-button type="primary" class="btn" size="medium" @click="handleQueryUnderReview">搜索</el-button>
+      </div>
+    </div>
+    <div class="table-content">
+      <jc-table
+        :table-data="tableData"
+        :table-header="tableHeader"
+        serial
+      >
+        <el-table-column
+          label="状态流程"
+          width="300px"
+          align="center"
+          prop="FSTATUS"
+        >
+          <template slot-scope="scope">
+            <el-steps :active="scope.row.fstatus" align-center class="font-style" finish-status="success" process-status="finish">
+              <el-step title="研发审核"></el-step>
+              <el-step title="财务审核"></el-step>
+            </el-steps>
+          </template>
+        </el-table-column>
+        <template v-slot:btnSlot="clo">
+          <el-button  type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">详情价目</el-button>
+        </template>
+      </jc-table>
+    </div>
+    <!--    分页器-->
+    <div class="footer">
+      <jc-pagination
+        v-show="total > 0"
+        :total="total"
+        :page.sync="currentPage"
+        :limit.sync="size"
+        @pagination="handleGetData"
+      />
+    </div>
+  </div>
+</template>
+
+<script>
+import jcTable from '@/components/Table'
+import jcPagination from '@/components/Pagination'
+import { queryReviewPurPriceList } from '@/api/purchaseManagement/underReviewPrice'
+
+export default {
+  name: 'UnderReviewPrice',
+  components: {
+    jcTable,
+    jcPagination
+  },
+  data() {
+    return {
+      fnumber: '', // 产品描述
+      total: 0, // 总条目
+      currentPage: 0, // 当前页
+      size: 10, // 每页显示多少条数据
+      // 表头
+      tableHeader: [
+        { label: '价目表名称', prop: 'fname', width: '200px', align: 'center' },
+        { label: '价目编码', prop: 'fnumber', align: 'center' },
+        { label: '供应商名称', prop: 'fsupplier', align: 'center' },
+        { label: '是否含税', prop: 'fisIncludedTax', align: 'center' },
+        { label: '币别', prop: 'fcurrency', align: 'center' },
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
+      ],
+      // 表格数据
+      tableData: []
+    }
+  },
+  mounted() {
+    this.handleGetData()
+  },
+  methods: {
+    // 获取列表数据
+    async handleGetData() {
+      const DATA = { pageNum: this.currentPage, pageSize: this.size, fnumber: this.fnumber }
+      const { data: RES } = await queryReviewPurPriceList(DATA)
+      this.tableData = RES.array
+      this.total = RES.total
+    },
+    // 搜索
+    handleQueryUnderReview() {
+      this.pageNum = 1
+      this.handleGetData()
+    },
+    // 详情价目
+    detailPurchase(fid) {
+      this.$router.push({ path: `/detailPurchasePrice/${fid}` })
+    }
+  }
+}
+</script>
+<style lang="scss" scoped>
+.content {
+  @include listBom;
+}
+</style>
