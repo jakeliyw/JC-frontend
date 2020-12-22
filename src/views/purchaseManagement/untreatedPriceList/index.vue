@@ -18,26 +18,18 @@
         :table-header="tableHeader"
         serial
       >
-        <el-table-column
-          label="状态流程"
-          width="200px"
-          align="center"
-          prop="FSTATUS"
-        >
-          <template slot-scope="scope">
-            <el-steps :active="scope.row.fstatus" align-center class="font-style" finish-status="success" process-status="finish">
-              <el-step title="研发审核"></el-step>
-              <el-step title="财务审核"></el-step>
-            </el-steps>
-          </template>
-        </el-table-column>
+        <template v-slot:btnState="clo">
+          <el-steps :active="clo.scope.row.fstatus" align-center class="font-style" finish-status="success" process-status="finish">
+            <el-step title="研发审核"/>
+            <el-step title="财务审核"/>
+          </el-steps>
+        </template>
         <template v-slot:btnSlot="clo">
           <el-button type="success" size="mini" @click="approval(clo.scope.row.fid)">通过</el-button>
           <el-button type="danger" size="mini" @click="approvalRejection(clo.scope.row.fid)">不通过</el-button>
           <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">详情价目</el-button>
         </template>
       </jc-table>
-
     </div>
     <!--    分页器-->
     <div class="footer">
@@ -76,6 +68,7 @@ export default {
         { label: '供应商名称', prop: 'fsupplier', align: 'center' },
         { label: '是否含税', prop: 'fisIncludedTax', align: 'center' },
         { label: '币别', prop: 'fcurrency', align: 'center' },
+        { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', width: '300px' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '300px', align: 'center' }
       ],
       // 表格数据
@@ -105,11 +98,11 @@ export default {
     // 审批
     async approval(fid) {
       const { message, code } = await reviewPurPrice({ fid })
-      if (code === 0) {
+      if (code !== 0) {
         return
       }
+      this.$router.push({ name: 'PurchasePriceList' })
       this.$message.success(message)
-      this.$router.push({ name: 'PurchasePrice' })
       this.reload()
     },
     // 审批不通过

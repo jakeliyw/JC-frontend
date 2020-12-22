@@ -17,7 +17,7 @@
     </el-card>
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane label="主产品" name="product">
-        <jc-form ref="createBomForm" :option-value="prodValue" :options="prodOptions" label-width="150px">
+        <jc-form ref="createBomForm" :option-value="prodValue" :options="prodOptions" label-width="100px">
           <el-input
             v-model="prodValue.FNUMBER"
             size="mini"

@@ -41,6 +41,8 @@
         <span v-if="col.type === 'text' || !col.type">
           {{ scope.row[col.prop] }}
         </span>
+        <!--        state-->
+        <slot v-else-if="col.type === 'state'" name="btnState" :scope="scope" />
         <!--        button-->
         <slot v-else-if="col.type === 'btn'" name="btnSlot" :scope="scope" />
       </template>

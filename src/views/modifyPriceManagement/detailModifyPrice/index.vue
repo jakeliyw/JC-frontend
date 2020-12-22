@@ -3,7 +3,7 @@
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane label="调价" name="modifyPrice" class="layout">
         <div class="header">
-          <el-button size="mini">刷新</el-button>
+          <el-button size="mini" @click="refresh">刷新</el-button>
           <el-button size="mini" type="primary" disabled>保存调价</el-button>
         </div>
         <jc-form :option-value="optionValue" :options="options" ref="zrf">
@@ -83,7 +83,7 @@
                 :precision="3"
                 :step="0.1"
                 :min="0.1"
-                :disabled="!scope.row.fisIncludedTax"
+                disabled
               />
             </template>
           </el-table-column>
@@ -100,6 +100,7 @@
                 :precision="3"
                 :step="0.1"
                 :min="0.1"
+                disabled
               />
             </template>
           </el-table-column>
@@ -180,7 +181,6 @@ export default {
       this.optionValue = {
         fcreateOrgId: 1, // 组织
         fdataValue: RES.fdataValue, // 调价原因名称
-        fpaReason: '', // 调价原因id
         fname: RES.fname, // 名称
         billCode: RES.fbillno, // 单据编号
         fdescription: RES.fdescripTion // 描述
@@ -219,6 +219,9 @@ export default {
           rules: [{ required: true, message: '描述不可为空', trigger: 'blur' }]
         }
       }
+    },
+    refresh() {
+      location.reload()
     }
   }
 }

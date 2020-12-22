@@ -84,7 +84,7 @@
           </el-table-column>
           <el-table-column label="用量" prop="FDOSAGE" align="center" width="200px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.FDOSAGE" :precision="2" :step="0.1" :min="1" size="mini"/>
+              <el-input-number v-model="scope.row.FDOSAGE" :precision="2" :step="1" :min="1" size="mini"/>
             </template>
           </el-table-column>
           <el-table-column label="单价" prop="FPRICE" align="center" width="200px">
@@ -526,6 +526,9 @@ export default {
       const { code, message } = await insertBom(DATA)
       if (code === 0) {
         this.$message.success(message)
+        setTimeout(() => {
+          location.reload()
+        }, 2000)
       } else if (code === 2) {
         this.$confirm(message, '提示', {
           confirmButtonText: '确定',

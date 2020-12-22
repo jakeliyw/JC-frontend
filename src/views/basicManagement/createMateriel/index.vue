@@ -518,6 +518,7 @@ export default {
       }
       const { data: RES, FDESCRIPTION } = await queryMaterialAttribute(DATA)
       this.FDESCRIPTION = FDESCRIPTION
+      this.basicValue.FDESCRIPTION = FDESCRIPTION
       this.materielProperty = RES
       this.basicValue.FNUMBER = this.materialCode
       this.isMaterial = true
@@ -597,7 +598,7 @@ export default {
         return this.$message.error('控制信息必选一项！')
       }
       // 图片可以为空
-      DATA.FIMAGEFILESERVER = this.imageUrl
+      DATA.FIMG = this.imageUrl
       // 物料备注可以为空
       DATA.FREMARKS = this.basicValue.FREMARKS
       const { code, message } = await insertMaterialDetail(DATA)
@@ -606,6 +607,9 @@ export default {
         return
       }
       this.$message.success(message)
+      setTimeout(() => {
+        location.reload()
+      }, 2000)
     },
     // 三类物料
     async openMaterialDialog() {

@@ -27,21 +27,14 @@
             <span @click="jumpMateriel(scope.row.FNUMBER)" class="jumpMateriel">{{scope.row.FNUMBER}}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          label="状态流程"
-          width="300px"
-          align="center"
-          prop="FSTATUS"
-        >
-          <template slot-scope="scope">
-            <el-steps :active="scope.row.FSTATUS" align-center class="font-style" finish-status="success" process-status="error">
-              <el-step title="研发审核"></el-step>
-              <el-step title="IE审核"></el-step>
-              <el-step title="财务审核"></el-step>
-              <el-step title="信息部审核"></el-step>
-            </el-steps>
-          </template>
-        </el-table-column>
+        <template v-slot:btnState="clo">
+          <el-steps :active="clo.scope.row.FSTATUS" align-center class="font-style" finish-status="success" process-status="error">
+            <el-step title="研发审核"/>
+            <el-step title="IE审核"/>
+            <el-step title="财务审核"/>
+            <el-step title="信息部审核"/>
+          </el-steps>
+        </template>
         <template v-slot:btnSlot="clo">
           <el-button type="primary" size="mini" @click="queryMateriel(clo.scope.row.FNUMBER)">查询物料</el-button>
           <el-button type="danger" size="mini" @click="Retrial(clo.scope.row.FMATERIALID)">重审物料</el-button>
@@ -84,6 +77,7 @@ export default {
         { label: '物料描述', prop: 'FDESCRIPTION', width: '400px', align: 'center' },
         { label: '物料规格', prop: 'FSPECIFICATION', align: 'center' },
         { label: '单位', prop: 'FUNIT', align: 'center' },
+        { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', width: '300px' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
       ],
       // 表格数据

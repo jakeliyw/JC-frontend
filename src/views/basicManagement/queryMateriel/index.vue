@@ -127,7 +127,7 @@ export default {
       const id = this.$route.params.id
       queryMaterialDetail({ fnumber: id }).then(RES => {
         this.property = RES.data.property
-        this.imageUrl = RES.data.material.FIMAGEFILESERVER
+        this.imageUrl = RES.data.material.FIMG
         this.organizationValue = {
           FCREATEORG: RES.data.material.FCREATEORGID,
           FUSEORG: RES.data.material.FUSEORGID,

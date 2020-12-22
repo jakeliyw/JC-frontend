@@ -3,7 +3,7 @@
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane label="调价" name="modifyPrice" class="layout">
         <div class="header">
-          <el-button size="mini">刷新</el-button>
+          <el-button size="mini" @click="refresh">刷新</el-button>
           <el-button size="mini" type="primary" @click="preservation">保存调价</el-button>
         </div>
         <jc-form :option-value="optionValue" :options="options" ref="zrf">
@@ -36,6 +36,7 @@
           <el-table-column label="物料编码" prop="fnumber" align="center" min-width="150px">
             <template slot-scope="scope">
               <el-input v-model="scope.row.fnumber" size="mini" placeholder="请选择物料编码">
+                <i class="iconfont icon-jin-rud-ao-bo" slot="prefix" @click="sonJumpMateriel(scope.row.fnumber)"/>
                 <i slot="suffix" class="el-input__icon el-icon-search" @click="handleMateriel(scope.row, scope.$index)"/>
               </el-input>
             </template>
@@ -219,6 +220,7 @@ import jcPopup from '@/views/basicManagement/createMateriel/components/Popup'
 import { queryTOrgOrganizationsL } from '@/api/engineering/createBom'
 import { queryFpareason, queryTPurPatLs, queryTPurPatLm, insertTPurPat } from '@/api/modifyPriceManagement/createModifyPrice'
 import jcPagination from '@/components/Pagination/index'
+import jumpMateriel from '@/components/JumpMateriel'
 export default {
   name: 'CreateModifyPrice',
   components: {
@@ -227,6 +229,7 @@ export default {
     jcPopup,
     jcPagination
   },
+  mixins: [jumpMateriel],
   data() {
     return {
       activeName: 'modifyPrice',
@@ -290,7 +293,7 @@ export default {
         { label: '物料规格', prop: 'fspecificaTion', align: 'center' },
         { label: '调前单价', prop: 'fprice', align: 'center' },
         { label: '调前含税单价', prop: 'ftaxPrice', align: 'center', minWidth: '150px' },
-        { label: '调前税率', prop: 'ftaxRate', align: 'center', minWidth: '150px' },
+        { label: '调前税率', prop: 'ftaxRate', align: 'center', minWidth: '150px' }
       ],
       // 价目表分页
       priceListPagination: {
@@ -505,6 +508,10 @@ export default {
       this.modifyPriceTable.splice(index, 1)
       this.$message.success('删除行成功')
     },
+    refresh() {
+      location.reload()
+    },
+    // 获取表格
     async getForm() {
       const { data: RES } = await queryTOrgOrganizationsL()
       this.teamList = RES.map(item => {
@@ -570,5 +577,11 @@ export default {
 }
 .el-input__icon {
   cursor: pointer;
+}
+.icon-jin-rud-ao-bo{
+  cursor: pointer;
+  &:hover{
+    color: #409eff;
+  }
 }
 </style>

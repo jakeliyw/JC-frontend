@@ -79,7 +79,7 @@
           </el-table-column>
           <el-table-column label="用量" prop="FDOSAGE" align="center" width="200px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.FDOSAGE" :precision="2" :step="0.1" :min="1" size="mini"/>
+              <el-input-number v-model="scope.row.FDOSAGE" :precision="2" :step="1" :min="1" size="mini"/>
             </template>
           </el-table-column>
           <el-table-column label="单价" prop="FPRICE" align="center" width="200px">

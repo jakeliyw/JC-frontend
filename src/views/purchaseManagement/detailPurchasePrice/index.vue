@@ -39,7 +39,7 @@ export default {
         { label: '计价单位', prop: 'funit', align: 'center' },
         { label: '单价', prop: 'fprice', align: 'center' },
         { label: '含税单价', prop: 'ftaxPrice', align: 'center' },
-        { label: '价格系数', prop: 'fpricecoefficient', align: 'center' },
+        { label: '价格系数', prop: 'fpriceCoefficient', align: 'center' },
         { label: '价格上限', prop: 'fupPrice', align: 'center' },
         { label: '价格下限', prop: 'fdownPrice', align: 'center' },
         { label: '生效日期', prop: 'feffectiveDate', align: 'center' },
@@ -63,6 +63,7 @@ export default {
           pageSize: this.pageSize
         }
       )
+      console.log(RES)
       this.tableData = RES.detail
       RES.fisIncludedTax = JSON.parse(RES.fisIncludedTax)
       this.optionValue = RES
