@@ -16,6 +16,8 @@
           :table-header="modifyPriceHeader"
           serial
           :cell-style="cellStyle"
+          class="jcTable"
+          table-height="auto"
         >
           <el-table-column label="价目表" prop="fname" align="center" min-width="150px">
             <template slot-scope="scope">
@@ -508,5 +510,8 @@ export default {
 }
 .el-input__icon {
   cursor: pointer;
+}
+.layout ::v-deep .jcTable{
+  min-height: calc(100vh - 380px);
 }
 </style>

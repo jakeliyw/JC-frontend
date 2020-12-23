@@ -71,7 +71,7 @@ export default {
       cellStyle: { padding: '10 10' }, // 行高
       // 表头
       tableHeader: [
-        { label: '物料描述', prop: 'FDESCRIPTION', width: '400px' },
+        { label: '物料描述', prop: 'FDESCRIPTION', width: '400px', align: 'center' },
         { label: '物料规格', prop: 'FSPECIFICATION', width: '100px', align: 'center' },
         { label: '发料方式', prop: 'FISSUETYPE', width: '50px', align: 'center' },
         { label: '仓库', prop: 'FSTOCK', align: 'center' },

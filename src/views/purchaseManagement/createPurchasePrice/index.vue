@@ -92,6 +92,8 @@
           :table-header="tableHeader"
           serial
           :cell-style="cellStyle"
+          class="jcTable"
+          table-height="auto"
         >
           <el-table-column label="物料编码" prop="fmaterialId" align="center" width="200px">
             <template slot-scope="scope">
@@ -106,8 +108,8 @@
             </template>
           </el-table-column>
           <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" :show-overflow-tooltip="true"/>
-          <el-table-column label="规格型号" prop='fmodel' align="center"/>
-          <el-table-column label="计价单位" prop='FBASEUNIT' align="center"/>
+          <el-table-column label="规格型号" prop="fmodel" align="center"/>
+          <el-table-column label="计价单位" prop="FBASEUNIT" align="center"/>
           <el-table-column label="单价" prop="fprice" align="center" min-width="150px">
             <template slot-scope="scope">
               <el-input-number
@@ -167,6 +169,7 @@
             </el-button>
           </template>
         </jc-table>
+
       </el-tab-pane>
       <el-tab-pane label="其它" name="other">
         <h2>待开发</h2>
@@ -540,6 +543,7 @@ export default {
     },
     // 供应商选中
     supplierSelectRow(item) {
+      console.log(item)
       this.purchaseForm.fsupplierId = item.fsupplierId
       this.purchaseForm.fsupplierName = item.fname
       this.openSupplier = false
@@ -793,5 +797,8 @@ export default {
     width: 200px;
     margin-right: 10px;
   }
+}
+.layout ::v-deep .jcTable{
+  min-height: calc(100vh - 400px);
 }
 </style>

@@ -68,13 +68,13 @@ export default {
       currentPage: 1, // 当前页
       size: 10, // 每页显示多少条数据
       tableHeader: [
-        { label: '采购组织', prop: 'fpurchaseOrg', width: '200px', align: 'center' },
         { label: '调价编码', prop: 'fbillno', align: 'center' },
         { label: '调价名称', prop: 'fname', align: 'center' },
         { label: '调价日期', prop: 'fdate', align: 'center' },
         { label: '描述', prop: 'fdescripTion', align: 'center' },
+        { label: '采购组织', prop: 'fpurchaseOrg', width: '200px', align: 'center' },
         { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', width: '300px' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '300px', align: 'center' }
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '100px', align: 'center' }
       ],
       // 表格数据
       tableData: []
@@ -103,7 +103,7 @@ export default {
     // 审批通过
     async approval(fid) {
       const { message, code } = await reviewPurPat({ fid })
-      if (code === 0) {
+      if (code !== 0) {
         return
       }
       this.$message.success(message)

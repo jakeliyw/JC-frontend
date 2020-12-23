@@ -35,14 +35,13 @@
             <i slot="suffix" class="el-input__icon el-icon-search" @click="getMaterielList"/>
           </el-input>
         </jc-form>
-
         <jc-table
           v-show="isShow"
           :table-data="sonTableData"
           serial
           :cell-style="cellStyle"
           :table-header="sonTableHeader"
-          table-height="calc(100vh - 550px)"
+          table-height="calc(100vh - 580px)"
         >
           <el-table-column label="物料编码" prop="FNUMBER" align="center" width="200px">
             <template slot-scope="scope">

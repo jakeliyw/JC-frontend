@@ -59,7 +59,7 @@
               class="upload"
             >
               <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              <i v-else class="el-icon-plus avatar-uploader-icon"/>
             </el-upload>
           </div>
           <div class="basics">
@@ -729,7 +729,7 @@ export default {
           label: '一类物料',
           type: 'slot',
           rules: [
-            { required: true }
+            { required: true, message: '请选择一类物料', trigger: 'change' }
           ]
         }
       }
@@ -741,7 +741,7 @@ export default {
           label: '二类物料',
           type: 'slot',
           rules: [
-            { required: true }
+            { required: true, message: '请选择二类物料', trigger: 'change' }
           ]
         }
       }
@@ -764,7 +764,10 @@ export default {
         },
         FOLDNUMBER: {
           label: '旧物料编码',
-          span: 8
+          span: 8,
+          rules: [
+            { required: true, message: '旧物料编码不能为空', trigger: 'blur' }
+          ]
         },
         FNAME: {
           label: '基本单位',
@@ -772,22 +775,31 @@ export default {
           selectItems: BasicUnit,
           span: 8,
           rules: [
-            { required: true, message: '请选择基本单位' }
+            { required: true, message: '请选择基本单位', trigger: 'change' }
           ]
         },
         FBARCODE: {
           label: '条码',
-          span: 8
+          span: 8,
+          rules: [
+            { required: true, message: '条码不能为空', trigger: 'blur' }
+          ]
         },
         FSUITE: {
           label: '环保等级',
           type: 'selectObj',
           selectItems: kitRes,
-          span: 8
+          span: 8,
+          rules: [
+            { required: true, message: '请选择环保等级', trigger: 'change' }
+          ]
         },
         FMODEL: {
           label: '型号',
-          span: 8
+          span: 8,
+          rules: [
+            { required: true, message: '型号不能为空', trigger: 'blur' }
+          ]
         },
         FREMARKS: {
           label: '物料备注',
@@ -798,7 +810,7 @@ export default {
           disabled: 'disabled',
           isActive: 'isActive',
           rules: [
-            { required: true, message: '请输入物料描述' }
+            { required: true, message: '请输入物料描述', trigger: 'blur' }
           ]
         }
       }
@@ -812,7 +824,7 @@ export default {
           label: '重量单位',
           type: 'slot',
           rules: [
-            { required: true, message: '请选择重量单位' }
+            { required: true, message: '请选择重量单位', trigger: 'blur' }
           ]
         },
         FGROSSWEIGHT: {
@@ -837,7 +849,7 @@ export default {
           label: '尺寸单位',
           type: 'slot',
           rules: [
-            { required: true, message: '请选择尺寸单位' }
+            { required: true, message: '请选择尺寸单位', trigger: 'blur' }
           ]
         },
         FLENGTH: {

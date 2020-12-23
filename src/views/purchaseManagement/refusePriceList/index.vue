@@ -10,7 +10,7 @@
           @keyup.enter.native="handleQueryRefuse"
         />
         <el-button type="primary" class="btn" size="medium" @click="handleQueryRefuse">搜索</el-button>
-        <el-button type="primary" size="medium" @click="addPriceList" class="btn">新增采购</el-button>
+        <el-button type="primary" size="medium" @click="addPriceList" class="btn">新增价目</el-button>
       </div>
     </div>
     <div class="table-content">
@@ -63,8 +63,8 @@ export default {
       size: 10, // 每页显示多少条数据
       // 表头
       tableHeader: [
-        { label: '价目表名称', prop: 'fname', width: '200px', align: 'center' },
         { label: '价目编码', prop: 'fnumber', width: '100px', align: 'center' },
+        { label: '价目表名称', prop: 'fname', width: '200px', align: 'center' },
         { label: '供应商名称', prop: 'fsupplier', align: 'center' },
         { label: '是否含税', prop: 'fisIncludedTax', align: 'center' },
         { label: '币别', prop: 'fcurrency', align: 'center' },

@@ -78,7 +78,7 @@ export default {
         { label: '物料规格', prop: 'FSPECIFICATION', align: 'center' },
         { label: '单位', prop: 'FUNIT', align: 'center' },
         { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', width: '300px' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '100px', align: 'center' }
       ],
       // 表格数据
       tableData: []

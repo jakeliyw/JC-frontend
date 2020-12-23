@@ -32,6 +32,7 @@
           serial
           :cell-style="cellStyle"
         >
+          <el-table-column label="型号" prop="FMODEL" align="center"/>
           <el-table-column
             label="物料编码"
             align="center"
@@ -85,7 +86,6 @@ export default {
         { label: '使用组织', prop: 'FUSEORG', align: 'center', minWidth: '200px' },
         { label: '物料描述', prop: 'FDESCRIPTION', align: 'center', minWidth: '400px' },
         { label: '物料规格', prop: 'FSPECIFICATION', align: 'center', minWidth: '200px' },
-        { label: '型号', prop: 'FMODEL', align: 'center' },
         { label: '审核状态', prop: 'FDOCUMENTSTATUS', align: 'center' },
         { label: '禁用状态', prop: 'FFORBIDSTATUS', align: 'center' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }

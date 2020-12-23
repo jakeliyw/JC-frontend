@@ -71,6 +71,8 @@
           :table-header="tableHeader"
           serial
           :cell-style="cellStyle"
+          class="jcTable"
+          table-height="auto"
         >
           <el-table-column label="物料编码" prop="fnumber" align="center" width="200px">
             <template slot-scope="scope">
@@ -486,5 +488,8 @@ export default {
     width: 200px;
     margin-right: 10px;
   }
+}
+.layout ::v-deep .jcTable{
+  min-height: calc(100vh - 400px);
 }
 </style>

@@ -2,9 +2,9 @@
   <div class="content">
     <div class="header">
       <div class="header-name">
-        <span class="parentItemNo">价目表名称</span>
+        <span class="parentItemNo">供应商名称</span>
         <el-input
-          v-model="fnumber"
+          v-model="fname"
           class="input-content"
           placeholder="请输入价目表名称"
           @keyup.enter.native="handleQueryUntreated"
@@ -58,13 +58,13 @@ export default {
   },
   data() {
     return {
-      fnumber: '', // 产品描述
+      fname: '', // 产品描述
       total: 0, // 总条目
       currentPage: 1, // 当前页
       size: 10, // 每页显示多少条数据
       tableHeader: [
-        { label: '价目表名称', prop: 'fname', width: '200px', align: 'center' },
         { label: '价目编码', prop: 'fnumber', align: 'center' },
+        { label: '价目表名称', prop: 'fname', width: '200px', align: 'center' },
         { label: '供应商名称', prop: 'fsupplier', align: 'center' },
         { label: '是否含税', prop: 'fisIncludedTax', align: 'center' },
         { label: '币别', prop: 'fcurrency', align: 'center' },
@@ -81,7 +81,7 @@ export default {
   methods: {
     // 获取列表数据
     async handleGetUntreated() {
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, fnumber: this.fnumber }
+      const DATA = { pageNum: this.currentPage, pageSize: this.size, fname: this.fname }
       const { data: RES } = await queryUntreatePurPriceList(DATA)
       this.tableData = RES.array
       this.total = RES.total

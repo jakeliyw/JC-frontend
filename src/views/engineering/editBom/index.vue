@@ -218,8 +218,8 @@ export default {
       parentTableVisible: false, // 父项弹窗
       cellStyle: { padding: '10 10' }, // 行高
       disabled: true, // 按钮禁用
-      FNUMBER: '', // 弹窗编码
       flg: false, // true(警告提示后提交)/false(第一次提交)
+      FNUMBER: '', // 弹窗编码
       FDESCRIPTION: '', // 弹窗描述
       FSPECIFICATION: '', // 弹窗规格型号
       activeName: 'product', // 默认主产品 product Other

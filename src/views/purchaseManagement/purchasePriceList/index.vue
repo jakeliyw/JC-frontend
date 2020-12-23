@@ -17,7 +17,7 @@
           @keyup.enter.native="handleQueryUntreated"
         />
         <el-button type="primary" class="btn" size="medium" @click="handleQueryUntreated">搜索</el-button>
-        <el-button type="primary" class="btn" size="medium" @click="addPurchase">新增</el-button>
+        <el-button type="primary" class="btn" size="medium" @click="addPurchase">新增价目</el-button>
       </div>
     </div>
     <div class="table-content">
@@ -25,10 +25,14 @@
         :table-data="tableData"
         :table-header="tableHeader"
         serial
+        :cell-style="cellStyle"
       >
+        <el-table-column label="价目名称" prop="price" align="center" :show-overflow-tooltip="true"/>
+        <el-table-column label="供应商名称" prop="fsupplier" align="center" :show-overflow-tooltip="true"/>
         <el-table-column
           label="物料编码"
           align="center"
+          :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
             <span @click="jumpMateriel(scope.row.fnumber)" class="jumpMateriel">{{ scope.row.fnumber }}</span>
@@ -36,7 +40,7 @@
         </el-table-column>
         <template v-slot:btnSlot="clo">
           <el-button type="warning" size="mini" @click="editPurchase(clo.scope.row.fid)">修改价目</el-button>
-          <el-button type="danger" size="mini" @click="deletePurchase(clo.scope.row.fid)">删除价目</el-button>
+          <el-button type="danger" size="mini" @click="deletePurchase(clo.scope.row.fid)" v-show="false">删除价目</el-button>
           <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">详情价目</el-button>
         </template>
       </jc-table>
@@ -76,18 +80,17 @@ export default {
         fnumber: '', // 物料编码
         fsupplier: '' // 供应商名称
       },
+      cellStyle: { padding: '10, 10' },
       tableHeader: [
-        { label: '价目名称', prop: 'price', align: 'center' },
-        { label: '供应商名称', prop: 'fsupplier', align: 'center' },
         { label: '物料描述', prop: 'fdescripTion', width: '400px', align: 'center' },
-        { label: '计价单位', prop: 'funit', align: 'center' },
         { label: '单价', prop: 'fprice', align: 'center' },
+        { label: '计价单位', prop: 'funit', align: 'center' },
         { label: '含税单价', prop: 'ftaxprice', align: 'center' },
         { label: '税率', prop: 'ftaxrate', align: 'center' },
+        { label: '含税', prop: 'fisincludedtax', align: 'center' },
+        { label: '币别', prop: 'fcurrency', align: 'center' },
         { label: '生效日期', prop: 'feffectiveDate', align: 'center' },
         { label: '失效日期', prop: 'fexpiryDate', align: 'center' },
-        { label: '币别', prop: 'fcurrency', align: 'center' },
-        { label: '含税', prop: 'fisincludedtax', align: 'center' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '300px', align: 'center' }
       ],
       // 表格数据
@@ -110,7 +113,7 @@ export default {
     },
     // 新增采购
     addPurchase() {
-      this.$router.push({ name: 'createPurchasePrice' })
+      this.$router.push({ name: 'CreatePurchasePrice' })
     },
     // 搜索
     handleQueryUntreated() {

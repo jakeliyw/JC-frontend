@@ -10,7 +10,7 @@
           @keyup.enter.native="handleQueryUntreated"
         />
         <el-button type="primary" class="btn" size="medium" @click="handleQueryUntreated">搜索</el-button>
-        <el-button type="primary" class="btn" size="medium" @click="addPurchase">新增</el-button>
+        <el-button type="primary" class="btn" size="medium" @click="addPurchase">新增调价</el-button>
       </div>
     </div>
     <div class="table-content">
@@ -29,11 +29,10 @@
         </el-table-column>
         <template v-slot:btnSlot="clo">
           <el-button type="warning" size="mini" @click="editPurchase(clo.scope.row.fid)">修改价目</el-button>
-          <el-button type="danger" size="mini" @click="deletePurchase(clo.scope.row.fid)">删除价目</el-button>
+          <el-button type="danger" size="mini" @click="deletePurchase(clo.scope.row.fid)" v-show="false">删除价目</el-button>
           <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">详情价目</el-button>
         </template>
       </jc-table>
-
     </div>
     <!--    分页器-->
     <div class="footer">
@@ -71,7 +70,6 @@ export default {
       tableHeader: [
         { label: '调价名称', prop: 'fname', align: 'center' },
         { label: '供应商名称', prop: 'fsupplier', width: '400px', align: 'center' },
-        { label: '物料编码', prop: 'fnumber', align: 'center' },
         { label: '物料描述', prop: 'fdescripTion', align: 'center' },
         { label: '计价单位', prop: 'funit', align: 'center' },
         { label: '调后单价', prop: 'fafterPrice', align: 'center' },

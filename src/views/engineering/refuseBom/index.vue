@@ -2,7 +2,7 @@
   <div class="content">
     <div class="header">
       <div class="header-name">
-        <span class="parentItemNo">供应商名称</span>
+        <span class="parentItemNo">物料编号</span>
         <el-input
           v-model="fname"
           class="input-content"
@@ -99,7 +99,6 @@ export default {
     async handleGetBomList() {
       const DATA = { pageNum: this.currentPage, pageSize: this.size, fname: this.fname }
       const { data: RES, total } = await queryFailBomList(DATA)
-      console.log(RES)
       this.tableData = RES
       this.total = total
     },

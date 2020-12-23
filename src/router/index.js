@@ -345,7 +345,25 @@ export const asyncRouterMap = [
       }
     ]
   },
-
+  {
+    path: '/encodingRules',
+    component: Layout,
+    redirect: '/encodingRules',
+    name: 'EncodingRules',
+    meta: {
+      title: '编码规则',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: '/categories',
+        name: 'Categories',
+        component: () => import('@/views/encodingRules/categories/index'),
+        meta: { title: '大类' },
+        menu: 'userList'
+      }
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
