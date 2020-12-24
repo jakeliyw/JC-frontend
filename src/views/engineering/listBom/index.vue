@@ -23,6 +23,7 @@
         <el-table-column
           label="物料编码"
           align="center"
+          :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
             <span @click="jumpMateriel(scope.row.FNUMBER)" class="jumpMateriel">{{scope.row.FNUMBER}}</span>
@@ -73,7 +74,7 @@ export default {
       tableHeader: [
         { label: '物料描述', prop: 'FDESCRIPTION', width: '400px', align: 'center' },
         { label: '物料规格', prop: 'FSPECIFICATION', width: '100px', align: 'center' },
-        { label: '发料方式', prop: 'FISSUETYPE', width: '50px', align: 'center' },
+        { label: '发料方式', prop: 'FISSUETYPE', width: '100px', align: 'center' },
         { label: '仓库', prop: 'FSTOCK', align: 'center' },
         { label: '使用组织', prop: 'FUSEORG', align: 'center' },
         { label: '生效时间', prop: 'FAPPROVEDATE', align: 'center' },

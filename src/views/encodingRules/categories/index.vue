@@ -4,7 +4,7 @@
       <div class="header-name">
         <span class="parentItemNo">大类名称</span>
         <el-input
-          v-model="largeName"
+          v-model.trim = "largeName"
           class="input-content"
           placeholder="请输入大类名称"
           @keyup.enter.native="handleQuerySonClass"
@@ -19,7 +19,7 @@
         :table-header="tableHeader"
         :cell-style="cellStyle"
       >
-        <el-table-column prop="largeCode" label="大类编码" min-width="80" align="center"></el-table-column>
+        <el-table-column prop="largeCode" rowspan="2" label="大类编码" min-width="80" align="center"></el-table-column>
         <el-table-column prop="largeName" label="大类名称" min-width="120" align="center"></el-table-column>
         <el-table-column prop="mediumName" label="中类集合" min-width="120" align="center">
           <template slot-scope="scope">
@@ -54,6 +54,7 @@
       :visible.sync="dialogVisible"
       width="50%"
     >
+      <el-button type="primary" class="btn inTheBtn" size="medium" @click="increased(1)">新增</el-button>
       <jc-table
         :table-data="inTheData"
         :table-header="inTheHeader"
@@ -69,6 +70,7 @@
       :visible.sync="dialogVisibleSmall"
       width="50%"
     >
+      <el-button type="primary" class="btn inTheBtn" size="medium" @click="increased(2)">新增</el-button>
       <jc-table
         :table-data="smallData"
         :table-header="smallHeader"
@@ -84,6 +86,7 @@
       :visible.sync="dialogVisibleAttribute"
       width="50%"
     >
+      <el-button type="primary" class="btn inTheBtn" size="medium" @click="increased(3)">新增</el-button>
       <jc-table
         :table-data="attributeData"
         :table-header="attributeHeader"
@@ -95,7 +98,7 @@
     </el-dialog>
     <!--    新增大类弹框-->
     <el-dialog
-      title=""
+      title="新增"
       :visible.sync="newClass"
       width="50%"
     >
@@ -175,6 +178,21 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+    <el-dialog
+      title="新增"
+      :visible.sync="newInTheClass"
+      width="50%"
+      append-to-body>
+      <el-form label-width="100px">
+        <el-form-item label="名称">
+          <el-input v-model.trim="newMediumName"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmitMediumName">保存</el-button>
+          <el-button @click="newInTheClass=false">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
     <!--    分页器-->
     <div class="footer">
       <jc-pagination
@@ -195,7 +213,11 @@ import {
   queryLargeTypeList,
   queryTwoMaterialNumbert,
   querySerialTypeList,
-  queryAttributeTypeList
+  queryAttributeTypeList,
+  insertLarge,
+  insertMediumType,
+  insertSerialType,
+  insertAttributeType
 } from '@/api/encodingRules/categories'
 
 export default {
@@ -205,6 +227,7 @@ export default {
   },
   data() {
     return {
+      newInTheClass: false, // 新增中类弹框
       newClass: false, // 新增大类弹框
       dialogVisibleAttribute: false, // 属性弹框
       dialogVisibleSmall: false, // 小类弹框
@@ -237,7 +260,12 @@ export default {
       inputVisible1: false, // 小类tag
       inputValue1: '', // 小类tag
       inputVisible2: false, // 属性tag
-      inputValue2: '' // 属性tag
+      inputValue2: '', // 属性tag
+      newMediumName: '', // 新增中类、小类、属性名称
+      newLargeCode: '', // 新增中类编码
+      newSerialType: '', // 新增小类编码
+      newAttributeType: '', // 新增属性编码
+      newClassID: '' // 判断新增中、小、属性
     }
   },
   mounted() {
@@ -245,8 +273,120 @@ export default {
   },
   methods: {
     // 新增大类
-    onSubmit() {
-      console.log(this.formLabelAlign)
+    async onSubmit() {
+      if (!this.formLabelAlign.largeCode) {
+        this.$message({
+          message: '大类编码不能为空',
+          type: 'error'
+        })
+        return
+      }
+      if (!this.formLabelAlign.largeName) {
+        this.$message({
+          message: '大类名称不能为空',
+          type: 'error'
+        })
+        return
+      }
+      if (this.formLabelAlign.mediumName.length <= 0) {
+        this.$message({
+          message: '中类不能为空',
+          type: 'error'
+        })
+        return
+      }
+      if (this.formLabelAlign.typeArray.length <= 0) {
+        this.$message({
+          message: '小类不能为空',
+          type: 'error'
+        })
+        return
+      }
+      if (this.formLabelAlign.attributeArray.length <= 0) {
+        this.$message({
+          message: '属性不能为空',
+          type: 'error'
+        })
+        return
+      }
+      const DATA = { largeCode: this.formLabelAlign.largeCode, largeName: this.formLabelAlign.largeName, mediumName: this.formLabelAlign.mediumName.join(), typeArray: this.formLabelAlign.typeArray.join(), attributeArray: this.formLabelAlign.attributeArray.join() }
+      const { RES, code, message } = await insertLarge(DATA)
+      console.log(RES, code, message)
+      if (code === 0) {
+        this.$message({
+          message: message,
+          type: 'success'
+        })
+        this.newClass = false
+        this.getSonClass()
+        return
+      } else {
+        this.$message({
+          message: message,
+          type: 'error'
+        })
+        return
+      }
+    },
+    increased(num) {
+      this.newInTheClass = true
+      this.newClassID = num
+    },
+    // 新增中类、小类、属性
+    async onSubmitMediumName() {
+      if (!this.newMediumName) {
+        this.$message.error('名称不能为空')
+        return
+      }
+      if (this.newClassID === 1) { // 新增中类
+        const DATA = { largeCode: this.newLargeCode, mediumName: this.newMediumName }
+        const { code, message } = await insertMediumType(DATA)
+        if (code === 0) {
+          this.$message({
+            message: message,
+            type: 'success'
+          })
+          this.newInTheClass = false
+          this.newMediumName = ''
+          this.inTheClass(this.newLargeCode)
+          return
+        } else {
+          this.$message.error(message)
+          return
+        }
+      } else if (this.newClassID === 2) { // 新增小类
+        const DATA = { serialType: this.newSerialType, name: this.newMediumName }
+        const { code, message } = await insertSerialType(DATA)
+        if (code === 0) {
+          this.$message({
+            message: message,
+            type: 'success'
+          })
+          this.newInTheClass = false
+          this.newMediumName = ''
+          this.smallClass(this.newSerialType)
+          return
+        } else {
+          this.$message.error(message)
+          return
+        }
+      } else if (this.newClassID === 3) { // 新增属性
+        const DATA = { attributeType: this.newAttributeType, name: this.newMediumName }
+        const { code, message } = await insertAttributeType(DATA)
+        if (code === 0) {
+          this.$message({
+            message: message,
+            type: 'success'
+          })
+          this.newInTheClass = false
+          this.newMediumName = ''
+          this.attribute(this.newAttributeType)
+          return
+        } else {
+          this.$message.error(message)
+          return
+        }
+      }
     },
     // 获取大类列表数据
     async getSonClass() {
@@ -257,6 +397,7 @@ export default {
     },
     // 获取中类列表数据
     async inTheClass(id) {
+      this.newLargeCode = id
       this.dialogVisible = true
       const DATA = { largeCode: id }
       const { data: RES } = await queryTwoMaterialNumbert(DATA)
@@ -264,6 +405,7 @@ export default {
     },
     // 获取小类列表数据
     async smallClass(id) {
+      this.newSerialType = id
       this.dialogVisibleSmall = true
       const DATA = { serialType: id }
       const { data: RES } = await querySerialTypeList(DATA)
@@ -271,6 +413,7 @@ export default {
     },
     // 获取属性列表数据
     async attribute(id) {
+      this.newAttributeType = id
       this.dialogVisibleAttribute = true
       const DATA = { attributeType: id }
       const { data: RES } = await queryAttributeTypeList(DATA)
@@ -283,27 +426,27 @@ export default {
     },
     // 删除tag标签
     handleClose(tag, num) {
-      if (num == 0) {
+      if (num === 0) {
         this.formLabelAlign.mediumName.splice(this.formLabelAlign.mediumName.indexOf(tag), 1)
-      } else if (num == 1) {
+      } else if (num === 1) {
         this.formLabelAlign.typeArray.splice(this.formLabelAlign.typeArray.indexOf(tag), 1)
-      } else if (num == 2) {
+      } else if (num === 2) {
         this.formLabelAlign.attributeArray.splice(this.formLabelAlign.attributeArray.indexOf(tag), 1)
       }
     },
     // 点击New Class
     showInput(num) {
-      if (num == 0) {
+      if (num === 0) {
         this.inputVisible = true
         this.$nextTick(_ => {
           this.$refs.saveTagInput.$refs.input.focus()
         })
-      } else if (num == 1) {
+      } else if (num === 1) {
         this.inputVisible1 = true
         this.$nextTick(_ => {
           this.$refs.saveTagInput1.$refs.input.focus()
         })
-      } else if (num == 2) {
+      } else if (num === 2) {
         this.inputVisible2 = true
         this.$nextTick(_ => {
           this.$refs.saveTagInput2.$refs.input.focus()
@@ -312,21 +455,21 @@ export default {
     },
     // 添加集合标签
     handleInputConfirm(num) {
-      if (num == 0) {
+      if (num === 0) {
         const inputValue = this.inputValue
         if (inputValue) {
           this.formLabelAlign.mediumName.push(inputValue)
         }
         this.inputVisible = false
         this.inputValue = ''
-      } else if (num == 1) {
+      } else if (num === 1) {
         const inputValue1 = this.inputValue1
         if (inputValue1) {
           this.formLabelAlign.typeArray.push(inputValue1)
         }
         this.inputVisible1 = false
         this.inputValue1 = ''
-      } else if (num == 2) {
+      } else if (num === 2) {
         const inputValue2 = this.inputValue2
         if (inputValue2) {
           this.formLabelAlign.attributeArray.push(inputValue2)
@@ -338,11 +481,21 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.content{
+  .el-dialog__body{
+    max-height: 650px;
+    overflow: auto;
+  }
+}
+</style>
 <style lang="scss" scoped>
 .content {
   @include listBom;
 }
-
+.inTheBtn{
+  transform: translateY(-15px);
+}
 .tag-mar {
   margin-right: 3px;
   margin-bottom: 3px;

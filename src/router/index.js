@@ -359,7 +359,14 @@ export const asyncRouterMap = [
         path: '/categories',
         name: 'Categories',
         component: () => import('@/views/encodingRules/categories/index'),
-        meta: { title: '大类' },
+        meta: { title: '编码规则' },
+        menu: 'userList'
+      },
+      {
+        path: '/codeComparative',
+        name: 'CodeComparative',
+        component: () => import('@/views/encodingRules/codeComparative/index'),
+        meta: { title: '编码对照表' },
         menu: 'userList'
       }
     ]

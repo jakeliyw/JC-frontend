@@ -4,7 +4,7 @@
       <div class="header-name">
         <span class="parentItemNo">调价名称</span>
         <el-input
-          v-model="fnumber"
+          v-model="fname"
           class="input-content"
           placeholder="请输入调价名称"
           @keyup.enter.native="handleQueryUnderReview"
@@ -55,7 +55,7 @@ export default {
   },
   data() {
     return {
-      fnumber: '', // 产品描述
+      fname: '', // 产品描述
       total: 0, // 总条目
       currentPage: 0, // 当前页
       size: 10, // 每页显示多少条数据
@@ -79,7 +79,7 @@ export default {
   methods: {
     // 获取列表数据
     async handleGetData() {
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, fnumber: this.fnumber }
+      const DATA = { pageNum: this.currentPage, pageSize: this.size, fname: this.fname }
       const { data: RES } = await queryReviewPurPatList(DATA)
       this.tableData = RES.array
       this.total = RES.total

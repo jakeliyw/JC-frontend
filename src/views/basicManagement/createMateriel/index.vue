@@ -136,6 +136,7 @@
           :cell-style="cellStyle"
           :table-data="weightTableData"
           :table-header="tableHeader"
+          :table-height="0"
         >
           <template v-slot:btnSlot="clo">
             <el-button size="mini" type="primary" @click="weightSelect(clo.scope.row)">重量单位选中</el-button>
@@ -146,6 +147,7 @@
           :cell-style="cellStyle"
           :table-data="sizeTableData"
           :table-header="tableHeader"
+          :table-height="0"
         >
           <template v-slot:btnSlot="clo">
             <el-button size="mini" type="primary" @click="sizeSelect(clo.scope.row)">尺寸单位选中</el-button>
@@ -248,6 +250,8 @@
       <jc-table
         :table-data="contrastDataTable"
         :table-header="contrastHeader"
+        serial
+        table-height="200px"
       />
       <jc-pagination
         v-show="total > 0"
@@ -281,7 +285,8 @@ import {
   queryThreeMaterialNumber,
   queryCoodingNumber,
   insertMaterialDetail,
-  queryMaterialAttribute
+  queryMaterialAttribute,
+  queryMaterialAttributes
 } from '@/api/basicManagement/createMateriel'
 
 export default {
@@ -555,9 +560,13 @@ export default {
         // 型号
         FMODEL: this.basicValue.FMODEL,
         // 套件(环保等级)
-        FPROTECT: this.basicValue.FSUITE.value,
+        FPROTECT: this.basicValue.FSUITE,
         // 物料描述
         FDESCRIPTION: this.basicValue.FDESCRIPTION,
+        // 基本单位
+        FBASEUNITID: this.basicValue.FNAME,
+        // 物料类型
+        FERPCLSID: this.basicValue.FERPCLSID,
         // 允许采购
         FISPURCHASE: this.purchaseChecked,
         // 允许销售
@@ -570,8 +579,6 @@ export default {
         FISSUBCONTRACT: this.outsourcingChecked,
         // 允许资产
         FISASSET: this.assetsChecked,
-        // 基本单位
-        FBASEUNITID: this.basicValue.FNAME,
         // 重量单位
         FGROSSWEIGHT: this.weightValue.FGROSSWEIGHT,
         FNETWEIGHT: this.weightValue.FNETWEIGHT,
@@ -592,10 +599,11 @@ export default {
           return
         }
       }
-      if (this.assetsChecked === false && this.stockChecked === false && this.productionChecked === false &&
-        this.purchaseChecked === false && this.saleChecked === false && this.outsourcingChecked === false
-      ) {
-        return this.$message.error('控制信息必选一项！')
+      const RES = [this.assetsChecked, this.stockChecked, this.productionChecked, this.purchaseChecked, this.saleChecked,
+        this.outsourcingChecked].includes(false)
+      if (RES === false) {
+        this.$message.error('控制信息必选一项！')
+        return
       }
       // 图片可以为空
       DATA.FIMG = this.imageUrl
@@ -686,6 +694,13 @@ export default {
         return { label: item.FNAME, value: item.FPKID }
       })
     },
+    // 获取物料类型
+    async getMaterielType() {
+      const { data: RES } = await queryMaterialAttributes()
+      return RES.map(item => {
+        return { label: item.FCAPTION, value: item.FERPCLSID }
+      })
+    },
     // 获取环境
     async getKit() {
       return this.protect
@@ -698,6 +713,7 @@ export default {
       const organizationRes = await this.getOrganization()
       const kitRes = await this.getKit()
       const BasicUnit = await this.getBasicUnit()
+      const materielType = await this.getMaterielType()
       this.organizationValue = {
         FCREATEORG: 1,
         FUSEORG: this.useOrganization
@@ -804,6 +820,15 @@ export default {
         FREMARKS: {
           label: '物料备注',
           span: 8
+        },
+        FERPCLSID: {
+          label: '物料类型',
+          span: 16,
+          type: 'select',
+          selectItems: materielType,
+          rules: [
+            { required: true, message: '请选择物料类型', trigger: 'blur' }
+          ]
         },
         FDESCRIPTION: {
           label: '物料描述',

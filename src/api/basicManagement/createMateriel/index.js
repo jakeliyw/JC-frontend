@@ -72,15 +72,6 @@ export function queryMaterialAttributes(params) {
   })
 }
 
-// 查询套件列表
-export function queryMaterialFsuite(params) {
-  return request({
-    url: '/tMetaFormenumitem/queryMaterialFsuite',
-    method: 'get',
-    params
-  })
-}
-
 // 查询基本单位列表（不分页）
 export function queryUnitList(params) {
   return request({

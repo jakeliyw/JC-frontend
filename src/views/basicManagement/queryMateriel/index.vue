@@ -161,15 +161,7 @@ export default {
             ]
           }
         }
-        this.basicValue = {
-          FBASEUNITID: RES.data.material.FBASEUNITID,
-          FNUMBER: RES.data.material.FNUMBER,
-          FSPECIFICATION: RES.data.material.FSPECIFICATION,
-          FOLDNUMBER: RES.data.material.FOLDNUMBER,
-          FMODEL: RES.data.material.FMODEL,
-          FBARCODE: RES.data.material.FBARCODE,
-          FDESCRIPTION: RES.data.material.FDESCRIPTION
-        }
+        this.basicValue = RES.data.material
         this.basic = {
           FBASEUNITID: {
             label: '基本单位',
@@ -254,11 +246,7 @@ export default {
             disabled: 'disabled'
           }
         }
-        this.weightValue = {
-          FWEIGHTUNITID: RES.data.material.FWEIGHTUNITID,
-          FGROSSWEIGHT: RES.data.material.FGROSSWEIGHT,
-          FNETWEIGHT: RES.data.material.FNETWEIGHT
-        }
+        this.weightValue = RES.data.material
         this.weight = {
           FWEIGHTUNITID: {
             label: '重量单位',
@@ -273,14 +261,7 @@ export default {
             disabled: 'disabled'
           }
         }
-        this.dimensionalValue = {
-          FLENGTH: RES.data.material.FLENGTH,
-          FWIDTH: RES.data.material.FWIDTH,
-          FHEIGHT: RES.data.material.FHEIGHT,
-          FVOLUME: RES.data.material.FVOLUME,
-          FVOLUMEUNITID: RES.data.material.FVOLUMEUNITID,
-          FTHICKNESS: RES.data.material.FTHICKNESS
-        }
+        this.dimensionalValue = RES.data.material
         this.dimensional = {
           FVOLUMEUNITID: {
             label: '尺寸单位',
@@ -300,7 +281,6 @@ export default {
           },
           FTHICKNESS: {
             label: '厚度',
-            type: 'number',
             disabled: 'disabled'
           },
           FVOLUME: {
@@ -327,8 +307,8 @@ export default {
 
 <style scoped lang="scss">
 .content {
-  @include bomCreate;
-}
+   @include bomCreate;
+ }
 
 .title-background {
   color: #FFD04B;

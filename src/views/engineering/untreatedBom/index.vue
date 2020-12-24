@@ -21,6 +21,7 @@
         <el-table-column
           label="物料编码"
           align="center"
+          :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
             <span @click="jumpMateriel(scope.row.FNUMBER)" class="jumpMateriel">{{ scope.row.FNUMBER }}</span>

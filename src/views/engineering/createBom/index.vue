@@ -516,8 +516,9 @@ export default {
         fTreeEntity: sonTableData
       }
       for (const item of DATA.fTreeEntity) {
-        if (item.FMATERIALID === undefined || DATA.FMATERIALID === 0 || item.FDOSAGE === undefined || item.FPRICE ===
-          undefined || item.FCREATEDATE === null || item.FCREATEDATE === 'Invalid date') {
+        const ARRAY = Object.values(item)
+        const RES = ARRAY.includes('' || undefined) || DATA.FMATERIALID === 0
+        if (RES === true) {
           this.$message.error('请删除空行，或为空行填入数据')
           return
         }
