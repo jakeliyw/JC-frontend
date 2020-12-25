@@ -10,7 +10,7 @@
           @keyup.enter.native="handleQueryRefuse"
         />
         <el-button type="primary" class="btn" size="medium" @click="handleQueryRefuse">搜索</el-button>
-        <el-button type="primary" size="medium" @click="addPriceList" class="btn">新增价目</el-button>
+        <el-button type="primary" size="medium" class="btn" @click="addPriceList">新增价目</el-button>
       </div>
     </div>
     <div class="table-content">
@@ -21,8 +21,8 @@
       >
         <template v-slot:btnState="clo">
           <el-steps :active="clo.scope.row.fstatus" align-center class="font-style" finish-status="success" process-status="error">
-            <el-step title="研发审核"></el-step>
-            <el-step title="财务审核"></el-step>
+            <el-step title="研发审核" />
+            <el-step title="财务审核" />
           </el-steps>
         </template>
         <template v-slot:btnSlot="clo">
@@ -68,6 +68,7 @@ export default {
         { label: '供应商名称', prop: 'fsupplier', align: 'center' },
         { label: '是否含税', prop: 'fisIncludedTax', align: 'center' },
         { label: '币别', prop: 'fcurrency', align: 'center' },
+        { label: '生效时间', prop: 'fcreateDate', align: 'center' },
         { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', width: '300px' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
       ],

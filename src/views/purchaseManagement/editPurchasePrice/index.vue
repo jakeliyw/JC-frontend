@@ -6,62 +6,62 @@
           <el-button size="mini" @click="refresh">刷新</el-button>
           <el-button size="mini" type="primary" @click="preservation">保存价目</el-button>
         </div>
-        <el-form :model="purchaseForm" ref="purchaseRef" label-width="100px" size="mini">
+        <el-form ref="purchaseRef" :model="purchaseForm" label-width="100px" size="mini">
           <el-row :gutter="30" type="flex" justify="start" class="elRow">
             <el-col :span="6">
               <el-form-item label="创建组织" prop="fcreateorgId">
-                <el-select v-model="purchaseForm.fcreateorgId" placeholder="请选择组织" disabled/>
+                <el-select v-model="purchaseForm.fcreateorgId" placeholder="请选择组织" disabled />
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="币别" prop="fcurrency">
-                <el-input class="input-width" v-model="purchaseForm.fcurrency" disabled>
-                  <i slot="suffix" class="el-input__icon el-icon-search"/>
+                <el-input v-model="purchaseForm.fcurrency" class="input-width" disabled>
+                  <i slot="suffix" class="el-input__icon el-icon-search" />
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="供应商税率" prop="fpaezBase">
-                <el-input class="input-width" v-model="purchaseForm.fpaezBase" disabled>
-                  <i slot="suffix" class="el-input__icon el-icon-search"/>
+                <el-input v-model="purchaseForm.fpaezBase" class="input-width" disabled>
+                  <i slot="suffix" class="el-input__icon el-icon-search" />
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="供应商" prop="fsupplier">
-                <el-input class="input-width" v-model="purchaseForm.fsupplier" disabled>
-                  <i slot="suffix" class="el-input__icon el-icon-search"/>
+                <el-input v-model="purchaseForm.fsupplier" class="input-width" disabled>
+                  <i slot="suffix" class="el-input__icon el-icon-search" />
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="单据编号" prop="code">
-                <el-input class="input-width" placeholder="保存时自动生成" v-model="purchaseForm.code" disabled/>
+                <el-input v-model="purchaseForm.code" class="input-width" placeholder="保存时自动生成" disabled />
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="名称" prop="fname">
-                <el-input class="input-width" v-model="purchaseForm.fname" disabled/>
+                <el-input v-model="purchaseForm.fname" class="input-width" disabled />
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="价目表对象" prop="fpriceObject">
-                <el-select v-model="purchaseForm.fpriceObject" placeholder="请选择价目表" disabled/>
+                <el-select v-model="purchaseForm.fpriceObject" placeholder="请选择价目表" disabled />
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="价格类型" prop="fpriceType">
-                <el-select v-model="purchaseForm.fpriceType" placeholder="请选择价格类型" disabled/>
+                <el-select v-model="purchaseForm.fpriceType" placeholder="请选择价格类型" disabled />
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="含税" prop="fisIncludedTax">
-                <el-checkbox v-model="purchaseForm.fisIncludedTax" @change="handleTax"/>
+                <el-checkbox v-model="purchaseForm.fisIncludedTax" @change="handleTax" />
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="描述" prop="fdescripTion">
-                <el-input type="textarea" v-model="purchaseForm.fdescripTion" disabled/>
+                <el-input v-model="purchaseForm.fdescripTion" type="textarea" disabled />
               </el-form-item>
             </el-col>
           </el-row>
@@ -77,7 +77,7 @@
           <el-table-column label="物料编码" prop="fnumber" align="center" width="200px">
             <template slot-scope="scope">
               <el-input v-model="scope.row.fnumber" placeholder="请选择物料编码" size="mini">
-                <i class="iconfont icon-jin-rud-ao-bo" slot="prefix" @click="sonJumpMateriel(scope.row.fnumber)"/>
+                <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fnumber)" />
                 <i
                   slot="suffix"
                   class="el-input__icon el-icon-search"
@@ -86,9 +86,9 @@
               </el-input>
             </template>
           </el-table-column>
-          <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" :show-overflow-tooltip="true"/>
-          <el-table-column label="规格型号" prop='fspecificaTion' align="center" :show-overflow-tooltip="true"/>
-          <el-table-column label="计价单位" prop='funit' align="center"/>
+          <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" :show-overflow-tooltip="true" />
+          <el-table-column label="规格型号" prop="fspecificaTion" align="center" :show-overflow-tooltip="true" />
+          <el-table-column label="计价单位" prop="funit" align="center" />
           <el-table-column label="单价" prop="fprice" align="center" min-width="150px">
             <template slot-scope="scope">
               <el-input-number
@@ -117,14 +117,14 @@
           </el-table-column>
           <el-table-column label="价格系数" prop="fpriceCoefficient" align="center" min-width="150px">
             <template slot-scope="scope">
-              <el-input-number v-model.number="scope.row.fpriceCoefficient" size="mini" :precision="3" :step="0.1" :min="0"/>
+              <el-input-number v-model.number="scope.row.fpriceCoefficient" size="mini" :precision="3" :step="0.1" :min="0" />
             </template>
           </el-table-column>
           <el-table-column label="生效时间" prop="feffectiveDate" width="200px" align="center" min-width="150px">
             <template slot-scope="scope">
               <el-date-picker
-                size="mini"
                 v-model="scope.row.feffectiveDate"
+                size="mini"
                 type="date"
                 style="width: 150px"
                 placeholder="选择日期"
@@ -164,11 +164,11 @@
     >
       <div class="materiel-form">
         <span class="materiel-code">物料编码</span>
-        <el-input class="input-width" size="mini" placeholder="请输入物料编码" v-model="FNUMBER" @keyup.enter.native="handleMaterielSearch"/>
+        <el-input v-model="FNUMBER" class="input-width" size="mini" placeholder="请输入物料编码" @keyup.enter.native="handleMaterielSearch" />
         <span class="materiel-code">物料描述</span>
-        <el-input class="input-width" size="mini" placeholder="请输入物料描述" v-model="FDESCRIPTION" @keyup.enter.native="handleMaterielSearch"/>
+        <el-input v-model="FDESCRIPTION" class="input-width" size="mini" placeholder="请输入物料描述" @keyup.enter.native="handleMaterielSearch" />
         <span class="materiel-code">物料规格</span>
-        <el-input class="input-width" size="mini" placeholder="请输入规格" v-model="FSPECIFICATION" @keyup.enter.native="handleMaterielSearch"/>
+        <el-input v-model="FSPECIFICATION" class="input-width" size="mini" placeholder="请输入规格" @keyup.enter.native="handleMaterielSearch" />
         <el-button size="mini" type="primary" @click="handleMaterielSearch">搜索</el-button>
       </div>
       <jc-table

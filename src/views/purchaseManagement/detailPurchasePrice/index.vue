@@ -2,7 +2,7 @@
   <div class="content">
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane label="价目" name="purchase">
-        <jc-form :option-value="optionValue" :options="options"/>
+        <jc-form :option-value="optionValue" :options="options" />
         <jc-table
           :table-data="tableData"
           :table-header="tableHeader"
@@ -11,7 +11,7 @@
           table-height="calc(100vh - 400px)"
         />
       </el-tab-pane>
-      <el-tab-pane label="其它" name="other"/>
+      <el-tab-pane label="其它" name="other" />
     </el-tabs>
   </div>
 </template>

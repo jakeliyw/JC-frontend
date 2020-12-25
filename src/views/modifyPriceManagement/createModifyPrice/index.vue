@@ -6,9 +6,9 @@
           <el-button size="mini" @click="refresh">刷新</el-button>
           <el-button size="mini" type="primary" @click="preservation">保存调价</el-button>
         </div>
-        <jc-form :option-value="optionValue" :options="options" ref="zrf">
-          <el-input class="input-width" v-model="optionValue.fdataValue" size="mini">
-            <i slot="suffix" class="el-input__icon el-icon-search" @click="handleModifyPrice"/>
+        <jc-form ref="zrf" :option-value="optionValue" :options="options">
+          <el-input v-model="optionValue.fdataValue" class="input-width" size="mini">
+            <i slot="suffix" class="el-input__icon el-icon-search" @click="handleModifyPrice" />
           </el-input>
         </jc-form>
         <jc-table
@@ -32,14 +32,14 @@
           </el-table-column>
           <el-table-column label="含税" prop="fisIncludedTax" align="center">
             <template slot-scope="scope">
-              <el-checkbox v-model="scope.row.fisIncludedTax" disabled/>
+              <el-checkbox v-model="scope.row.fisIncludedTax" disabled />
             </template>
           </el-table-column>
           <el-table-column label="物料编码" prop="fnumber" align="center" min-width="150px">
             <template slot-scope="scope">
               <el-input v-model="scope.row.fnumber" size="mini" placeholder="请选择物料编码">
-                <i class="iconfont icon-jin-rud-ao-bo" slot="prefix" @click="sonJumpMateriel(scope.row.fnumber)"/>
-                <i slot="suffix" class="el-input__icon el-icon-search" @click="handleMateriel(scope.row, scope.$index)"/>
+                <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fnumber)" />
+                <i slot="suffix" class="el-input__icon el-icon-search" @click="handleMateriel(scope.row, scope.$index)" />
               </el-input>
             </template>
           </el-table-column>
@@ -95,7 +95,7 @@
           </el-table-column>
           <el-table-column label="调前税率" prop="ftaxRate" align="center" min-width="150px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.ftaxRate" size="mini" :precision="3" :step="0.1" :min="0.1" disabled/>
+              <el-input-number v-model="scope.row.ftaxRate" size="mini" :precision="3" :step="0.1" :min="0.1" disabled />
             </template>
           </el-table-column>
           <el-table-column label="调后税率" prop="fafterTaxRate" align="center" min-width="150px">
@@ -121,12 +121,12 @@
     </el-tabs>
     <!--    采购调价原因选择表-->
     <jc-popup
+      v-model="modifyPricePagination.fdataValue"
       :dialog-title="dialogTitle"
       :open-dialog="openModifyPrice"
       :popup-title="popupTitle"
       @closeDialog="closeDialog"
       @emptyForm="emptyForm"
-      v-model="modifyPricePagination.fdataValue"
       @handleSearch="searchModifyPrice"
     >
       <template v-slot:content>
@@ -152,12 +152,12 @@
     </jc-popup>
     <!--    采购价目列表-->
     <jc-popup
+      v-model="priceListPagination.fsupplier"
       :dialog-title="dialogTitle"
       :open-dialog="openPriceList"
       :popup-title="popupTitle"
       @closeDialog="closeDialog"
       @emptyForm="emptyForm"
-      v-model="priceListPagination.fsupplier"
       @handleSearch="searchPriceList"
     >
       <template v-slot:content>
@@ -183,12 +183,12 @@
     </jc-popup>
     <!--    物料编码列表-->
     <jc-popup
+      v-model="materielPagination.fnumber"
       :dialog-title="dialogTitle"
       :open-dialog="openMaterial"
       :popup-title="popupTitle"
       @closeDialog="closeDialog"
       @emptyForm="emptyForm"
-      v-model="materielPagination.fnumber"
       @handleSearch="handleMateriel"
     >
       <template v-slot:content>

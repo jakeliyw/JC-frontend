@@ -23,15 +23,15 @@
           align="center"
         >
           <template slot-scope="scope">
-            <span @click="jumpMateriel(scope.row.FNUMBER)" class="jumpMateriel">{{scope.row.FNUMBER}}</span>
+            <span class="jumpMateriel" @click="jumpMateriel(scope.row.FNUMBER)">{{ scope.row.FNUMBER }}</span>
           </template>
         </el-table-column>
         <template v-slot:btnState="clo">
           <el-steps :active="clo.scope.row.FSTATUS" align-center class="font-style" finish-status="success" process-status="finish">
-            <el-step title="研发审核"/>
-            <el-step title="IE审核"/>
-            <el-step title="财务审核"/>
-            <el-step title="信息部审核"/>
+            <el-step title="研发审核" />
+            <el-step title="IE审核" />
+            <el-step title="财务审核" />
+            <el-step title="信息部审核" />
           </el-steps>
         </template>
         <template v-slot:btnSlot="clo">
@@ -81,6 +81,7 @@ export default {
         { label: '物料描述', prop: 'FDESCRIPTION', width: '400px', align: 'center' },
         { label: '物料规格', prop: 'FSPECIFICATION', align: 'center' },
         { label: '单位', prop: 'FUNIT', align: 'center' },
+        { label: '生效时间', prop: 'FCREATEDATE', align: 'center' },
         { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', width: '300px' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '300px', align: 'center' }
       ],

@@ -7,7 +7,7 @@ export function toMxAmina(item) {
       item.FDOCUMENTSTATUS = '审核中'
       break
     case 'C':
-      item.FDOCUMENTSTATUS = '已经审核'
+      item.FDOCUMENTSTATUS = '已审核'
       break
     case 'D':
       item.FDOCUMENTSTATUS = '重新审核'

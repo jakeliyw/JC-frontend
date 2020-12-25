@@ -4,7 +4,7 @@
       <div class="header-name">
         <span class="parentItemNo">大类名称</span>
         <el-input
-          v-model.trim = "largeName"
+          v-model.trim="largeName"
           class="input-content"
           placeholder="请输入大类名称"
           @keyup.enter.native="handleQuerySonClass"
@@ -19,8 +19,8 @@
         :table-header="tableHeader"
         :cell-style="cellStyle"
       >
-        <el-table-column prop="largeCode" rowspan="2" label="大类编码" min-width="80" align="center"></el-table-column>
-        <el-table-column prop="largeName" label="大类名称" min-width="120" align="center"></el-table-column>
+        <el-table-column prop="largeCode" rowspan="2" label="大类编码" min-width="80" align="center" />
+        <el-table-column prop="largeName" label="大类名称" min-width="120" align="center" />
         <el-table-column prop="mediumName" label="中类集合" min-width="120" align="center">
           <template slot-scope="scope">
             <el-link type="primary" @click="inTheClass(scope.row.largeCode)">{{ scope.row.mediumName }}</el-link>
@@ -31,8 +31,9 @@
             <el-tag
               v-for="(item,id) in scope.row.typeArray"
               :key="id"
+              class="tag-mar"
               @click="smallClass(item.serialType)"
-              class="tag-mar">{{ item.serialName }}
+            >{{ item.serialName }}
             </el-tag>
           </template>
         </el-table-column>
@@ -41,8 +42,9 @@
             <el-tag
               v-for="(item,id) in scope.row.attributeArray"
               :key="id"
+              class="tag-mar"
               @click="attribute(item.attributeType)"
-              class="tag-mar">{{ item.attributeName }}
+            >{{ item.attributeName }}
             </el-tag>
           </template>
         </el-table-column>
@@ -60,8 +62,8 @@
         :table-header="inTheHeader"
         :cell-style="cellStyle"
       >
-        <el-table-column prop="mediumCode" label="中类编码" align="center"></el-table-column>
-        <el-table-column prop="mediumName" label="中类名称" align="center"></el-table-column>
+        <el-table-column prop="mediumCode" label="中类编码" align="center" />
+        <el-table-column prop="mediumName" label="中类名称" align="center" />
       </jc-table>
     </el-dialog>
     <!--    小类列表弹框-->
@@ -76,8 +78,8 @@
         :table-header="smallHeader"
         :cell-style="cellStyle"
       >
-        <el-table-column prop="number" label="小类编码" align="center"></el-table-column>
-        <el-table-column prop="name" label="小类名称" align="center"></el-table-column>
+        <el-table-column prop="number" label="小类编码" align="center" />
+        <el-table-column prop="name" label="小类名称" align="center" />
       </jc-table>
     </el-dialog>
     <!--    属性列表弹框-->
@@ -92,8 +94,8 @@
         :table-header="attributeHeader"
         :cell-style="cellStyle"
       >
-        <el-table-column prop="attributeName" label="属性名称" align="center"></el-table-column>
-        <el-table-column prop="name" label="物料属性明细名称" align="center"></el-table-column>
+        <el-table-column prop="attributeName" label="属性名称" align="center" />
+        <el-table-column prop="name" label="物料属性明细名称" align="center" />
       </jc-table>
     </el-dialog>
     <!--    新增大类弹框-->
@@ -104,30 +106,30 @@
     >
       <el-form label-width="100px" :model="formLabelAlign">
         <el-form-item label="大类编码">
-          <el-input v-model="formLabelAlign.largeCode"></el-input>
+          <el-input v-model="formLabelAlign.largeCode" />
         </el-form-item>
         <el-form-item label="大类名称">
-          <el-input v-model="formLabelAlign.largeName"></el-input>
+          <el-input v-model="formLabelAlign.largeName" />
         </el-form-item>
         <el-form-item label="中类集合">
           <el-tag
-            :key="tag"
             v-for="tag in formLabelAlign.mediumName"
+            :key="tag"
             closable
             :disable-transitions="false"
-            @close="handleClose(tag,0)">
+            @close="handleClose(tag,0)"
+          >
             {{ tag }}
           </el-tag>
           <el-input
-            class="input-new-tag"
             v-if="inputVisible"
-            v-model="inputValue"
             ref="saveTagInput"
+            v-model="inputValue"
+            class="input-new-tag"
             size="small"
             @keyup.enter.native="handleInputConfirm(0)"
             @blur="handleInputConfirm(0)"
-          >
-          </el-input>
+          />
           <el-button v-else class="button-new-tag" size="small" @click="showInput(0)">+ New Class</el-button>
         </el-form-item>
         <el-form-item label="小类集合">
@@ -136,19 +138,19 @@
             :key="tag"
             closable
             :disable-transitions="false"
-            @close="handleClose(tag,1)">
+            @close="handleClose(tag,1)"
+          >
             {{ tag }}
           </el-tag>
           <el-input
-            class="input-new-tag"
             v-if="inputVisible1"
-            v-model="inputValue1"
             ref="saveTagInput1"
+            v-model="inputValue1"
+            class="input-new-tag"
             size="small"
             @keyup.enter.native="handleInputConfirm(1)"
             @blur="handleInputConfirm(1)"
-          >
-          </el-input>
+          />
           <el-button v-else class="button-new-tag" size="small" @click="showInput(1)">+ New Class</el-button>
         </el-form-item>
         <el-form-item label="属性集合">
@@ -157,19 +159,19 @@
             :key="tag"
             closable
             :disable-transitions="false"
-            @close="handleClose(tag,2)">
+            @close="handleClose(tag,2)"
+          >
             {{ tag }}
           </el-tag>
           <el-input
-            class="input-new-tag"
             v-if="inputVisible2"
-            v-model="inputValue2"
             ref="saveTagInput2"
+            v-model="inputValue2"
+            class="input-new-tag"
             size="small"
             @keyup.enter.native="handleInputConfirm(2)"
             @blur="handleInputConfirm(2)"
-          >
-          </el-input>
+          />
           <el-button v-else class="button-new-tag" size="small" @click="showInput(2)">+ New Class</el-button>
         </el-form-item>
         <el-form-item>
@@ -182,10 +184,11 @@
       title="新增"
       :visible.sync="newInTheClass"
       width="50%"
-      append-to-body>
+      append-to-body
+    >
       <el-form label-width="100px">
         <el-form-item label="名称">
-          <el-input v-model.trim="newMediumName"></el-input>
+          <el-input v-model.trim="newMediumName" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmitMediumName">保存</el-button>

@@ -16,13 +16,13 @@
     <div class="mainPage">
       <div class="left-mainPage">
         <el-tree
-          node-key="id"
           ref="my-tree"
+          node-key="id"
           :data="materialGroupL"
           :props="defaultProps"
-          @node-click="handleNodeClick"
           :current-node-key="currentNodeKey"
           accordion
+          @node-click="handleNodeClick"
         />
       </div>
       <div class="right-mainPage">
@@ -32,19 +32,19 @@
           serial
           :cell-style="cellStyle"
         >
-          <el-table-column label="型号" prop="FMODEL" align="center"/>
+          <el-table-column label="型号" prop="FMODEL" align="center" />
           <el-table-column
             label="物料编码"
             align="center"
             min-width="200px"
           >
             <template slot-scope="scope">
-              <span @click="jumpMateriel(scope.row.FNUMBER)" class="jumpMateriel">{{scope.row.FNUMBER}}</span>
+              <span class="jumpMateriel" @click="jumpMateriel(scope.row.FNUMBER)">{{ scope.row.FNUMBER }}</span>
             </template>
           </el-table-column>
           <template v-slot:btnSlot="clo">
             <el-button type="primary" size="mini" @click="queryMateriel(clo.scope.row.FNUMBER)">查询物料</el-button>
-            <el-button type="danger" size="mini" @click="deleteMateriel(clo.scope.row.FMATERIALID)" v-if="false">删除物料</el-button>
+            <el-button v-if="false" type="danger" size="mini" @click="deleteMateriel(clo.scope.row.FMATERIALID)">删除物料</el-button>
           </template>
         </jc-table>
         <jc-pagination
@@ -88,6 +88,7 @@ export default {
         { label: '物料规格', prop: 'FSPECIFICATION', align: 'center', minWidth: '200px' },
         { label: '审核状态', prop: 'FDOCUMENTSTATUS', align: 'center' },
         { label: '禁用状态', prop: 'FFORBIDSTATUS', align: 'center' },
+        { label: '生效时间', prop: 'FCREATEDATE', align: 'center' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
       ], // 表头数据
       materialTableData: [], // 表格数据
@@ -177,7 +178,7 @@ export default {
     border: 1px solid #ebeef5;
   }
   .right-mainPage{
-    width: 70vw;
+    width: 75vw;
     margin-left: 10px;
   }
 }

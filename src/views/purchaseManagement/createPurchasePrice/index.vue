@@ -6,7 +6,7 @@
           <el-button size="mini" @click="refresh">刷新</el-button>
           <el-button size="mini" type="primary" @click="preservation">保存价目</el-button>
         </div>
-        <el-form :model="purchaseForm" ref="purchaseRef" label-width="100px" size="mini" :rules="purchaseRules">
+        <el-form ref="purchaseRef" :model="purchaseForm" label-width="100px" size="mini" :rules="purchaseRules">
           <el-row :gutter="30" type="flex" justify="start" class="elRow">
             <el-col :span="6">
               <el-form-item label="创建组织" prop="fcreateOrgId">
@@ -22,33 +22,33 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="币别" prop="fcurrencyFname">
-                <el-input class="input-width" v-model="purchaseForm.fcurrencyFname">
-                  <i slot="suffix" class="el-input__icon el-icon-search" @click="handleGetCurrency"/>
+                <el-input v-model="purchaseForm.fcurrencyFname" class="input-width">
+                  <i slot="suffix" class="el-input__icon el-icon-search" @click="handleGetCurrency" />
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="供应商税率" prop="fpaezBaseName">
-                <el-input class="input-width" v-model="purchaseForm.fpaezBaseName">
-                  <i slot="suffix" class="el-input__icon el-icon-search" @click="handleSupplierTaxRate"/>
+                <el-input v-model="purchaseForm.fpaezBaseName" class="input-width">
+                  <i slot="suffix" class="el-input__icon el-icon-search" @click="handleSupplierTaxRate" />
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="供应商" prop="fsupplierName">
-                <el-input class="input-width" v-model="purchaseForm.fsupplierName">
-                  <i slot="suffix" class="el-input__icon el-icon-search" @click="handleSupplier"/>
+                <el-input v-model="purchaseForm.fsupplierName" class="input-width">
+                  <i slot="suffix" class="el-input__icon el-icon-search" @click="handleSupplier" />
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="单据编号" prop="code">
-                <el-input class="input-width" placeholder="保存时自动生成" v-model="purchaseForm.code" disabled/>
+                <el-input v-model="purchaseForm.code" class="input-width" placeholder="保存时自动生成" disabled />
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="名称" prop="fname">
-                <el-input class="input-width" v-model="purchaseForm.fname"/>
+                <el-input v-model="purchaseForm.fname" class="input-width" />
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -77,12 +77,12 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="含税" prop="fisIncludedTax">
-                <el-checkbox v-model="purchaseForm.fisIncludedTax" @change="handleTax"/>
+                <el-checkbox v-model="purchaseForm.fisIncludedTax" @change="handleTax" />
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="描述" prop="fdescripTion">
-                <el-input type="textarea" v-model="purchaseForm.fdescripTion"></el-input>
+                <el-input v-model="purchaseForm.fdescripTion" type="textarea" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -98,7 +98,7 @@
           <el-table-column label="物料编码" prop="fmaterialId" align="center" width="200px">
             <template slot-scope="scope">
               <el-input v-model="scope.row.fmaterialId" placeholder="请选择物料编码" size="mini">
-                <i class="iconfont icon-jin-rud-ao-bo" slot="prefix" @click="sonJumpMateriel(scope.row.fmaterialId)"/>
+                <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fmaterialId)" />
                 <i
                   slot="suffix"
                   class="el-input__icon el-icon-search"
@@ -107,9 +107,9 @@
               </el-input>
             </template>
           </el-table-column>
-          <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" :show-overflow-tooltip="true"/>
-          <el-table-column label="规格型号" prop="fmodel" align="center"/>
-          <el-table-column label="计价单位" prop="FBASEUNIT" align="center"/>
+          <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" :show-overflow-tooltip="true" />
+          <el-table-column label="规格型号" prop="fmodel" align="center" />
+          <el-table-column label="计价单位" prop="FBASEUNIT" align="center" />
           <el-table-column label="单价" prop="fprice" align="center" min-width="150px">
             <template slot-scope="scope">
               <el-input-number
@@ -138,14 +138,14 @@
           </el-table-column>
           <el-table-column label="价格系数" prop="fpriceCoefficient" align="center" min-width="150px">
             <template slot-scope="scope">
-              <el-input-number v-model.number="scope.row.fpriceCoefficient" size="mini" :precision="3" :step="0.1" :min="0.1"/>
+              <el-input-number v-model.number="scope.row.fpriceCoefficient" size="mini" :precision="3" :step="0.1" :min="0.1" />
             </template>
           </el-table-column>
           <el-table-column label="生效时间" prop="fentryEffectiveDate" width="200px" align="center" min-width="150px">
             <template slot-scope="scope">
               <el-date-picker
-                size="mini"
                 v-model="scope.row.fentryEffectiveDate"
+                size="mini"
                 type="date"
                 style="width: 150px"
                 placeholder="选择日期"
@@ -177,21 +177,21 @@
     </el-tabs>
     <!--    币别弹窗-->
     <jc-popup
+      v-model="fname"
       :dialog-title="dialogTitle"
       :open-dialog="openCurrency"
       :popup-title="popupTitle"
       @closeDialog="closeDialog"
       @emptyForm="emptyForm"
-      v-model="fname"
       @handleSearch="searchCurrency"
     >
       <template v-slot:content>
         <jc-table
+          v-show="dialogTitle === '币别列表'"
           :table-data="currencyData"
           :table-header="currencyHeader"
           serial
           :cell-style="cellStyle"
-          v-show="dialogTitle === '币别列表'"
           @clickRow="currencySelectRow"
         />
       </template>
@@ -208,21 +208,21 @@
     </jc-popup>
     <!--    供应商税率-->
     <jc-popup
+      v-model="taxRateName"
       :dialog-title="dialogTitle"
       :popup-title="popupTitle"
+      :open-dialog="openTaxRate"
       @closeDialog="closeDialog"
       @emptyForm="emptyForm"
-      :open-dialog="openTaxRate"
-      v-model="taxRateName"
       @handleSearch="searchTaxRate"
     >
       <template v-slot:content>
         <jc-table
+          v-show="dialogTitle === '税率列表'"
           :table-data="taxRateTableData"
           :table-header="taxRateHeader"
           serial
           :cell-style="cellStyle"
-          v-show="dialogTitle === '税率列表'"
           @clickRow="taxRateSelectRow"
         />
       </template>
@@ -239,21 +239,21 @@
     </jc-popup>
     <!--    供应商-->
     <jc-popup
+      v-model="supplierName"
       :dialog-title="dialogTitle"
       :popup-title="popupTitle"
+      :open-dialog="openSupplier"
       @closeDialog="closeDialog"
       @emptyForm="emptyForm"
-      :open-dialog="openSupplier"
-      v-model="supplierName"
       @handleSearch="searchSupplier"
     >
       <template v-slot:content>
         <jc-table
+          v-show="dialogTitle === '供应商列表'"
           :table-data="supplierData"
           :table-header="supplierHeader"
           serial
           :cell-style="cellStyle"
-          v-show="dialogTitle === '供应商列表'"
           @clickRow="supplierSelectRow"
         />
       </template>
@@ -278,11 +278,11 @@
     >
       <div class="materiel-form">
         <span class="materiel-code">物料编码</span>
-        <el-input class="input-width" size="mini" placeholder="请输入物料编码" v-model="FNUMBER" @keyup.enter.native="handleMaterielSearch"/>
+        <el-input v-model="FNUMBER" class="input-width" size="mini" placeholder="请输入物料编码" @keyup.enter.native="handleMaterielSearch" />
         <span class="materiel-code">物料描述</span>
-        <el-input class="input-width" size="mini" placeholder="请输入物料描述" v-model="FDESCRIPTION" @keyup.enter.native="handleMaterielSearch"/>
+        <el-input v-model="FDESCRIPTION" class="input-width" size="mini" placeholder="请输入物料描述" @keyup.enter.native="handleMaterielSearch" />
         <span class="materiel-code">物料规格</span>
-        <el-input class="input-width" size="mini" placeholder="请输入规格" v-model="FSPECIFICATION" @keyup.enter.native="handleMaterielSearch"/>
+        <el-input v-model="FSPECIFICATION" class="input-width" size="mini" placeholder="请输入规格" @keyup.enter.native="handleMaterielSearch" />
         <el-button size="mini" type="primary" @click="handleMaterielSearch">搜索</el-button>
       </div>
       <jc-table

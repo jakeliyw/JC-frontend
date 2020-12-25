@@ -2,13 +2,13 @@
   <div class="content">
     <el-card class="header-card">
       <div class="organization">
-        <jc-form :option-value="organizationValue" :options="organization"/>
+        <jc-form :option-value="organizationValue" :options="organization" />
       </div>
     </el-card>
-    <el-tabs type="border-card" v-model="activeName" @tab-click="handleOther">
+    <el-tabs v-model="activeName" type="border-card" @tab-click="handleOther">
       <el-tab-pane label="基础" name="basic">
         <span class="title-background">基本信息</span>
-        <el-divider/>
+        <el-divider />
         <div class="information">
           <div class="images">
             <el-upload
@@ -19,50 +19,51 @@
               <img
                 v-if="imageUrl"
                 :src="`${backstageApi}${imageUrl}`"
-                class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon" disabled></i>
+                class="avatar"
+              >
+              <i v-else class="el-icon-plus avatar-uploader-icon" disabled />
             </el-upload>
           </div>
           <div class="basics">
-            <jc-form :option-value="basicValue" :options="basic"/>
+            <jc-form :option-value="basicValue" :options="basic" />
           </div>
         </div>
         <span class="title-background">控制信息</span>
-        <el-divider/>
-        <jc-form :option-value="controlValue" :options="control"/>
-        <span class="title-background" v-show="property.length !== 0">物料属性</span>
-        <el-divider v-if="property.length !== 0"/>
+        <el-divider />
+        <jc-form :option-value="controlValue" :options="control" />
+        <span v-show="property.length !== 0" class="title-background">物料属性</span>
+        <el-divider v-if="property.length !== 0" />
         <div class="materielAttribute">
-          <div class="materielContent" v-for="(item, index) of property" :key="index">
+          <div v-for="(item, index) of property" :key="index" class="materielContent">
             <h4 class="attribute">{{ item.attribute }}</h4>
-            <el-input class="width-input" size="mini" v-model="item.value" disabled/>
+            <el-input v-model="item.value" class="width-input" size="mini" disabled />
           </div>
         </div>
         <span class="title-background">重量信息</span>
-        <el-divider/>
+        <el-divider />
         <jc-form :options="weight" :option-value="weightValue">
           <div slot="slotMateriel" class="basic-content">
             <span class="basic-span">重量单位</span>
-            <el-input size="mini" class="basic-input" v-model="FWEIGHTUNITID" disabled>
-              <i slot="suffix" class="el-input__icon el-icon-search"/>
+            <el-input v-model="FWEIGHTUNITID" size="mini" class="basic-input" disabled>
+              <i slot="suffix" class="el-input__icon el-icon-search" />
             </el-input>
           </div>
         </jc-form>
         <span class="title-background">尺寸信息</span>
-        <el-divider/>
+        <el-divider />
         <jc-form :option-value="dimensionalValue" :options="dimensional">
           <div slot="slotMateriel" class="basic-content">
             <span class="basic-span">尺寸单位</span>
-            <el-input size="mini" class="basic-input" v-model="FVOLUMEUNITID" disabled>
-              <i slot="suffix" class="el-input__icon el-icon-search"/>
+            <el-input v-model="FVOLUMEUNITID" size="mini" class="basic-input" disabled>
+              <i slot="suffix" class="el-input__icon el-icon-search" />
             </el-input>
           </div>
         </jc-form>
       </el-tab-pane>
       <el-tab-pane label="其它" name="log">
         <jc-other
-          :otherUrlObject="otherUrlObject"
-          :otherLogTableData="otherLogTableData"
+          :other-url-object="otherUrlObject"
+          :other-log-table-data="otherLogTableData"
         >
           <div slot="slotPagination">
             <jc-pagination

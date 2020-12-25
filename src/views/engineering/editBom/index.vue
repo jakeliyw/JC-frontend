@@ -17,7 +17,7 @@
           />
         </el-select>
         <span class="text-margin">使用组织</span>
-        <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled/>
+        <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled />
         <div class="summation">材料成本:
           <span class="color-text">{{ Summation }}元</span>
         </div>
@@ -33,7 +33,7 @@
             placeholder="请选择编号"
             class="input-width"
           >
-            <i class="iconfont icon-jin-rud-ao-bo" slot="prefix" @click="jumpMateriel"/>
+            <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="jumpMateriel" />
           </el-input>
         </jc-form>
         <jc-table
@@ -43,12 +43,12 @@
           :table-header="sonTableHeader"
           table-height="calc(100vh - 580px)"
         >
-          <el-table-column v-if="false" label="子物料ID" prop="FMATERIALID" align="center"/>
+          <el-table-column v-if="false" label="子物料ID" prop="FMATERIALID" align="center" />
           <el-table-column label="物料编码" prop="FNUMBER" align="center" width="200px">
             <template slot-scope="scope">
               <el-input v-model="scope.row.FNUMBER" placeholder="请选择物料编码" size="mini">
-                <i class="iconfont icon-jin-rud-ao-bo" slot="prefix" @click="sonJumpMateriel(scope.row.FNUMBER)"/>
-                <i slot="suffix" class="el-input__icon el-icon-search" @click="handleGetMaterialSon(scope.row, scope.$index)"/>
+                <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.FNUMBER)" />
+                <i slot="suffix" class="el-input__icon el-icon-search" @click="handleGetMaterialSon(scope.row, scope.$index)" />
               </el-input>
             </template>
           </el-table-column>
@@ -67,7 +67,7 @@
           />
           <el-table-column label="发料方式" prop="FISSUETYPE" align="center" width="150px">
             <template slot-scope="scope">
-              <el-select v-model="scope.row.FISSUETYPE" placeholder="请选择" @input="(value) => fun2(scope.$index, value)" size="mini">
+              <el-select v-model="scope.row.FISSUETYPE" placeholder="请选择" size="mini" @input="(value) => fun2(scope.$index, value)">
                 <el-option
                   v-for="item in issueMaterialsOptions"
                   :key="item.FVALUE"
@@ -79,12 +79,12 @@
           </el-table-column>
           <el-table-column label="用量" prop="FDOSAGE" align="center" width="200px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.FDOSAGE" :precision="2" :step="1" :min="1" size="mini"/>
+              <el-input-number v-model="scope.row.FDOSAGE" :precision="2" :step="1" :min="1" size="mini" />
             </template>
           </el-table-column>
           <el-table-column label="单价" prop="FPRICE" align="center" width="200px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.FPRICE" :precision="4" :step="0.1" :min="1" size="mini"/>
+              <el-input-number v-model="scope.row.FPRICE" :precision="4" :step="0.1" :min="1" size="mini" />
             </template>
           </el-table-column>
           <el-table-column label="金额" prop="money" align="center" width="150px">
@@ -94,7 +94,7 @@
           </el-table-column>
           <el-table-column label="子项类型" prop="FMATERIALTYPE" align="center" width="150px">
             <template slot-scope="scope">
-              <el-select :value="scope.row.FMATERIALTYPE" placeholder="请选择" @input="(value) => fun(scope.$index, value)" size="mini">
+              <el-select :value="scope.row.FMATERIALTYPE" placeholder="请选择" size="mini" @input="(value) => fun(scope.$index, value)">
                 <el-option
                   v-for="item in materialTypes"
                   :key="item.FVALUE"
@@ -123,8 +123,8 @@
       </el-tab-pane>
       <el-tab-pane label="其它" name="other">
         <jc-other
-          :otherUrlObject="otherUrlObject"
-          :otherLogTableData="otherLogTableData"
+          :other-url-object="otherUrlObject"
+          :other-log-table-data="otherLogTableData"
         />
         <jc-pagination
           v-show="total > 0"
@@ -148,11 +148,11 @@
       <div class="dialogForm">
         <div class="bom-form">
           <span class="materiel-code">物料编码</span>
-          <el-input class="input-width" size="mini" placeholder="请输入物料编码" v-model="FNUMBER" @keyup.enter.native="handleSearchSonTable"/>
+          <el-input v-model="FNUMBER" class="input-width" size="mini" placeholder="请输入物料编码" @keyup.enter.native="handleSearchSonTable" />
           <span class="materiel-code">物料描述</span>
-          <el-input class="input-width" size="mini" placeholder="请输入物料描述" v-model="FDESCRIPTION" @keyup.enter.native="handleSearchSonTable"/>
+          <el-input v-model="FDESCRIPTION" class="input-width" size="mini" placeholder="请输入物料描述" @keyup.enter.native="handleSearchSonTable" />
           <span class="materiel-code">物料规格</span>
-          <el-input class="input-width" size="mini" placeholder="请输入规格" v-model="FSPECIFICATION" @keyup.enter.native="handleSearchSonTable"/>
+          <el-input v-model="FSPECIFICATION" class="input-width" size="mini" placeholder="请输入规格" @keyup.enter.native="handleSearchSonTable" />
           <el-button
             type="primary"
             size="mini"

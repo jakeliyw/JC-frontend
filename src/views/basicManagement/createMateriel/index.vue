@@ -6,16 +6,16 @@
         <el-button size="mini" type="primary" @click="preservation">保存物料</el-button>
       </div>
       <div class="organization">
-        <jc-form :option-value="organizationValue" :options="organization"/>
+        <jc-form :option-value="organizationValue" :options="organization" />
         <jc-form :option-value="oneMaterial" :options="oneMaterial">
           <el-select
+            v-model="oneMaterialValue.LargeCode"
             size="mini"
             placeholder="请选择一类物料"
             filterable
             default-first-option
-            v-model="oneMaterialValue.LargeCode"
-            @change="selectLargeName"
             style="width: 200px"
+            @change="selectLargeName"
           >
             <el-option
               v-for="item in oneMaterielData"
@@ -27,11 +27,11 @@
         </jc-form>
         <jc-form :option-value="toMaterialValue" :options="toMaterial">
           <el-select
+            v-model="toMaterialValue.MediumCode"
             size="mini"
             placeholder="请选择二类物料"
             filterable
             default-first-option
-            v-model="toMaterialValue.MediumCode"
             style="width: 200px"
           >
             <el-option
@@ -45,10 +45,10 @@
         </jc-form>
       </div>
     </el-card>
-    <el-tabs type="border-card" v-model="activeName">
+    <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane label="基础" name="basic">
         <span class="title-background">基本信息</span>
-        <el-divider/>
+        <el-divider />
         <div class="information">
           <div class="images">
             <el-upload
@@ -59,35 +59,35 @@
               class="upload"
             >
               <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"/>
+              <i v-else class="el-icon-plus avatar-uploader-icon" />
             </el-upload>
           </div>
           <div class="basics">
-            <jc-form :option-value="basicValue" :options="basic"/>
+            <jc-form :option-value="basicValue" :options="basic" />
           </div>
         </div>
         <span class="title-background">控制信息</span>
-        <el-divider/>
+        <el-divider />
         <div class="control">
-          <el-checkbox label="允许资产" :disabled="assetsDisabled" @change="assets" :value="assetsChecked"/>
-          <el-checkbox label="允许库存" :disabled="checkoutDisabled" @change="stock" :value="stockChecked"/>
-          <el-checkbox label="允许生产" :disabled="checkoutDisabled" @change="production" :value="productionChecked"/>
-          <el-checkbox label="允许采购" v-model="purchaseChecked"/>
-          <el-checkbox label="允许销售" :disabled="checkoutDisabled" @change="sale" :value="saleChecked"/>
-          <el-checkbox label="允许委外" :disabled="checkoutDisabled" @change="outsourcing" :value="outsourcingChecked"/>
+          <el-checkbox label="允许资产" :disabled="assetsDisabled" :value="assetsChecked" @change="assets" />
+          <el-checkbox label="允许库存" :disabled="checkoutDisabled" :value="stockChecked" @change="stock" />
+          <el-checkbox label="允许生产" :disabled="checkoutDisabled" :value="productionChecked" @change="production" />
+          <el-checkbox v-model="purchaseChecked" label="允许采购" />
+          <el-checkbox label="允许销售" :disabled="checkoutDisabled" :value="saleChecked" @change="sale" />
+          <el-checkbox label="允许委外" :disabled="checkoutDisabled" :value="outsourcingChecked" @change="outsourcing" />
         </div>
-        <span class="title-background" v-show="isMaterial">物料属性</span>
-        <el-divider v-if="isMaterial"/>
+        <span v-show="isMaterial" class="title-background">物料属性</span>
+        <el-divider v-if="isMaterial" />
         <div class="materielAttribute">
-          <div class="materielContent" v-for="(item, index) of materielProperty" :key="index">
+          <div v-for="(item, index) of materielProperty" :key="index" class="materielContent">
             <h4 class="dialog-span">{{ item.attribute }}</h4>
             <el-select
+              v-model="item.value"
               class="span-title"
               size="mini"
               placeholder="请选择物料属性"
               filterable
               default-first-option
-              v-model="item.value"
             >
               <el-option
                 v-for="list of item.handrail"
@@ -99,35 +99,35 @@
           </div>
         </div>
         <span class="title-background">重量信息</span>
-        <el-divider/>
+        <el-divider />
         <jc-form :option-value="weightValue" :options="weight">
-          <el-input size="mini" class="finance-input" v-model="weightValue.FNAME" placeholder="请选择重量单位">
-            <i slot="suffix" class="el-input__icon el-icon-search" @click="handleFweightList"/>
+          <el-input v-model="weightValue.FNAME" size="mini" class="finance-input" placeholder="请选择重量单位">
+            <i slot="suffix" class="el-input__icon el-icon-search" @click="handleFweightList" />
           </el-input>
         </jc-form>
         <span class="title-background">尺寸信息</span>
-        <el-divider/>
+        <el-divider />
         <jc-form :option-value="dimensionalValue" :options="dimensional">
-          <el-input size="mini" class="finance-input" v-model="dimensionalValue.FNAME" placeholder="请选择尺寸单位">
-            <i slot="suffix" class="el-input__icon el-icon-search" @click="handleFvolumeList"/>
+          <el-input v-model="dimensionalValue.FNAME" size="mini" class="finance-input" placeholder="请选择尺寸单位">
+            <i slot="suffix" class="el-input__icon el-icon-search" @click="handleFvolumeList" />
           </el-input>
         </jc-form>
       </el-tab-pane>
       <el-tab-pane label="其它" name="log">
         <jc-other
-          :otherUrlObject="{}"
-          :otherLogTableData="[]"
+          :other-url-object="{}"
+          :other-log-table-data="[]"
         />
       </el-tab-pane>
     </el-tabs>
     <!--    单位、重量、尺寸弹窗-->
     <jc-popup
+      v-model="weightPagination.FNAME"
       :dialog-title="dialogTitle"
       :open-dialog="openDialog"
       :popup-title="popupTitle"
       @closeDialog="closeDialog"
       @emptyForm="emptyForm"
-      v-model="weightPagination.FNAME"
       @handleSearch="searchCompany"
     >
       <template v-slot:content>
@@ -186,10 +186,10 @@
         <div class="large-class">
           <h4 class="dialog-span">一类物料</h4>
           <el-select
+            v-model="oneMaterialValue.LargeCode"
             class="span-title"
             size="mini"
             disabled
-            v-model="oneMaterialValue.LargeCode"
           >
             <el-option
               v-for="item of oneMaterielData"
@@ -202,9 +202,9 @@
         <div class="large-class">
           <h4 class="dialog-span">二类物料</h4>
           <el-select
+            v-model="toMaterialValue.MediumCode"
             size="mini"
             disabled
-            v-model="toMaterialValue.MediumCode"
             style="width: 200px"
           >
             <el-option
@@ -216,15 +216,15 @@
           </el-select>
         </div>
         <div class="sub-class">
-          <div class="content" v-for="(item, index) of threeMaterielData" :key="index">
+          <div v-for="(item, index) of threeMaterielData" :key="index" class="content">
             <h4 class="dialog-span">{{ item.attribute }}</h4>
             <el-select
+              v-model="item.value"
               class="span-title"
               size="mini"
               placeholder="请选择三类物料"
               filterable
               default-first-option
-              v-model="item.value"
               @change="createSerial"
             >
               <el-option
@@ -239,11 +239,11 @@
         <div class="large-class">
           <h4 class="dialog-span">流水号</h4>
           <el-input
+            v-model="serialNumber"
             class="span-title"
             size="mini"
             disabled
             placeholder="自动生成流水号"
-            v-model="serialNumber"
           />
         </div>
       </div>
@@ -603,6 +603,10 @@ export default {
         this.outsourcingChecked].includes(false)
       if (RES === false) {
         this.$message.error('控制信息必选一项！')
+        return
+      }
+      if (this.weightValue.FNETWEIGHT > this.weightValue.FGROSSWEIGHT) {
+        this.$message.error('净重不能大于毛重')
         return
       }
       // 图片可以为空

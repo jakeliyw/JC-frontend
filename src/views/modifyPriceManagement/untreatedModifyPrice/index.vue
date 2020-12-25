@@ -20,8 +20,8 @@
       >
         <template v-slot:btnState="clo">
           <el-steps :active="clo.scope.row.fstatus" align-center class="font-style" finish-status="success" process-status="finish">
-            <el-step title="研发审核"/>
-            <el-step title="财务审核"/>
+            <el-step title="研发审核" />
+            <el-step title="财务审核" />
           </el-steps>
         </template>
         <template v-slot:btnSlot="clo">
@@ -73,6 +73,7 @@ export default {
         { label: '调价日期', prop: 'fdate', align: 'center' },
         { label: '描述', prop: 'fdescripTion', align: 'center' },
         { label: '采购组织', prop: 'fpurchaseOrg', width: '200px', align: 'center' },
+        { label: '生效时间', prop: 'fcreateDate', align: 'center' },
         { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', width: '300px' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '100px', align: 'center' }
       ],
@@ -88,6 +89,7 @@ export default {
     async handleGetUntreated() {
       const DATA = { pageNum: this.currentPage, pageSize: this.size, fname: this.fname }
       const { data: RES } = await queryUntreatePurPatList(DATA)
+      console.log(RES)
       this.tableData = RES.array
       this.total = RES.total
     },

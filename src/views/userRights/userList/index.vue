@@ -22,13 +22,12 @@
       >
         <template v-slot:btnSlot="clo">
           <el-switch
+            v-if="hasPerm('user:disable')"
             v-model="clo.scope.row.FFORBIDSTATUS"
             active-text="启用用户"
             inactive-text="禁用用户"
-            v-if="hasPerm('user:disable')"
             @change="disableUser(clo.scope.row)"
-          >
-          </el-switch>
+          />
         </template>
       </jc-table>
     </div>

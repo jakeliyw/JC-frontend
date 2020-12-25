@@ -5,10 +5,10 @@
     :data="tableData"
     :border="tableBorder"
     :height="tableHeight"
-    :stripe="true"
     :row-style="{ height: '10px' }"
     :cell-style="cellStyle"
     :highlight-current-row="true"
+    stripe
     style="width: 100%"
     @select="handleSelect"
     @select-all="handleSelectAll"
@@ -22,8 +22,8 @@
       width="50"
     />
     <!--    id列-->
-    <el-table-column v-if="serial" type="index" label="序号" width="60" align="center"/>
-    <slot/>
+    <el-table-column v-if="serial" type="index" label="序号" width="60" align="center" />
+    <slot />
     <el-table-column
       v-for="(col, index) of cpTableHeader"
       :key="index"
@@ -35,7 +35,7 @@
       :min-width="col.minWidth || colMinWidth"
       :show-overflow-tooltip="tooltip"
     >
-<!--      操作-->
+      <!--      操作-->
       <template slot-scope="scope">
         <!--    text      -->
         <span v-if="col.type === 'text' || !col.type">

@@ -10,7 +10,7 @@
           @keyup.enter.native="handleQueryBomList"
         />
         <el-button type="primary" class="btn" size="medium" @click="handleQueryBomList">搜索</el-button>
-        <el-button type="primary" size="medium" @click="addBom" class="btn">新增bom</el-button>
+        <el-button type="primary" size="medium" class="btn" @click="addBom">新增bom</el-button>
       </div>
     </div>
     <div class="table-content">
@@ -26,13 +26,13 @@
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
-            <span @click="jumpMateriel(scope.row.FNUMBER)" class="jumpMateriel">{{scope.row.FNUMBER}}</span>
+            <span class="jumpMateriel" @click="jumpMateriel(scope.row.FNUMBER)">{{ scope.row.FNUMBER }}</span>
           </template>
         </el-table-column>
         <template v-slot:btnSlot="clo">
-          <el-button type="warning" size="mini" @click="editBom(clo.scope.row.FNUMBER)" v-if="false">修改bom</el-button>
+          <el-button v-if="false" type="warning" size="mini" @click="editBom(clo.scope.row.FNUMBER)">修改bom</el-button>
           <el-button type="danger" size="mini" @click="Retrial(clo.scope.row.FID)">反审核</el-button>
-          <el-button type="primary" size="mini" @click="getIntoBom(clo.scope.row.FNUMBER)" >进入bom</el-button>
+          <el-button type="primary" size="mini" @click="getIntoBom(clo.scope.row.FNUMBER)">进入bom</el-button>
         </template>
       </jc-table>
     </div>

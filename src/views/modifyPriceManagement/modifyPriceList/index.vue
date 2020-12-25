@@ -18,18 +18,19 @@
         :table-data="tableData"
         :table-header="tableHeader"
         serial
+        :cell-style="cellStyle"
       >
         <el-table-column
           label="物料编码"
           align="center"
         >
           <template slot-scope="scope">
-            <span @click="jumpMateriel(scope.row.fnumber)" class="jumpMateriel">{{ scope.row.fnumber }}</span>
+            <span class="jumpMateriel" @click="jumpMateriel(scope.row.fnumber)">{{ scope.row.fnumber }}</span>
           </template>
         </el-table-column>
         <template v-slot:btnSlot="clo">
           <el-button type="warning" size="mini" @click="editPurchase(clo.scope.row.fid)">修改价目</el-button>
-          <el-button type="danger" size="mini" @click="deletePurchase(clo.scope.row.fid)" v-show="false">删除价目</el-button>
+          <el-button v-show="false" type="danger" size="mini" @click="deletePurchase(clo.scope.row.fid)">删除价目</el-button>
           <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">详情价目</el-button>
         </template>
       </jc-table>
@@ -67,6 +68,7 @@ export default {
         pageSize: 10, // 每页显示多少条数据
         fnumber: '' // 物料编码
       },
+      cellStyle: { padding: '10 10' }, // 行高
       tableHeader: [
         { label: '调价名称', prop: 'fname', align: 'center' },
         { label: '供应商名称', prop: 'fsupplier', width: '400px', align: 'center' },

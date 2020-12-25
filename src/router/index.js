@@ -169,20 +169,6 @@ export const asyncRouterMap = [
         component: () => import('@/views/basicManagement/materielList'),
         meta: { title: '物料列表', noCache: false },
         menu: 'materielList'
-      },
-      {
-        path: '/attributeList',
-        name: 'AttributeList',
-        component: () => import('@/views/basicManagement/attributeList'),
-        meta: { title: '物料属性列表' },
-        menu: 'attributeList'
-      },
-      {
-        path: '/serialList',
-        name: 'SerialList',
-        component: () => import('@/views/basicManagement/serialList'),
-        meta: { title: '小类组合列表' },
-        menu: 'serialList'
       }
     ]
   },

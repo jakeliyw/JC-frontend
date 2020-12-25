@@ -6,9 +6,9 @@
           <el-button size="mini" @click="refresh">刷新</el-button>
           <el-button size="mini" type="primary" disabled>保存调价</el-button>
         </div>
-        <jc-form :option-value="optionValue" :options="options" ref="zrf">
-          <el-input class="input-width" v-model="optionValue.fdataValue" size="mini" disabled>
-            <i slot="suffix" class="el-input__icon el-icon-search"/>
+        <jc-form ref="zrf" :option-value="optionValue" :options="options">
+          <el-input v-model="optionValue.fdataValue" class="input-width" size="mini" disabled>
+            <i slot="suffix" class="el-input__icon el-icon-search" />
           </el-input>
         </jc-form>
         <jc-table
@@ -29,13 +29,13 @@
           </el-table-column>
           <el-table-column label="含税" prop="fisIncludedTax" align="center">
             <template slot-scope="scope">
-              <el-checkbox v-model="scope.row.fisIncludedTax" disabled/>
+              <el-checkbox v-model="scope.row.fisIncludedTax" disabled />
             </template>
           </el-table-column>
           <el-table-column label="物料编码" prop="fnumber" align="center" min-width="150px">
             <template slot-scope="scope">
               <el-input v-model="scope.row.fnumber" size="mini" placeholder="请选择物料编码" disabled>
-                <i slot="suffix" class="el-input__icon el-icon-search"/>
+                <i slot="suffix" class="el-input__icon el-icon-search" />
               </el-input>
             </template>
           </el-table-column>
@@ -89,7 +89,7 @@
           </el-table-column>
           <el-table-column label="调前税率" prop="ftaxRate" align="center" min-width="150px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.ftaxRate" size="mini" :precision="3" :step="0.1" :min="0" disabled/>
+              <el-input-number v-model="scope.row.ftaxRate" size="mini" :precision="3" :step="0.1" :min="0" disabled />
             </template>
           </el-table-column>
           <el-table-column label="调后税率" prop="fafterTaxRate" align="center" min-width="150px">

@@ -9,7 +9,7 @@
         <span class="text-margin">创建组织</span>
         <el-select v-model="team" placeholder="请选择" size="mini" class="input-width" disabled />
         <span class="text-margin">使用组织</span>
-        <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled/>
+        <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled />
         <div class="summation">材料成本:
           <span class="color-text">{{ Summation }}元</span>
         </div>
@@ -25,7 +25,7 @@
             class="input-width"
             disabled
           >
-            <i class="iconfont icon-jin-rud-ao-bo" slot="prefix" @click="jumpMateriel"/>
+            <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="jumpMateriel" />
           </el-input>
         </jc-form>
         <jc-table
@@ -34,11 +34,11 @@
           serial
           :table-header="sonTableHeader"
         >
-          <el-table-column v-if="false" label="子物料ID" prop="FMATERIALID" align="center"/>
+          <el-table-column v-if="false" label="子物料ID" prop="FMATERIALID" align="center" />
           <el-table-column label="物料编码" prop="FNUMBER" align="center" width="200px">
             <template slot-scope="scope">
               <el-input v-model="scope.row.FNUMBER" placeholder="请选择物料编码" disabled size="mini" class="input-width">
-                <i class="iconfont icon-jin-rud-ao-bo" slot="prefix" @click="sonJumpMateriel(scope.row.FNUMBER)"/>
+                <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.FNUMBER)" />
               </el-input>
             </template>
           </el-table-column>
@@ -56,17 +56,17 @@
           />
           <el-table-column label="发料方式" prop="FISSUENAME" align="center" width="150px">
             <template slot-scope="scope">
-              <el-select v-model="scope.row.FISSUENAME" placeholder="请选择" disabled size="mini" class="input-width"/>
+              <el-select v-model="scope.row.FISSUENAME" placeholder="请选择" disabled size="mini" class="input-width" />
             </template>
           </el-table-column>
           <el-table-column label="用量" prop="FDOSAGE" align="center" width="200px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.FDOSAGE" :precision="2" :step="0.1" :min="1" disabled size="mini" class="input-width"/>
+              <el-input-number v-model="scope.row.FDOSAGE" :precision="2" :step="0.1" :min="1" disabled size="mini" class="input-width" />
             </template>
           </el-table-column>
           <el-table-column label="单价" prop="FPRICE" align="center" width="200px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.FPRICE" :precision="4" :step="0.1" :min="1" disabled size="mini" class="input-width"/>
+              <el-input-number v-model="scope.row.FPRICE" :precision="4" :step="0.1" :min="1" disabled size="mini" class="input-width" />
             </template>
           </el-table-column>
           <el-table-column label="金额" prop="money" align="center" width="150px">
@@ -76,7 +76,7 @@
           </el-table-column>
           <el-table-column label="子项类型" prop="FMATERIALNAME" align="center" width="150px">
             <template slot-scope="scope">
-              <el-select :value="scope.row.FMATERIALNAME" placeholder="请选择" disabled size="mini" class="input-width"/>
+              <el-select :value="scope.row.FMATERIALNAME" placeholder="请选择" disabled size="mini" class="input-width" />
             </template>
           </el-table-column>
           <el-table-column label="生效时间" prop="date" width="200px" align="center">
@@ -99,8 +99,8 @@
       </el-tab-pane>
       <el-tab-pane label="其它" name="other">
         <jc-other
-          :otherUrlObject="otherUrlObject"
-          :otherLogTableData="otherLogTableData"
+          :other-url-object="otherUrlObject"
+          :other-log-table-data="otherLogTableData"
         />
       </el-tab-pane>
     </el-tabs>
@@ -157,9 +157,6 @@ export default {
       company: ''
     }
   },
-  mounted() {
-    this.handleSetForm()
-  },
   computed: {
     // 材料成本
     Summation() {
@@ -172,6 +169,9 @@ export default {
       }, 0)
       return parseInt(total * 100) / 100
     }
+  },
+  mounted() {
+    this.handleSetForm()
   },
   methods: {
     // 进入bom
