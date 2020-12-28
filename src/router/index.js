@@ -345,14 +345,41 @@ export const asyncRouterMap = [
         path: '/categories',
         name: 'Categories',
         component: () => import('@/views/encodingRules/categories/index'),
-        meta: { title: '编码规则' },
+        meta: { title: '编码配置' },
         menu: 'userList'
       },
       {
         path: '/codeComparative',
         name: 'CodeComparative',
         component: () => import('@/views/encodingRules/codeComparative/index'),
-        meta: { title: '编码对照表' },
+        meta: { title: '编码规则' },
+        menu: 'userList'
+      }
+    ]
+  },
+  {
+    path: '/marketManage',
+    component: Layout,
+    redirect: '/marketManage',
+    name: 'MarketManage',
+    meta: {
+      title: '销售管理',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: '/marketOrder',
+        name: 'MarketOrder',
+        component: () => import('@/views/marketManage/marketOrder/index'),
+        meta: { title: '销售订单列表' },
+        menu: 'userList'
+      },
+      {
+        path: '/marketParticulars/:id',
+        name: 'MarketParticulars',
+        component: () => import('@/views/marketManage/marketParticulars/index'),
+        meta: { title: '销售订单详情' },
+        hidden: true,
         menu: 'userList'
       }
     ]

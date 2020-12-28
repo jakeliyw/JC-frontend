@@ -10,7 +10,7 @@
           <el-row :gutter="30" type="flex" justify="start" class="elRow">
             <el-col :span="6">
               <el-form-item label="创建组织" prop="fcreateorgId">
-                <el-select v-model="purchaseForm.fcreateorgId" placeholder="请选择组织" disabled />
+                <el-select v-model="purchaseForm.fcreateorgId" placeholder="请选择组织" disabled class="input-width" />
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -46,12 +46,12 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="价目表对象" prop="fpriceObject">
-                <el-select v-model="purchaseForm.fpriceObject" placeholder="请选择价目表" disabled />
+                <el-select v-model="purchaseForm.fpriceObject" placeholder="请选择价目表" disabled class="input-width" />
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="价格类型" prop="fpriceType">
-                <el-select v-model="purchaseForm.fpriceType" placeholder="请选择价格类型" disabled />
+                <el-select v-model="purchaseForm.fpriceType" placeholder="请选择价格类型" disabled class="input-width" />
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -69,7 +69,6 @@
         <jc-table
           :table-data="tableData"
           :table-header="tableHeader"
-          serial
           :cell-style="cellStyle"
           class="jcTable"
           table-height="auto"
@@ -174,7 +173,6 @@
       <jc-table
         :table-data="materielDialogData"
         :table-header="materielDialogHeader"
-        serial
         :cell-style="cellStyle"
         @clickRow="materielSelectRow"
       />
@@ -447,7 +445,7 @@ export default {
       flex-wrap: wrap;
 
       .input-width {
-        width: 200px;
+        width: 10vw;
       }
     }
 
@@ -485,7 +483,7 @@ export default {
   }
 
   .input-width {
-    width: 200px;
+    width: 10vw;
     margin-right: 10px;
   }
 }

@@ -8,8 +8,9 @@
     :row-style="{ height: '10px' }"
     :cell-style="cellStyle"
     :highlight-current-row="true"
-    stripe
     style="width: 100%"
+    :header-cell-style="{background:'#E6EBFC', fontSize: '13px'}"
+    :row-class-name="tabRowClassName"
     @select="handleSelect"
     @select-all="handleSelectAll"
     @row-dblclick="openDetails"
@@ -88,7 +89,7 @@ export default {
     },
     serial: { // 是否显示序列号
       type: Boolean,
-      default: false
+      default: true
     },
     colAlign: { // 单元格对齐方式
       type: String,
@@ -146,10 +147,33 @@ export default {
     // 获取勾选的值
     handleGetSelection() {
       this.$emit('selectionChange', this.$refs.table.selection)
+    },
+    tabRowClassName({ row, rowIndex }) {
+      const index = rowIndex + 1
+      if (index % 2 === 0) {
+        return 'warning-row'
+      }
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+@media screen and (max-width: 1366px) {
+  .el-table{
+    font-size: 12px;
+  }
+}
+@media screen and (min-width: 1920px) {
+  .el-table{
+    font-size: 14px;
+  }
+}
+
+.el-input.is-disabled .el-input__inner{
+  color: black;
+}
+.el-table .warning-row{
+  background: #ececec;
+}
 </style>

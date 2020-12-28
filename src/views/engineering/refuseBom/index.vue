@@ -16,7 +16,6 @@
     <div class="table-content">
       <jc-table
         :table-data="tableData"
-        serial
         :table-header="tableHeader"
       >
         <el-table-column
@@ -76,8 +75,8 @@ export default {
       size: 10, // 每页显示多少条数据
       // 表头
       tableHeader: [
-        { label: '物料描述', prop: 'FDESCRIPTION', width: '400px', align: 'center' },
-        { label: '物料规格', prop: 'FSPECIFICATION', width: '100px', align: 'center' },
+        { label: '物料描述', prop: 'FDESCRIPTION', minWidth: '400px', align: 'center' },
+        { label: '物料规格', prop: 'FSPECIFICATION', minWidth: '100px', align: 'center' },
         { label: '仓库', prop: 'FSTOCK', align: 'center' },
         { label: '价格清单', prop: 'PRICELIST', align: 'center' },
         { label: '使用组织', prop: 'FUSEORG', align: 'center' },

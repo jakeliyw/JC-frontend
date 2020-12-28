@@ -2,7 +2,6 @@
   <div class="content">
     <div class="header">
       <div class="header-name">
-        <h3 class="materiel-name">菜单列表</h3>
         <span class="parentItemNo">菜单名称</span>
         <el-input
           v-model="SUBJECTION"
@@ -16,7 +15,6 @@
     <div class="table-content">
       <jc-table
         :table-data="tableData"
-        serial
         :table-header="tableHeader"
         :cell-style="cellStyle"
       />

@@ -14,7 +14,6 @@
         <jc-table
           :table-data="modifyPriceTable"
           :table-header="modifyPriceHeader"
-          serial
           :cell-style="cellStyle"
         >
           <el-table-column label="价目表" prop="fname" align="center" min-width="150px">
@@ -239,6 +238,9 @@ export default {
 
     .header {
       margin-bottom: 20px;
+    }
+    .input-width{
+      width: 10vw;
     }
   }
 }

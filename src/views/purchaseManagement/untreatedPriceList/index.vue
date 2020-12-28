@@ -16,7 +16,6 @@
       <jc-table
         :table-data="tableData"
         :table-header="tableHeader"
-        serial
       >
         <template v-slot:btnState="clo">
           <el-steps :active="clo.scope.row.fstatus" align-center class="font-style" finish-status="success" process-status="finish">
@@ -64,13 +63,13 @@ export default {
       size: 10, // 每页显示多少条数据
       tableHeader: [
         { label: '价目编码', prop: 'fnumber', align: 'center' },
-        { label: '价目表名称', prop: 'fname', width: '200px', align: 'center' },
+        { label: '价目表名称', prop: 'fname', minWidth: '200px', align: 'center' },
         { label: '供应商名称', prop: 'fsupplier', align: 'center' },
         { label: '是否含税', prop: 'fisIncludedTax', align: 'center' },
         { label: '币别', prop: 'fcurrency', align: 'center' },
         { label: '生效时间', prop: 'fcreateDate', align: 'center' },
-        { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', width: '300px' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '300px', align: 'center' }
+        { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', minWidth: '300px' },
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '250px', align: 'center' }
       ],
       // 表格数据
       tableData: []
@@ -84,7 +83,6 @@ export default {
     async handleGetUntreated() {
       const DATA = { pageNum: this.currentPage, pageSize: this.size, fname: this.fname }
       const { data: RES } = await queryUntreatePurPriceList(DATA)
-      console.log(RES)
       this.tableData = RES.array
       this.total = RES.total
     },

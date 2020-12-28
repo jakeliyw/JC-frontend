@@ -2,7 +2,6 @@
   <div class="content">
     <div class="header">
       <div class="header-name">
-        <h3 class="materiel-name">用户列表</h3>
         <span class="parentItemNo">用户名称</span>
         <el-input
           v-model="FNAME"
@@ -16,7 +15,6 @@
     <div class="table-content">
       <jc-table
         :table-data="tableData"
-        serial
         :table-header="tableHeader"
         :cell-style="cellStyle"
       >
@@ -69,7 +67,7 @@ export default {
         { label: '部门分组', prop: 'FPRIMARYGROUP', align: 'center' },
         { label: '手机号码', prop: 'FPHONE', align: 'center' },
         { label: '创建时间', prop: 'FCREATEDATE', align: 'center' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '150px', align: 'center' }
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '100px', align: 'center' }
       ],
       // 行高
       cellStyle: { padding: '10 10' }

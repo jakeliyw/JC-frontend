@@ -17,7 +17,6 @@
       <jc-table
         :table-data="tableData"
         :table-header="tableHeader"
-        serial
         :cell-style="cellStyle"
       >
         <el-table-column
@@ -29,7 +28,7 @@
           </template>
         </el-table-column>
         <template v-slot:btnSlot="clo">
-          <el-button type="warning" size="mini" @click="editPurchase(clo.scope.row.fid)">修改价目</el-button>
+          <el-button v-show="false" type="warning" size="mini" @click="editPurchase(clo.scope.row.fid)">修改价目</el-button>
           <el-button v-show="false" type="danger" size="mini" @click="deletePurchase(clo.scope.row.fid)">删除价目</el-button>
           <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">详情价目</el-button>
         </template>
@@ -71,7 +70,7 @@ export default {
       cellStyle: { padding: '10 10' }, // 行高
       tableHeader: [
         { label: '调价名称', prop: 'fname', align: 'center' },
-        { label: '供应商名称', prop: 'fsupplier', width: '400px', align: 'center' },
+        { label: '供应商名称', prop: 'fsupplier', minWidth: '400px', align: 'center' },
         { label: '物料描述', prop: 'fdescripTion', align: 'center' },
         { label: '计价单位', prop: 'funit', align: 'center' },
         { label: '调后单价', prop: 'fafterPrice', align: 'center' },
@@ -79,7 +78,7 @@ export default {
         { label: '生效时间', prop: 'fcreateDate', align: 'center' },
         { label: '币别', prop: 'fcurrency', align: 'center' },
         { label: '调后价格系数', prop: 'fafterPriceCoefficient', align: 'center' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '300px', align: 'center' }
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '100px', align: 'center' }
       ],
       // 表格数据
       tableData: []

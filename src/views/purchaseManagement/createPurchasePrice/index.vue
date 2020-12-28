@@ -10,7 +10,7 @@
           <el-row :gutter="30" type="flex" justify="start" class="elRow">
             <el-col :span="6">
               <el-form-item label="创建组织" prop="fcreateOrgId">
-                <el-select v-model="purchaseForm.fcreateOrgId" placeholder="请选择组织">
+                <el-select v-model="purchaseForm.fcreateOrgId" placeholder="请选择组织" class="input-width">
                   <el-option
                     v-for="option in purchaseForm.teamList"
                     :key="option.value"
@@ -53,7 +53,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="价目表对象" prop="fpriceObject">
-                <el-select v-model="purchaseForm.fpriceObject" placeholder="请选择价目表">
+                <el-select v-model="purchaseForm.fpriceObject" placeholder="请选择价目表" class="input-width">
                   <el-option
                     v-for="option in purchaseForm.priceList"
                     :key="option.value"
@@ -65,7 +65,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="价格类型" prop="fpriceType">
-                <el-select v-model="purchaseForm.fpriceType" placeholder="请选择价格类型">
+                <el-select v-model="purchaseForm.fpriceType" placeholder="请选择价格类型" class="input-width">
                   <el-option
                     v-for="option in purchaseForm.priceTypeList"
                     :key="option.value"
@@ -90,7 +90,6 @@
         <jc-table
           :table-data="tableData"
           :table-header="tableHeader"
-          serial
           :cell-style="cellStyle"
           class="jcTable"
           table-height="auto"
@@ -190,7 +189,6 @@
           v-show="dialogTitle === '币别列表'"
           :table-data="currencyData"
           :table-header="currencyHeader"
-          serial
           :cell-style="cellStyle"
           @clickRow="currencySelectRow"
         />
@@ -221,7 +219,6 @@
           v-show="dialogTitle === '税率列表'"
           :table-data="taxRateTableData"
           :table-header="taxRateHeader"
-          serial
           :cell-style="cellStyle"
           @clickRow="taxRateSelectRow"
         />
@@ -252,7 +249,6 @@
           v-show="dialogTitle === '供应商列表'"
           :table-data="supplierData"
           :table-header="supplierHeader"
-          serial
           :cell-style="cellStyle"
           @clickRow="supplierSelectRow"
         />
@@ -288,9 +284,9 @@
       <jc-table
         :table-data="materielDialogData"
         :table-header="materielDialogHeader"
-        serial
         :cell-style="cellStyle"
         @clickRow="materielSelectRow"
+        table-height="calc(100vh - 500px)"
       />
       <jc-pagination
         v-show="materielPagination.total > 0"
@@ -520,6 +516,9 @@ export default {
           if (res.code === 0) {
             this.purchaseForm.code = res.data
             this.$message.success(res.message)
+            setTimeout(() => {
+              location.reload()
+            }, 2000)
           }
         }).catch(error => {
           this.$message.error(error)
@@ -543,7 +542,6 @@ export default {
     },
     // 供应商选中
     supplierSelectRow(item) {
-      console.log(item)
       this.purchaseForm.fsupplierId = item.fsupplierId
       this.purchaseForm.fsupplierName = item.fname
       this.openSupplier = false
@@ -758,7 +756,7 @@ export default {
       flex-wrap: wrap;
 
       .input-width {
-        width: 200px;
+        width: 10vw;
       }
     }
 
@@ -794,7 +792,7 @@ export default {
   }
 
   .input-width {
-    width: 200px;
+    width: 10vw;
     margin-right: 10px;
   }
 }

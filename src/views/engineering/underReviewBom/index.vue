@@ -16,7 +16,6 @@
       <jc-table
         :table-data="tableData"
         :table-header="tableHeader"
-        serial
       >
         <el-table-column
           label="物料编码"
@@ -75,14 +74,14 @@ export default {
       size: 10, // 每页显示多少条数据
       // 表头
       tableHeader: [
-        { label: '物料描述', prop: 'FDESCRIPTION', width: '400px', align: 'center' },
+        { label: '物料描述', prop: 'FDESCRIPTION', minWidth: '400px', align: 'center' },
         { label: '物料规格', prop: 'FSPECIFICATION', align: 'center' },
         { label: '仓库', prop: 'FSTOCK', align: 'center' },
         { label: '价格清单', prop: 'PRICELIST', align: 'center' },
         { label: '使用组织', prop: 'FUSEORG', align: 'center' },
         { label: '生效时间', prop: 'FCREATEDATE', align: 'center' },
         { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', minWidth: '300px' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '100px', align: 'center' }
       ],
       // 表格数据
       tableData: []

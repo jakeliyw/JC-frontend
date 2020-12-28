@@ -22,8 +22,8 @@
             v-model="prodValue.FNUMBER"
             size="mini"
             placeholder="请选择编码"
-            class="input-width"
             disabled
+            class="input-width"
           >
             <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="jumpMateriel" />
           </el-input>

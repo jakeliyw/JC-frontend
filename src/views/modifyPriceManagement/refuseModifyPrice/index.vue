@@ -16,7 +16,6 @@
     <div class="table-content">
       <jc-table
         :table-data="tableData"
-        serial
         :table-header="tableHeader"
       >
         <template v-slot:btnState="clo">

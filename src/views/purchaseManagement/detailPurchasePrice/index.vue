@@ -7,7 +7,6 @@
           :table-data="tableData"
           :table-header="tableHeader"
           :cell-style="cellStyle"
-          serial
           table-height="calc(100vh - 400px)"
         />
       </el-tab-pane>

@@ -777,6 +777,13 @@ export default {
         FREMARKS: ''
       }
       this.basic = {
+        FMODEL: {
+          label: '型号',
+          span: 8,
+          rules: [
+            { required: true, message: '型号不能为空', trigger: 'blur' }
+          ]
+        },
         FNUMBER: {
           label: '物料编码',
           span: 8,
@@ -789,6 +796,13 @@ export default {
             { required: true, message: '旧物料编码不能为空', trigger: 'blur' }
           ]
         },
+        FBARCODE: {
+          label: '条码',
+          span: 8,
+          rules: [
+            { required: true, message: '条码不能为空', trigger: 'blur' }
+          ]
+        },
         FNAME: {
           label: '基本单位',
           type: 'select',
@@ -798,46 +812,33 @@ export default {
             { required: true, message: '请选择基本单位', trigger: 'change' }
           ]
         },
-        FBARCODE: {
-          label: '条码',
-          span: 8,
-          rules: [
-            { required: true, message: '条码不能为空', trigger: 'blur' }
-          ]
-        },
         FSUITE: {
           label: '环保等级',
-          type: 'selectObj',
+          type: 'select',
           selectItems: kitRes,
           span: 8,
           rules: [
             { required: true, message: '请选择环保等级', trigger: 'change' }
           ]
         },
-        FMODEL: {
-          label: '型号',
-          span: 8,
-          rules: [
-            { required: true, message: '型号不能为空', trigger: 'blur' }
-          ]
-        },
-        FREMARKS: {
-          label: '物料备注',
-          span: 8
-        },
         FERPCLSID: {
           label: '物料类型',
-          span: 16,
+          span: 8,
           type: 'select',
           selectItems: materielType,
           rules: [
             { required: true, message: '请选择物料类型', trigger: 'blur' }
           ]
         },
+        FREMARKS: {
+          label: '物料备注',
+          span: 16
+        },
         FDESCRIPTION: {
           label: '物料描述',
           disabled: 'disabled',
           isActive: 'isActive',
+          type: 'textarea',
           rules: [
             { required: true, message: '请输入物料描述', trigger: 'blur' }
           ]

@@ -19,7 +19,7 @@
         :table-header="tableHeader"
         :cell-style="cellStyle"
       >
-        <el-table-column prop="largeCode" rowspan="2" label="大类编码" min-width="80" align="center" />
+        <el-table-column prop="largeCode" label="大类编码" min-width="80" align="center" />
         <el-table-column prop="largeName" label="大类名称" min-width="120" align="center" />
         <el-table-column prop="mediumName" label="中类集合" min-width="120" align="center">
           <template slot-scope="scope">
@@ -484,14 +484,6 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-.content{
-  .el-dialog__body{
-    max-height: 650px;
-    overflow: auto;
-  }
-}
-</style>
 <style lang="scss" scoped>
 .content {
   @include listBom;

@@ -164,8 +164,8 @@ export default {
         }
         this.basicValue = RES.data.material
         this.basic = {
-          FBASEUNITID: {
-            label: '基本单位',
+          FMODEL: {
+            label: '型号',
             span: 8,
             disabled: 'disabled'
           },
@@ -174,13 +174,18 @@ export default {
             span: 8,
             disabled: 'disabled'
           },
-          FSPECIFICATION: {
-            label: '物料规格',
+          FOLDNUMBER: {
+            label: '旧物料编码',
             span: 8,
             disabled: 'disabled'
           },
-          FOLDNUMBER: {
-            label: '旧物料编码',
+          FBASEUNITID: {
+            label: '基本单位',
+            span: 8,
+            disabled: 'disabled'
+          },
+          FSPECIFICATION: {
+            label: '物料规格',
             span: 8,
             disabled: 'disabled'
           },
@@ -189,16 +194,12 @@ export default {
             span: 8,
             disabled: 'disabled'
           },
-          FMODEL: {
-            label: '型号',
-            span: 8,
-            disabled: 'disabled'
-          },
           FDESCRIPTION: {
             label: '物料描述',
             disabled: 'disabled',
             span: 24,
-            isActive: 'isActive'
+            isActive: 'isActive',
+            type: 'textarea'
           }
         }
         this.controlValue = {

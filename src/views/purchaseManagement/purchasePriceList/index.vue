@@ -24,7 +24,6 @@
       <jc-table
         :table-data="tableData"
         :table-header="tableHeader"
-        serial
         :cell-style="cellStyle"
       >
         <el-table-column label="价目名称" prop="price" align="center" :show-overflow-tooltip="true" />
@@ -82,7 +81,7 @@ export default {
       },
       cellStyle: { padding: '10, 10' },
       tableHeader: [
-        { label: '物料描述', prop: 'fdescripTion', width: '400px', align: 'center' },
+        { label: '物料描述', prop: 'fdescripTion', minWidth: '400px', align: 'center' },
         { label: '单价', prop: 'fprice', align: 'center' },
         { label: '计价单位', prop: 'funit', align: 'center' },
         { label: '含税单价', prop: 'ftaxprice', align: 'center' },
@@ -91,7 +90,7 @@ export default {
         { label: '币别', prop: 'fcurrency', align: 'center' },
         { label: '失效日期', prop: 'feffectiveDate', align: 'center' },
         { label: '生效日期', prop: 'fexpiryDate', align: 'center' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '300px', align: 'center' }
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
       ],
       // 表格数据
       tableData: []

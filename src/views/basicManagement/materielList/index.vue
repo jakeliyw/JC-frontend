@@ -29,7 +29,6 @@
         <jc-table
           :table-header="materialTableHeader"
           :table-data="materialTableData"
-          serial
           :cell-style="cellStyle"
         >
           <el-table-column label="型号" prop="FMODEL" align="center" />
@@ -164,22 +163,32 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.content {
-  @include listBom;
+@media screen and (max-width: 1920px) and (min-width: 1366px)  {
+    .right-mainPage{
+      width: 70vw;
+      margin-left: 10px;
+    }
+  }
+@media screen and (min-width: 2560px) {
+  .right-mainPage{
+    width: 80vw;
+    margin-left: 10px;
+  }
 }
-.mainPage{
+
+.mainPage {
   margin-top: 10px;
   display: flex;
   flex-direction: row;
-  .left-mainPage{
-    width: 200px;
+
+  .left-mainPage {
+    width: 15vw;
     display: flex;
     flex-direction: column;
     border: 1px solid #ebeef5;
   }
-  .right-mainPage{
-    width: 75vw;
-    margin-left: 10px;
-  }
+}
+.content {
+  @include listBom;
 }
 </style>

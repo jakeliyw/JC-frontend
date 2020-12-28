@@ -14,7 +14,6 @@
         <jc-table
           :table-data="modifyPriceTable"
           :table-header="modifyPriceHeader"
-          serial
           :cell-style="cellStyle"
           class="jcTable"
           table-height="auto"
@@ -133,7 +132,6 @@
           v-show="dialogTitle === '采购价目列表'"
           :table-data="priceListData"
           :table-header="priceListHeader"
-          serial
           :cell-style="cellStyle"
           @clickRow="priceListSelectRow"
         />
@@ -164,7 +162,6 @@
           v-show="dialogTitle === '物料编码列表'"
           :table-data="materielDialogData"
           :table-header="materielDialogHeader"
-          serial
           :cell-style="cellStyle"
           @clickRow="materielSelectRow"
         />
@@ -505,6 +502,9 @@ export default {
 
     .header {
       margin-bottom: 20px;
+    }
+    .input-width{
+      width: 10vw;
     }
   }
 }

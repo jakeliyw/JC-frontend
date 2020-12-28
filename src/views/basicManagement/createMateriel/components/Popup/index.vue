@@ -14,17 +14,17 @@
         <div class="header-form">
           <span class="query-criteria">{{ popupTitle }}</span>
           <el-input
+            v-model="value"
             size="mini"
             class="input-width"
             placeholder="请输入搜索条件"
-            v-model="value"
             @input="$emit('input', value)"
-            @keyup.enter.native='handleSearch'
+            @keyup.enter.native="handleSearch"
           />
-          <el-button size="mini" type="primary" @click="handleSearch" class="btn-search">搜索</el-button>
+          <el-button size="mini" type="primary" class="btn-search" @click="handleSearch">搜索</el-button>
         </div>
-        <slot name="content"/>
-        <slot name="pagination"/>
+        <slot name="content" />
+        <slot name="pagination" />
       </div>
     </el-dialog>
   </div>
@@ -41,7 +41,7 @@ export default {
     initValue: String,
     width: {
       type: String,
-      default: '50%'
+      default: '60vw'
     },
     dialogTitle: {
       type: String,

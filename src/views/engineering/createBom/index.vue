@@ -30,6 +30,7 @@
             v-model="prodValue.FNUMBER"
             size="mini"
             placeholder="请选择物料编码"
+            class="input-width"
           >
             <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="jumpMateriel" />
             <i slot="suffix" class="el-input__icon el-icon-search" @click="getMaterielList" />
@@ -41,7 +42,7 @@
           serial
           :cell-style="cellStyle"
           :table-header="sonTableHeader"
-          table-height="calc(100vh - 580px)"
+          table-height="calc(100vh - 480px)"
         >
           <el-table-column label="物料编码" prop="FNUMBER" align="center" width="200px">
             <template slot-scope="scope">

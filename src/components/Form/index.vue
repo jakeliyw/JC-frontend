@@ -30,7 +30,6 @@
               v-model="optionValue[key]"
               size="small"
               class="input-width"
-              :class="{ 'describe': item.isActive }"
               :disabled="item.disabled"
               :maxlength="item.maxlength || ''"
               :type="item.type"
@@ -52,7 +51,6 @@
               :min="item.min"
               :step="item.step"
               class="input-width"
-              :class="{ 'describe': item.isActive }"
               :disabled="item.disabled"
             />
           </el-form-item>
@@ -67,9 +65,9 @@
             <el-select
               v-model="optionValue[key]"
               :disabled="item.disabled"
+              class="input-width"
               :allow-create="item.create || false"
               size="small"
-              :class="{ 'describe': item.isActive }"
               :placeholder="item.placeholder || `请选择${item.label || '内容'}`"
               filterable
               default-first-option
@@ -158,6 +156,7 @@
             :prop="key"
             :rules="item.rules"
             label-width="100px"
+            :class="{ 'describe': item.isActive }"
           >
             <el-input
               v-model="optionValue[key]"
@@ -333,6 +332,10 @@ export default {
 .input-width ::v-deep .el-input__inner{
   color: black;
 }
+.el-textarea ::v-deep .el-textarea__inner{
+  color: black;
+}
+
 .describe {
   width: 35vw;
 }

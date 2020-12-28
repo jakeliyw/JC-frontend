@@ -16,7 +16,6 @@
       <jc-table
         :table-data="tableData"
         :table-header="tableHeader"
-        serial
       >
         <el-table-column
           label="物料编码"
@@ -76,7 +75,7 @@ export default {
       currentPage: 1, // 当前页
       size: 10, // 每页显示多少条数据
       tableHeader: [
-        { label: '物料描述', prop: 'FDESCRIPTION', width: '400px', align: 'center' },
+        { label: '物料描述', prop: 'FDESCRIPTION', minWidth: '400px', align: 'center' },
         { label: '物料规格', prop: 'FSPECIFICATION', align: 'center' },
         { label: '仓库', prop: 'FSTOCK', align: 'center' },
         { label: '价格清单', prop: 'PRICELIST', align: 'center' },
@@ -101,7 +100,6 @@ export default {
     async handleGetBomList() {
       const DATA = { pageNum: this.currentPage, pageSize: this.size, FNUMBER: this.FNUMBER }
       const { data: RES, total } = await queryUntreatedBomList(DATA)
-      console.log(RES)
       this.tableData = RES
       this.total = total
     },
