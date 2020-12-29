@@ -8,8 +8,9 @@
           class="input-content"
           placeholder="请输入角色"
           @keyup.enter.native="getRoleList"
+          size="mini"
         />
-        <el-button size="medium" type="primary" class="btn" @click="getRoleList">搜索</el-button>
+        <el-button size="mini" type="primary" class="btn" @click="getRoleList">搜索</el-button>
       </div>
     </div>
     <div class="table-content">

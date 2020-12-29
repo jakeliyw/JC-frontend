@@ -8,9 +8,10 @@
           class="input-content"
           placeholder="请输入物料编号"
           @keyup.enter.native="handleQueryRefuse"
+          size="mini"
         />
-        <el-button type="primary" class="btn" size="medium" @click="handleQueryRefuse">搜索</el-button>
-        <el-button type="primary" size="medium" class="btn" @click="addMateriel">新增物料</el-button>
+        <el-button type="primary" class="btn" size="mini" @click="handleQueryRefuse">搜索</el-button>
+        <el-button type="primary" size="mini" class="btn" @click="addMateriel">新增物料</el-button>
       </div>
     </div>
     <div class="table-content">
@@ -77,7 +78,7 @@ export default {
         { label: '物料规格', prop: 'FSPECIFICATION', align: 'center' },
         { label: '单位', prop: 'FUNIT', align: 'center' },
         { label: '生效时间', prop: 'FCREATEDATE', align: 'center' },
-        { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', minWidth: '200px' },
+        { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', minWidth: '300px' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
       ],
       // 表格数据

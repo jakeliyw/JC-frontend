@@ -8,9 +8,10 @@
           class="input-content"
           placeholder="请输入供应商名称"
           @keyup.enter.native="handleQueryRefuse"
+          size="mini"
         />
-        <el-button type="primary" class="btn" size="medium" @click="handleQueryRefuse">搜索</el-button>
-        <el-button type="primary" size="medium" class="btn" @click="addPriceList">新增价目</el-button>
+        <el-button type="primary" class="btn" size="mini" @click="handleQueryRefuse">搜索</el-button>
+        <el-button type="primary" size="mini" class="btn" @click="addPriceList">新增价目</el-button>
       </div>
     </div>
     <div class="table-content">
@@ -68,8 +69,8 @@ export default {
         { label: '是否含税', prop: 'fisIncludedTax', align: 'center' },
         { label: '币别', prop: 'fcurrency', align: 'center' },
         { label: '生效时间', prop: 'fcreateDate', align: 'center' },
-        { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', minWidth: '300px' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
+        { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', minWidth: '150px' },
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '180px', align: 'center' }
       ],
       // 表格数据
       tableData: []

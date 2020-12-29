@@ -21,6 +21,13 @@
               </el-form-item>
             </el-col>
             <el-col :span="6">
+              <el-form-item label="供应商" prop="fsupplierName">
+                <el-input v-model="purchaseForm.fsupplierName" class="input-width">
+                  <i slot="suffix" class="el-input__icon el-icon-search" @click="handleSupplier" />
+                </el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
               <el-form-item label="币别" prop="fcurrencyFname">
                 <el-input v-model="purchaseForm.fcurrencyFname" class="input-width">
                   <i slot="suffix" class="el-input__icon el-icon-search" @click="handleGetCurrency" />
@@ -31,13 +38,6 @@
               <el-form-item label="供应商税率" prop="fpaezBaseName">
                 <el-input v-model="purchaseForm.fpaezBaseName" class="input-width">
                   <i slot="suffix" class="el-input__icon el-icon-search" @click="handleSupplierTaxRate" />
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item label="供应商" prop="fsupplierName">
-                <el-input v-model="purchaseForm.fsupplierName" class="input-width">
-                  <i slot="suffix" class="el-input__icon el-icon-search" @click="handleSupplier" />
                 </el-input>
               </el-form-item>
             </el-col>
@@ -164,14 +164,14 @@
             </template>
           </el-table-column>
           <template v-slot:btnSlot="clo">
-            <el-button type="danger" size="mini" @click="handleDelete(clo.scope.row, clo.scope.$index)">删除bom
+            <el-button type="danger" size="mini" @click="handleDelete(clo.scope.row, clo.scope.$index)">删除价目
             </el-button>
           </template>
         </jc-table>
 
       </el-tab-pane>
       <el-tab-pane label="其它" name="other">
-        <h2>待开发</h2>
+        <iframe src="http://192.168.1.15:8878/Default.aspx" height="1000" scrolling="auto" width="1500" frameborder="0" />
       </el-tab-pane>
     </el-tabs>
     <!--    币别弹窗-->

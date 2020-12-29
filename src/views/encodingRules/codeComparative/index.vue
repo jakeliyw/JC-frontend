@@ -41,12 +41,12 @@
           >
             <el-table-column prop="largeName" label="大类" align="center" class-name="valignTop">
               <template slot-scope="scope">
-                <div style="padding: 10px">{{ scope.row.largeName }}</div>
+                <div style="padding: 10px;font-size: 18px">{{ scope.row.largeName }}</div>
               </template>
             </el-table-column>
             <el-table-column prop="largeCode" label="编码" align="center" class-name="valignTop">
               <template slot-scope="scope">
-                <div style="padding: 10px">{{ scope.row.largeCode }}</div>
+                <div style="padding: 10px;font-size: 18px">{{ scope.row.largeCode }}</div>
               </template>
             </el-table-column>
             <el-table-column prop="medium" label="中类" align="center" class-name="valignTop">

@@ -295,7 +295,7 @@ export default {
       ],
       // 子项表头
       sonTableHeader: [
-        { label: '操作', type: 'btn', fixed: 'right', width: '250px', align: 'center' }
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '250px', align: 'center' }
       ],
       // 子项弹窗表格表头
       sonDialogHeaderTable: [

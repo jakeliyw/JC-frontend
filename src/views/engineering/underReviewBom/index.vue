@@ -8,8 +8,9 @@
           class="input-content"
           placeholder="请输入物料编号"
           @keyup.enter.native="handleQueryUnderReview"
+          size="mini"
         />
-        <el-button type="primary" class="btn" size="medium" @click="handleQueryUnderReview">搜索</el-button>
+        <el-button type="primary" class="btn" size="mini" @click="handleQueryUnderReview">搜索</el-button>
       </div>
     </div>
     <div class="table-content">
@@ -81,7 +82,7 @@ export default {
         { label: '使用组织', prop: 'FUSEORG', align: 'center' },
         { label: '生效时间', prop: 'FCREATEDATE', align: 'center' },
         { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', minWidth: '300px' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '100px', align: 'center' }
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '120px', align: 'center' }
       ],
       // 表格数据
       tableData: []

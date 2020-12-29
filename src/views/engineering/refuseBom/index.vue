@@ -8,9 +8,10 @@
           class="input-content"
           placeholder="请输入物料编号"
           @keyup.enter.native="handleQueryRefuse"
+          size="mini"
         />
-        <el-button type="primary" class="btn" size="medium" @click="handleQueryRefuse">搜索</el-button>
-        <el-button type="primary" size="medium" class="btn" @click="addBom">新增bom</el-button>
+        <el-button type="primary" class="btn" size="mini" @click="handleQueryRefuse">搜索</el-button>
+        <el-button type="primary" size="mini" class="btn" @click="addBom">新增bom</el-button>
       </div>
     </div>
     <div class="table-content">

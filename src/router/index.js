@@ -368,6 +368,20 @@ export const asyncRouterMap = [
     },
     children: [
       {
+        path: '/createMarkerOrder',
+        name: 'CreateMarkerOrder',
+        component: () => import('@/views/marketManage/createMarkerOrder/index'),
+        meta: { title: '新增销售订单' },
+        menu: 'userList'
+      },
+      {
+        path: '/marketPriceList',
+        name: 'MarketPriceList',
+        component: () => import('@/views/marketManage/marketPriceList/index'),
+        meta: { title: '新增销售价目表' },
+        menu: 'userList'
+      },
+      {
         path: '/marketOrder',
         name: 'MarketOrder',
         component: () => import('@/views/marketManage/marketOrder/index'),

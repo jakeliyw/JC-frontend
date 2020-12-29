@@ -8,9 +8,10 @@
           class="input-content"
           placeholder="请输入物料编号"
           @keyup.enter.native="handleQueryBomList"
+          size="mini"
         />
-        <el-button type="primary" class="btn" size="medium" @click="handleQueryBomList">搜索</el-button>
-        <el-button type="primary" size="medium" class="btn" @click="addBom">新增bom</el-button>
+        <el-button type="primary" class="btn" size="mini" @click="handleQueryBomList">搜索</el-button>
+        <el-button type="primary" size="mini" class="btn" @click="addBom">新增bom</el-button>
       </div>
     </div>
     <div class="table-content">
@@ -28,6 +29,9 @@
             <span class="jumpMateriel" @click="jumpMateriel(scope.row.FNUMBER)">{{ scope.row.FNUMBER }}</span>
           </template>
         </el-table-column>
+        <template v-slot:btnState="clo">
+          <el-tag>{{clo.scope.row.FDOCUMENTSTATUS}}</el-tag>
+        </template>
         <template v-slot:btnSlot="clo">
           <el-button v-if="false" type="warning" size="mini" @click="editBom(clo.scope.row.FNUMBER)">修改bom</el-button>
           <el-button type="danger" size="mini" @click="Retrial(clo.scope.row.FID)">反审核</el-button>
@@ -77,7 +81,7 @@ export default {
         { label: '仓库', prop: 'FSTOCK', align: 'center' },
         { label: '使用组织', prop: 'FUSEORG', align: 'center' },
         { label: '生效时间', prop: 'FAPPROVEDATE', align: 'center' },
-        { label: '审核状态', prop: 'FDOCUMENTSTATUS', align: 'center' },
+        { label: '审核状态',  prop: 'FDOCUMENTSTATUS', align: 'center' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
       ],
       // 表格数据

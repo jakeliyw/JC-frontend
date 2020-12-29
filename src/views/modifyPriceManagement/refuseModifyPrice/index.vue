@@ -8,9 +8,10 @@
           class="input-content"
           placeholder="请输入调价名称"
           @keyup.enter.native="handleQueryRefuse"
+          size="mini"
         />
-        <el-button type="primary" class="btn" size="medium" @click="handleQueryRefuse">搜索</el-button>
-        <el-button type="primary" size="medium" class="btn" @click="addPriceList">新增调价</el-button>
+        <el-button type="primary" class="btn" size="mini" @click="handleQueryRefuse">搜索</el-button>
+        <el-button type="primary" size="mini" class="btn" @click="addPriceList">新增调价</el-button>
       </div>
     </div>
     <div class="table-content">
@@ -65,11 +66,11 @@ export default {
         { label: '调价编码', prop: 'fbillno', align: 'center' },
         { label: '调价名称', prop: 'fname', align: 'center' },
         { label: '调价日期', prop: 'fdate', align: 'center' },
-        { label: '描述', prop: 'fdescripTion', align: 'center' },
-        { label: '采购组织', prop: 'fpurchaseOrg', width: '200px', align: 'center' },
+        { label: '描述', prop: 'fdescripTion', align: 'center', minWidth: '200px' },
+        { label: '采购组织', prop: 'fpurchaseOrg', align: 'center' },
         { label: '生效时间', prop: 'fcreateDate', align: 'center' },
-        { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', width: '300px' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '100px', align: 'center' }
+        { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', minWidth: '150px' },
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
       ],
       // 表格数据
       tableData: []

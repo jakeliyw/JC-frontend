@@ -8,8 +8,9 @@
           class="input-content"
           placeholder="请输入菜单"
           @keyup.enter.native="getMenuList"
+          size="mini"
         />
-        <el-button size="medium" type="primary" class="btn" @click="getMenuList">搜索</el-button>
+        <el-button size="mini" type="primary" class="btn" @click="getMenuList">搜索</el-button>
       </div>
     </div>
     <div class="table-content">

@@ -8,9 +8,10 @@
           class="input-content"
           placeholder="请输入物料编码"
           @keyup.enter.native="searchMaterialList"
+          size="mini"
         />
-        <el-button type="primary" size="medium" class="btn" @click="searchMaterialList">搜索</el-button>
-        <el-button type="primary" size="medium" class="btn" @click="addMateril">新增物料</el-button>
+        <el-button type="primary" size="mini" class="btn" @click="searchMaterialList">搜索</el-button>
+        <el-button type="primary" size="mini" class="btn" @click="addMateril">新增物料</el-button>
       </div>
     </div>
     <div class="mainPage">
@@ -41,6 +42,9 @@
               <span class="jumpMateriel" @click="jumpMateriel(scope.row.FNUMBER)">{{ scope.row.FNUMBER }}</span>
             </template>
           </el-table-column>
+          <template v-slot:btnState="clo">
+            <el-tag>{{clo.scope.row.FDOCUMENTSTATUS}}</el-tag>
+          </template>
           <template v-slot:btnSlot="clo">
             <el-button type="primary" size="mini" @click="queryMateriel(clo.scope.row.FNUMBER)">查询物料</el-button>
             <el-button v-if="false" type="danger" size="mini" @click="deleteMateriel(clo.scope.row.FMATERIALID)">删除物料</el-button>
@@ -85,10 +89,10 @@ export default {
         { label: '使用组织', prop: 'FUSEORG', align: 'center', minWidth: '200px' },
         { label: '物料描述', prop: 'FDESCRIPTION', align: 'center', minWidth: '400px' },
         { label: '物料规格', prop: 'FSPECIFICATION', align: 'center', minWidth: '200px' },
-        { label: '审核状态', prop: 'FDOCUMENTSTATUS', align: 'center' },
         { label: '禁用状态', prop: 'FFORBIDSTATUS', align: 'center' },
         { label: '生效时间', prop: 'FCREATEDATE', align: 'center' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
+        { label: '审核状态', type: 'state', prop: 'FDOCUMENTSTATUS', align: 'center' },
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '120px', align: 'center' }
       ], // 表头数据
       materialTableData: [], // 表格数据
       defaultProps: {

@@ -42,6 +42,9 @@
               </el-input>
             </template>
           </el-table-column>
+          <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px"/>
+          <el-table-column label="供应商名称" prop="fsupplier" align="center" min-width="100px"/>
+          <el-table-column label="币别" prop="fcurrency" align="center" min-width="100px"/>
           <el-table-column label="调前单价" prop="fprice" align="center" min-width="150px">
             <template slot-scope="scope">
               <el-input-number
@@ -259,12 +262,9 @@ export default {
         }
       ], // 调价表数据
       modifyPriceHeader: [
+        { label: '规格型号', prop: 'fspecificaTion', align: 'center' },
         { label: '价格上限', prop: 'fupPrice', align: 'center' },
         { label: '价格下限', prop: 'fdownPrice', align: 'center' },
-        { label: '描述', prop: 'fdescripTion', align: 'center', minWidth: '200px' },
-        { label: '供应商名称', prop: 'fsupplier', align: 'center' },
-        { label: '币别', prop: 'fcurrency', align: 'center' },
-        { label: '规格型号', prop: 'fspecificaTion', align: 'center' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '100px', align: 'center' }
       ], // 调价表头数据
       dialogModifyPrice: [],

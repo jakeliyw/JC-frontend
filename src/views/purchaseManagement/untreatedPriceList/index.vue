@@ -8,8 +8,9 @@
           class="input-content"
           placeholder="请输入价目表名称"
           @keyup.enter.native="handleQueryUntreated"
+          size="mini"
         />
-        <el-button type="primary" class="btn" size="medium" @click="handleQueryUntreated">搜索</el-button>
+        <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
       </div>
     </div>
     <div class="table-content">
@@ -63,12 +64,12 @@ export default {
       size: 10, // 每页显示多少条数据
       tableHeader: [
         { label: '价目编码', prop: 'fnumber', align: 'center' },
-        { label: '价目表名称', prop: 'fname', minWidth: '200px', align: 'center' },
-        { label: '供应商名称', prop: 'fsupplier', align: 'center' },
+        { label: '价目表名称', prop: 'fname', minWidth: '100px', align: 'center' },
+        { label: '供应商名称', prop: 'fsupplier', align: 'center', minWidth: '200px' },
         { label: '是否含税', prop: 'fisIncludedTax', align: 'center' },
         { label: '币别', prop: 'fcurrency', align: 'center' },
         { label: '生效时间', prop: 'fcreateDate', align: 'center' },
-        { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', minWidth: '300px' },
+        { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', minWidth: '150px' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '250px', align: 'center' }
       ],
       // 表格数据

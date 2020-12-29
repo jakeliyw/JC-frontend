@@ -7,9 +7,10 @@
           v-model="FNAME"
           class="input-content"
           placeholder="请输入用户"
+          size="mini"
           @keyup.enter.native="getUserList"
         />
-        <el-button size="medium" type="primary" class="btn" @click="getUserList">搜索</el-button>
+        <el-button size="mini" type="primary" class="btn" @click="getUserList">搜索</el-button>
       </div>
     </div>
     <div class="table-content">

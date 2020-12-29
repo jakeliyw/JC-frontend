@@ -16,11 +16,10 @@
             <el-table-column prop="fnumber" label="物料编码" min-width="100" align="center" />
             <el-table-column prop="fdescripTion" label="物料描述" min-width="300" align="center" />
             <el-table-column prop="funit" label="基本单位" min-width="80" align="center" />
-            <el-table-column prop="flength" label="长" min-width="60" align="center" />
-            <el-table-column prop="fwidth" label="宽" min-width="60" align="center" />
-            <el-table-column prop="fheight" label="高" min-width="60" align="center" />
             <el-table-column prop="fprice" label="产品单价" align="center" />
             <el-table-column prop="fqty" label="产品数量" align="center" />
+            <el-table-column prop="totalPrice" label="总价" align="center" />
+            <el-table-column prop="fsettleCurr" label="币别" align="center" />
             <el-table-column prop="fdeliveryDate" label="交货日期" min-width="80" align="center" />
             <el-table-column prop="fvolume" label="产品体积" align="center" />
             <el-table-column prop="fisFree" label="是否赠品" align="center">
@@ -114,6 +113,18 @@ export default {
           disabled: 'disabled'
         }, flocalCurr: {
           label: '本位币',
+          disabled: 'disabled'
+        }, fpaezText: {
+          label: '柜型',
+          disabled: 'disabled'
+        }, fpaezText1: {
+          label: '客户订单号',
+          disabled: 'disabled'
+        }, fpaezText2: {
+          label: '客户PO NO',
+          disabled: 'disabled'
+        }, fpaezCombo: {
+          label: '品质标准',
           disabled: 'disabled'
         }
       }

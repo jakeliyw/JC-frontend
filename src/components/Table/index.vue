@@ -69,7 +69,7 @@ export default {
     },
     tableHeight: { // 表格高度
       type: [String, Number],
-      default: 'calc(100vh - 340px)'
+      default: 'calc(100vh - 250px)'
     },
     tableBorder: { // 表格边框
       type: Boolean,

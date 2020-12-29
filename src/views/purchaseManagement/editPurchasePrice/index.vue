@@ -14,6 +14,13 @@
               </el-form-item>
             </el-col>
             <el-col :span="6">
+              <el-form-item label="供应商" prop="fsupplier">
+                <el-input v-model="purchaseForm.fsupplier" class="input-width" disabled>
+                  <i slot="suffix" class="el-input__icon el-icon-search" />
+                </el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
               <el-form-item label="币别" prop="fcurrency">
                 <el-input v-model="purchaseForm.fcurrency" class="input-width" disabled>
                   <i slot="suffix" class="el-input__icon el-icon-search" />
@@ -23,13 +30,6 @@
             <el-col :span="6">
               <el-form-item label="供应商税率" prop="fpaezBase">
                 <el-input v-model="purchaseForm.fpaezBase" class="input-width" disabled>
-                  <i slot="suffix" class="el-input__icon el-icon-search" />
-                </el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item label="供应商" prop="fsupplier">
-                <el-input v-model="purchaseForm.fsupplier" class="input-width" disabled>
                   <i slot="suffix" class="el-input__icon el-icon-search" />
                 </el-input>
               </el-form-item>
@@ -143,7 +143,7 @@
             </template>
           </el-table-column>
           <template v-slot:btnSlot="clo">
-            <el-button type="danger" size="mini" @click="deleteMateriel(clo.scope.row, clo.scope.$index)">删除bom
+            <el-button type="danger" size="mini" @click="deleteMateriel(clo.scope.row, clo.scope.$index)">删除价目
             </el-button>
           </template>
         </jc-table>

@@ -8,6 +8,7 @@
           class="input-content"
           placeholder="请输入物料编号"
           @keyup.enter.native="handleQueryUntreated"
+          size="mini"
         />
         <span class="parentItemNo">供应商名称</span>
         <el-input
@@ -15,9 +16,10 @@
           class="input-content"
           placeholder="请输入供应商名称"
           @keyup.enter.native="handleQueryUntreated"
+          size="mini"
         />
-        <el-button type="primary" class="btn" size="medium" @click="handleQueryUntreated">搜索</el-button>
-        <el-button type="primary" class="btn" size="medium" @click="addPurchase">新增价目</el-button>
+        <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
+        <el-button type="primary" class="btn" size="mini" @click="addPurchase">新增价目</el-button>
       </div>
     </div>
     <div class="table-content">
@@ -27,7 +29,7 @@
         :cell-style="cellStyle"
       >
         <el-table-column label="价目名称" prop="price" align="center" :show-overflow-tooltip="true" />
-        <el-table-column label="供应商名称" prop="fsupplier" align="center" :show-overflow-tooltip="true" />
+        <el-table-column label="供应商名称" prop="fsupplier" align="center" :show-overflow-tooltip="true" min-width="150px"/>
         <el-table-column
           label="物料编码"
           align="center"
@@ -85,9 +87,9 @@ export default {
         { label: '单价', prop: 'fprice', align: 'center' },
         { label: '计价单位', prop: 'funit', align: 'center' },
         { label: '含税单价', prop: 'ftaxprice', align: 'center' },
+        { label: '币别', prop: 'fcurrency', align: 'center' },
         { label: '税率', prop: 'ftaxrate', align: 'center' },
         { label: '含税', prop: 'fisincludedtax', align: 'center' },
-        { label: '币别', prop: 'fcurrency', align: 'center' },
         { label: '失效日期', prop: 'feffectiveDate', align: 'center' },
         { label: '生效日期', prop: 'fexpiryDate', align: 'center' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }

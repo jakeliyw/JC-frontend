@@ -8,9 +8,10 @@
           class="input-content"
           placeholder="请输入物料编号"
           @keyup.enter.native="handleQueryUntreated"
+          size="mini"
         />
-        <el-button type="primary" class="btn" size="medium" @click="handleQueryUntreated">搜索</el-button>
-        <el-button type="primary" class="btn" size="medium" @click="addPurchase">新增调价</el-button>
+        <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
+        <el-button type="primary" class="btn" size="mini" @click="addPurchase">新增调价</el-button>
       </div>
     </div>
     <div class="table-content">
@@ -70,15 +71,15 @@ export default {
       cellStyle: { padding: '10 10' }, // 行高
       tableHeader: [
         { label: '调价名称', prop: 'fname', align: 'center' },
-        { label: '供应商名称', prop: 'fsupplier', minWidth: '400px', align: 'center' },
-        { label: '物料描述', prop: 'fdescripTion', align: 'center' },
+        { label: '供应商名称', prop: 'fsupplier', minWidth: '200px', align: 'center' },
+        { label: '物料描述', prop: 'fdescripTion', align: 'center', minWidth: '300px' },
         { label: '计价单位', prop: 'funit', align: 'center' },
         { label: '调后单价', prop: 'fafterPrice', align: 'center' },
-        { label: '调后含税单价', prop: 'fafterTaxPrice', align: 'center' },
-        { label: '生效时间', prop: 'fcreateDate', align: 'center' },
+        { label: '调后含税单价', prop: 'fafterTaxPrice', align: 'center', minWidth: '150px' },
         { label: '币别', prop: 'fcurrency', align: 'center' },
-        { label: '调后价格系数', prop: 'fafterPriceCoefficient', align: 'center' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '100px', align: 'center' }
+        { label: '调后价格系数', prop: 'fafterPriceCoefficient', align: 'center', minWidth: '150px' },
+        { label: '生效时间', prop: 'fcreateDate', align: 'center' },
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '120px', align: 'center' }
       ],
       // 表格数据
       tableData: []
