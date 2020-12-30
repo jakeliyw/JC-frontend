@@ -1,22 +1,22 @@
 <template>
-  <div class="content">
+  <div class="content" v-loading="loading">
     <el-button type="primary" style="width: 80px;margin-bottom: 10px" @click="subMarker()">保存</el-button>
-    <el-tabs type="border-card">
+    <el-tabs type="border-card" >
       <el-tab-pane label="主产品">
-        <el-form v-model="prodValue" label-width="100px">
-          <el-form-item label="单据类型">
+        <el-form ref="purchaseRef" :model="prodValue" label-width="100px" :rules="prodValueRules">
+          <el-form-item label="单据类型" prop="fbillTypeId">
             <el-select
               v-model="prodValue.fbillTypeId"
               placeholder="请选择单据类型"
             >
-              <option
+              <el-option
                 v-for="billty in billtypes"
                 :key="billty.fbillTypeId"
                 :label="billty.fname"
                 :value="billty.fbillTypeId"
               />
             </el-select></el-form-item>
-          <el-form-item label="销售组织">
+          <el-form-item label="销售组织" prop="fsaleOrgId">
             <el-select v-model="prodValue.fsaleOrgId" placeholder="请选择组织">
               <el-option
                 v-for="option in teamList"
@@ -25,7 +25,7 @@
                 :value="option.FPKID"
               />
             </el-select></el-form-item>
-          <el-form-item label="客户">
+          <el-form-item label="客户" prop="fcustId">
             <el-input v-model="prodValue.fname" placeholder="请选择客户">
               <i
                 slot="suffix"
@@ -33,7 +33,7 @@
                 @click="queryTBdCustomerList()"
               />
             </el-input></el-form-item>
-          <el-form-item label="交货方式">
+          <el-form-item label="交货方式" prop="fheadDeliveryWay">
             <el-input v-model="prodValue.fdataValue" placeholder="请选择交货方式">
               <i
                 slot="suffix"
@@ -41,7 +41,7 @@
                 @click="queryFheadDelivery()"
               />
             </el-input></el-form-item>
-          <el-form-item label="销售员">
+          <el-form-item label="销售员" prop="fsalerId">
             <el-input v-model="prodValue.fsalerIdName" placeholder="请选择销售员">
               <i
                 slot="suffix"
@@ -49,7 +49,7 @@
                 @click="querySalesperson()"
               />
             </el-input></el-form-item>
-          <el-form-item label="结算币别">
+          <el-form-item label="结算币别" prop="fsettleCurrId">
             <el-input v-model="prodValue.fsettleCurrIdName" placeholder="请选择结算币别">
               <i
                 slot="suffix"
@@ -57,7 +57,7 @@
                 @click="queryTBdCurrency()"
               />
             </el-input></el-form-item>
-          <el-form-item label="收款条件">
+          <el-form-item label="收款条件" prop="frecConditionId">
             <el-input v-model="prodValue.frecConditionIdName" placeholder="请选择收款条件">
               <i
                 slot="suffix"
@@ -65,25 +65,33 @@
                 @click="querytReccondition()"
               />
             </el-input></el-form-item>
+          <el-form-item label="单据编号">
+            <el-input v-model="prodValue.fbillNo" placeholder="保存自动生成" disabled /></el-form-item>
           <el-form-item label="汇率类型">
-            <el-input v-model="prodValue.fxxchangeTypeId" placeholder="请输入汇率类型" /></el-form-item>
-          <el-form-item label="汇率">
-            <el-input v-model="prodValue.fexchangeRate" placeholder="请输入汇率" /></el-form-item>
+            <el-input v-model="prodValue.fxxchangeTypeIdName" placeholder="请输入汇率类型" disabled /></el-form-item>
           <el-form-item label="本位币">
-            <el-input v-model="prodValue.flocalCurrId" placeholder="请输入本位币" /></el-form-item>
-          <el-form-item label="价目表ID">
-            <el-input v-model="prodValue.fpriceListId" placeholder="请输入价目表" /></el-form-item>
-          <el-form-item label="柜型">
+            <el-input v-model="prodValue.flocalCurrIdName" placeholder="请输入本位币" disabled /></el-form-item>
+          <el-form-item label="汇率">
+            <el-input v-model="prodValue.fexchangeRate" disabled/></el-form-item>
+          <el-form-item label="价目表" prop="fpriceListId">
+            <el-input v-model="prodValue.fpriceListIdName" placeholder="请选择价目表">
+              <i
+                slot="suffix"
+                class="el-input__icon el-icon-search"
+                @click="handlePriceList()"
+              />
+            </el-input></el-form-item>
+          <el-form-item label="柜型" prop="fpaezText">
             <el-input v-model="prodValue.fpaezText" placeholder="请输入柜型" /></el-form-item>
-          <el-form-item label="客户订单号">
+          <el-form-item label="客户订单号" prop="fpaezText1">
             <el-input v-model="prodValue.fpaezText1" placeholder="请输入客户订单号" /></el-form-item>
-          <el-form-item label="客户PO NO">
+          <el-form-item label="客户PO NO" prop="fpaezText2">
             <el-input v-model="prodValue.fpaezText2" placeholder="请输入客户PO NO" /></el-form-item>
-          <el-form-item label="品质标准">
+          <el-form-item label="品质标准" prop="fpaezCombo">
             <el-select v-model="prodValue.fpaezCombo" placeholder="请选择品质标准">
-              <option v-for="(item, index) in standard" :key="index" :label="item.label" :value="item.value" />
+              <el-option v-for="(item, index) in standard" :key="index" :label="item.fpaezCombo" :value="item.fpaezCombo" />
             </el-select></el-form-item>
-          <el-form-item label="备注">
+          <el-form-item label="备注" prop="fnote">
             <el-input v-model="prodValue.fnote" type="textarea" placeholder="请填写备注" /></el-form-item>
           <el-form-item label="是否含税">
             <el-checkbox v-model="prodValue.fisIncludedTax" />
@@ -92,15 +100,15 @@
         <el-tabs v-model="activeName">
           <el-tab-pane label="明细信息" name="first">
             <jc-table
-              :table-data="prodValue.planDetails"
+              :table-data="prodValue.saleDetails"
               :table-header="tableHeader"
               serial
               :cell-style="cellStyle"
             >
               <el-table-column label="物料编码" prop="fmaterialId" align="center" width="200px">
                 <template slot-scope="scope">
-                  <el-input v-model="scope.row.fmaterialId" placeholder="请选择物料编码" size="mini">
-                    <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fmaterialId)" />
+                  <el-input v-model="scope.row.fmaterialIdName" placeholder="请选择物料编码" size="mini">
+                    <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fmaterialIdName)" />
                     <i
                       slot="suffix"
                       class="el-input__icon el-icon-search"
@@ -109,9 +117,9 @@
                   </el-input>
                 </template>
               </el-table-column>
-              <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" />
-              <el-table-column label="销售单位" prop="funitId" />
-              <el-table-column label="销售数量" prop="fqty" min-width="110">
+              <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" :show-overflow-tooltip="true"/>
+              <el-table-column label="销售单位" prop="funitName" align="center" />
+              <el-table-column label="销售数量" prop="fqty" min-width="140px" align="center">
                 <template scope="scope">
                   <el-input-number
                     v-model="scope.row.fqty"
@@ -120,24 +128,66 @@
                   />
                 </template>
               </el-table-column>
-              <el-table-column label="是否赠品" prop="fqty">
+              <el-table-column label="是否赠品" prop="fisFree" align="center">
                 <template scope="scope">
-                  <el-checkbox v-model="scope.row.fisFree" :value="scope.row.fisFree" />
+                  <el-checkbox v-model="scope.row.fisFree" :value="scope.row.fisFree" @change="handleCheckedCitiesChange(scope.row.fisFree, scope.$index)" />
                 </template>
               </el-table-column>
-              <el-table-column label="税率" prop="fqty">
+              <el-table-column label="税率" prop="fentryTaxRate" min-width="140px" align="center">
                 <template scope="scope">
-                  <el-input v-model="scope.row.fentryTaxRate" size="mini" />
+                  <el-input-number
+                    v-model="scope.row.fentryTaxRate"
+                    :min="0"
+                    size="mini"
+                    :disabled="scope.row.fisFree"
+                  />
                 </template>
               </el-table-column>
-              <el-table-column label="要货时间" prop="fqty">
+              <el-table-column label="要货时间" prop="fqty" min-width="220px" align="center">
                 <template scope="scope">
-                  <el-date-picker v-model="scope.row.fdeliveryDate" size="mini" placeholder="选择日期" />
+                  <el-date-picker v-model="scope.row.fdeliveryDate" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" size="mini" placeholder="选择日期" />
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" prop="fqty" min-width="100px" align="center">
+                <template scope="scope">
+                  <el-button type="danger" @click="delectSale(scope.$index)" size="medium">删除</el-button>
                 </template>
               </el-table-column>
             </jc-table>
           </el-tab-pane>
-          <el-tab-pane label="收款计划" name="second" />
+          <el-tab-pane label="收款计划" name="second">
+            <jc-table
+              :table-data="prodValue.planDetails"
+              :table-header="tableHeader"
+              serial
+              :cell-style="cellStyle"
+            >
+              <el-table-column label="是否预收" prop="fqty" align="center" width="80px">
+                <template scope="scope">
+                  <el-checkbox v-model="scope.row.fneedRecAdvance" :value="scope.row.fneedRecAdvance" />
+                </template>
+              </el-table-column>
+              <el-table-column label="应收比例%" align="center">
+                <template scope="scope">
+                  <el-input-number
+                    v-model="scope.row.frecAdvanceRate"
+                    :min="0"
+                    :max="100"
+                    size="mini"
+                  />
+                </template>
+              </el-table-column>
+              <el-table-column label="应收金额" align="center">
+                <template scope="scope">
+                  <el-input-number
+                    v-model="scope.row.frecAdvanCeamount"
+                    :min="0"
+                    size="mini"
+                  />
+                </template>
+              </el-table-column>
+            </jc-table>
+          </el-tab-pane>
         </el-tabs>
       </el-tab-pane>
       <el-tab-pane label="其他">
@@ -160,6 +210,7 @@
       <jc-table
         :table-data="clientlDialogData"
         :table-header="clientDialogHeader"
+        table-height="53vh"
         serial
         :cell-style="cellStyle"
         @clickRow="clientlSelectRow"
@@ -188,6 +239,7 @@
       <jc-table
         :table-data="deliverlDialogData"
         :table-header="deliverDialogHeader"
+        table-height="53vh"
         serial
         :cell-style="cellStyle"
         @clickRow="deliverlSelectRow"
@@ -216,6 +268,7 @@
       <jc-table
         :table-data="marketDialogData"
         :table-header="marketDialogHeader"
+        table-height="53vh"
         serial
         :cell-style="cellStyle"
         @clickRow="marketlSelectRow"
@@ -244,10 +297,27 @@
       <jc-table
         :table-data="currencyDialogData"
         :table-header="currencyDialogHeader"
+        table-height="53vh"
         serial
         :cell-style="cellStyle"
         @clickRow="currencySelectRow"
-      />
+      >
+        <el-table-column label="编码" prop="fnumber" align="center" />
+        <el-table-column label="名称" prop="fname" align="center" />
+        <el-table-column label="货币代码" prop="fcode" align="center" />
+        <el-table-column label="审核状态" align="center">
+          <template slot-scope="scope">
+            <span v-if="scope.row.fdocumentStatus=='C'">已审核</span>
+            <span v-else>否</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="禁用状态" align="center">
+          <template slot-scope="scope">
+            <span v-if="scope.row.fforbidStatus=='C'">已审核</span>
+            <span v-else>否</span>
+          </template>
+        </el-table-column>
+      </jc-table>
       <jc-pagination
         v-show="currency.total > 0"
         :total="currency.total"
@@ -274,6 +344,7 @@
         :table-header="gatheringDialogHeader"
         serial
         :cell-style="cellStyle"
+        table-height="53vh"
         @clickRow="gatheringSelectRow"
       />
       <jc-pagination
@@ -304,6 +375,7 @@
       <jc-table
         :table-data="materielDialogData"
         :table-header="materielDialogHeader"
+        table-height="53vh"
         serial
         :cell-style="cellStyle"
         @clickRow="materielSelectRow"
@@ -316,11 +388,39 @@
         @pagination="handleGetMateriel"
       />
     </el-dialog>
+    <!--    价目列表-->
+    <el-dialog
+      title="价目表"
+      model
+      :visible.sync="openPriceList"
+      :close-on-click-modal="false"
+      width="60%"
+    >
+      <div class="materiel-form">
+        <span class="materiel-code">供应商名称</span>
+        <el-input v-model="priceListPagination.fsupplier" class="input-width" size="mini" placeholder="请输入供应商名称" @keyup.enter.native="currencySearch" />
+        <el-button size="mini" type="primary" @click="handlePriceList">搜索</el-button>
+      </div>
+      <jc-table
+        :table-data="priceListData"
+        :table-header="priceListHeader"
+        table-height="53vh"
+        serial
+        :cell-style="cellStyle"
+        @clickRow="priceListSelectRow"
+      />
+      <jc-pagination
+        v-show="priceListPagination.total > 0"
+        :total="priceListPagination.total"
+        :page.sync="priceListPagination.pageNum"
+        :limit.sync="priceListPagination.pageSize"
+        @pagination="handlePriceList"
+      />
+    </el-dialog>
   </div>
 </template>
 <script>
 import {
-  queryBomSonList, queryMaterialSon,
   queryTOrgOrganizationsL
 } from '@/api/engineering/createBom'
 import { queryTBasBilltype,
@@ -329,21 +429,30 @@ import { queryTBasBilltype,
   querySalesperson,
   queryTBdCurrency,
   querytReccondition,
-  queryFpaezCombo
+  queryFpaezCombo,
+  querySalerRate,
+  querySalOrderFxxchange,
+  insertSalOrder,
+  queryMaterialList
 } from '@/api/marketManage/marketOrder'
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
-import jcForm from '@/components/Form'
+import jumpMateriel from '@/components/JumpMateriel'
+import { queryTPurPatLs } from '@/api/modifyPriceManagement/createModifyPrice'
 
 export default {
   name: 'CreateMarkerOrder',
   components: {
     jcTable,
-    jcPagination,
-    jcForm
+    jcPagination
   },
+  mixins: [jumpMateriel],
   data() {
     return {
+      tableHeight: '50vh', // 弹框中表格高度
+      loading: false, // 加载中
+      rateIndex: '', // 税率下标
+      // disabled: false, // 税率是否禁用
       standard: [], // 品质标准
       isMaterielDialog: false, // 物料弹窗
       // 物料弹窗分页
@@ -357,12 +466,12 @@ export default {
       FSPECIFICATION: '', // 弹窗规格型号
       materielDialogData: [],
       materielDialogHeader: [
-        { label: '使用组织', prop: 'FUSEORG', align: 'center' },
-        { label: '物料编码', prop: 'FNUMBER', align: 'center' },
-        { label: '物料规格', prop: 'FSPECIFICATION', align: 'center' },
-        { label: '型号', prop: 'FMODEL', align: 'center' },
-        { label: '描述', prop: 'FDESCRIPTION', align: 'center', minWidth: '150px' },
-        { label: '创建时间', prop: 'FCREATEDATE', align: 'center' }
+        { label: '使用组织', prop: 'fuseOrg', align: 'center' },
+        { label: '物料编码', prop: 'fnumber', align: 'center' },
+        { label: '物料规格', prop: 'fspecificaTion', align: 'center' },
+        { label: '型号', prop: 'fmodel', align: 'center' },
+        { label: '描述', prop: 'fdescripTion', align: 'center', minWidth: '150px' },
+        { label: '创建时间', prop: 'fcreateDate', align: 'center' }
       ],
       // 客户列表数据分页
       isclientlDialog: false,
@@ -375,9 +484,9 @@ export default {
       clientlDialogData: [],
       clientDialogHeader: [
         { label: '客户ID', prop: 'fcustId', align: 'center' },
-        { label: '物料编码', prop: 'fnumber', align: 'center' },
+        { label: '客户编码', prop: 'fnumber', align: 'center' },
         { label: '客户名称', prop: 'fname', align: 'center' },
-        { label: '物料编码', prop: 'fcustGroup', align: 'center' }
+        { label: '客户分组', prop: 'fcustGroup', align: 'center' }
       ],
       // 交货方式
       isdeliverlDialog: false,
@@ -416,11 +525,7 @@ export default {
         fname: ''
       },
       currencyDialogData: [],
-      currencyDialogHeader: [
-        { label: '编码', prop: 'fnumber', align: 'center' },
-        { label: '名称', prop: 'fname', align: 'center' },
-        { label: '货币代码', prop: 'fcode', align: 'center' }
-      ],
+      currencyDialogHeader: [],
       // 收款条件
       isgatheringDialog: false,
       gathering: {
@@ -437,49 +542,130 @@ export default {
         { label: '到期日计算日期', prop: 'standard', align: 'center' },
         { label: '描述', prop: 'fdescripTion', align: 'center' }
       ],
+      // 价目表分页
+      openPriceList: false,
+      priceListPagination: {
+        pageNum: 1, // 当前页
+        pageSize: 10, // 限制行数
+        fsupplier: '', // 关键词
+        total: 0 // 总条目
+      },
+      // 价目表
+      priceListData: [],
+      priceListHeader: [
+        { label: '价目表', prop: 'fname', align: 'center' },
+        { label: '供应商名称', prop: 'fsupplier', align: 'center' },
+        { label: '币别', prop: 'fcurrency', align: 'center' },
+        { label: '含税', prop: 'fisIncludedTax', align: 'center' }
+      ],
       activeName: 'first',
       // 点击行的序号
       tableIndex: 0,
       tableHeader: [],
       billtypes: [], // 单据类型
       teamList: [], // 组织
-      prodValue: { fbillTypeId: '', fsaleOrgId: '', fcustId: '', fdataValue: '', fname: '', fsettleCurrIdName: '',
-        fheadDeliveryWay: '', fsalerId: '', fnote: '', fsettleCurrId: '', fsalerIdName: '',
-        frecConditionId: '', fisIncludedTax: '', fexchangeRate: '', frecConditionIdName: '',
-        flocalCurrId: '', fxxchangeTypeId: '',
-        planDetails: [
-          { fmaterialId: '', fdescripTion: '', funitId: '', fqty: '', fisFree: '', fentryTaxRate: '', fdeliveryDate: '' }
-        ], saleDetails: []
-      },
-      cellStyle: { padding: '10 10' }
+      prodValue: { fbillTypeId: '', fsaleOrgId: '', fcustId: '', fdataValue: '', fname: '', fsettleCurrIdName: '', fbillNo: '',
+        fheadDeliveryWay: '', fsalerId: '', fnote: '', fsettleCurrId: '', fsalerIdName: '', fpriceListIdName: '', fpriceListId: '',
+        frecConditionId: '', fisIncludedTax: false, fexchangeRate: '1.0000', frecConditionIdName: '',
+        flocalCurrId: '', fxxchangeTypeId: '', fxxchangeTypeIdName: '', flocalCurrIdName: '',
+        saleDetails: [
+          { fmaterialId: '', fdescripTion: '', funitId: '', fqty: '', fisFree: false, fentryTaxRate: '', fdeliveryDate: '', fmaterialIdName: '', funitName: '' }
+        ], planDetails: [{ fneedRecAdvance: false, frecAdvanceRate: '0', frecAdvanCeamount: '0' }] },
+      cellStyle: { padding: '10 10' },
+      prodValueRules: {
+        fbillTypeId: [
+          { required: true, message: '请选择单据类型', trigger: 'change' }
+        ], fsaleOrgId: [
+          { required: true, message: '请选择销售组织', trigger: 'change' }
+        ], fcustId: [
+          { required: true, message: '请选择客户', trigger: 'change' }
+        ], fheadDeliveryWay: [
+          { required: true, message: '请选择交货方式', trigger: 'change' }
+        ], fsalerId: [
+          { required: true, message: '请选择销售员', trigger: 'change' }
+        ], fnote: [
+          { required: true, message: '请选择备注', trigger: 'change' }
+        ], fsettleCurrId: [
+          { required: true, message: '请选择结算币别', trigger: 'change' }
+        ], frecConditionId: [
+          { required: true, message: '请选择收款条件', trigger: 'change' }
+        ], fpaezCombo: [
+          { required: true, message: '请选择品质标准', trigger: 'change' }
+        ], fpriceListId: [
+          { required: true, message: '请选择价目表', trigger: 'blur' }
+        ], fpaezText: [
+          { required: true, message: '请选择柜型', trigger: 'blur' }
+        ], fpaezText1: [
+          { required: true, message: '请选择客户订单号', trigger: 'blur' }
+        ], fpaezText2: [
+          { required: true, message: '请选择客户PO NO', trigger: 'blur' }
+        ]
+      }
     }
   },
   created() {
     this.queryTBasBilltype()
     this.handleGetPurchase()
     this.queryFpaezCombo()
+    this.querySalOrderFxxchange()
   },
   methods: {
     subMarker() {
-      console.log(this.prodValue)
+      this.loading = true
+      this.$refs.purchaseRef.validate(valid => {
+        if (!valid) {
+          this.loading = false
+          return false
+        }
+        for (const item of this.prodValue.saleDetails) {
+          if (item.fmaterialId === '' || item.funitId === '' || item.fqty === '' || item.fdeliveryDate === '') {
+            this.$message.error('表格不能为空或删除空行')
+            this.loading = false
+            return false
+          }
+        }
+        for (const item of this.prodValue.planDetails) {
+          if (item.frecAdvanceRate === '' || item.frecAdvanCeamount === '') {
+            this.$message.error('表格不能为空')
+            this.loading = false
+            return false
+          }
+        }
+        const DATA = this.prodValue
+        insertSalOrder(DATA).then(res => {
+          console.log(res)
+          this.prodValue.fbillNo = res.data
+          this.loading = false
+          if (res.code === 0) {
+            this.$message({
+              type: 'success',
+              message: '新增成功'
+            })
+            // setTimeout(() => {
+            //   location.reload()
+            // }, 2000)
+          }
+        }).catch(error => {
+          this.$message.error(error)
+        })
+      })
     },
     // 物料弹窗选中
     async materielSelectRow(item) {
-      const fmateriAalId = item.FMATERIALID
-      const { data: RES } = await queryMaterialSon({ fmateriAalId })
-      this.prodValue.planDetails[this.tableIndex].fmaterialId = RES.FNUMBER
-      this.prodValue.planDetails[this.tableIndex].fdescripTion = RES.FDESCRIPTION
-      this.prodValue.planDetails[this.tableIndex].funitId = RES.FBASEUNIT
-      console.log(this.tableIndex)
+      this.prodValue.saleDetails[this.tableIndex].fmaterialId = item.fmaterialId
+      this.prodValue.saleDetails[this.tableIndex].fmaterialIdName = item.fnumber
+      this.prodValue.saleDetails[this.tableIndex].fdescripTion = item.fdescripTion
+      this.prodValue.saleDetails[this.tableIndex].funitId = item.funitId
+      this.prodValue.saleDetails[this.tableIndex].funitName = item.funitName
       this.isMaterielDialog = false
     },
     // 打开物料编码
     async handleGetMateriel(row, index) {
       this.tableIndex = index
-      if (index === this.prodValue.planDetails.length - 1) {
-        this.prodValue.planDetails.push(
+      if (index === this.prodValue.saleDetails.length - 1) {
+        this.prodValue.saleDetails.push(
           {
-            fmaterialId: '', fdescripTion: '', funitId: '', fqty: '', fisFree: '', fentryTaxRate: '', fdeliveryDate: ''
+            fmaterialId: '', fdescripTion: '', funitId: '', fqty: '', fisFree: false, fentryTaxRate: '', fdeliveryDate: ''
           }
         )
       }
@@ -490,9 +676,9 @@ export default {
         fdescription: this.FDESCRIPTION,
         fspecification: this.FSPECIFICATION
       }
-      const { data: RES, total } = await queryBomSonList(DATA)
-      this.materielDialogData = RES
-      this.materielPagination.total = total
+      const { data: RES } = await queryMaterialList(DATA)
+      this.materielDialogData = RES.array
+      this.materielPagination.total = RES.total
       this.isMaterielDialog = true
     },
     // 查询单据类型
@@ -586,6 +772,8 @@ export default {
       this.prodValue.fsettleCurrIdName = item.fname
       this.prodValue.fsettleCurrId = item.fcurrencyId
       this.isCurrencyDialog = false
+      // 获取汇率
+      this.querySalerRate()
     },
     // 收款条件
     async querytReccondition() {
@@ -599,19 +787,63 @@ export default {
       this.gathering.pageNum = 1
       this.querytReccondition()
     },
-    // 选择结算货币
+    // 选择收款条件
     gatheringSelectRow(item) {
       this.prodValue.frecConditionIdName = item.fname
       this.prodValue.frecConditionId = item.frecConditionId
+      this.watchSaler = item.frecConditionId
       this.isgatheringDialog = false
     },
     // 品质标准
     async queryFpaezCombo() {
       const { data: RES } = await queryFpaezCombo()
-      this.standard = RES.map(item => {
-        return { label: item.fpaezCombo, value: item.fpaezCombo }
-      })
-      console.log(this.standard)
+      this.standard = RES
+    },
+    // 查询销售订单本位币和汇率类型
+    async querySalOrderFxxchange() {
+      const { data: RES } = await querySalOrderFxxchange()
+      this.prodValue.flocalCurrId = RES.flocalCurrId
+      this.prodValue.fxxchangeTypeId = RES.fxxchangeTypeId
+      this.prodValue.flocalCurrIdName = RES.flocalCurr
+      this.prodValue.fxxchangeTypeIdName = RES.fxxchangeType
+    },
+    // 查询销售订单汇率
+    async querySalerRate() {
+      const DATA = { fxxchangeTypeId: this.prodValue.fxxchangeTypeId, fsettleCurrId: this.prodValue.fsettleCurrId, flocalCurrId: this.prodValue.flocalCurrId }
+      const { data: RES } = await querySalerRate(DATA)
+      if (RES) {
+        this.prodValue.fexchangeRate = RES.fexchangeRate
+      } else {
+        this.prodValue.fexchangeRate = ''
+      }
+    },
+    // 价目表
+    async handlePriceList() {
+      this.openPriceList = true
+      const { data: RES } = await queryTPurPatLs({ ...this.priceListPagination })
+      this.priceListData = RES.array
+      this.priceListPagination.total = RES.total
+    },
+    // 获取价目表
+    priceListSelectRow(item) {
+      this.prodValue.fpriceListIdName = item.fname
+      this.prodValue.fpriceListId = item.fid
+      this.openPriceList = false
+    },
+    // 监听是否勾选赠品
+    handleCheckedCitiesChange(val, index) {
+      this.rateIndex = index
+      if (val) {
+        this.prodValue.saleDetails[this.rateIndex].fentryTaxRate = ''
+      }
+    },
+    // 删除明细空行
+    delectSale(index) {
+      if (index === 0) {
+        this.$message.error('不能删除第一行')
+        return false
+      }
+      this.prodValue.saleDetails.splice(index, 1)
     }
   }
 }

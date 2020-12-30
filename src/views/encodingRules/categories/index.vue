@@ -7,10 +7,11 @@
           v-model.trim="largeName"
           class="input-content"
           placeholder="请输入大类名称"
+          size="mini"
           @keyup.enter.native="handleQuerySonClass"
         />
-        <el-button type="primary" class="btn" size="medium" @click="handleQuerySonClass">搜索</el-button>
-        <el-button type="primary" class="btn" size="medium" @click="newClass=true">新增</el-button>
+        <el-button type="primary" class="btn" size="mini" @click="handleQuerySonClass">搜索</el-button>
+        <el-button type="primary" class="btn" size="mini" @click="newClass=true">新增</el-button>
       </div>
     </div>
     <div class="table-content">
@@ -61,6 +62,7 @@
         :table-data="inTheData"
         :table-header="inTheHeader"
         :cell-style="cellStyle"
+        table-height="53vh"
       >
         <el-table-column prop="mediumCode" label="中类编码" align="center" />
         <el-table-column prop="mediumName" label="中类名称" align="center" />
@@ -77,6 +79,7 @@
         :table-data="smallData"
         :table-header="smallHeader"
         :cell-style="cellStyle"
+        table-height="53vh"
       >
         <el-table-column prop="number" label="小类编码" align="center" />
         <el-table-column prop="name" label="小类名称" align="center" />
@@ -93,6 +96,7 @@
         :table-data="attributeData"
         :table-header="attributeHeader"
         :cell-style="cellStyle"
+        table-height="53vh"
       >
         <el-table-column prop="attributeName" label="属性名称" align="center" />
         <el-table-column prop="name" label="物料属性明细名称" align="center" />
@@ -224,6 +228,7 @@ import {
 } from '@/api/encodingRules/categories'
 
 export default {
+  name: 'Categories',
   components: {
     jcTable,
     jcPagination
@@ -313,8 +318,7 @@ export default {
         return
       }
       const DATA = { largeCode: this.formLabelAlign.largeCode, largeName: this.formLabelAlign.largeName, mediumName: this.formLabelAlign.mediumName.join(), typeArray: this.formLabelAlign.typeArray.join(), attributeArray: this.formLabelAlign.attributeArray.join() }
-      const { RES, code, message } = await insertLarge(DATA)
-      console.log(RES, code, message)
+      const { code, message } = await insertLarge(DATA)
       if (code === 0) {
         this.$message({
           message: message,

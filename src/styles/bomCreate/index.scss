@@ -58,6 +58,9 @@
   .table-content {
     margin-top: 20px;
   }
+  .dialogClass ::v-deep .el-dialog__body {
+    padding: 0 20px;
+  }
   .dialogForm {
     display: flex;
     flex-direction: row;

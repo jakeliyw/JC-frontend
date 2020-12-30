@@ -171,7 +171,7 @@
 
       </el-tab-pane>
       <el-tab-pane label="其它" name="other">
-        <iframe src="http://192.168.1.15:8878/Default.aspx" height="1000" scrolling="auto" width="1500" frameborder="0" />
+        <h2>页面待开发</h2>
       </el-tab-pane>
     </el-tabs>
     <!--    币别弹窗-->
@@ -266,6 +266,7 @@
     </jc-popup>
     <!--    物料弹窗-->
     <el-dialog
+      class="dialogClass"
       title="物料列表"
       model
       :visible.sync="isMaterielDialog"
@@ -285,8 +286,8 @@
         :table-data="materielDialogData"
         :table-header="materielDialogHeader"
         :cell-style="cellStyle"
-        @clickRow="materielSelectRow"
         table-height="calc(100vh - 500px)"
+        @clickRow="materielSelectRow"
       />
       <jc-pagination
         v-show="materielPagination.total > 0"
@@ -795,6 +796,9 @@ export default {
     width: 10vw;
     margin-right: 10px;
   }
+}
+.dialogClass ::v-deep .el-dialog__body {
+  padding: 0 20px;
 }
 .layout ::v-deep .jcTable{
   min-height: calc(100vh - 400px);

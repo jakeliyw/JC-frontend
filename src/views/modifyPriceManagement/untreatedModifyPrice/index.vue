@@ -7,8 +7,8 @@
           v-model="fname"
           class="input-content"
           placeholder="请输入调价名称"
-          @keyup.enter.native="handleQueryUntreated"
           size="mini"
+          @keyup.enter.native="handleQueryUntreated"
         />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
       </div>
@@ -30,7 +30,6 @@
           <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">详情调价</el-button>
         </template>
       </jc-table>
-
     </div>
     <!--    分页器-->
     <div class="footer">
@@ -89,7 +88,6 @@ export default {
     async handleGetUntreated() {
       const DATA = { pageNum: this.currentPage, pageSize: this.size, fname: this.fname }
       const { data: RES } = await queryUntreatePurPatList(DATA)
-      console.log(RES)
       this.tableData = RES.array
       this.total = RES.total
     },

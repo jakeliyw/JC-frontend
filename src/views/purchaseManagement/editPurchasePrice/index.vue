@@ -155,6 +155,7 @@
 
     <!--    物料弹窗-->
     <el-dialog
+      class="dialogClass"
       title="物料列表"
       model
       :visible.sync="isMaterielDialog"
@@ -188,9 +189,7 @@
 </template>
 
 <script>
-import {
-  queryBomSonList, queryMaterialSon
-} from '@/api/engineering/createBom'
+import { queryBomSonList, queryMaterialSon } from '@/api/engineering/createBom'
 import { detailPriceList } from '@/api/purchaseManagement/purchasePrice'
 import jumpMateriel from '@/components/JumpMateriel'
 import {
@@ -486,6 +485,9 @@ export default {
     width: 10vw;
     margin-right: 10px;
   }
+}
+.dialogClass ::v-deep .el-dialog__body {
+  padding: 0 20px;
 }
 .layout ::v-deep .jcTable{
   min-height: calc(100vh - 400px);

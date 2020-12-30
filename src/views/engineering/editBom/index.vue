@@ -41,7 +41,7 @@
           :cell-style="cellStyle"
           serial
           :table-header="sonTableHeader"
-          table-height="calc(100vh - 580px)"
+          table-height="calc(100vh - 480px)"
         >
           <el-table-column v-if="false" label="子物料ID" prop="FMATERIALID" align="center" />
           <el-table-column label="物料编码" prop="FNUMBER" align="center" width="200px">
@@ -137,6 +137,7 @@
     </el-tabs>
     <!--    父项列表弹窗-->
     <el-dialog
+      class="dialogClass"
       title="物料列表"
       model
       :visible.sync="parentTableVisible"

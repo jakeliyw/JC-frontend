@@ -4,7 +4,7 @@
       <div class="header-name">
         <span class="parentItemNo">供应商名称</span>
         <el-input
-          v-model="fname"
+          v-model="fsupplier"
           class="input-content"
           placeholder="请输入供应商名称"
           @keyup.enter.native="handleQueryRefuse"
@@ -57,15 +57,15 @@ export default {
   },
   data() {
     return {
-      fname: '', // 产品描述
+      fsupplier: '', // 产品描述
       total: 0, // 总条目
       currentPage: 1, // 当前页
       size: 10, // 每页显示多少条数据
       // 表头
       tableHeader: [
         { label: '价目编码', prop: 'fnumber', minWidth: '100px', align: 'center' },
-        { label: '价目表名称', prop: 'fname', minWidth: '200px', align: 'center' },
-        { label: '供应商名称', prop: 'fsupplier', align: 'center' },
+        { label: '价目表名称', prop: 'fname', align: 'center' },
+        { label: '供应商名称', prop: 'fsupplier', align: 'center', minWidth: '200px' },
         { label: '是否含税', prop: 'fisIncludedTax', align: 'center' },
         { label: '币别', prop: 'fcurrency', align: 'center' },
         { label: '生效时间', prop: 'fcreateDate', align: 'center' },
@@ -82,7 +82,7 @@ export default {
   methods: {
     // 获取列表数据
     async handleGetPurchaseList() {
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, fname: this.fname }
+      const DATA = { pageNum: this.currentPage, pageSize: this.size, fsupplier: this.fsupplier }
       const { data: RES } = await queryFailPurPriceList(DATA)
       this.tableData = RES.array
       this.total = RES.total

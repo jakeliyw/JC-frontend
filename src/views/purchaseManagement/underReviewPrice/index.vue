@@ -4,7 +4,7 @@
       <div class="header-name">
         <span class="parentItemNo">供应商名称</span>
         <el-input
-          v-model="fname"
+          v-model="fsupplier"
           class="input-content"
           placeholder="请输入物料编号"
           @keyup.enter.native="handleQueryUnderReview"
@@ -55,7 +55,7 @@ export default {
   },
   data() {
     return {
-      fname: '', // 供应商名称
+      fsupplier: '', // 供应商名称
       total: 0, // 总条目
       currentPage: 0, // 当前页
       size: 10, // 每页显示多少条数据
@@ -80,7 +80,7 @@ export default {
   methods: {
     // 获取列表数据
     async handleGetData() {
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, fname: this.fname }
+      const DATA = { pageNum: this.currentPage, pageSize: this.size, fsupplier: this.fsupplier }
       const { data: RES } = await queryReviewPurPriceList(DATA)
       this.tableData = RES.array
       this.total = RES.total

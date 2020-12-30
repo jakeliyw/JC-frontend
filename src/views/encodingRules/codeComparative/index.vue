@@ -51,7 +51,7 @@
             </el-table-column>
             <el-table-column prop="medium" label="中类" align="center" class-name="valignTop">
               <template slot-scope="scope">
-                <div v-for="(item, index) of scope.row.medium" :key="index" class="overHei">{{ item.mediumName }}</div>
+                <div v-for="(item, index) of scope.row.medium" :key="index" class="overHei" :title="item.mediumName">{{ item.mediumName }}</div>
               </template>
             </el-table-column>
             <el-table-column prop="medium" label="编码" align="center" class-name="valignTop">
@@ -63,7 +63,7 @@
               <el-table-column v-for="(item, index) of typeArray" :key="index" prop="serialName" :label="item.serialName" align="center">
                 <el-table-column prop="serialName" label="名称" align="center" class-name="valignTop">
                   <template>
-                    <div v-for="(item, index) of item.serialTypeList" :key="index" class="overHei">{{ item.name }}</div>
+                    <div v-for="(item, index) of item.serialTypeList" :key="index" class="overHei" :title="item.name">{{ item.name }}</div>
                   </template>
                 </el-table-column>
                 <el-table-column prop="serialName" label="编码" align="center" class-name="valignTop">
@@ -76,7 +76,7 @@
             <el-table-column label="物料属性" align="center">
               <el-table-column v-for="(item, index) in attributeArray" :key="index" prop="serialName" :label="item.attributeName" align="center" class-name="valignTop">
                 <template>
-                  <div v-for="(item, index) of item.attributeList" :key="index" class="overHei">{{ item.name }}</div>
+                  <div v-for="(item, index) of item.attributeList" :key="index" :title="item.name" class="overHei">{{ item.name }}</div>
                 </template>
               </el-table-column>
             </el-table-column>
@@ -90,7 +90,7 @@
 <script>
 import { queryLargeContrast, queryLargeList } from '@/api/encodingRules/codeComparative'
 export default {
-  name: 'Index',
+  name: 'CodeComparative',
   data() {
     return {
       activeName: '10', // 第一个选项卡
@@ -173,21 +173,36 @@ export default {
 </script>
 <style lang="scss">
 .codeTable {
+  .el-tabs__nav{
+    white-space: initial
+  }
   .table-content{
       .el-table .valignTop {
         vertical-align: top;
         padding: 0;
-        border-color: #aaa;
+        border-color: #ddd;
       }
     .el-table--border td{
-      border-right: 1px solid #aaa;
+      border-right: 1px solid #ddd;
     }
     .el-table--border th{
-      border-bottom: 1px solid #aaa;
-      border-right: 1px solid #aaa;
+      border-bottom: 1px solid #ddd;
+      border-right: 1px solid #ddd;
     }
     .el-table thead.is-group th{
-      background: #fff;
+      background: #e6ebfc;
+      font-size: 14px;
+    }
+    .el-table th, .el-table tr{
+      font-size: 13px;
+    }
+    @media screen and (max-width: 1360px){
+      .el-table thead.is-group th{
+        font-size: 13px;
+      }
+      .el-table th, .el-table tr{
+        font-size: 12px;
+      }
     }
     .el-table .is-leaf{
       vertical-align: middle;
@@ -206,13 +221,13 @@ export default {
   }
   .table-content{
     margin-top: 0;
-    border:1px solid #aaa;
+    border:1px solid #ddd;
   }
   .btn1{
     margin-left: 20px;
   }
   .overHei{
-    border-bottom: 1px solid #aaa;
+    border-bottom: 1px solid #ddd;
     max-height: 25px;
     padding: 10px;
     padding-bottom: 30px;
@@ -224,14 +239,17 @@ export default {
     border-bottom: none;
   }
   .overHei:nth-child(even){
-    background: #FAFAFA;
+    background: #ececec;
+  }
+  .overHei:hover{
+
   }
   .codeRule{
     margin-top: 10px;
-    border: 1px solid #aaa;
+    border: 1px solid #ddd;
     border-bottom: none;
     .hrBag {
-      background-color: #aaa;
+      background-color: #ddd;
       height:1px; border:none;
     }
     .rule{

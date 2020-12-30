@@ -7,8 +7,8 @@
           v-model="FNUMBER"
           class="input-content"
           placeholder="请输入物料编号"
-          @keyup.enter.native="handleQueryBomList"
           size="mini"
+          @keyup.enter.native="handleQueryBomList"
         />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryBomList">搜索</el-button>
         <el-button type="primary" size="mini" class="btn" @click="addBom">新增bom</el-button>
@@ -30,10 +30,10 @@
           </template>
         </el-table-column>
         <template v-slot:btnState="clo">
-          <el-tag>{{clo.scope.row.FDOCUMENTSTATUS}}</el-tag>
+          <el-tag>{{ clo.scope.row.FDOCUMENTSTATUS }}</el-tag>
         </template>
         <template v-slot:btnSlot="clo">
-          <el-button v-if="false" type="warning" size="mini" @click="editBom(clo.scope.row.FNUMBER)">修改bom</el-button>
+          <el-button size="mini" type="warning" @click="queryReportForm(clo.scope.row.FNUMBER)">查看报表</el-button>
           <el-button type="danger" size="mini" @click="Retrial(clo.scope.row.FID)">反审核</el-button>
           <el-button type="primary" size="mini" @click="getIntoBom(clo.scope.row.FNUMBER)">进入bom</el-button>
         </template>
@@ -81,8 +81,8 @@ export default {
         { label: '仓库', prop: 'FSTOCK', align: 'center' },
         { label: '使用组织', prop: 'FUSEORG', align: 'center' },
         { label: '生效时间', prop: 'FAPPROVEDATE', align: 'center' },
-        { label: '审核状态',  prop: 'FDOCUMENTSTATUS', align: 'center' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
+        { label: '审核状态', prop: 'FDOCUMENTSTATUS', align: 'center' },
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '300px', align: 'center' }
       ],
       // 表格数据
       tableData: []
@@ -114,9 +114,9 @@ export default {
     addBom() {
       this.$router.push({ name: 'CreateBom' })
     },
-    // 修改bom
-    editBom(FNUMBER) {
-      this.$router.push({ path: `/editBom/${FNUMBER}` })
+    // 查看报表
+    queryReportForm(FNUMBER) {
+      this.$router.push({ path: `/reportForm/${FNUMBER}` })
     },
     // 反审核
     async Retrial(FID) {

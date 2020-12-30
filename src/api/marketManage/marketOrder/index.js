@@ -80,3 +80,75 @@ export function queryFpaezCombo(params) {
     params
   })
 }
+// 查询销售订单本位币和汇率类型
+export function querySalOrderFxxchange(params) {
+  return request({
+    url: '/tSalOrder/querySalOrderFxxchange',
+    method: 'get',
+    params
+  })
+}
+// 查询销售订单税率
+export function querySalerRate(data) {
+  return request({
+    url: '/tBdRate/querySalerRate',
+    method: 'post',
+    data
+  })
+}
+// 查询物料列表
+export function queryMaterialList(data) {
+  return request({
+    url: '/tBdMaterial/queryMaterialList',
+    method: 'post',
+    data
+  })
+}
+// 查询还未处理的销售订单列表-分页
+export function queryUntreateSalorderList(data) {
+  return request({
+    url: '/tSalOrder/queryUntreateSalorderList',
+    method: 'post',
+    data
+  })
+}
+// 审核中的销售订单列表-分页
+export function queryReviewSalorderList(data) {
+  return request({
+    url: '/tSalOrder/queryReviewSalorderList',
+    method: 'post',
+    data
+  })
+}
+// 审核未通过的销售订单-分页
+export function queryFailSalorderList(data) {
+  return request({
+    url: '/tSalOrder/queryFailSalorderList',
+    method: 'post',
+    data
+  })
+}
+// 未处理的销售订单进行审核
+export function reviewSalorder(data) {
+  return request({
+    url: '/tSalOrder/reviewSalorder',
+    method: 'put',
+    data
+  })
+}
+// 未处理的审核不通过
+export function notReviewSalorder(data) {
+  return request({
+    url: '/tSalOrder/notReviewSalorder',
+    method: 'put',
+    data
+  })
+}
+// 重新审核
+export function againReviewSalorder(data) {
+  return request({
+    url: '/tSalOrder/againReviewSalorder',
+    method: 'put',
+    data
+  })
+}

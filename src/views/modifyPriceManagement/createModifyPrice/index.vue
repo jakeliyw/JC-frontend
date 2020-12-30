@@ -42,9 +42,9 @@
               </el-input>
             </template>
           </el-table-column>
-          <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px"/>
-          <el-table-column label="供应商名称" prop="fsupplier" align="center" min-width="100px"/>
-          <el-table-column label="币别" prop="fcurrency" align="center" min-width="100px"/>
+          <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" show-overflow-tooltip />
+          <el-table-column label="供应商名称" prop="fsupplier" align="center" min-width="100px" show-overflow-tooltip />
+          <el-table-column label="币别" prop="fcurrency" align="center" min-width="100px" show-overflow-tooltip />
           <el-table-column label="调前单价" prop="fprice" align="center" min-width="150px">
             <template slot-scope="scope">
               <el-input-number

@@ -7,16 +7,16 @@
           v-model="getPriceList.fnumber"
           class="input-content"
           placeholder="请输入物料编号"
-          @keyup.enter.native="handleQueryUntreated"
           size="mini"
+          @keyup.enter.native="handleQueryUntreated"
         />
         <span class="parentItemNo">供应商名称</span>
         <el-input
           v-model="getPriceList.fsupplier"
           class="input-content"
           placeholder="请输入供应商名称"
-          @keyup.enter.native="handleQueryUntreated"
           size="mini"
+          @keyup.enter.native="handleQueryUntreated"
         />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
         <el-button type="primary" class="btn" size="mini" @click="addPurchase">新增价目</el-button>
@@ -28,12 +28,12 @@
         :table-header="tableHeader"
         :cell-style="cellStyle"
       >
-        <el-table-column label="价目名称" prop="price" align="center" :show-overflow-tooltip="true" />
-        <el-table-column label="供应商名称" prop="fsupplier" align="center" :show-overflow-tooltip="true" min-width="150px"/>
+        <el-table-column label="价目名称" prop="price" align="center" show-overflow-tooltip />
+        <el-table-column label="供应商名称" prop="fsupplier" align="center" show-overflow-tooltip min-width="150px" />
         <el-table-column
           label="物料编码"
           align="center"
-          :show-overflow-tooltip="true"
+          show-overflow-tooltip
         >
           <template slot-scope="scope">
             <span class="jumpMateriel" @click="jumpMateriel(scope.row.fnumber)">{{ scope.row.fnumber }}</span>
@@ -41,7 +41,7 @@
         </el-table-column>
         <template v-slot:btnSlot="clo">
           <el-button type="warning" size="mini" @click="editPurchase(clo.scope.row.fid)">修改价目</el-button>
-          <el-button v-show="false" type="danger" size="mini" @click="deletePurchase(clo.scope.row.fid)">删除价目</el-button>
+          <el-button v-show="false" size="mini" type="danger" @click="deletePurchase(clo.scope.row.fid)">删除价目</el-button>
           <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">详情价目</el-button>
         </template>
       </jc-table>

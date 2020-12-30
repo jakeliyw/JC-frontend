@@ -7,8 +7,8 @@
           v-model="fname"
           class="input-content"
           placeholder="请输入调价名称"
-          @keyup.enter.native="handleQueryUnderReview"
           size="mini"
+          @keyup.enter.native="handleQueryUnderReview"
         />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUnderReview">搜索</el-button>
       </div>

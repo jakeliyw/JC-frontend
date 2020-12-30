@@ -112,7 +112,7 @@ import jcTable from '@/components/Table'
 import jcForm from '@/components/Form'
 import jcOther from '@/components/Other'
 import { queryBomchildList, queryFtypeInfo } from '@/api/engineering/deitalBom'
-import JumpMateriel from '../../../components/JumpMateriel'
+import JumpMateriel from '@/components/JumpMateriel'
 export default {
   name: 'Index',
   components: {

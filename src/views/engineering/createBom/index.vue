@@ -141,6 +141,7 @@
     </el-tabs>
     <!--    父项列表弹窗-->
     <el-dialog
+      class="dialogClass"
       title="物料列表"
       model
       :visible.sync="parentTableVisible"

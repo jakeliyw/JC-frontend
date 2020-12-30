@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-dialog
+      class="dialogClass"
       :width="width"
       :title="dialogTitle"
       modal
@@ -101,5 +102,7 @@ export default {
     }
   }
 }
-
+.dialogClass ::v-deep .el-dialog__body {
+  padding: 0 20px;
+}
 </style>
