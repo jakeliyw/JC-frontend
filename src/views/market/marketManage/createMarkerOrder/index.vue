@@ -1,13 +1,14 @@
 <template>
-  <div class="content" v-loading="loading">
+  <div v-loading="loading" class="content">
     <el-button type="primary" style="width: 80px;margin-bottom: 10px" @click="subMarker()">保存</el-button>
-    <el-tabs type="border-card" >
+    <el-tabs type="border-card">
       <el-tab-pane label="主产品">
         <el-form ref="purchaseRef" :model="prodValue" label-width="100px" :rules="prodValueRules">
           <el-form-item label="单据类型" prop="fbillTypeId">
             <el-select
               v-model="prodValue.fbillTypeId"
               placeholder="请选择单据类型"
+              size="mini"
             >
               <el-option
                 v-for="billty in billtypes"
@@ -17,7 +18,7 @@
               />
             </el-select></el-form-item>
           <el-form-item label="销售组织" prop="fsaleOrgId">
-            <el-select v-model="prodValue.fsaleOrgId" placeholder="请选择组织">
+            <el-select v-model="prodValue.fsaleOrgId" placeholder="请选择组织" size="mini">
               <el-option
                 v-for="option in teamList"
                 :key="option.value"
@@ -26,7 +27,7 @@
               />
             </el-select></el-form-item>
           <el-form-item label="客户" prop="fcustId">
-            <el-input v-model="prodValue.fname" placeholder="请选择客户">
+            <el-input v-model="prodValue.fname" placeholder="请选择客户" size="mini">
               <i
                 slot="suffix"
                 class="el-input__icon el-icon-search"
@@ -34,7 +35,7 @@
               />
             </el-input></el-form-item>
           <el-form-item label="交货方式" prop="fheadDeliveryWay">
-            <el-input v-model="prodValue.fdataValue" placeholder="请选择交货方式">
+            <el-input v-model="prodValue.fdataValue" placeholder="请选择交货方式" size="mini">
               <i
                 slot="suffix"
                 class="el-input__icon el-icon-search"
@@ -42,7 +43,7 @@
               />
             </el-input></el-form-item>
           <el-form-item label="销售员" prop="fsalerId">
-            <el-input v-model="prodValue.fsalerIdName" placeholder="请选择销售员">
+            <el-input v-model="prodValue.fsalerIdName" placeholder="请选择销售员" size="mini">
               <i
                 slot="suffix"
                 class="el-input__icon el-icon-search"
@@ -50,7 +51,7 @@
               />
             </el-input></el-form-item>
           <el-form-item label="结算币别" prop="fsettleCurrId">
-            <el-input v-model="prodValue.fsettleCurrIdName" placeholder="请选择结算币别">
+            <el-input v-model="prodValue.fsettleCurrIdName" placeholder="请选择结算币别" size="mini">
               <i
                 slot="suffix"
                 class="el-input__icon el-icon-search"
@@ -58,7 +59,7 @@
               />
             </el-input></el-form-item>
           <el-form-item label="收款条件" prop="frecConditionId">
-            <el-input v-model="prodValue.frecConditionIdName" placeholder="请选择收款条件">
+            <el-input v-model="prodValue.frecConditionIdName" placeholder="请选择收款条件" size="mini">
               <i
                 slot="suffix"
                 class="el-input__icon el-icon-search"
@@ -66,15 +67,15 @@
               />
             </el-input></el-form-item>
           <el-form-item label="单据编号">
-            <el-input v-model="prodValue.fbillNo" placeholder="保存自动生成" disabled /></el-form-item>
+            <el-input v-model="prodValue.fbillNo" placeholder="保存自动生成" size="mini" disabled /></el-form-item>
           <el-form-item label="汇率类型">
-            <el-input v-model="prodValue.fxxchangeTypeIdName" placeholder="请输入汇率类型" disabled /></el-form-item>
+            <el-input v-model="prodValue.fxxchangeTypeIdName" placeholder="请输入汇率类型" disabled size="mini"/></el-form-item>
           <el-form-item label="本位币">
-            <el-input v-model="prodValue.flocalCurrIdName" placeholder="请输入本位币" disabled /></el-form-item>
+            <el-input v-model="prodValue.flocalCurrIdName" placeholder="请输入本位币" disabled size="mini"/></el-form-item>
           <el-form-item label="汇率">
-            <el-input v-model="prodValue.fexchangeRate" disabled/></el-form-item>
+            <el-input v-model="prodValue.fexchangeRate" disabled size="mini"/></el-form-item>
           <el-form-item label="价目表" prop="fpriceListId">
-            <el-input v-model="prodValue.fpriceListIdName" placeholder="请选择价目表">
+            <el-input v-model="prodValue.fpriceListIdName" placeholder="请选择价目表" size="mini">
               <i
                 slot="suffix"
                 class="el-input__icon el-icon-search"
@@ -82,17 +83,17 @@
               />
             </el-input></el-form-item>
           <el-form-item label="柜型" prop="fpaezText">
-            <el-input v-model="prodValue.fpaezText" placeholder="请输入柜型" /></el-form-item>
+            <el-input v-model="prodValue.fpaezText" placeholder="请输入柜型" size="mini"/></el-form-item>
           <el-form-item label="客户订单号" prop="fpaezText1">
-            <el-input v-model="prodValue.fpaezText1" placeholder="请输入客户订单号" /></el-form-item>
+            <el-input v-model="prodValue.fpaezText1" placeholder="请输入客户订单号" size="mini"/></el-form-item>
           <el-form-item label="客户PO NO" prop="fpaezText2">
-            <el-input v-model="prodValue.fpaezText2" placeholder="请输入客户PO NO" /></el-form-item>
+            <el-input v-model="prodValue.fpaezText2" placeholder="请输入客户PO NO" size="mini"/></el-form-item>
           <el-form-item label="品质标准" prop="fpaezCombo">
-            <el-select v-model="prodValue.fpaezCombo" placeholder="请选择品质标准">
+            <el-select v-model="prodValue.fpaezCombo" placeholder="请选择品质标准" size="mini">
               <el-option v-for="(item, index) in standard" :key="index" :label="item.fpaezCombo" :value="item.fpaezCombo" />
             </el-select></el-form-item>
           <el-form-item label="备注" prop="fnote">
-            <el-input v-model="prodValue.fnote" type="textarea" placeholder="请填写备注" /></el-form-item>
+            <el-input v-model="prodValue.fnote" type="textarea" placeholder="请填写备注" size="mini"/></el-form-item>
           <el-form-item label="是否含税">
             <el-checkbox v-model="prodValue.fisIncludedTax" />
           </el-form-item>
@@ -117,7 +118,7 @@
                   </el-input>
                 </template>
               </el-table-column>
-              <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" :show-overflow-tooltip="true"/>
+              <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" :show-overflow-tooltip="true" />
               <el-table-column label="销售单位" prop="funitName" align="center" />
               <el-table-column label="销售数量" prop="fqty" min-width="140px" align="center">
                 <template scope="scope">
@@ -150,7 +151,7 @@
               </el-table-column>
               <el-table-column label="操作" prop="fqty" min-width="100px" align="center">
                 <template scope="scope">
-                  <el-button type="danger" @click="delectSale(scope.$index)" size="medium">删除</el-button>
+                  <el-button type="danger" size="medium" @click="delectSale(scope.$index)">删除</el-button>
                 </template>
               </el-table-column>
             </jc-table>

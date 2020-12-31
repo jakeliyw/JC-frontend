@@ -109,6 +109,14 @@ export const asyncRouterMap = [
         menu: 'RefuseBom'
       },
       {
+        path: '/reportForm/:id',
+        name: 'ReportForm',
+        component: () => import('@/views/engineering/reportForm'),
+        meta: { title: '报表详情' },
+        hidden: true,
+        menu: 'reportForm'
+      },
+      {
         path: '/listBom',
         name: 'ListBom',
         component: () => import('@/views/engineering/listBom'),

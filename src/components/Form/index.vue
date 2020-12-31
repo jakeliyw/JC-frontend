@@ -16,7 +16,7 @@
             :prop="key"
             :rules="item.rules"
           >
-            <slot/>
+            <slot />
           </el-form-item>
           <!--          循环值-->
           <el-form-item
@@ -199,8 +199,7 @@
               type="datetime"
               :editable="false"
               :placeholder="item.placeholder || `请选择${item.label || '日期和时间'}`"
-            >
-            </el-date-picker>
+            />
 
           </el-form-item>
         </el-col>
@@ -310,7 +309,6 @@ export default {
       })
       return this.optionValue
     },
-    // 返回数据
     getOptions() {
       return {
         options: this.options,
@@ -338,5 +336,8 @@ export default {
 
 .describe {
   width: 35vw;
+}
+.el-form-item{
+  margin-bottom: 15px;
 }
 </style>

@@ -7,8 +7,7 @@
     </el-card>
     <el-tabs v-model="activeName" type="border-card" @tab-click="handleOther">
       <el-tab-pane label="基础" name="basic">
-        <span class="title-background">基本信息</span>
-        <el-divider />
+        <span class="title-background">综合信息</span>
         <div class="information">
           <div class="images">
             <el-upload
@@ -28,19 +27,15 @@
             <jc-form :option-value="basicValue" :options="basic" />
           </div>
         </div>
-        <span class="title-background">控制信息</span>
-        <el-divider />
+        <span class="title-background">明细信息</span>
         <jc-form :option-value="controlValue" :options="control" />
-        <span v-show="property.length !== 0" class="title-background">物料属性</span>
-        <el-divider v-if="property.length !== 0" />
         <div class="materielAttribute">
           <div v-for="(item, index) of property" :key="index" class="materielContent">
-            <h4 class="attribute">{{ item.attribute }}</h4>
+            <span class="attribute">{{ item.attribute }}</span>
             <el-input v-model="item.value" class="width-input" size="mini" disabled />
           </div>
         </div>
-        <span class="title-background">重量信息</span>
-        <el-divider />
+        <el-divider class="weight"/>
         <jc-form :options="weight" :option-value="weightValue">
           <div slot="slotMateriel" class="basic-content">
             <span class="basic-span">重量单位</span>
@@ -49,8 +44,7 @@
             </el-input>
           </div>
         </jc-form>
-        <span class="title-background">尺寸信息</span>
-        <el-divider />
+        <el-divider class="dimensional"/>
         <jc-form :option-value="dimensionalValue" :options="dimensional">
           <div slot="slotMateriel" class="basic-content">
             <span class="basic-span">尺寸单位</span>
@@ -311,10 +305,23 @@ export default {
 .content {
    @include bomCreate;
  }
-
+.weight{
+  margin: 20px 0 15px 0;
+}
+.dimensional{
+  margin: 5px 0 15px 0;
+}
 .title-background {
-  color: #FFD04B;
+  color: wheat;
+  display: table-cell;
+  font-weight: 800;
   background-color: #848383;
+  width: 90vw;
+  height: 40px;
+  line-height: 40px;
+  border-left: groove;
+  letter-spacing: 5px;
+  text-indent: 10px;
 }
 
 .width-input ::v-deep input {
@@ -344,6 +351,7 @@ export default {
 .information {
   display: flex;
   justify-content: space-around;
+  margin: 20px 0 10px 0;
 
   .images {
     width: 300px;
@@ -363,6 +371,7 @@ export default {
 .materielAttribute {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 
   .materielContent {
     display: flex;
@@ -375,7 +384,8 @@ export default {
       color: #606266;
       font-size: 14px;
       padding: 0 10px;
-      width: 120px;
+      width: 100px;
+      text-align: center;
     }
   }
 }

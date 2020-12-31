@@ -62,7 +62,6 @@ export default {
           pageSize: this.pageSize
         }
       )
-      console.log(RES)
       this.tableData = RES.detail
       RES.fisIncludedTax = JSON.parse(RES.fisIncludedTax)
       this.optionValue = RES

@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      title: '杰希商城',
+      title: '报表平台',
       logo: require('@/assets/img/logo.png')
     }
   }
@@ -55,8 +55,8 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      width: 60px;
-      height: 40px;
+      width: 50px;
+      height: 30px;
       vertical-align: middle;
       margin-right: 12px;
     }
@@ -67,7 +67,7 @@ export default {
       color: #fff;
       font-weight: 600;
       line-height: 50px;
-      font-size: 14px;
+      font-size: 16px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
     }

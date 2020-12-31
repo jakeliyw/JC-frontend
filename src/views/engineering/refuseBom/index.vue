@@ -4,7 +4,7 @@
       <div class="header-name">
         <span class="parentItemNo">物料编号</span>
         <el-input
-          v-model="fname"
+          v-model="FNUMBER"
           class="input-content"
           placeholder="请输入物料编号"
           @keyup.enter.native="handleQueryRefuse"
@@ -22,7 +22,7 @@
         <el-table-column
           label="物料编码"
           align="center"
-          prop="FNUMBER"
+          prop="c"
           :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
@@ -70,7 +70,7 @@ export default {
   },
   data() {
     return {
-      fname: '', // 产品描述
+      FNUMBER: '', // 产品描述
       total: 0, // 总条目
       currentPage: 1, // 当前页
       size: 10, // 每页显示多少条数据
@@ -99,7 +99,7 @@ export default {
     },
     // 获取列表数据
     async handleGetBomList() {
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, fname: this.fname }
+      const DATA = { pageNum: this.currentPage, pageSize: this.size, FNUMBER: this.FNUMBER }
       const { data: RES, total } = await queryFailBomList(DATA)
       this.tableData = RES
       this.total = total

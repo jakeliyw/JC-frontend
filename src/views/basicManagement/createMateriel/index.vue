@@ -47,8 +47,7 @@
     </el-card>
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane label="基础" name="basic">
-        <span class="title-background">基本信息</span>
-        <el-divider />
+        <span class="title-background">综合信息</span>
         <div class="information">
           <div class="images">
             <el-upload
@@ -66,8 +65,7 @@
             <jc-form :option-value="basicValue" :options="basic" />
           </div>
         </div>
-        <span class="title-background">控制信息</span>
-        <el-divider />
+        <span class="title-background">明细信息</span>
         <div class="control">
           <el-checkbox label="允许资产" :disabled="assetsDisabled" :value="assetsChecked" @change="assets" />
           <el-checkbox label="允许库存" :disabled="checkoutDisabled" :value="stockChecked" @change="stock" />
@@ -76,8 +74,6 @@
           <el-checkbox label="允许销售" :disabled="checkoutDisabled" :value="saleChecked" @change="sale" />
           <el-checkbox label="允许委外" :disabled="checkoutDisabled" :value="outsourcingChecked" @change="outsourcing" />
         </div>
-        <span v-show="isMaterial" class="title-background">物料属性</span>
-        <el-divider v-if="isMaterial" />
         <div class="materielAttribute">
           <div v-for="(item, index) of materielProperty" :key="index" class="materielContent">
             <h4 class="dialog-span">{{ item.attribute }}</h4>
@@ -98,15 +94,13 @@
             </el-select>
           </div>
         </div>
-        <span class="title-background">重量信息</span>
-        <el-divider />
+        <el-divider class="weight"/>
         <jc-form :option-value="weightValue" :options="weight">
           <el-input v-model="weightValue.FNAME" size="mini" class="finance-input" placeholder="请选择重量单位">
             <i slot="suffix" class="el-input__icon el-icon-search" @click="handleFweightList" />
           </el-input>
         </jc-form>
-        <span class="title-background">尺寸信息</span>
-        <el-divider />
+        <el-divider class="dimensional"/>
         <jc-form :option-value="dimensionalValue" :options="dimensional">
           <el-input v-model="dimensionalValue.FNAME" size="mini" class="finance-input" placeholder="请选择尺寸单位">
             <i slot="suffix" class="el-input__icon el-icon-search" @click="handleFvolumeList" />
@@ -912,10 +906,23 @@ export default {
 .content {
   @include bomCreate;
 }
-
+.weight{
+  margin: 10px 0 15px 0;
+}
+.dimensional{
+  margin: 5px 0 15px 0;
+}
 .title-background {
-  color: #FFD04B;
+  color: wheat;
+  display: table-cell;
+  font-weight: 800;
   background-color: #848383;
+  width: 90vw;
+  height: 40px;
+  line-height: 40px;
+  border-left: groove;
+  letter-spacing: 5px;
+  text-indent: 10px;
 }
 
 .header-card {
@@ -925,6 +932,7 @@ export default {
 .information {
   display: flex;
   justify-content: space-around;
+  margin-top: 20px;
 
   .images {
     width: 300px;
@@ -938,7 +946,7 @@ export default {
 }
 
 .control{
-  margin-bottom: 20px;
+  margin: 18px 0 5px 0;
 }
 .dialog-content {
   display: flex;
@@ -988,7 +996,6 @@ export default {
     flex-direction: row;
     align-items: center;
     margin-right: 50px;
-
     .dialog-span {
       font-weight: bold;
       color: #606266;

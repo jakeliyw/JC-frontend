@@ -175,6 +175,7 @@
         :table-data="materielDialogData"
         :table-header="materielDialogHeader"
         :cell-style="cellStyle"
+        table-height="calc(100vh - 500px)"
         @clickRow="materielSelectRow"
       />
       <jc-pagination
@@ -274,7 +275,6 @@ export default {
     async getPriceList() {
       const FID = this.$route.params.id
       const { data: RES } = await detailPriceList({ fid: FID })
-      console.log(RES)
       RES.fisIncludedTax = JSON.parse(RES.fisIncludedTax)
       this.purchaseForm = RES
       this.tableData = RES.detail
