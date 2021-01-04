@@ -122,6 +122,13 @@ export const asyncRouterMap = [
         component: () => import('@/views/engineering/listBom'),
         meta: { title: 'BOM清单', noCache: false },
         menu: 'listBom'
+      },
+      {
+        path: '/maintainPriceBom',
+        name: 'MaintainPriceBom',
+        component: () => import('@/views/engineering/maintainPriceBom'),
+        meta: { title: '价格维护', noCache: false },
+        menu: 'maintainPriceBom'
       }
     ]
   },
@@ -398,6 +405,14 @@ export const asyncRouterMap = [
             hidden: true
           },
           {
+            path: '/marketRevising/:id',
+            name: 'marketRevising',
+            component: () => import('@/views/market/marketManage/marketRevising/index'),
+            meta: { title: '修改订单' },
+            hidden: true,
+            menu: 'userList'
+          },
+          {
             path: '/marketUntreated',
             name: 'MarketUntreated',
             component: () => import('@/views/market/marketManage/marketUntreated/index'),
@@ -444,6 +459,14 @@ export const asyncRouterMap = [
             name: 'marketDetail',
             component: () => import('@/views/market/salesPrice/marketDetail/index'),
             meta: { title: '销售价目明细' },
+            hidden: true,
+            menu: 'userList'
+          },
+          {
+            path: '/markedEdit/:id',
+            name: 'MarkedEdit',
+            component: () => import('@/views/market/salesPrice/markedEdit/index'),
+            meta: { title: '修改价目' },
             hidden: true,
             menu: 'userList'
           },

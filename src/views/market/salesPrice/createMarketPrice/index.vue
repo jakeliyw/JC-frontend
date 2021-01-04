@@ -1,11 +1,11 @@
 <template>
-  <div class="content" v-loading="loading">
+  <div v-loading="loading" class="content">
     <el-button type="primary" style="width: 80px;margin-bottom: 10px" @click="subMarker()">保存</el-button>
     <el-tabs type="border-card">
       <el-tab-pane label="主产品">
         <el-form ref="purchaseRef" :model="prodValue" label-width="100px" :rules="prodValueRules">
           <el-form-item label="销售组织" prop="fcreateOrgId">
-            <el-select v-model="prodValue.fcreateOrgId" placeholder="请选择组织">
+            <el-select v-model="prodValue.fcreateOrgId" placeholder="请选择组织" size="mini">
               <el-option
                 v-for="option in teamList"
                 :key="option.value"
@@ -14,16 +14,10 @@
               />
             </el-select></el-form-item>
           <el-form-item label="价目表名称" prop="fname">
-            <el-input v-model="prodValue.fname" placeholder="请选择价目表名称">
-              <i
-                slot="suffix"
-                class="el-input__icon el-icon-search"
-                @click="handlePriceList()"
-              />
-            </el-input>
+            <el-input v-model.trim="prodValue.fname" placeholder="请输入价目表名称"  size="mini"/>
           </el-form-item>
           <el-form-item label="币别" prop="fcurrencyId">
-            <el-input v-model="prodValue.fcurrencyIdName" placeholder="请选择币别">
+            <el-input v-model.trim="prodValue.fcurrencyIdName" placeholder="请选择币别" size="mini">
               <i
                 slot="suffix"
                 class="el-input__icon el-icon-search"
@@ -31,7 +25,7 @@
               />
             </el-input></el-form-item>
           <el-form-item label="备注" prop="fdescription">
-            <el-input v-model="prodValue.fdescription" type="textarea" placeholder="请填写备注" /></el-form-item>
+            <el-input v-model.trim="prodValue.fdescription" type="textarea" placeholder="请填写备注"  size="mini"/></el-form-item>
           <el-form-item label="是否含税">
             <el-checkbox v-model="prodValue.fisIncludedTax" />
           </el-form-item>
@@ -44,7 +38,7 @@
         >
           <el-table-column label="物料编码" prop="fmaterialId" align="center" width="200px">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.fmaterialIdName" placeholder="请选择物料编码" size="mini">
+              <el-input v-model.trim="scope.row.fmaterialIdName" placeholder="请选择物料编码" size="mini">
                 <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fmaterialIdName)" />
                 <i
                   slot="suffix"
@@ -54,10 +48,10 @@
               </el-input>
             </template>
           </el-table-column>
-          <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" />
+          <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" :show-overflow-tooltip="true" />
           <el-table-column label="单位" prop="funitName" align="center" />
           <el-table-column label="价格系数" prop="fpriceBase" min-width="140px" align="center">
-            <template scope="scope">
+            <template slot-scope="scope">
               <el-input-number
                 v-model="scope.row.fpriceBase"
                 :min="1"
@@ -66,7 +60,7 @@
             </template>
           </el-table-column>
           <el-table-column label="单价" prop="fprice" min-width="140px" align="center">
-            <template scope="scope">
+            <template slot-scope="scope">
               <el-input-number
                 v-model="scope.row.fprice"
                 :min="1"
@@ -75,7 +69,7 @@
             </template>
           </el-table-column>
           <el-table-column label="最低限价" prop="fdownPrice" min-width="140px" align="center">
-            <template scope="scope">
+            <template slot-scope="scope">
               <el-input-number
                 v-model="scope.row.fdownPrice"
                 :min="1"
@@ -84,7 +78,7 @@
             </template>
           </el-table-column>
           <el-table-column label="操作" prop="fqty" min-width="100px" align="center">
-            <template scope="scope">
+            <template slot-scope="scope">
               <el-button type="danger" size="medium" @click="delectSale(scope.$index)">删除</el-button>
             </template>
           </el-table-column>
@@ -104,7 +98,7 @@
     >
       <div class="materiel-form">
         <span class="materiel-code">币别名称</span>
-        <el-input v-model="currency.fname" class="input-width" size="mini" placeholder="请输入币别名称" @keyup.enter.native="currencySearch" />
+        <el-input v-model.trim="currency.fname" class="input-width" size="mini" placeholder="请输入币别名称" @keyup.enter.native="currencySearch" />
         <el-button size="mini" type="primary" @click="currencySearch">搜索</el-button>
       </div>
       <jc-table
@@ -149,11 +143,11 @@
     >
       <div class="materiel-form">
         <span class="materiel-code">物料编码</span>
-        <el-input v-model="FNUMBER" class="input-width" size="mini" placeholder="请输入物料编码" @keyup.enter.native="handleMaterielSearch" />
+        <el-input v-model.trim="FNUMBER" class="input-width" size="mini" placeholder="请输入物料编码" @keyup.enter.native="handleMaterielSearch" />
         <span class="materiel-code">物料描述</span>
-        <el-input v-model="FDESCRIPTION" class="input-width" size="mini" placeholder="请输入物料描述" @keyup.enter.native="handleMaterielSearch" />
+        <el-input v-model.trim="FDESCRIPTION" class="input-width" size="mini" placeholder="请输入物料描述" @keyup.enter.native="handleMaterielSearch" />
         <span class="materiel-code">物料规格</span>
-        <el-input v-model="FSPECIFICATION" class="input-width" size="mini" placeholder="请输入规格" @keyup.enter.native="handleMaterielSearch" />
+        <el-input v-model.trim="FSPECIFICATION" class="input-width" size="mini" placeholder="请输入规格" @keyup.enter.native="handleMaterielSearch" />
         <el-button size="mini" type="primary" @click="handleMaterielSearch">搜索</el-button>
       </div>
       <jc-table
@@ -172,35 +166,6 @@
         @pagination="handleGetMateriel"
       />
     </el-dialog>
-    <!--    采购价目列表-->
-    <el-dialog
-      title="价目表"
-      model
-      :visible.sync="openPriceList"
-      :close-on-click-modal="false"
-      width="60%"
-    >
-      <div class="materiel-form">
-        <span class="materiel-code">供应商名称</span>
-        <el-input v-model="priceListPagination.fsupplier" class="input-width" size="mini" placeholder="请输入供应商名称" @keyup.enter.native="currencySearch" />
-        <el-button size="mini" type="primary" @click="handlePriceList">搜索</el-button>
-      </div>
-      <jc-table
-        :table-data="priceListData"
-        :table-header="priceListHeader"
-        table-height="53vh"
-        serial
-        :cell-style="cellStyle"
-        @clickRow="priceListSelectRow"
-      />
-      <jc-pagination
-        v-show="priceListPagination.total > 0"
-        :total="priceListPagination.total"
-        :page.sync="priceListPagination.pageNum"
-        :limit.sync="priceListPagination.pageSize"
-        @pagination="handlePriceList"
-      />
-    </el-dialog>
   </div>
 </template>
 <script>
@@ -214,7 +179,6 @@ import {
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jumpMateriel from '@/components/JumpMateriel'
-import { queryTPurPatLs } from '@/api/modifyPriceManagement/createModifyPrice'
 import {
   queryMaterialList
 } from '@/api/marketManage/marketOrder'
@@ -242,9 +206,9 @@ export default {
       materielDialogHeader: [
         { label: '使用组织', prop: 'fuseOrg', align: 'center' },
         { label: '物料编码', prop: 'fnumber', align: 'center' },
+        { label: '描述', prop: 'fdescripTion', align: 'center', minWidth: '150px' },
         { label: '物料规格', prop: 'fspecificaTion', align: 'center' },
         { label: '型号', prop: 'fmodel', align: 'center' },
-        { label: '描述', prop: 'fdescripTion', align: 'center', minWidth: '150px' },
         { label: '创建时间', prop: 'fcreateDate', align: 'center' }
       ],
       // 点击行的序号
@@ -273,22 +237,6 @@ export default {
       },
       currencyDialogData: [],
       currencyDialogHeader: [],
-      // 价目表分页
-      openPriceList: false,
-      priceListPagination: {
-        pageNum: 1, // 当前页
-        pageSize: 10, // 限制行数
-        fsupplier: '', // 关键词
-        total: 0 // 总条目
-      },
-      // 价目表
-      priceListData: [],
-      priceListHeader: [
-        { label: '价目表', prop: 'fname', align: 'center' },
-        { label: '供应商名称', prop: 'fsupplier', align: 'center' },
-        { label: '币别', prop: 'fcurrency', align: 'center' },
-        { label: '含税', prop: 'fisIncludedTax', align: 'center' }
-      ],
       loading: false
     }
   },
@@ -386,13 +334,6 @@ export default {
       this.prodValue.fcurrencyId = item.fcurrencyId
       this.isCurrencyDialog = false
     },
-    // 价目表
-    async handlePriceList(index) {
-      this.openPriceList = true
-      const { data: RES } = await queryTPurPatLs({ ...this.priceListPagination })
-      this.priceListData = RES.array
-      this.priceListPagination.total = RES.total
-    },
     // 获取价目表
     priceListSelectRow(item) {
       this.prodValue.fname = item.fname
@@ -434,11 +375,12 @@ el-form-item{
   margin-bottom: 20px;
 
   .materiel-code {
+    margin-right: 5px;
     font-weight: bold;
     font-size: 14px;
     color: #606266;
     line-height: 40px;
-    padding: 0 12px 0 0;
+    min-width: 65px;
   }
 
   .input-width {

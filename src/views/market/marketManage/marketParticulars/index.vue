@@ -7,29 +7,64 @@
             <jc-form :option-value="organizationValue" :options="organization" />
           </div>
         </div>
-        <div class="table-content">
-          <jc-table
-            :table-data="tableData"
-            :table-header="tableHeader"
-            :cell-style="cellStyle"
-          >
-            <el-table-column prop="fnumber" label="物料编码" min-width="100" align="center" />
-            <el-table-column prop="fdescripTion" label="物料描述" min-width="300" align="center" />
-            <el-table-column prop="funit" label="基本单位" min-width="80" align="center" />
-            <el-table-column prop="fprice" label="产品单价" align="center" />
-            <el-table-column prop="fqty" label="产品数量" align="center" />
-            <el-table-column prop="totalPrice" label="总价" align="center" />
-            <el-table-column prop="fsettleCurr" label="币别" align="center" />
-            <el-table-column prop="fdeliveryDate" label="交货日期" min-width="80" align="center" />
-            <el-table-column prop="fvolume" label="产品体积" align="center" />
-            <el-table-column prop="fisFree" label="是否赠品" align="center">
-              <template slot-scope="scope">
-                <el-checkbox v-model="scope.row.fisFree" disabled />
-              </template>
-            </el-table-column>
-            <el-table-column prop="ftaxRate" label="税率" align="center" />
-          </jc-table>
-        </div>
+        <el-tabs>
+          <el-tab-pane label="明细信息">
+            <jc-table
+              :table-data="saleDetails"
+              :table-header="tableHeader"
+              :cell-style="cellStyle"
+            >
+              <el-table-column prop="fnumber" label="物料编码" min-width="100" align="center" />
+              <el-table-column prop="fdescripTion" label="物料描述" min-width="300" align="center" :show-overflow-tooltip="true" />
+              <el-table-column prop="funit" label="基本单位" min-width="80" align="center" />
+              <el-table-column prop="fprice" label="产品单价" align="center" />
+              <el-table-column prop="fqty" label="产品数量" align="center" />
+              <el-table-column prop="totalPrice" label="总价" align="center" />
+              <el-table-column prop="fsettleCurr" label="币别" align="center" />
+              <el-table-column prop="fdeliveryDate" label="交货日期" min-width="80" align="center" />
+              <el-table-column prop="fvolume" label="产品体积" align="center" />
+              <el-table-column prop="fisFree" label="是否赠品" align="center">
+                <template slot-scope="scope">
+                  <el-checkbox v-model="scope.row.fisFree" disabled />
+                </template>
+              </el-table-column>
+              <el-table-column prop="ftaxRate" label="税率" align="center" />
+            </jc-table>
+          </el-tab-pane>
+          <el-tab-pane label="收款计划">
+            <jc-table
+              :table-data="planDetails"
+              :table-header="tableHeader1"
+              serial
+              :cell-style="cellStyle"
+            >
+              <el-table-column label="是否预收" prop="fqty" align="center" width="80px">
+                <template slot-scope="scope">
+                  <el-checkbox v-model="scope.row.fneedRecAdvance" :value="scope.row.fneedRecAdvance" />
+                </template>
+              </el-table-column>
+              <el-table-column label="应收比例%" align="center">
+                <template slot-scope="scope">
+                  <el-input-number
+                    v-model="scope.row.frecAdvanceRate"
+                    :min="0"
+                    :max="100"
+                    size="mini"
+                  />
+                </template>
+              </el-table-column>
+              <el-table-column label="应收金额" align="center">
+                <template slot-scope="scope">
+                  <el-input-number
+                    v-model="scope.row.frecAdvanCeamount"
+                    :min="0"
+                    size="mini"
+                  />
+                </template>
+              </el-table-column>
+            </jc-table>
+          </el-tab-pane>
+        </el-tabs>
       </el-tab-pane>
       <el-tab-pane label="其他">
         <h1>待开发</h1>
@@ -54,8 +89,10 @@ export default {
     return {
       // 表头
       cellStyle: { padding: '10 10' }, // 行高
-      tableData: [], // 销售数据
+      saleDetails: [], // 销售数据
       tableHeader: [],
+      planDetails: [], // 收款计划
+      tableHeader1: [],
       // 表单
       organizationValue: {}, // 表单组织值
       organization: {} // 表单组织控件
@@ -70,7 +107,8 @@ export default {
       const id = this.$route.params.id
       const DATA = { fid: id }
       const { data: RES } = await queryTSalOrderNtry(DATA)
-      this.tableData = RES.detail
+      this.saleDetails = RES.saleDetails
+      this.planDetails = RES.planDetails
       if (RES.fcloseStatus === 'A') {
         RES.fcloseStatus = '正常'
       } else {
@@ -96,6 +134,9 @@ export default {
         }, fsettleCurr: {
           label: '结算货币',
           disabled: 'disabled'
+        }, frecCondition: {
+          label: '收款条件',
+          disabled: 'disabled'
         }, fsaleDept: {
           label: '销售部门',
           disabled: 'disabled'
@@ -108,11 +149,14 @@ export default {
         }, fexchangeType: {
           label: '汇率类型',
           disabled: 'disabled'
-        }, fexchangeRate: {
-          label: '税率',
-          disabled: 'disabled'
         }, flocalCurr: {
           label: '本位币',
+          disabled: 'disabled'
+        }, fexchangeRate: {
+          label: '汇率',
+          disabled: 'disabled'
+        }, fpriceList: {
+          label: '价目表',
           disabled: 'disabled'
         }, fpaezText: {
           label: '柜型',
@@ -126,17 +170,16 @@ export default {
         }, fpaezCombo: {
           label: '品质标准',
           disabled: 'disabled'
+        }, fnote: {
+          label: '备注',
+          type: 'textarea',
+          disabled: 'disabled'
+        }, fisIncludedTax: {
+          label: '是否含税',
+          type: 'checkbox',
+          disabled: 'disabled'
         }
       }
-    },
-    // 搜索
-    handleQuerySonClass() {
-      this.pageNum = 1
-      this.getSonClass()
-    },
-    // 订单详情
-    particulars(id) {
-
     }
   }
 }

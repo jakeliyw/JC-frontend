@@ -8,7 +8,6 @@
           class="input-content"
           placeholder="请输入供应商名称"
           @keyup.enter.native="handleQueryRefuse"
-          size="mini"
         />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryRefuse">搜索</el-button>
         <el-button type="primary" size="mini" class="btn" @click="addPriceList">新增价目</el-button>

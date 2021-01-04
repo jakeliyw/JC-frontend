@@ -8,7 +8,6 @@
           class="input-content"
           placeholder="请输入价目表名称"
           @keyup.enter.native="handleQueryUntreated"
-          size="mini"
         />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
       </div>

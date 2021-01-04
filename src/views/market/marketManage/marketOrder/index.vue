@@ -40,7 +40,7 @@
             <el-tag v-else type="info">已关闭</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="attributeArray" label="操作" min-width="120" align="center">
+        <el-table-column prop="attributeArray" label="操作" min-width="100px" align="center" fixed="right">
           <template slot-scope="scope">
             <el-button type="primary" class="btn" size="medium" @click="particulars(scope.row.fid)">详情</el-button>
           </template>

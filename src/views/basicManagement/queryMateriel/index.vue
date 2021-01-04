@@ -82,7 +82,7 @@ import { queryMaterialDetail } from '@/api/basicManagement/materielList'
 import { queryMaterialLog } from '@/api/basicManagement/editMateriel'
 
 export default {
-  name: 'Index',
+  name: 'QueryMateriel',
   components: {
     jcForm,
     jcOther,

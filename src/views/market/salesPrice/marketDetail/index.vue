@@ -14,7 +14,7 @@
             :cell-style="cellStyle"
           >
             <el-table-column prop="fnumber" label="物料编码" min-width="100" align="center" />
-            <el-table-column prop="fdescripTion" label="物料描述" min-width="300" align="center" />
+            <el-table-column prop="fdescripTion" label="物料描述" min-width="300" align="center" :show-overflow-tooltip="true" />
             <el-table-column prop="funit" label="基本单位" min-width="80" align="center" />
             <el-table-column prop="fpriceBase" label="价格系数" align="center" />
             <el-table-column prop="fprice" label="价格" align="center" />
@@ -95,11 +95,6 @@ export default {
           disabled: 'disabled'
         }
       }
-    },
-    // 搜索
-    handleQuerySonClass() {
-      this.pageNum = 1
-      this.getSonClass()
     }
   }
 }
@@ -107,33 +102,5 @@ export default {
 <style lang="scss" scoped>
 .content {
   @include listBom;
-}
-.inTheBtn{
-  transform: translateY(-15px);
-}
-.tag-mar {
-  margin-right: 3px;
-  margin-bottom: 3px;
-}
-.tag-mar:hover {
-  cursor: pointer;
-}
-
-.el-tag + .el-tag {
-  margin-left: 10px;
-}
-
-.button-new-tag {
-  margin-left: 10px;
-  height: 32px;
-  line-height: 30px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-.input-new-tag {
-  width: 90px;
-  margin-left: 10px;
-  vertical-align: bottom;
 }
 </style>

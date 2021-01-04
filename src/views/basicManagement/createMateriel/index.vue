@@ -107,6 +107,9 @@
           </el-input>
         </jc-form>
       </el-tab-pane>
+      <el-tab-pane label="信息" name="information">
+        <jc-information></jc-information>
+      </el-tab-pane>
       <el-tab-pane label="其它" name="log">
         <jc-other
           :other-url-object="{}"
@@ -269,6 +272,7 @@ import jcPagination from '@/components/Pagination'
 import jcPopup from '@/views/basicManagement/createMateriel/components/Popup'
 import jcOther from '@/components/Other'
 import jcFormFunction from '@/components/Form/FormFunction'
+import jcInformation from './components/Information'
 import {
   queryTOrgOrganizationsL,
   queryFweightList,
@@ -290,13 +294,14 @@ export default {
     jcPopup,
     jcTable,
     jcPagination,
-    jcOther
+    jcOther,
+    jcInformation
   },
   mixins: [jcFormFunction],
   data() {
     return {
       actionUrl: '/tBdMaterial/insertMaterialDetail',
-      activeName: 'basic', // 选项卡默认
+      activeName: 'information', // 选项卡默认
       openDialog: false, // 重量、单位、尺寸弹窗
       openMaterial: false, // 物料弹窗
       FDESCRIPTION: '', // 描述后端返回值
@@ -384,23 +389,14 @@ export default {
       thereMaterial: {} // 三类物料控件
     }
   },
-  computed: {
-    newObj() {
-      const { FLENGTH, FWIDTH, FHEIGHT } = this.dimensionalValue
-      return { FLENGTH, FWIDTH, FHEIGHT }
-    }
-  },
   watch: {
-    newObj(val) {
-      this.dimensionalValue.FLENGTH = val.FLENGTH
-      this.dimensionalValue.FWIDTH = val.FWIDTH
-      this.dimensionalValue.FHEIGHT = val.FHEIGHT
-      const { FLENGTH, FWIDTH, FHEIGHT } = val
-      const LONG = JSON.stringify(FLENGTH)
-      const WIDE = JSON.stringify(FWIDTH)
-      const HIGH = JSON.stringify(FHEIGHT)
-      const SIZE = ''
-      this.basicValue.FDESCRIPTION = SIZE.concat(`${this.FDESCRIPTION}*${LONG}`, `*${WIDE}`, `*${HIGH}`)
+    dimensionalValue: {
+      handler(val) {
+        const { FLENGTH, FWIDTH, FHEIGHT } = val
+        const SIZE = ''
+        this.basicValue.FDESCRIPTION = SIZE.concat(`${this.FDESCRIPTION}*${FLENGTH}`, `*${FWIDTH}`, `*${FHEIGHT}`)
+      },
+      deep: true
     }
   },
   mounted() {
@@ -547,20 +543,6 @@ export default {
         LargeCode: this.oneMaterialValue.LargeCode,
         MediumCode: this.toMaterialValue.MediumCode,
         SmallCode,
-        // 旧物料编码
-        FOLDNUMBER: this.basicValue.FOLDNUMBER,
-        // 条码
-        FBARCODE: this.basicValue.FBARCODE,
-        // 型号
-        FMODEL: this.basicValue.FMODEL,
-        // 套件(环保等级)
-        FPROTECT: this.basicValue.FSUITE,
-        // 物料描述
-        FDESCRIPTION: this.basicValue.FDESCRIPTION,
-        // 基本单位
-        FBASEUNITID: this.basicValue.FNAME,
-        // 物料类型
-        FERPCLSID: this.basicValue.FERPCLSID,
         // 允许采购
         FISPURCHASE: this.purchaseChecked,
         // 允许销售
@@ -573,20 +555,9 @@ export default {
         FISSUBCONTRACT: this.outsourcingChecked,
         // 允许资产
         FISASSET: this.assetsChecked,
-        // 重量单位
-        FGROSSWEIGHT: this.weightValue.FGROSSWEIGHT,
-        FNETWEIGHT: this.weightValue.FNETWEIGHT,
-        // 重量单位ID
-        FWEIGHTUNITID: this.weightValue.FWEIGHTUNITID,
-        // 尺寸单位
-        FLENGTH: this.dimensionalValue.FLENGTH,
-        FWIDTH: this.dimensionalValue.FWIDTH,
-        FHEIGHT: this.dimensionalValue.FHEIGHT,
-        FVOLUME: this.dimensionalValue.FVOLUME,
-        FVOLUMEUNITID: this.dimensionalValue.FVOLUMEUNITID,
-        FTHICKNESS: this.dimensionalValue.FTHICKNESS,
         FATTRIBTTE
       }
+      Object.assign(this.basicValue, DATA, this.dimensionalValue, this.weightValue)
       for (const key in DATA) {
         if (DATA[key] === '' || DATA[key] === undefined) {
           this.$message.error('内容输入不完整，请重新输入！')
@@ -760,12 +731,12 @@ export default {
         }
       }
       this.basicValue = {
-        FNAME: '',
+        FBASEUNITID: '',
         FNUMBER: '',
         FOLDNUMBER: '',
         FBARCODE: '',
         FERPCLSID: '',
-        FSUITE: '',
+        FPROTECT: '',
         FMODEL: '',
         FDESCRIPTION: '',
         FREMARKS: ''
@@ -797,7 +768,7 @@ export default {
             { required: true, message: '条码不能为空', trigger: 'blur' }
           ]
         },
-        FNAME: {
+        FBASEUNITID: {
           label: '基本单位',
           type: 'select',
           selectItems: BasicUnit,
@@ -806,7 +777,7 @@ export default {
             { required: true, message: '请选择基本单位', trigger: 'change' }
           ]
         },
-        FSUITE: {
+        FPROTECT: {
           label: '环保等级',
           type: 'select',
           selectItems: kitRes,

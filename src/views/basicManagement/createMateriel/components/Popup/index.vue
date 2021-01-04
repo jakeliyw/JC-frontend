@@ -39,7 +39,11 @@ export default {
     event: 'input'
   },
   props: {
-    initValue: String,
+    initValue: {
+      type: String,
+      default: ''
+    },
+
     width: {
       type: String,
       default: '60vw'

@@ -64,3 +64,27 @@ export function againReviewPrice(data) {
     data
   })
 }
+// 未处理销售价目审核(销售主管,财务)
+export function reviewPrice(data) {
+  return request({
+    url: '/tSalPricelist/reviewPrice',
+    method: 'put',
+    data
+  })
+}
+// 审核不通过销售价目审核(销售主管,财务)
+export function notReviewPrice(data) {
+  return request({
+    url: '/tSalPricelist/notReviewPrice',
+    method: 'put',
+    data
+  })
+}
+// 修改销售价目表
+export function updateSalPrice(data) {
+  return request({
+    url: '/tSalPricelist/updateSalPrice',
+    method: 'put',
+    data
+  })
+}

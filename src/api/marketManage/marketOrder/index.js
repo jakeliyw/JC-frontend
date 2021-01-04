@@ -152,3 +152,12 @@ export function againReviewSalorder(data) {
     data
   })
 }
+
+// 修改销售订单
+export function updateSalOrder(data) {
+  return request({
+    url: '/tSalOrder/updateSalOrder',
+    method: 'put',
+    data
+  })
+}

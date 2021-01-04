@@ -3,35 +3,11 @@
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane v-for="(item, index) of oneMaterielData" :key="index" :label="item.largeName" :name="item.largeCode">
         <div class="codeRule">
-          <div style="font-weight: 600;margin-top: 16px;padding-left: 5px">1.编码:(10位) 2 + 2 + 2 + 4</div>
+          <div style="font-weight: 600;padding: 12px 5px;">1.编码:(10位) 2 + 2 + 2 + 4
+            ( 2位大类数字 + 2位中类数字 + 2位小类数字 + 4位流水号数字 )
+          </div>
           <hr class="hrBag">
-          <ul class="rule">
-            <li>
-              <div>□□</div>
-              <div>2位数字</div>
-              <div>大类</div>
-            </li>
-            <li class="jia">+</li>
-            <li>
-              <div>□□</div>
-              <div>2位数字</div>
-              <div>中类</div>
-            </li>
-            <li class="jia">+</li>
-            <li>
-              <div>□□</div>
-              <div>2位数字</div>
-              <div>小类</div>
-            </li>
-            <li class="jia">+</li>
-            <li>
-              <div>□□</div>
-              <div>4位数字</div>
-              <div>流水号</div>
-            </li>
-          </ul>
-          <hr class="hrBag">
-          <div style="font-weight: 600;padding-bottom: 8px;padding-left: 5px">2.编码规则说明：</div>
+          <div style="font-weight: 600;padding: 12px 5px;">2.编码规则说明：</div>
         </div>
         <div class="table-content">
           <el-table
@@ -93,7 +69,7 @@ export default {
   name: 'CodeComparative',
   data() {
     return {
-      activeName: '10', // 第一个选项卡
+      activeName: '50', // 第一个选项卡
       attributeArray: [], // 物料属性
       typeArray: [], // 小类
       LargeCode: '10', // 选择的大类名称
@@ -165,7 +141,31 @@ export default {
     // 查询大类列表
     async queryLargeList() {
       const { data: RES } = await queryLargeList()
-      this.oneMaterielData = RES
+      for (const item of RES) {
+        if (item.largeName.indexOf('成品-') !== -1) {
+          this.oneMaterielData.push(item)
+        }
+      }
+      for (const item of RES) {
+        if (item.largeName.indexOf('成品部件') !== -1) {
+          this.oneMaterielData.push(item)
+        }
+      }
+      for (const item of RES) {
+        if (item.largeName.indexOf('半成品') !== -1) {
+          this.oneMaterielData.push(item)
+        }
+      }
+      for (const item of RES) {
+        if (item.largeName.indexOf('主材') !== -1 || item.largeName.indexOf('五金') !== -1 || item.largeName.indexOf('功能') !== -1) {
+          this.oneMaterielData.push(item)
+        }
+      }
+      for (const item of RES) {
+        if (item.largeName.indexOf('主材') === -1 && item.largeName.indexOf('五金') === -1 && item.largeName.indexOf('功能') === -1 && item.largeName.indexOf('半成品') === -1 && item.largeName.indexOf('成品部件') === -1 && item.largeName.indexOf('成品-') === -1) {
+          this.oneMaterielData.push(item)
+        }
+      }
       this.getRoleList()
     }
   }
@@ -251,23 +251,7 @@ export default {
     .hrBag {
       background-color: #ddd;
       height:1px; border:none;
-    }
-    .rule{
-      padding: 0 0 0 5px;
-      list-style: none;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
       margin: 0;
-      li{
-        padding: 0 10px;
-        width: 80px;
-        text-align: center;
-      }
-      .jia{
-        text-align: center;
-        width: 20px;
-      }
     }
   }
 }

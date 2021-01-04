@@ -7,6 +7,7 @@
           v-model.trim="fname"
           class="input-content"
           placeholder="请输入价目名称"
+          size="mini"
           @keyup.enter.native="handleQuerySonClass"
         />
         <el-button type="primary" class="btn" size="medium" @click="handleQuerySonClass">搜索</el-button>
@@ -30,12 +31,12 @@
         <el-table-column prop="fcurrency" label="币别" min-width="80" align="center" />
         <el-table-column prop="fisIncludedTax" label="含税" min-width="100" align="center">
           <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.fisIncludedTax" disabled></el-checkbox>
+            <el-checkbox v-model="scope.row.fisIncludedTax" disabled />
           </template>
         </el-table-column>
         <el-table-column prop="fpriceObject" label="价目对象" min-width="80" align="center" />
         <el-table-column prop="fcreateDate" label="创建时间" min-width="80" align="center" />
-        <el-table-column prop="attributeArray" label="操作" min-width="120" align="center">
+        <el-table-column prop="attributeArray" label="操作" min-width="120" align="center" fixed="right">
           <template slot-scope="scope">
             <el-button type="primary" class="btn" size="medium" @click="particulars(scope.row.fid)">详情</el-button>
           </template>
@@ -105,34 +106,5 @@ export default {
 <style lang="scss" scoped>
 .content {
   @include listBom;
-}
-.inTheBtn{
-  transform: translateY(-15px);
-}
-.tag-mar {
-  margin-right: 3px;
-  margin-bottom: 3px;
-}
-
-.tag-mar:hover {
-  cursor: pointer;
-}
-
-.el-tag + .el-tag {
-  margin-left: 10px;
-}
-
-.button-new-tag {
-  margin-left: 10px;
-  height: 32px;
-  line-height: 30px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-.input-new-tag {
-  width: 90px;
-  margin-left: 10px;
-  vertical-align: bottom;
 }
 </style>
