@@ -12,9 +12,10 @@
                 :label="option.FNAME"
                 :value="option.FPKID"
               />
-            </el-select></el-form-item>
+            </el-select>
+          </el-form-item>
           <el-form-item label="价目表名称" prop="fname">
-            <el-input v-model.trim="prodValue.fname" placeholder="请输入价目表名称"  size="mini"/>
+            <el-input v-model.trim="prodValue.fname" placeholder="请输入价目表名称" size="mini" />
           </el-form-item>
           <el-form-item label="币别" prop="fcurrencyId">
             <el-input v-model.trim="prodValue.fcurrencyIdName" placeholder="请选择币别" size="mini">
@@ -23,9 +24,10 @@
                 class="el-input__icon el-icon-search"
                 @click="queryTBdCurrency()"
               />
-            </el-input></el-form-item>
+            </el-input>
+          </el-form-item>
           <el-form-item label="备注" prop="fdescription">
-            <el-input v-model.trim="prodValue.fdescription" type="textarea" placeholder="请填写备注"  size="mini"/></el-form-item>
+            <el-input v-model.trim="prodValue.fdescription" type="textarea" placeholder="请填写备注" size="mini" /></el-form-item>
           <el-form-item label="是否含税">
             <el-checkbox v-model="prodValue.fisIncludedTax" />
           </el-form-item>
@@ -288,7 +290,9 @@ export default {
     },
     // 打开物料编码
     async handleGetMateriel(row, index) {
-      this.tableIndex = index
+      if (index) {
+        this.tableIndex = index
+      }
       if (index === this.prodValue.priceDetails.length - 1) {
         this.prodValue.priceDetails.push(
           { fmaterialId: '', funitId: '', fmaterialTypeId: '', fpriceBase: '', fprice: '', fdownPrice: '' }

@@ -34,7 +34,7 @@
       <jc-pagination
         v-show="total > 0"
         :total="total"
-        :page.sync="currentPage"
+        :page.sync="pageNum"
         :limit.sync="size"
         @pagination="handleGetData"
       />
@@ -57,7 +57,7 @@ export default {
     return {
       fname: '', // 产品描述
       total: 0, // 总条目
-      currentPage: 0, // 当前页
+      pageNum: 0, // 当前页
       size: 10, // 每页显示多少条数据
       // 表头
       tableHeader: [
@@ -80,7 +80,7 @@ export default {
   methods: {
     // 获取列表数据
     async handleGetData() {
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, fname: this.fname }
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, fname: this.fname }
       const { data: RES } = await queryReviewPurPatList(DATA)
       this.tableData = RES.array
       this.total = RES.total

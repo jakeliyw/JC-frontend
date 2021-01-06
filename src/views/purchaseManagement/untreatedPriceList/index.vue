@@ -35,7 +35,7 @@
       <jc-pagination
         v-show="total > 0"
         :total="total"
-        :page.sync="currentPage"
+        :page.sync="pageNum"
         :limit.sync="size"
         @pagination="handleGetUntreated"
       />
@@ -59,7 +59,7 @@ export default {
     return {
       fsupplier: '', // 产品描述
       total: 0, // 总条目
-      currentPage: 1, // 当前页
+      pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
       tableHeader: [
         { label: '价目编码', prop: 'fnumber', align: 'center' },
@@ -81,7 +81,7 @@ export default {
   methods: {
     // 获取列表数据
     async handleGetUntreated() {
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, fsupplier: this.fsupplier }
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, fsupplier: this.fsupplier }
       const { data: RES } = await queryUntreatePurPriceList(DATA)
       this.tableData = RES.array
       this.total = RES.total

@@ -49,7 +49,7 @@
       <jc-pagination
         v-show="total > 0"
         :total="total"
-        :page.sync="currentPage"
+        :page.sync="pageNum"
         :limit.sync="size"
         @pagination="handleGetBomList"
       />
@@ -72,7 +72,7 @@ export default {
     return {
       FNUMBER: '', // 产品描述
       total: 0, // 总条目
-      currentPage: 1, // 当前页
+      pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
       // 表头
       tableHeader: [
@@ -95,11 +95,11 @@ export default {
   methods: {
     // 进入物料主数据
     jumpMateriel(fname) {
-      this.$router.push({ path: `/queryMateriel/${fname}` })
+      this.$router.push({ path: `/detailMateriel/${fname}` })
     },
     // 获取列表数据
     async handleGetBomList() {
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, FNUMBER: this.FNUMBER }
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, FNUMBER: this.FNUMBER }
       const { data: RES, total } = await queryFailBomList(DATA)
       this.tableData = RES
       this.total = total

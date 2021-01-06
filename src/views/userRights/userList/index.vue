@@ -34,7 +34,7 @@
       <jc-pagination
         v-show="total > 0"
         :total="total"
-        :page.sync="currentPage"
+        :page.sync="pageNum"
         :limit.sync="size"
         @pagination="handleQueryUserList"
       />
@@ -58,7 +58,7 @@ export default {
     return {
       FNAME: '',
       total: 0, // 总条目
-      currentPage: 1, // 当前页
+      pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
       tableData: [], // 列表数据
       userDisable: true,
@@ -91,7 +91,7 @@ export default {
       this.getUserList()
     },
     async getUserList() {
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, FNAME: this.FNAME }
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, FNAME: this.FNAME }
       const { data: res, total } = await queryTEngBomList(DATA)
       this.tableData = res.map(item => {
         return userDisable(item)

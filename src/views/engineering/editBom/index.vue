@@ -129,7 +129,7 @@
         <jc-pagination
           v-show="total > 0"
           :total="total"
-          :page.sync="currentPage"
+          :page.sync="pageNum"
           :limit.sync="size"
           @pagination="handleOther"
         />
@@ -176,7 +176,7 @@
       <jc-pagination
         v-show="total > 0"
         :total="total"
-        :page.sync="currentPage"
+        :page.sync="pageNum"
         :limit.sync="size"
         @pagination="btnSearch"
       />
@@ -214,7 +214,7 @@ export default {
   data() {
     return {
       total: 1, // 总条目
-      currentPage: 1, // 当前页
+      pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
       parentTableVisible: false, // 父项弹窗
       cellStyle: { padding: '10 10' }, // 行高
@@ -318,7 +318,7 @@ export default {
     },
     // 清空弹窗数据
     closeFun() {
-      this.currentPage = 1
+      this.pageNum = 1
       this.FNUMBER = ''
     },
     // 获取组织数据
@@ -354,7 +354,7 @@ export default {
     },
     // 隐藏显示日志, 获取表单数据
     async handleOther() {
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, FID: this.FID }
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, FID: this.FID }
       const RES = await queryBomLog(DATA)
       this.otherUrlObject = RES.operator
       this.otherLogTableData = RES.log
@@ -372,7 +372,7 @@ export default {
     },
     async btnSearch() {
       const DATA = {
-        pageNum: this.currentPage,
+        pageNum: this.pageNum,
         pageSize: this.size,
         fnumber: this.FNUMBER,
         fdescription: this.FDESCRIPTION,
@@ -401,7 +401,7 @@ export default {
           }
         )
       }
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, FNUMBER: this.FNUMBER }
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, FNUMBER: this.FNUMBER }
       const { data: RES, total } = await queryBomSonList(DATA)
       this.sonDialogTableData = RES.map(item => {
         return (toMxAmina(item), Disable(item))
@@ -411,8 +411,7 @@ export default {
     },
     // 选中子项弹窗表格行
     async sonSelectRow(item) {
-      const fmateriAalId = item.FMATERIALID
-      const { data: RES } = await queryMaterialSon({ fmateriAalId })
+      const { data: RES } = await queryMaterialSon({ fmateriAalId: item.FMATERIALID })
       this.sonTableData[this.tableIndex].FMATERIALID = RES.FMATERIALID
       this.sonTableData[this.tableIndex].FNUMBER = RES.FNUMBER
       this.sonTableData[this.tableIndex].FDESCRIPTION = RES.FDESCRIPTION
@@ -476,7 +475,7 @@ export default {
         this.$router.push({ path: `/detailBom/${FNUMBER}` })
         this.$message.success('进入bom')
       } else {
-        this.$router.push({ path: `/queryMateriel/${fMaterialId}` })
+        this.$router.push({ path: `/detailMateriel/${fMaterialId}` })
         this.$message.success('进入物料清单')
       }
     },

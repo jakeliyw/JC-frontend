@@ -72,6 +72,7 @@ export default {
     closeDialog() {
       this.$emit('closeDialog')
     },
+    // 清空搜索条件
     closeFun() {
       this.value = ''
       this.$emit('emptyForm')

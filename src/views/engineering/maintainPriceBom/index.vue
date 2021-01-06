@@ -11,39 +11,38 @@
           @keyup.enter.native="handleQueryBomList"
         />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryBomList">搜索</el-button>
+        <el-button type="primary" class="btn" size="mini" @click="renovate()">更新全部</el-button>
       </div>
     </div>
     <div class="table-content">
       <el-table
         :data="tableData"
         border
-        @row-click="openDetails"
+        row-key="loking"
+        :tree-props="{children: 'child', hasChildren: 'hasChildren'}"
+        :header-cell-style="{background:'#E6EBFC', fontSize: '13px'}"
       >
-        <el-table-column type="expand">
-          <template slot-scope="props">
-            <el-table :data="props.row.tableData1" border :show-header="false" row-key="fnumber" :tree-props="{children: 'child', hasChildren: 'hasChildren'}">>
-              <el-table-column prop="index" label="序号" align="center" width="80px" />
-              <el-table-column prop="fnumber" label="物料编码" align="center" :show-overflow-tooltip="true" />
-              <el-table-column prop="fdescripTion" label="物料描述" align="center" min-width="200px" :show-overflow-tooltip="true" />
-              <el-table-column prop="fmaterialCost" label="单价" align="center">
-                <template slot-scope="scope">
-                  <el-input v-model="scope.row.fmaterialCost" :disabled="!scope.row.flg" />
-                </template>
-              </el-table-column>
-              <el-table-column prop="fcreateDate" label="生效时间" align="center" />
-              <el-table-column label="操作" align="center">
-                <template slot-scope="scope">
-                  <el-button v-if="scope.row.flg" type="primary" size="mini" @click="getIntoBom(scope.row.fnumber)">更新金额</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </template>
-        </el-table-column>
         <el-table-column prop="index" label="序号" align="center" />
         <el-table-column prop="fnumber" label="物料编码" align="center" :show-overflow-tooltip="true" />
         <el-table-column prop="fdescripTion" label="物料描述" align="center" min-width="200px" :show-overflow-tooltip="true" />
-        <el-table-column prop="fmaterialCost" label="单价" align="center" />
-        <el-table-column prop="fcreateDate" label="生效时间" align="center" />
+        <el-table-column prop="fdosage" label="用量" align="center" min-width="150px">
+          <template slot-scope="scope">
+            <el-input-number v-model="scope.row.fdosage" :min="0"  size="mini" />
+          </template>
+        </el-table-column>
+        <el-table-column prop="fprice" label="单价" align="center" min-width="150px">
+          <template slot-scope="scope">
+            <el-input-number v-if="Number(scope.row.fprice) <= Number(scope.row.fixedPrice)" v-model="scope.row.fprice" :disabled="!scope.row.flg" :min="0" :max="scope.row.fixedPrice" size="mini" />
+            <el-input-number v-if="Number(scope.row.fprice) > Number(scope.row.fixedPrice)" v-model="scope.row.fprice" :disabled="!scope.row.flg" :min="0" :max="scope.row.fprice" size="mini" />
+          </template>
+        </el-table-column>
+        <el-table-column prop="flaborCost" label="人工成本" align="center" />
+        <el-table-column prop="fcreateDate" label="生效时间" align="center" :show-overflow-tooltip="true" />
+        <el-table-column label="操作" align="center" fixed="right" min-width="90px">
+          <template slot-scope="scope">
+            <el-button v-if="scope.row.levels == '1'" type="primary" size="mini" @click="renovateAlone(scope.row)">更新</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <!--    分页器-->
@@ -60,17 +59,16 @@
 </template>
 
 <script>
-import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
-import { queryFtypeInfo } from '@/api/engineering/deitalBom'
 import { queryBomPriceList,
-  queryBomChildPriceList } from '@/api/engineering/maintainPriceBom'
+  renovateBom,
+  renovateAloneBom
+} from '@/api/engineering/maintainPriceBom'
 export default {
   name: 'MaintainPriceBom',
   inject: ['reload'],
   components: {
-    jcPagination,
-    jcTable
+    jcPagination
   },
   data() {
     return {
@@ -93,9 +91,23 @@ export default {
       const DATA = { pageNum: this.currentPage, pageSize: this.size, fnumber: this.fnumber }
       const { data: RES } = await queryBomPriceList(DATA)
       this.tableData = RES.array
+      // 添加序号
       this.tableData.map((item, index) => {
-        item.index = index + 1
-        item.tableData1 = []
+        item.index = index + 1 // 一级列表序号 1,2
+        item.fixedPrice = item.fprice
+        item.child.map((ite, index1) => {
+          ite.index = item.index + '-' + (index1 + 1) // 二级列表序号 1-1
+          if (ite.child) {
+            ite.child.map((it, index2) => {
+              it.index = ite.index + '-' + (index2 + 1) // 三级列表序号 1-1-1
+              if (it.child) {
+                it.child.map((i, index3) => {
+                  i.index = it.index + '-' + (index3 + 1) // 四级列表序号 1-1-1-1
+                })
+              }
+            })
+          }
+        })
       })
       this.total = RES.total
     },
@@ -104,18 +116,55 @@ export default {
       this.pageNum = 1
       this.handleGetBomList()
     },
-    // 更新金额
-    async getIntoBom(fnumber) {
-      // const { FTYPE, fMaterialId } = await queryFtypeInfo({ fnumber: fnumber })
-    },
-    // 点击行获取下级数据
-    openDetails(row, column, event) {
-      const DATA = { fid: row.fid }
-      queryBomChildPriceList(DATA).then(res => {
-        res.data.map((item, index) => {
-          item.index = index + 1
+    // 更新单个金额
+    async renovateAlone(data) {
+      const DATA = {}
+      DATA.fmaterialId = data.fmaterialId
+      DATA.fnumber = data.fnumber
+      DATA.fprice = data.fprice
+      DATA.fid = data.fid
+      DATA.fdosage = data.fdosage
+      DATA.flaborCost = data.flaborCost
+      DATA.child = []
+      data.child.map(item => {
+        DATA.child.push({
+          fmaterialId: item.fmaterialId,
+          fnumber: item.fnumber,
+          fprice: item.fprice,
+          fid: item.fid,
+          fdosage: item.fdosage,
+          flaborCost: item.flaborCost,
+          child: item.child
         })
-        this.tableData[row.index - 1].tableData1 = res.data
+      })
+      await renovateAloneBom(DATA).then(res => {
+        if (res.code === 0) {
+          this.$message.success(res.message)
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
+    // 更新全部金额
+    async renovate() {
+      const DATA = []
+      this.tableData.map(item => {
+        DATA.push({
+          fmaterialId: item.fmaterialId,
+          fnumber: item.fnumber,
+          fprice: item.fprice,
+          fid: item.fid,
+          fdosage: item.fdosage,
+          flaborCost: item.flaborCost,
+          child: item.child
+        })
+      })
+      await renovateBom(DATA).then(res => {
+        if (res.code === 0) {
+          this.$message.success(res.message)
+        } else {
+          this.$message.error(res.message)
+        }
       })
     }
   }

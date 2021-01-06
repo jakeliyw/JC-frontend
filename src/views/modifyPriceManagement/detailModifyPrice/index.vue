@@ -170,8 +170,7 @@ export default {
   },
   methods: {
     async getForm() {
-      const FID = this.$route.params.id
-      const { data: RES } = await queryTPurPatDetailList({ fid: FID })
+      const { data: RES } = await queryTPurPatDetailList({ fid: this.$route.params.id })
       this.modifyPriceTable = RES.detail
       const { data: TEAMlIST } = await queryTOrgOrganizationsL()
       this.teamList = TEAMlIST.map(item => {

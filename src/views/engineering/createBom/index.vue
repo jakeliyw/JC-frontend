@@ -211,14 +211,14 @@
       <jc-pagination
         v-if="isTable === 'parentTableData'"
         :total="parentPagination.total"
-        :page.sync="parentPagination.currentPage"
+        :page.sync="parentPagination.pageNum"
         :limit.sync="parentPagination.size"
         @pagination="getMaterielList"
       />
       <jc-pagination
         v-else
         :total="sonPagination.total"
-        :page.sync="sonPagination.currentPage"
+        :page.sync="sonPagination.pageNum"
         :limit.sync="sonPagination.size"
         @pagination="btnSearch"
       />
@@ -271,13 +271,13 @@ export default {
       // 父分页
       parentPagination: {
         total: 0, // 总条目
-        currentPage: 1, // 当前页
+        pageNum: 1, // 当前页
         size: 10 // 每页显示多少条数据
       },
       // 子分页
       sonPagination: {
         total: 0, // 总条目
-        currentPage: 1, // 当前页
+        pageNum: 1, // 当前页
         size: 10 // 每页显示多少条数据
       },
       // 子项弹窗表格数据
@@ -381,20 +381,20 @@ export default {
     },
     // 清空弹窗数据
     closeFun() {
-      this.parentPagination.currentPage = 1
-      this.sonPagination.currentPage = 1
+      this.parentPagination.pageNum = 1
+      this.sonPagination.pageNum = 1
       this.FNUMBER = ''
       this.FDESCRIPTION = ''
       this.FSPECIFICATION = ''
     },
     // 父项搜索
     queryParentSearch() {
-      this.parentPagination.currentPage = 1
+      this.parentPagination.pageNum = 1
       this.getMaterielList()
     },
     // 子类搜索
     querySonSearch() {
-      this.sonPagination.currentPage = 1
+      this.sonPagination.pageNum = 1
       this.btnSearch()
     },
     // 隐藏显示日志
@@ -426,7 +426,7 @@ export default {
     async getMaterielList() {
       this.isTable = 'parentTableData'
       const DATA = {
-        pageNum: this.parentPagination.currentPage,
+        pageNum: this.parentPagination.pageNum,
         pageSize: this.parentPagination.size,
         fnumber: this.FNUMBER,
         fdescription: this.FDESCRIPTION,
@@ -442,7 +442,7 @@ export default {
     // 查询子类弹窗编码
     async btnSearch() {
       const DATA = {
-        pageNum: this.sonPagination.currentPage,
+        pageNum: this.sonPagination.pageNum,
         pageSize: this.sonPagination.size,
         fnumber: this.FNUMBER,
         fdescription: this.FDESCRIPTION,
@@ -476,7 +476,7 @@ export default {
           }
         )
       }
-      const DATA = { pageNum: this.sonPagination.currentPage, pageSize: this.sonPagination.size, FNUMBER: this.FNUMBER }
+      const DATA = { pageNum: this.sonPagination.pageNum, pageSize: this.sonPagination.size, FNUMBER: this.FNUMBER }
       const { data: RES, total } = await queryBomSonList(DATA)
       this.sonDialogTableData = RES.map(item => {
         return (toMxAmina(item), Disable(item))
@@ -487,8 +487,7 @@ export default {
     // 选中父项弹窗表格行
     async parentSelectRow(item) {
       this.FMATERIALID = item.FMATERIALID
-      const fmateriAalId = item.FMATERIALID
-      const { data: RES } = await queryMaterialfather({ fmateriAalId })
+      const { data: RES } = await queryMaterialfather({ fmateriAalId: this.FMATERIALID })
       this.prodValue = RES
       this.disabled = false
       this.iconIsShow = true
@@ -496,8 +495,7 @@ export default {
     },
     // 选中子项弹窗表格行
     async sonSelectRow(item) {
-      const fmateriAalId = item.FMATERIALID
-      const { data: RES } = await queryMaterialSon({ fmateriAalId })
+      const { data: RES } = await queryMaterialSon({ fmateriAalId: item.FMATERIALID })
       this.sonTableData[this.tableIndex].FMATERIALID = RES.FMATERIALID
       this.sonTableData[this.tableIndex].FNUMBER = RES.FNUMBER
       this.sonTableData[this.tableIndex].FPRICE = RES.FPRICE
@@ -507,7 +505,7 @@ export default {
     },
     // 保存列表数据
     async preservation() {
-      const sonTableData = this.sonTableData.map(item => {
+      const fTreeEntity = this.sonTableData.map(item => {
         const { FCREATEDATE, FDOSAGETYPE, FISSUETYPE, FMATERIALID, FMATERIALTYPE, FSEQ, FDOSAGE, FPRICE } = item
         item.FCREATEDATE = this.$moment(item.FCREATEDATE).format('YYYY-MM-DD HH:mm:ss')
         return { FCREATEDATE, FDOSAGETYPE, FISSUETYPE, FMATERIALID, FMATERIALTYPE, FSEQ, FDOSAGE, FPRICE }
@@ -518,7 +516,7 @@ export default {
         FUSEORGID: this.team,
         FLABORCOST: this.prodValue.FLABORCOST,
         FMATERIALID: this.FMATERIALID,
-        fTreeEntity: sonTableData
+        fTreeEntity
       }
       for (const item of DATA.fTreeEntity) {
         const ARRAY = Object.values(item)
@@ -561,7 +559,7 @@ export default {
         this.$router.push({ path: `/detailBom/${FNUMBER}` })
         this.$message.success('进入bom')
       } else {
-        this.$router.push({ path: `/queryMateriel/${fMaterialId}` })
+        this.$router.push({ path: `/detailMateriel/${fMaterialId}` })
         this.$message.success('进入物料清单')
       }
     },

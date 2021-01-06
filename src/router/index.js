@@ -150,12 +150,12 @@ export const asyncRouterMap = [
         menu: 'createMateriel'
       },
       {
-        path: '/queryMateriel/:id',
-        name: 'QueryMateriel',
-        component: () => import('@/views/basicManagement/queryMateriel'),
+        path: '/detailMateriel/:id',
+        name: 'DetailMateriel',
+        component: () => import('@/views/basicManagement/detailMateriel'),
         meta: { title: '查询物料' },
         hidden: true,
-        menu: 'queryMateriel'
+        menu: 'detailMateriel'
       },
       {
         path: '/untreatedMateriel',

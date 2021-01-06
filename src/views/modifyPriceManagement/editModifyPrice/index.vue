@@ -112,7 +112,7 @@
             </template>
           </el-table-column>
           <template v-slot:btnSlot="clo">
-            <el-button type="danger" size="mini" @click="handleDelete(clo.scope.row, clo.scope.$index)">删除调价</el-button>
+            <el-button type="danger" size="mini" @click="handleDelete(clo.scope.$index)">删除调价</el-button>
           </template>
         </jc-table>
       </el-tab-pane>
@@ -425,7 +425,7 @@ export default {
       this.handlePriceList()
     },
     // 删除行数据
-    handleDelete(item, index) {
+    handleDelete(index) {
       if (index === 0) {
         this.$message.error('不能删除首行数据')
         return
@@ -438,8 +438,7 @@ export default {
     },
     // 获取表格
     async getForm() {
-      const FID = this.$route.params.id
-      const { data: RES } = await queryTPurPatDetailList({ fid: FID })
+      const { data: RES } = await queryTPurPatDetailList({ fid: this.$route.params.id })
       this.modifyPriceTable = RES.detail
       const { data: TEAMlIST } = await queryTOrgOrganizationsL()
       this.teamList = TEAMlIST.map(item => {

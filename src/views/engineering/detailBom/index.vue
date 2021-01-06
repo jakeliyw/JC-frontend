@@ -114,7 +114,7 @@ import jcOther from '@/components/Other'
 import { queryBomchildList, queryFtypeInfo } from '@/api/engineering/deitalBom'
 import JumpMateriel from '@/components/JumpMateriel'
 export default {
-  name: 'Index',
+  name: 'DetailBom',
   components: {
     jcTable,
     jcForm,
@@ -123,9 +123,6 @@ export default {
   mixins: [JumpMateriel],
   data() {
     return {
-      total: 0, // 总条目
-      currentPage: 1, // 当前页
-      size: 10, // 每页显示多少条数据
       cellStyle: { padding: '10 10' }, // 行高
       activeName: 'product', // 默认主产品 product Other
       // 子表数据
@@ -186,7 +183,7 @@ export default {
         this.$router.push({ path: `/detailBom/${FNUMBER}` })
         this.$message.success('进入bom')
       } else {
-        this.$router.push({ path: `/queryMateriel/${fMaterialId}` })
+        this.$router.push({ path: `/detailMateriel/${fMaterialId}` })
         this.$message.success('进入物料清单')
       }
     },

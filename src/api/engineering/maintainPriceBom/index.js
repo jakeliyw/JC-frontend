@@ -16,3 +16,20 @@ export function queryBomChildPriceList(params) {
     params
   })
 }
+// 更新单个BOM单价
+export function renovateAloneBom(data) {
+  return request({
+    url: '/tEngBom/renovateAloneBom',
+    method: 'PUT',
+    data
+  })
+}
+// 更新全部BOM单价
+export function renovateBom(data) {
+  return request({
+    url: '/tEngBom/renovateBom',
+    method: 'PUT',
+    data
+  })
+}
+

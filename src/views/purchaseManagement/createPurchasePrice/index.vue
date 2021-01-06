@@ -269,9 +269,10 @@
       class="dialogClass"
       title="物料列表"
       model
-      :visible.sync="isMaterielDialog"
+      :visible.sync="openMaterialDialog"
       :close-on-click-modal="false"
       width="60%"
+      :before-close.sync="closeDialog"
     >
       <div class="materiel-form">
         <span class="materiel-code">物料编码</span>
@@ -294,7 +295,7 @@
         :total="materielPagination.total"
         :page.sync="materielPagination.pageNum"
         :limit.sync="materielPagination.pageSize"
-        @pagination="handleGetMateriel"
+        @pagination="getGetMateriel"
       />
     </el-dialog>
   </div>
@@ -413,8 +414,7 @@ export default {
       openSupplier: false, // 供应商弹窗
       dialogTitle: '', // 弹窗标题
       openCurrency: false, // 币别、价目表、价格类型
-      isMaterielDialog: false, // 物料弹窗
-      openMaterialDialog: false, // 物料编码
+      openMaterialDialog: false, // 物料弹窗
       FNUMBER: '', // 弹窗编码
       FDESCRIPTION: '', // 弹窗描述
       FSPECIFICATION: '', // 弹窗规格型号
@@ -555,14 +555,13 @@ export default {
     },
     // 物料弹窗选中
     async materielSelectRow(item) {
-      const fmateriAalId = item.FMATERIALID
-      const { data: RES } = await queryMaterialSon({ fmateriAalId })
+      const { data: RES } = await queryMaterialSon({ fmateriAalId: item.FMATERIALID })
       this.tableData[this.tableIndex].fmaterialId = RES.FNUMBER
       this.tableData[this.tableIndex].FMATERIALID = RES.FMATERIALID
       this.tableData[this.tableIndex].fmodel = RES.FSPECIFICATION
       this.tableData[this.tableIndex].FBASEUNIT = RES.FBASEUNIT
       this.tableData[this.tableIndex].fdescripTion = RES.FDESCRIPTION
-      this.isMaterielDialog = false
+      this.openMaterialDialog = false
     },
     // 币别弹窗搜索
     searchCurrency() {
@@ -618,8 +617,20 @@ export default {
         return { label: item.fcapTion, value: item.fpriceType }
       })
     },
+    // 获取物料编码
+    async getGetMateriel() {
+      const DATA = {
+        ...this.materielPagination,
+        fnumber: this.FNUMBER,
+        fdescription: this.FDESCRIPTION,
+        fspecification: this.FSPECIFICATION
+      }
+      const { data: RES, total } = await queryBomSonList(DATA)
+      this.materielDialogData = RES
+      this.materielPagination.total = total
+    },
     // 打开物料编码
-    async handleGetMateriel(row, index) {
+    handleGetMateriel(row, index) {
       this.tableIndex = index
       if (index === this.tableData.length - 1) {
         this.tableData.push(
@@ -636,17 +647,8 @@ export default {
           }
         )
       }
-      const DATA = {
-        pageNum: this.materielPagination.pageNum,
-        pageSize: this.materielPagination.pageSize,
-        fnumber: this.FNUMBER,
-        fdescription: this.FDESCRIPTION,
-        fspecification: this.FSPECIFICATION
-      }
-      const { data: RES, total } = await queryBomSonList(DATA)
-      this.materielDialogData = RES
-      this.materielPagination.total = total
-      this.isMaterielDialog = true
+      this.getGetMateriel()
+      this.openMaterialDialog = true
     },
     // 搜索
     handleMaterielSearch() {
@@ -658,6 +660,8 @@ export default {
       this.currencyPagination.pageNum = 1
       this.supplierPagination.pageNum = 1
       this.taxRatePagination.pageNum = 1
+      this.materielPagination.pageNum = 1
+      this.openMaterialDialog = false
       this.openCurrency = false
       this.openTaxRate = false
       this.openSupplier = false
@@ -802,5 +806,8 @@ export default {
 }
 .layout ::v-deep .jcTable{
   min-height: calc(100vh - 400px);
+}
+.el-table ::v-deep .el-table__body-wrapper{
+  height: 480px;
 }
 </style>

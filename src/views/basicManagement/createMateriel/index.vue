@@ -62,17 +62,26 @@
             </el-upload>
           </div>
           <div class="basics">
-            <jc-form :option-value="basicValue" :options="basic" />
+            <jc-form :option-value="basicValue" :options="basic">
+              <el-select v-model="basicValue.FBASEUNITID" placeholder="请选择基本单位" @change="handleCompany">
+                <el-option
+                  v-for="item in basicUnit"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </jc-form>
           </div>
         </div>
         <span class="title-background">明细信息</span>
         <div class="control">
-          <el-checkbox label="允许资产" :disabled="assetsDisabled" :value="assetsChecked" @change="assets" />
-          <el-checkbox label="允许库存" :disabled="checkoutDisabled" :value="stockChecked" @change="stock" />
-          <el-checkbox label="允许生产" :disabled="checkoutDisabled" :value="productionChecked" @change="production" />
-          <el-checkbox v-model="purchaseChecked" label="允许采购" />
-          <el-checkbox label="允许销售" :disabled="checkoutDisabled" :value="saleChecked" @change="sale" />
-          <el-checkbox label="允许委外" :disabled="checkoutDisabled" :value="outsourcingChecked" @change="outsourcing" />
+          <el-checkbox label="允许资产" :disabled="assetsDisabled" :value="FISASSET" @change="assets" />
+          <el-checkbox label="允许库存" :disabled="checkoutDisabled" :value="FISINVENTORY" @change="stock" />
+          <el-checkbox label="允许生产" :disabled="checkoutDisabled" :value="FISPRODUCE" @change="production" />
+          <el-checkbox v-model="FISPURCHASE" label="允许采购" />
+          <el-checkbox label="允许销售" :disabled="checkoutDisabled" :value="FISSALE" @change="sale" />
+          <el-checkbox label="允许委外" :disabled="checkoutDisabled" :value="FISSUBCONTRACT" @change="outsourcing" />
         </div>
         <div class="materielAttribute">
           <div v-for="(item, index) of materielProperty" :key="index" class="materielContent">
@@ -94,13 +103,13 @@
             </el-select>
           </div>
         </div>
-        <el-divider class="weight"/>
+        <el-divider class="weight" />
         <jc-form :option-value="weightValue" :options="weight">
           <el-input v-model="weightValue.FNAME" size="mini" class="finance-input" placeholder="请选择重量单位">
             <i slot="suffix" class="el-input__icon el-icon-search" @click="handleFweightList" />
           </el-input>
         </jc-form>
-        <el-divider class="dimensional"/>
+        <el-divider class="dimensional" />
         <jc-form :option-value="dimensionalValue" :options="dimensional">
           <el-input v-model="dimensionalValue.FNAME" size="mini" class="finance-input" placeholder="请选择尺寸单位">
             <i slot="suffix" class="el-input__icon el-icon-search" @click="handleFvolumeList" />
@@ -108,7 +117,10 @@
         </jc-form>
       </el-tab-pane>
       <el-tab-pane label="信息" name="information">
-        <jc-information></jc-information>
+        <jc-information
+          :company="company"
+          :information.sync="information"
+        />
       </el-tab-pane>
       <el-tab-pane label="其它" name="log">
         <jc-other
@@ -134,6 +146,7 @@
           :table-data="weightTableData"
           :table-header="tableHeader"
           :table-height="0"
+          @clickRow="weightSelect"
         >
           <template v-slot:btnSlot="clo">
             <el-button size="mini" type="primary" @click="weightSelect(clo.scope.row)">重量单位选中</el-button>
@@ -145,6 +158,7 @@
           :table-data="sizeTableData"
           :table-header="tableHeader"
           :table-height="0"
+          @clickRow="sizeSelect"
         >
           <template v-slot:btnSlot="clo">
             <el-button size="mini" type="primary" @click="sizeSelect(clo.scope.row)">尺寸单位选中</el-button>
@@ -272,7 +286,7 @@ import jcPagination from '@/components/Pagination'
 import jcPopup from '@/views/basicManagement/createMateriel/components/Popup'
 import jcOther from '@/components/Other'
 import jcFormFunction from '@/components/Form/FormFunction'
-import jcInformation from './components/Information'
+import jcInformation from './Information'
 import {
   queryTOrgOrganizationsL,
   queryFweightList,
@@ -301,17 +315,17 @@ export default {
   data() {
     return {
       actionUrl: '/tBdMaterial/insertMaterialDetail',
-      activeName: 'information', // 选项卡默认
+      activeName: 'basic', // 选项卡默认
       openDialog: false, // 重量、单位、尺寸弹窗
       openMaterial: false, // 物料弹窗
       FDESCRIPTION: '', // 描述后端返回值
       isMaterial: false, // 物料属性显示与隐藏
-      assetsChecked: false, // 资产默认不打勾
-      stockChecked: true, // 库存默认不打勾
-      productionChecked: true, // 生产默认不打勾
-      purchaseChecked: true, // 采购默认不打勾
-      saleChecked: true, // 销售默认不打勾
-      outsourcingChecked: true, // 允许委外
+      FISASSET: false, // 资产默认不打勾
+      FISINVENTORY: true, // 库存默认不打勾
+      FISPRODUCE: true, // 生产默认不打勾
+      FISPURCHASE: true, // 采购默认不打勾
+      FISSALE: true, // 销售默认不打勾
+      FISSUBCONTRACT: true, // 允许委外
       assetsDisabled: true, // 资产禁用
       checkoutDisabled: false, // 单选框禁用
       useOrganization: '', // 使用组织
@@ -322,6 +336,7 @@ export default {
       materialCode: '', // 物料编码
       type: '', // 判断分页
       serialNumber: '', // 流水号
+      company: {}, // 选中单位中文名称
       oneMaterielData: [], // 一类物料
       toMaterielData: [], // 二类物料
       threeMaterielData: [], // 三类物料
@@ -341,8 +356,7 @@ export default {
       },
       weightTableData: [], // 重量单位数据
       sizeTableData: [], // 尺寸单位
-      // 基本单位
-      basicUnit: [],
+      basicUnit: [], // 基本单位
       protect: [
         {
           label: 'A级',
@@ -371,7 +385,7 @@ export default {
         { label: '型号', prop: 'FMODEL', align: 'center' },
         { label: '物料属性', prop: 'FSPECIFICATION', align: 'center' }
       ],
-      contrastDataTable: [],
+      contrastDataTable: [], // 三类物料
       materielProperty: [], // 颜色属性
       dimensionalValue: {}, // 尺寸值
       dimensional: {}, // 尺寸控件
@@ -386,7 +400,8 @@ export default {
       toMaterialValue: {}, // 二类物料值
       toMaterial: {}, // 二类物料控件
       thereMaterialValue: '', // 三类物料值
-      thereMaterial: {} // 三类物料控件
+      thereMaterial: {}, // 三类物料控件
+      information: {} // 信息对象内的数据
     }
   },
   watch: {
@@ -407,56 +422,56 @@ export default {
   methods: {
     // 允许资产
     assets() {
-      this.assetsChecked = !this.assetsChecked
-      if (this.assetsChecked) {
-        this.purchaseChecked = true
-        this.stockChecked = false
-        this.productionChecked = false
-        this.saleChecked = false
-        this.outsourcingChecked = false
+      this.FISASSET = !this.FISASSET
+      if (this.FISASSET) {
+        this.FISPURCHASE = true
+        this.FISINVENTORY = false
+        this.FISPRODUCE = false
+        this.FISSALE = false
+        this.FISSUBCONTRACT = false
         this.checkoutDisabled = true
-      } else if (!this.assetsChecked) {
-        this.purchaseChecked = false
-        this.stockChecked = false
-        this.productionChecked = false
-        this.saleChecked = false
-        this.outsourcingChecked = false
+      } else if (!this.FISASSET) {
+        this.FISPURCHASE = false
+        this.FISINVENTORY = false
+        this.FISPRODUCE = false
+        this.FISSALE = false
+        this.FISSUBCONTRACT = false
         this.checkoutDisabled = false
       }
     },
     // 允许库存
     stock() {
-      this.stockChecked = !this.stockChecked
-      if (this.stockChecked) {
+      this.FISINVENTORY = !this.FISINVENTORY
+      if (this.FISINVENTORY) {
         this.assetsDisabled = true
-      } else if (!this.outsourcingChecked && !this.saleChecked && !this.productionChecked && !this.stockChecked) {
+      } else if (!this.FISSUBCONTRACT && !this.FISSALE && !this.FISPRODUCE && !this.FISINVENTORY) {
         this.assetsDisabled = false
       }
     },
     // 允许生产
     production() {
-      this.productionChecked = !this.productionChecked
-      if (this.productionChecked) {
+      this.FISPRODUCE = !this.FISPRODUCE
+      if (this.FISPRODUCE) {
         this.assetsDisabled = true
-      } else if (!this.outsourcingChecked && !this.saleChecked && !this.productionChecked && !this.stockChecked) {
+      } else if (!this.FISSUBCONTRACT && !this.FISSALE && !this.FISPRODUCE && !this.FISINVENTORY) {
         this.assetsDisabled = false
       }
     },
     // 允许销售
     sale() {
-      this.saleChecked = !this.saleChecked
-      if (this.saleChecked) {
+      this.FISSALE = !this.FISSALE
+      if (this.FISSALE) {
         this.assetsDisabled = true
-      } else if (!this.outsourcingChecked && !this.saleChecked && !this.productionChecked && !this.stockChecked) {
+      } else if (!this.FISSUBCONTRACT && !this.FISSALE && !this.FISPRODUCE && !this.FISINVENTORY) {
         this.assetsDisabled = false
       }
     },
     // 允许委外
     outsourcing() {
-      this.outsourcingChecked = !this.outsourcingChecked
-      if (this.outsourcingChecked) {
+      this.FISSUBCONTRACT = !this.FISSUBCONTRACT
+      if (this.FISSUBCONTRACT) {
         this.assetsDisabled = true
-      } else if (!this.outsourcingChecked && !this.saleChecked && !this.productionChecked && !this.stockChecked) {
+      } else if (!this.FISSUBCONTRACT && !this.FISSALE && !this.FISPRODUCE && !this.FISINVENTORY) {
         this.assetsDisabled = false
       }
     },
@@ -544,41 +559,43 @@ export default {
         MediumCode: this.toMaterialValue.MediumCode,
         SmallCode,
         // 允许采购
-        FISPURCHASE: this.purchaseChecked,
+        FISPURCHASE: this.FISPURCHASE,
         // 允许销售
-        FISSALE: this.saleChecked,
+        FISSALE: this.FISSALE,
         // 允许库存
-        FISINVENTORY: this.stockChecked,
+        FISINVENTORY: this.FISINVENTORY,
         // 允许生产
-        FISPRODUCE: this.productionChecked,
+        FISPRODUCE: this.FISPRODUCE,
         // 允许委外
-        FISSUBCONTRACT: this.outsourcingChecked,
+        FISSUBCONTRACT: this.FISSUBCONTRACT,
         // 允许资产
-        FISASSET: this.assetsChecked,
+        FISASSET: this.FISASSET,
         FATTRIBTTE
       }
-      Object.assign(this.basicValue, DATA, this.dimensionalValue, this.weightValue)
       for (const key in DATA) {
         if (DATA[key] === '' || DATA[key] === undefined) {
           this.$message.error('内容输入不完整，请重新输入！')
           return
         }
       }
-      const RES = [this.assetsChecked, this.stockChecked, this.productionChecked, this.purchaseChecked, this.saleChecked,
-        this.outsourcingChecked].includes(false)
+      const RES = [this.FISASSET, this.FISINVENTORY, this.FISPRODUCE, this.FISPURCHASE, this.FISSALE,
+        this.FISSUBCONTRACT].includes(false)
       if (RES === false) {
         this.$message.error('控制信息必选一项！')
         return
-      }
-      if (this.weightValue.FNETWEIGHT > this.weightValue.FGROSSWEIGHT) {
+      } else if (this.weightValue.FNETWEIGHT > this.weightValue.FGROSSWEIGHT) {
         this.$message.error('净重不能大于毛重')
+        return
+      } else if (!this.information.fstockId) {
+        this.$message.error('请切换到信息，选择仓库')
         return
       }
       // 图片可以为空
       DATA.FIMG = this.imageUrl
       // 物料备注可以为空
       DATA.FREMARKS = this.basicValue.FREMARKS
-      const { code, message } = await insertMaterialDetail(DATA)
+      Object.assign(this.basicValue, DATA, this.dimensionalValue, this.weightValue, this.information)
+      const { code, message } = await insertMaterialDetail(this.basicValue)
       if (code !== 0) {
         this.$message.error(message)
         return
@@ -612,7 +629,8 @@ export default {
     },
     // 搜索
     searchCompany() {
-      this.currentPage = 1
+      this.weightPagination.pageNum = 1
+      this.sizePagination.pageNum = 1
       this.handleFweightList()
     },
     // 公共组件
@@ -670,6 +688,12 @@ export default {
         return { label: item.FCAPTION, value: item.FERPCLSID }
       })
     },
+    // 基本单位选中
+    handleCompany(num) {
+      this.company = this.basicUnit.find(item => {
+        return item.value === num
+      })
+    },
     // 获取环境
     async getKit() {
       return this.protect
@@ -681,7 +705,7 @@ export default {
     async handleControl() {
       const organizationRes = await this.getOrganization()
       const kitRes = await this.getKit()
-      const BasicUnit = await this.getBasicUnit()
+      this.basicUnit = await this.getBasicUnit()
       const materielType = await this.getMaterielType()
       this.organizationValue = {
         FCREATEORG: 1,
@@ -770,8 +794,7 @@ export default {
         },
         FBASEUNITID: {
           label: '基本单位',
-          type: 'select',
-          selectItems: BasicUnit,
+          type: 'slot',
           span: 8,
           rules: [
             { required: true, message: '请选择基本单位', trigger: 'change' }
@@ -874,108 +897,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.content {
-  @include bomCreate;
+.content{
+  @include createMateriel;
 }
-.weight{
-  margin: 10px 0 15px 0;
-}
-.dimensional{
-  margin: 5px 0 15px 0;
-}
-.title-background {
-  color: wheat;
-  display: table-cell;
-  font-weight: 800;
-  background-color: #848383;
-  width: 90vw;
-  height: 40px;
-  line-height: 40px;
-  border-left: groove;
-  letter-spacing: 5px;
-  text-indent: 10px;
-}
-
-.header-card {
-  height: 130px;
-}
-
-.information {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
-
-  .images {
-    width: 300px;
-    display: flex;
-    justify-content: center;
-  }
-
-  .basics {
-    width: 1300px;
-  }
-}
-
-.control{
-  margin: 18px 0 5px 0;
-}
-.dialog-content {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-
-  .large-class {
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    width: 200px;
-    justify-content: center;
-    margin-right: 10px;
-    margin-left: 10px;
-
-    .dialog-span {
-      width: 200px;
-      text-align: center;
-    }
-  }
-
-  .sub-class {
-    display: flex;
-    flex-direction: row;
-    border: 1px solid #DCDFE6;
-
-    .content {
-      display: flex;
-      flex-direction: column;
-      margin: 0 10px;
-
-      .dialog-span {
-        width: 200px;
-        text-align: center;
-      }
-    }
-  }
-}
-
-.materielAttribute {
-  display: flex;
-  flex-direction: row;
-
-  .materielContent {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-right: 50px;
-    .dialog-span {
-      font-weight: bold;
-      color: #606266;
-      font-size: 14px;
-      padding: 0 10px;
-    }
-  }
-}
-
 .upload {
   @include upLoad;
 }

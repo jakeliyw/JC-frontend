@@ -158,9 +158,10 @@
       class="dialogClass"
       title="物料列表"
       model
-      :visible.sync="isMaterielDialog"
+      :visible.sync="openMaterialDialog"
       :close-on-click-modal="false"
       width="60%"
+      :before-close.sync="closeDialog"
     >
       <div class="materiel-form">
         <span class="materiel-code">物料编码</span>
@@ -243,7 +244,7 @@ export default {
         pageNum: 1, // 当前页
         pageSize: 10 // 每页显示多少条数据
       },
-      isMaterielDialog: false, // 物料弹窗
+      openMaterialDialog: false, // 物料弹窗
       FNUMBER: '', // 弹窗编码
       FDESCRIPTION: '', // 弹窗描述
       FSPECIFICATION: '', // 弹窗规格型号
@@ -273,8 +274,7 @@ export default {
   },
   methods: {
     async getPriceList() {
-      const FID = this.$route.params.id
-      const { data: RES } = await detailPriceList({ fid: FID })
+      const { data: RES } = await detailPriceList({ fid: this.$route.params.id })
       RES.fisIncludedTax = JSON.parse(RES.fisIncludedTax)
       this.purchaseForm = RES
       this.tableData = RES.detail
@@ -289,7 +289,7 @@ export default {
           }
         }
       }
-      const details = this.tableData.map(item => {
+      const DETAILS = this.tableData.map(item => {
         item.fentryEffectiveDate = this.$moment(item.fentryEffectiveDate).format('YYYY-MM-DD HH:mm:ss')
         return {
           fmaterialId: item.fmaterialId,
@@ -304,7 +304,7 @@ export default {
       })
       const DATA = {
         fid: this.purchaseForm.fid,
-        details
+        DETAILS
       }
       updatePurPrice(DATA).then(res => {
         if (res.code === 0) {
@@ -316,14 +316,13 @@ export default {
     },
     // 物料弹窗选中
     async materielSelectRow(item) {
-      const fmateriAalId = item.FMATERIALID
-      const { data: RES } = await queryMaterialSon({ fmateriAalId })
+      const { data: RES } = await queryMaterialSon({ fmateriAalId: item.FMATERIALID })
       this.tableData[this.tableIndex].fnumber = RES.FNUMBER
       this.tableData[this.tableIndex].fmaterialId = RES.FMATERIALID
       this.tableData[this.tableIndex].fspecificaTion = RES.FSPECIFICATION
       this.tableData[this.tableIndex].funit = RES.FBASEUNIT
       this.tableData[this.tableIndex].fdescripTion = RES.FDESCRIPTION
-      this.isMaterielDialog = false
+      this.openMaterialDialog = false
     },
     // 打开物料编码
     async handleGetMateriel(row, index) {
@@ -344,8 +343,7 @@ export default {
         )
       }
       const DATA = {
-        pageNum: this.materielPagination.pageNum,
-        pageSize: this.materielPagination.pageSize,
+        ...this.materielPagination,
         fnumber: this.FNUMBER,
         fdescription: this.FDESCRIPTION,
         fspecification: this.FSPECIFICATION
@@ -353,7 +351,7 @@ export default {
       const { data: RES, total } = await queryBomSonList(DATA)
       this.materielDialogData = RES
       this.materielPagination.total = total
-      this.isMaterielDialog = true
+      this.openMaterialDialog = true
     },
     // 搜索
     handleMaterielSearch() {
@@ -407,6 +405,11 @@ export default {
         row.fupPrice = row.fprice
         row.fdownPrice = row.fprice
       }
+    },
+    // 关闭弹窗事件
+    closeDialog() {
+      this.materielPagination.pageNum = 1
+      this.openMaterialDialog = false
     },
     // 刷新
     refresh() {

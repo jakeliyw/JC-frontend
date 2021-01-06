@@ -10,7 +10,7 @@ export default {
       }
       queryMaterialDetail({ fnumber: this.prodValue.FNUMBER }).then(res => {
         if (res.code === 0) {
-          this.$router.push({ path: `/queryMateriel/${this.prodValue.FNUMBER}` })
+          this.$router.push({ path: `/detailMateriel/${this.prodValue.FNUMBER}` })
         }
       }).catch(error => {
         this.$message.error(error)
@@ -24,7 +24,7 @@ export default {
       }
       queryMaterialDetail({ fnumber: FNUMBER }).then(res => {
         if (res.code === 0) {
-          this.$router.push({ path: `/queryMateriel/${FNUMBER}` })
+          this.$router.push({ path: `/detailMateriel/${FNUMBER}` })
         }
       }).catch(error => {
         this.$message.error(error)

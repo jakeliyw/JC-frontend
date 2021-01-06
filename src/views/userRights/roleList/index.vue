@@ -24,7 +24,7 @@
       <jc-pagination
         v-show="total > 0"
         :total="total"
-        :page.sync="currentPage"
+        :page.sync="pageNum"
         :limit.sync="size"
         @pagination="handleQueryRoleList"
       />
@@ -47,7 +47,7 @@ export default {
     return {
       NAME: '',
       total: 0, // 总条目
-      currentPage: 1, // 当前页
+      pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
       tableData: [], // 列表数据
       // 表头数据
@@ -73,7 +73,7 @@ export default {
       this.getRoleList()
     },
     async getRoleList() {
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, NAME: this.NAME }
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, NAME: this.NAME }
       const { data: res, total } = await queryTJxRoleList(DATA)
       this.tableData = res.map(item => {
         return userDisable(item)

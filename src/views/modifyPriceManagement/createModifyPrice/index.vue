@@ -113,7 +113,7 @@
             </template>
           </el-table-column>
           <template v-slot:btnSlot="clo">
-            <el-button type="danger" size="mini" @click="handleDelete(clo.scope.row, clo.scope.$index)">删除调价</el-button>
+            <el-button type="danger" size="mini" @click="handleDelete(clo.scope.$index)">删除调价</el-button>
           </template>
         </jc-table>
       </el-tab-pane>
@@ -177,7 +177,7 @@
           :total="priceListPagination.total"
           :page.sync="priceListPagination.pageNum"
           :limit.sync="priceListPagination.pageSize"
-          @pagination="handlePriceList"
+          @pagination="getPriceList"
         />
       </template>
     </jc-popup>
@@ -207,7 +207,7 @@
           :total="materielPagination.total"
           :page.sync="materielPagination.pageNum"
           :limit.sync="materielPagination.pageSize"
-          @pagination="handleMateriel"
+          @pagination="getMateriel"
         />
       </template>
     </jc-popup>
@@ -426,6 +426,11 @@ export default {
       this.dialogModifyPrice = RES.array
       this.modifyPricePagination.total = RES.total
     },
+    async getMateriel() {
+      const { data: RES } = await queryTPurPatLm({ ...this.materielPagination })
+      this.materielDialogData = RES.array
+      this.materielPagination.total = RES.total
+    },
     // 获取物料编码
     async handleMateriel(row, index) {
       this.tableIndex = index
@@ -456,21 +461,22 @@ export default {
       }
       this.materielPagination.fid = this.modifyPriceTable[this.tableIndex].fid
       this.openMaterial = true
-      const { data: RES } = await queryTPurPatLm({ ...this.materielPagination })
       this.dialogTitle = '物料编码列表'
       this.popupTitle = '物料编码'
-      this.materielDialogData = RES.array
-      this.materielPagination.total = RES.total
+      this.getMateriel()
     },
-    // 价目表
-    async handlePriceList(index) {
-      this.tableIndex = index
-      this.openPriceList = true
+    async getPriceList() {
       const { data: RES } = await queryTPurPatLs({ ...this.priceListPagination })
-      this.dialogTitle = '采购价目列表'
-      this.popupTitle = '供应商名称'
       this.priceListData = RES.array
       this.priceListPagination.total = RES.total
+    },
+    // 价目表
+    handlePriceList(index) {
+      this.tableIndex = index
+      this.openPriceList = true
+      this.getPriceList()
+      this.dialogTitle = '采购价目列表'
+      this.popupTitle = '供应商名称'
     },
     // 关闭弹窗
     closeDialog() {
@@ -501,7 +507,7 @@ export default {
       this.handlePriceList()
     },
     // 删除行数据
-    handleDelete(item, index) {
+    handleDelete(index) {
       if (index === 0) {
         this.$message.error('不能删除首行数据')
         return
@@ -590,5 +596,8 @@ export default {
 }
 .layout ::v-deep .jcTable{
   min-height: calc(100vh - 380px);
+}
+.el-table ::v-deep .el-table__body-wrapper{
+  height: 480px;
 }
 </style>

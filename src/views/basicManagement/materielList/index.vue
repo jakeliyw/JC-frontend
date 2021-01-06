@@ -46,7 +46,7 @@
             <el-tag>{{clo.scope.row.FDOCUMENTSTATUS}}</el-tag>
           </template>
           <template v-slot:btnSlot="clo">
-            <el-button type="primary" size="mini" @click="queryMateriel(clo.scope.row.FNUMBER)">查询物料</el-button>
+            <el-button type="primary" size="mini" @click="detailMateriel(clo.scope.row.FNUMBER)">查询物料</el-button>
             <el-button v-if="false" type="danger" size="mini" @click="deleteMateriel(clo.scope.row.FMATERIALID)">删除物料</el-button>
           </template>
         </jc-table>
@@ -75,7 +75,6 @@ export default {
   },
   data() {
     return {
-      FMATERIALGROUP: '', // 物料分组
       materialGroupL: [], // tree组数据
       currentNodeKey: '',
       cellStyle: { padding: '10 10' }, // 行高
@@ -117,7 +116,7 @@ export default {
   methods: {
     // 进入物料主数据
     jumpMateriel(FNUMBER) {
-      this.$router.push({ path: `/queryMateriel/${FNUMBER}` })
+      this.$router.push({ path: `/detailMateriel/${FNUMBER}` })
     },
     // 搜索物料
     searchMaterialList() {
@@ -151,8 +150,8 @@ export default {
       this.$router.push({ name: 'CreateMateriel' })
     },
     // 查询物料
-    queryMateriel(FNUMBER) {
-      this.$router.push({ path: `/queryMateriel/${FNUMBER}` })
+    detailMateriel(FNUMBER) {
+      this.$router.push({ path: `/detailMateriel/${FNUMBER}` })
     },
     // 删除物料
     async deleteMateriel(FMATERIALID) {

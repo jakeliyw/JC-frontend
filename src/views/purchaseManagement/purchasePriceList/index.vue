@@ -104,7 +104,7 @@ export default {
   methods: {
     // 进入物料主数据
     jumpMateriel(fnumber) {
-      this.$router.push({ path: `/queryMateriel/${fnumber}` })
+      this.$router.push({ path: `/detailMateriel/${fnumber}` })
     },
     // 获取列表数据
     async handleGetPurchaseList() {

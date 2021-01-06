@@ -31,11 +31,11 @@
         <jc-form :option-value="controlValue" :options="control" />
         <div class="materielAttribute">
           <div v-for="(item, index) of property" :key="index" class="materielContent">
-            <span class="attribute">{{ item.attribute }}</span>
-            <el-input v-model="item.value" class="width-input" size="mini" disabled />
+            <span class="dialog-span">{{ item.attribute }}</span>
+            <el-select v-model="item.value" class="width-input" size="mini" disabled />
           </div>
         </div>
-        <el-divider class="weight"/>
+        <el-divider class="weight" />
         <jc-form :options="weight" :option-value="weightValue">
           <div slot="slotMateriel" class="basic-content">
             <span class="basic-span">重量单位</span>
@@ -44,7 +44,7 @@
             </el-input>
           </div>
         </jc-form>
-        <el-divider class="dimensional"/>
+        <el-divider class="dimensional" />
         <jc-form :option-value="dimensionalValue" :options="dimensional">
           <div slot="slotMateriel" class="basic-content">
             <span class="basic-span">尺寸单位</span>
@@ -63,7 +63,7 @@
             <jc-pagination
               v-show="total > 0"
               :total="total"
-              :page.sync="currentPage"
+              :page.sync="pageNum"
               :limit.sync="size"
               @pagination="handleOther"
             />
@@ -82,7 +82,7 @@ import { queryMaterialDetail } from '@/api/basicManagement/materielList'
 import { queryMaterialLog } from '@/api/basicManagement/editMateriel'
 
 export default {
-  name: 'QueryMateriel',
+  name: 'DetailMateriel',
   components: {
     jcForm,
     jcOther,
@@ -93,7 +93,7 @@ export default {
       activeName: 'basic',
       total: 0, // 总条目
       imageUrl: '', // 上传图片
-      currentPage: 1, // 当前页
+      pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
       property: [], // 物料属性
       FWEIGHTUNITID: '', // 重量单位
@@ -291,7 +291,7 @@ export default {
     // 获取其它
     async handleOther() {
       const id = this.$route.params.id
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, FMATERIALID: id }
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, FMATERIALID: id }
       const RES = await queryMaterialLog(DATA)
       this.otherUrlObject = RES.operator
       this.total = RES.total
@@ -302,91 +302,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.content {
-   @include bomCreate;
- }
-.weight{
-  margin: 20px 0 15px 0;
+.content{
+  @include createMateriel;
 }
-.dimensional{
-  margin: 5px 0 15px 0;
-}
-.title-background {
-  color: wheat;
-  display: table-cell;
-  font-weight: 800;
-  background-color: #848383;
-  width: 90vw;
-  height: 40px;
-  line-height: 40px;
-  border-left: groove;
-  letter-spacing: 5px;
-  text-indent: 10px;
-}
-
-.width-input ::v-deep input {
-  color: black !important;
-}
-
-.basic-content {
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 22px;
-  margin-left: 30px;
-
-  .basic-span {
-    margin-left: 15px;
-    line-height: 28px;
-    margin-right: 10px;
-    font-weight: bold;
-    color: #606266;
-    font-size: 14px;
-  }
-
-  .basic-input {
-    width: 200px;
-  }
-}
-
-.information {
-  display: flex;
-  justify-content: space-around;
-  margin: 20px 0 10px 0;
-
-  .images {
-    width: 300px;
-    display: flex;
-    justify-content: center;
-  }
-
-  .basics {
-    width: 1300px;
-  }
-}
-
 .upload {
   @include upLoad;
 }
 
-.materielAttribute {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-
-  .materielContent {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-right: 20px;
-
-    .attribute {
-      font-weight: bold;
-      color: #606266;
-      font-size: 14px;
-      padding: 0 10px;
-      width: 100px;
-      text-align: center;
-    }
-  }
-}
 </style>

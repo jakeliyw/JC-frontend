@@ -1,0 +1,113 @@
+@mixin createMateriel{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+
+  .weight{
+    margin: 10px 0 15px 0;
+  }
+  .dimensional{
+    margin: 5px 0 15px 0;
+  }
+  .title-background {
+    color: wheat;
+    display: table-cell;
+    font-weight: 800;
+    background-color: #848383;
+    width: 90vw;
+    height: 40px;
+    line-height: 40px;
+    border-left: groove;
+    letter-spacing: 5px;
+    text-indent: 10px;
+  }
+  .header-card {
+    margin-bottom: 20px;
+
+    .tool {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      margin-bottom: 10px;
+    }
+  }
+  .organization{
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+  .information {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+
+    .images {
+      width: 300px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .basics {
+      width: 1300px;
+    }
+  }
+
+  .control{
+    margin: 18px 0 5px 0;
+  }
+  .dialog-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+
+    .large-class {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      width: 200px;
+      justify-content: center;
+      margin-right: 10px;
+      margin-left: 10px;
+
+      .dialog-span {
+        width: 200px;
+        text-align: center;
+      }
+    }
+
+    .sub-class {
+      display: flex;
+      flex-direction: row;
+      border: 1px solid #DCDFE6;
+
+      .content {
+        display: flex;
+        flex-direction: column;
+        margin: 0 10px;
+
+        .dialog-span {
+          width: 200px;
+          text-align: center;
+        }
+      }
+    }
+  }
+  .materielAttribute {
+    display: flex;
+    flex-direction: row;
+
+    .materielContent {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-right: 50px;
+      .dialog-span {
+        font-weight: bold;
+        color: #606266;
+        font-size: 14px;
+        padding: 0 10px;
+      }
+    }
+  }
+}

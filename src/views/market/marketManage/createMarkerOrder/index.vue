@@ -100,6 +100,17 @@
               <el-option v-for="(item, index) in standard" :key="index" :label="item.fpaezCombo" :value="item.fpaezCombo" />
             </el-select>
           </el-form-item>
+          <!--          <el-form-item label="图片1" prop="fpaezCombo">-->
+          <!--            <el-upload-->
+          <!--              class="avatar-uploader"-->
+          <!--              action="https://jsonplaceholder.typicode.com/posts/"-->
+          <!--              :show-file-list="false"-->
+          <!--              :on-success="handleAvatarSuccess"-->
+          <!--            >-->
+          <!--              <img v-if="imageUrl" :src="imageUrl" class="avatar">-->
+          <!--              <i v-else class="el-icon-plus avatar-uploader-icon" />-->
+          <!--            </el-upload>-->
+          <!--          </el-form-item>-->
           <el-form-item label="备注" prop="fnote">
             <el-input v-model.trim="prodValue.fnote" type="textarea" placeholder="请填写备注" size="mini" />
           </el-form-item>
@@ -107,98 +118,7 @@
             <el-checkbox v-model="prodValue.fisIncludedTax" />
           </el-form-item>
         </el-form>
-        <el-tabs v-model="activeName">
-          <el-tab-pane label="明细信息" name="first">
-            <jc-table
-              :table-data="prodValue.saleDetails"
-              :table-header="tableHeader"
-              serial
-              :cell-style="cellStyle"
-            >
-              <el-table-column label="物料编码" prop="fmaterialId" align="center" width="200px">
-                <template slot-scope="scope">
-                  <el-input v-model.trim="scope.row.fmaterialIdName" placeholder="请选择物料编码" size="mini">
-                    <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fmaterialIdName)" />
-                    <i
-                      slot="suffix"
-                      class="el-input__icon el-icon-search"
-                      @click="handleGetMateriel(scope.row, scope.$index)"
-                    />
-                  </el-input>
-                </template>
-              </el-table-column>
-              <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" :show-overflow-tooltip="true" />
-              <el-table-column label="销售单位" prop="funitName" align="center" />
-              <el-table-column label="销售数量" prop="fqty" min-width="140px" align="center">
-                <template slot-scope="scope">
-                  <el-input-number
-                    v-model="scope.row.fqty"
-                    :min="1"
-                    size="mini"
-                  />
-                </template>
-              </el-table-column>
-              <el-table-column label="是否赠品" prop="fisFree" align="center">
-                <template slot-scope="scope">
-                  <el-checkbox v-model="scope.row.fisFree" :value="scope.row.fisFree" @change="handleCheckedCitiesChange(scope.row.fisFree, scope.$index)" />
-                </template>
-              </el-table-column>
-              <el-table-column label="税率" prop="fentryTaxRate" min-width="140px" align="center">
-                <template slot-scope="scope">
-                  <el-input-number
-                    v-model="scope.row.ftaxRate"
-                    :min="0"
-                    size="mini"
-                    :disabled="scope.row.fisFree"
-                  />
-                </template>
-              </el-table-column>
-              <el-table-column label="要货时间" prop="fqty" min-width="220px" align="center">
-                <template slot-scope="scope">
-                  <el-date-picker v-model="scope.row.fdeliveryDate" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" size="mini" placeholder="选择日期" />
-                </template>
-              </el-table-column>
-              <el-table-column label="操作" prop="fqty" min-width="100px" align="center">
-                <template scope="scope">
-                  <el-button type="danger" size="medium" @click="delectSale(scope.$index)">删除</el-button>
-                </template>
-              </el-table-column>
-            </jc-table>
-          </el-tab-pane>
-          <el-tab-pane label="收款计划" name="second">
-            <jc-table
-              :table-data="prodValue.planDetails"
-              :table-header="tableHeader"
-              serial
-              :cell-style="cellStyle"
-            >
-              <el-table-column label="是否预收" prop="fqty" align="center" width="80px">
-                <template slot-scope="scope">
-                  <el-checkbox v-model="scope.row.fneedRecAdvance" :value="scope.row.fneedRecAdvance" />
-                </template>
-              </el-table-column>
-              <el-table-column label="应收比例%" align="center">
-                <template slot-scope="scope">
-                  <el-input-number
-                    v-model="scope.row.frecAdvanceRate"
-                    :min="0"
-                    :max="100"
-                    size="mini"
-                  />
-                </template>
-              </el-table-column>
-              <el-table-column label="应收金额" align="center">
-                <template slot-scope="scope">
-                  <el-input-number
-                    v-model="scope.row.frecAdvanCeamount"
-                    :min="0"
-                    size="mini"
-                  />
-                </template>
-              </el-table-column>
-            </jc-table>
-          </el-tab-pane>
-        </el-tabs>
+        <tab @visible="prodOrder" />
       </el-tab-pane>
       <el-tab-pane label="其他">
         <h1>开发中</h1>
@@ -233,7 +153,7 @@
         @pagination="queryTBdCustomerList"
       />
     </el-dialog>
-    <!--    收货方式弹窗-->
+    <!--    交货方式弹窗-->
     <el-dialog
       title="交货方式"
       model
@@ -255,11 +175,11 @@
         @clickRow="deliverlSelectRow"
       />
       <jc-pagination
-        v-show="client.total > 0"
-        :total="client.total"
-        :page.sync="client.pageNum"
-        :limit.sync="client.pageSize"
-        @pagination="queryTBdCustomerList"
+        v-show="deliver.total > 0"
+        :total="deliver.total"
+        :page.sync="deliver.pageNum"
+        :limit.sync="deliver.pageSize"
+        @pagination="queryFheadDelivery"
       />
     </el-dialog>
     <!--    销售订单销售员列表弹窗-->
@@ -288,7 +208,7 @@
         :total="market.total"
         :page.sync="market.pageNum"
         :limit.sync="market.pageSize"
-        @pagination="queryTBdCustomerList"
+        @pagination="querySalesperson"
       />
     </el-dialog>
     <!--    结算币别列表弹窗-->
@@ -333,10 +253,10 @@
         :total="currency.total"
         :page.sync="currency.pageNum"
         :limit.sync="currency.pageSize"
-        @pagination="queryTBdCustomerList"
+        @pagination="queryTBdCurrency"
       />
     </el-dialog>
-    <!--    销售订单收款条件列表弹窗-->
+    <!--    收款条件列表弹窗-->
     <el-dialog
       title="订单收款条件"
       model
@@ -362,40 +282,7 @@
         :total="gathering.total"
         :page.sync="gathering.pageNum"
         :limit.sync="gathering.pageSize"
-        @pagination="queryTBdCustomerList"
-      />
-    </el-dialog>
-    <!--    物料弹窗-->
-    <el-dialog
-      title="物料列表"
-      model
-      :visible.sync="isMaterielDialog"
-      :close-on-click-modal="false"
-      width="60%"
-    >
-      <div class="materiel-form">
-        <span class="materiel-code">物料编码</span>
-        <el-input v-model.trim="FNUMBER" class="input-width" size="mini" placeholder="请输入物料编码" @keyup.enter.native="handleMaterielSearch" />
-        <span class="materiel-code">物料描述</span>
-        <el-input v-model.trim="FDESCRIPTION" class="input-width" size="mini" placeholder="请输入物料描述" @keyup.enter.native="handleMaterielSearch" />
-        <span class="materiel-code">物料规格</span>
-        <el-input v-model.trim="FSPECIFICATION" class="input-width" size="mini" placeholder="请输入规格" @keyup.enter.native="handleMaterielSearch" />
-        <el-button size="mini" type="primary" @click="handleMaterielSearch">搜索</el-button>
-      </div>
-      <jc-table
-        :table-data="materielDialogData"
-        :table-header="materielDialogHeader"
-        table-height="53vh"
-        serial
-        :cell-style="cellStyle"
-        @clickRow="materielSelectRow"
-      />
-      <jc-pagination
-        v-show="materielPagination.total > 0"
-        :total="materielPagination.total"
-        :page.sync="materielPagination.pageNum"
-        :limit.sync="materielPagination.pageSize"
-        @pagination="handleGetMateriel"
+        @pagination="querytReccondition"
       />
     </el-dialog>
     <!--    价目列表-->
@@ -442,47 +329,29 @@ import { queryTBasBilltype,
   queryFpaezCombo,
   querySalerRate,
   querySalOrderFxxchange,
-  insertSalOrder,
-  queryMaterialList
+  insertSalOrder
 } from '@/api/marketManage/marketOrder'
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jumpMateriel from '@/components/JumpMateriel'
 import { queryTPurPatLs } from '@/api/modifyPriceManagement/createModifyPrice'
-
+import tab from '@/views/market/marketManage/createMarkerOrder/components/tab'
 export default {
   name: 'CreateMarkerOrder',
   components: {
     jcTable,
-    jcPagination
+    jcPagination,
+    tab
   },
   mixins: [jumpMateriel],
   data() {
     return {
+      imageUrl: '', // 图片
       tableHeight: '50vh', // 弹框中表格高度
       loading: false, // 加载中
-      rateIndex: '', // 税率下标
       // disabled: false, // 税率是否禁用
       standard: [], // 品质标准
       isMaterielDialog: false, // 物料弹窗
-      // 物料弹窗分页
-      materielPagination: {
-        total: 0, // 总条目
-        pageNum: 1, // 当前页
-        pageSize: 10 // 每页显示多少条数据
-      },
-      FNUMBER: '', // 弹窗编码
-      FDESCRIPTION: '', // 弹窗描述
-      FSPECIFICATION: '', // 弹窗规格型号
-      materielDialogData: [],
-      materielDialogHeader: [
-        { label: '使用组织', prop: 'fuseOrg', align: 'center' },
-        { label: '物料编码', prop: 'fnumber', align: 'center' },
-        { label: '描述', prop: 'fdescripTion', align: 'center', minWidth: '150px' },
-        { label: '物料规格', prop: 'fspecificaTion', align: 'center' },
-        { label: '型号', prop: 'fmodel', align: 'center' },
-        { label: '创建时间', prop: 'fcreateDate', align: 'center' }
-      ],
       // 客户列表数据分页
       isclientlDialog: false,
       client: {
@@ -568,19 +437,14 @@ export default {
         { label: '币别', prop: 'fcurrency', align: 'center' },
         { label: '含税', prop: 'fisIncludedTax', align: 'center' }
       ],
-      activeName: 'first',
-      // 点击行的序号
-      tableIndex: 0,
       tableHeader: [],
       billtypes: [], // 单据类型
       teamList: [], // 组织
       prodValue: { fbillTypeId: '', fsaleOrgId: '', fcustId: '', fdataValue: '', fname: '', fsettleCurrIdName: '', fbillNo: '',
         fheadDeliveryWay: '', fsalerId: '', fnote: '', fsettleCurrId: '', fsalerIdName: '', fpriceListIdName: '', fpriceListId: '',
         frecConditionId: '', fisIncludedTax: false, fexchangeRate: '1.0000', frecConditionIdName: '',
-        flocalCurrId: '', fxxchangeTypeId: '', fxxchangeTypeIdName: '', flocalCurrIdName: '',
-        saleDetails: [
-          { fmaterialId: '', fdescripTion: '', funitId: '', fqty: '', fisFree: false, ftaxRate: '', fdeliveryDate: '', fmaterialIdName: '', funitName: '' }
-        ], planDetails: [{ fneedRecAdvance: false, frecAdvanceRate: '0', frecAdvanCeamount: '0' }] },
+        flocalCurrId: '', fxxchangeTypeId: '', fxxchangeTypeIdName: '', flocalCurrIdName: ''
+      },
       cellStyle: { padding: '10 10' },
       prodValueRules: {
         fbillTypeId: [
@@ -610,7 +474,9 @@ export default {
         ], fpaezText2: [
           { required: true, message: '请选择客户PO NO', trigger: 'blur' }
         ]
-      }
+      },
+      dialogImageUrl: '',
+      dialogVisible: false
     }
   },
   created() {
@@ -620,6 +486,7 @@ export default {
     this.querySalOrderFxxchange()
   },
   methods: {
+    // 保存
     subMarker() {
       this.loading = true
       this.$refs.purchaseRef.validate(valid => {
@@ -659,37 +526,6 @@ export default {
         })
       })
     },
-    // 物料弹窗选中
-    async materielSelectRow(item) {
-      this.prodValue.saleDetails[this.tableIndex].fmaterialId = item.fmaterialId
-      this.prodValue.saleDetails[this.tableIndex].fmaterialIdName = item.fnumber
-      this.prodValue.saleDetails[this.tableIndex].fdescripTion = item.fdescripTion
-      this.prodValue.saleDetails[this.tableIndex].funitId = item.funitId
-      this.prodValue.saleDetails[this.tableIndex].funitName = item.funitName
-      this.isMaterielDialog = false
-    },
-    // 打开物料编码
-    async handleGetMateriel(row, index) {
-      this.tableIndex = index
-      if (index === this.prodValue.saleDetails.length - 1) {
-        this.prodValue.saleDetails.push(
-          {
-            fmaterialId: '', fdescripTion: '', funitId: '', fqty: '', fisFree: false, ftaxRate: '', fdeliveryDate: ''
-          }
-        )
-      }
-      const DATA = {
-        pageNum: this.materielPagination.pageNum,
-        pageSize: this.materielPagination.pageSize,
-        fnumber: this.FNUMBER,
-        fdescription: this.FDESCRIPTION,
-        fspecification: this.FSPECIFICATION
-      }
-      const { data: RES } = await queryMaterialList(DATA)
-      this.materielDialogData = RES.array
-      this.materielPagination.total = RES.total
-      this.isMaterielDialog = true
-    },
     // 查询单据类型
     async queryTBasBilltype() {
       const { data: RES } = await queryTBasBilltype()
@@ -707,11 +543,6 @@ export default {
       const { data: RES } = await queryTBdCustomerList(DATA)
       this.clientlDialogData = RES.array
       this.client.total = RES.total
-    },
-    // 搜索
-    handleMaterielSearch() {
-      this.materielPagination.pageNum = 1
-      this.handleGetMateriel()
     },
     // 客户弹窗选中
     clientlSelectRow(item) {
@@ -838,20 +669,14 @@ export default {
       this.prodValue.fpriceListId = item.fid
       this.openPriceList = false
     },
-    // 监听是否勾选赠品
-    handleCheckedCitiesChange(val, index) {
-      this.rateIndex = index
-      if (val) {
-        this.prodValue.saleDetails[this.rateIndex].ftaxRate = ''
-      }
+    // 接受子组件数据
+    prodOrder(ev) {
+      this.prodValue.saleDetails = ev.saleDetails
+      this.prodValue.planDetails = ev.planDetails
     },
-    // 删除明细空行
-    delectSale(index) {
-      if (index === 0) {
-        this.$message.error('不能删除第一行')
-        return false
-      }
-      this.prodValue.saleDetails.splice(index, 1)
+    // 上传图片
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw)
     }
   }
 }
@@ -863,7 +688,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     .el-form-item {
-      max-width: 263px;
+     width: 263px;
     }
   }
 }
@@ -889,5 +714,31 @@ export default {
     width: 200px;
     margin-right: 10px;
   }
+}
+ .avatar-uploader .el-upload {
+   border: 1px dashed #d9d9d9;
+   border-radius: 6px;
+   cursor: pointer;
+   position: relative;
+   overflow: hidden;
+ }
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 78px;
+  height: 78px;
+  line-height: 78px;
+  text-align: center;
+  border: 1px dashed  #aaa;
+  border-radius: 6px;
+}
+.avatar {
+  width: 78px;
+  height: 78px;
+  display: block;
+  border-radius: 6px;
 }
 </style>

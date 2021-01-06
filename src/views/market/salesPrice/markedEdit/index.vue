@@ -289,7 +289,9 @@ export default {
     },
     // 打开物料编码
     async handleGetMateriel(row, index) {
-      this.tableIndex = index
+      if (index) {
+        this.tableIndex = index
+      }
       if (index === this.tableData.length - 1) {
         this.tableData.push(
           { fmaterialId: '', funitId: '', fmaterialTypeId: '', fpriceBase: '', fprice: '', fdownPrice: '' }
