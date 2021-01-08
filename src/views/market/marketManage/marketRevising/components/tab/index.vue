@@ -12,7 +12,7 @@
           <el-table-column label="物料编码" prop="fmaterialId" align="center" width="200px">
             <template slot-scope="scope">
               <el-input v-model.trim="scope.row.fnumber" placeholder="请选择物料编码" size="mini">
-                <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fmaterialIdName)" />
+                <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fnumber)" />
                 <i
                   slot="suffix"
                   class="el-input__icon el-icon-search"
@@ -138,11 +138,13 @@
 import { queryMaterialList } from '@/api/marketManage/marketOrder'
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
+import jumpMateriel from '@/components/JumpMateriel'
 export default {
   components: {
     jcTable,
     jcPagination
   },
+  mixins: [jumpMateriel],
   props: {
     msg: {
       type: Array,
@@ -245,7 +247,7 @@ export default {
     // 删除明细空行
     delectSale(index) {
       if (index === 0) {
-        this.$message.error('不能删除第一行')
+        this.$message.error('不能删除首行数据')
         return false
       }
       this.tabTwo.saleDetails.splice(index, 1)
@@ -263,7 +265,7 @@ export default {
     }, // 监听应收金额
     handleChange3(value) {
       this.$emit('visible', this.tabTwo)
-    },
+    }, // 监听是否预收
     check(value) {
       this.$emit('visible', this.tabTwo)
     }

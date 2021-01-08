@@ -10,7 +10,7 @@
           size="mini"
           @keyup.enter.native="handleQuerySonClass"
         />
-        <el-button type="primary" class="btn" size="medium" @click="handleQuerySonClass">搜索</el-button>
+        <el-button type="primary" class="btn" size="mini" @click="handleQuerySonClass">搜索</el-button>
       </div>
     </div>
     <div class="table-content">

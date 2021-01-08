@@ -55,10 +55,96 @@ const createRouter = () => new Router({
 
 export const asyncRouterMap = [
   {
+    path: '/basic',
+    component: Layout,
+    name: 'Basic',
+    meta: {
+      title: '基础管理',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: '/createMateriel',
+        name: 'CreateMateriel',
+        component: () => import('@/views/basic/createMateriel'),
+        meta: { title: '新增物料', noCache: false },
+        menu: 'createMateriel'
+      },
+      {
+        path: '/detailMateriel/:id',
+        name: 'DetailMateriel',
+        component: () => import('@/views/basic/detailMateriel'),
+        meta: { title: '查询物料' },
+        hidden: true,
+        menu: 'detailMateriel'
+      },
+      {
+        path: '/editMateriel',
+        name: 'EditMateriel',
+        component: () => import('@/views/basic/editMateriel'),
+        meta: { title: '修改物料' },
+        hidden: true,
+        menu: 'editMateriel'
+      },
+      {
+        path: '/untreatedMateriel',
+        name: 'UntreatedMateriel',
+        component: () => import('@/views/basic/untreatedMateriel'),
+        meta: { title: '还未处理物料', noCache: false },
+        menu: 'untreatedMateriel'
+      },
+      {
+        path: '/underReviewMateriel',
+        name: 'UnderReviewMateriel',
+        component: () => import('@/views/basic/underReviewMateriel'),
+        meta: { title: '审核中物料', noCache: false },
+        menu: 'underReviewMateriel'
+      },
+      {
+        path: '/refuseMateriel',
+        name: 'RefuseMateriel',
+        component: () => import('@/views/basic/refuseMateriel'),
+        meta: { title: '审核未通过物料', noCache: false },
+        menu: 'refuseMateriel'
+      },
+      {
+        path: '/materielList',
+        name: 'MaterielList',
+        component: () => import('@/views/basic/materielList'),
+        meta: { title: '物料列表', noCache: false },
+        menu: 'materielList'
+      },
+      {
+        path: '/encodingRules',
+        component: () => import('@/views/basic/encodingRules'),
+        name: 'EncodingRules',
+        redirect: '/categories',
+        meta: {
+          title: '编码规则'
+        },
+        children: [
+          {
+            path: '/categories',
+            name: 'Categories',
+            component: () => import('@/views/basic/encodingRules/categories'),
+            meta: { title: '编码配置' },
+            menu: 'userList'
+          },
+          {
+            path: '/codeComparative',
+            name: 'CodeComparative',
+            component: () => import('@/views/basic/encodingRules/codeComparative'),
+            meta: { title: '编码规则' },
+            menu: 'userList'
+          }
+        ]
+      }
+    ]
+  },
+  {
     path: '/engineering',
     component: Layout,
-    redirect: '/engineering/detailedListBom',
-    name: 'customerManagement',
+    name: 'Engineering',
     meta: {
       title: 'BOM管理',
       icon: 'nested'
@@ -133,242 +219,135 @@ export const asyncRouterMap = [
     ]
   },
   {
-    path: '/basicManagement',
+    path: '/purchasing ',
     component: Layout,
-    redirect: '/basicManagement',
-    name: 'BasicManagement',
+    name: 'Purchasing ',
     meta: {
-      title: '基础管理',
+      title: '采购管理',
       icon: 'nested'
     },
     children: [
       {
-        path: '/createMateriel',
-        name: 'CreateMateriel',
-        component: () => import('@/views/basicManagement/createMateriel'),
-        meta: { title: '新增物料', noCache: false },
-        menu: 'createMateriel'
+        path: '/modifyPrice',
+        name: 'ModifyPrice',
+        component: () => import('@/views/purchasing/modifyPrice'),
+        meta: {
+          title: '调价表管理'
+        },
+        children: [
+          {
+            path: '/createModifyPrice',
+            name: 'CreateModifyPrice',
+            component: () => import('@/views/purchasing/modifyPrice/createModifyPrice'),
+            meta: { title: '新增调价', noCache: false },
+            menu: 'createModifyPrice'
+          },
+          {
+            path: '/editModifyPrice/:id',
+            name: 'EditModifyPrice',
+            component: () => import('@/views/purchasing/modifyPrice/editModifyPrice'),
+            meta: { title: '修改调价', noCache: false },
+            menu: 'editModifyPrice',
+            hidden: true
+          },
+          {
+            path: '/detailModifyPrice/:id',
+            name: 'DetailModifyPrice',
+            component: () => import('@/views/purchasing/modifyPrice/detailModifyPrice'),
+            meta: { title: '详情调价', noCache: false },
+            menu: 'detailModifyPrice',
+            hidden: true
+          },
+          {
+            path: '/untreatedModifyPrice',
+            name: 'UntreatedModifyPrice',
+            component: () => import('@/views/purchasing/modifyPrice/untreatedModifyPrice'),
+            meta: { title: '未处理调价', noCache: false },
+            menu: 'untreatedModifyPrice'
+          },
+          {
+            path: '/underReviewModifyPrice',
+            name: 'UnderReviewModifyPrice',
+            component: () => import('@/views/purchasing/modifyPrice/underReviewModifyPrice'),
+            meta: { title: '审核中调价', noCache: false },
+            menu: 'underReviewModifyPrice'
+          },
+          {
+            path: '/refuseModifyPrice',
+            name: 'RefuseModifyPrice',
+            component: () => import('@/views/purchasing/modifyPrice/refuseModifyPrice'),
+            meta: { title: '审核不通过调价', noCache: false },
+            menu: 'refuseModifyPrice'
+          },
+          {
+            path: '/modifyPriceList',
+            name: 'ModifyPriceList',
+            component: () => import('@/views/purchasing/modifyPrice/modifyPriceList'),
+            meta: { title: '调价列表', noCache: false },
+            menu: 'modifyPriceList'
+          }
+        ]
       },
       {
-        path: '/detailMateriel/:id',
-        name: 'DetailMateriel',
-        component: () => import('@/views/basicManagement/detailMateriel'),
-        meta: { title: '查询物料' },
-        hidden: true,
-        menu: 'detailMateriel'
-      },
-      {
-        path: '/untreatedMateriel',
-        name: 'UntreatedMateriel',
-        component: () => import('@/views/basicManagement/untreatedMateriel'),
-        meta: { title: '还未处理物料', noCache: false },
-        menu: 'untreatedMateriel'
-      },
-      {
-        path: '/underReviewMateriel',
-        name: 'UnderReviewMateriel',
-        component: () => import('@/views/basicManagement/underReviewMateriel'),
-        meta: { title: '审核中物料', noCache: false },
-        menu: 'underReviewMateriel'
-      },
-      {
-        path: '/refuseMateriel',
-        name: 'RefuseMateriel',
-        component: () => import('@/views/basicManagement/refuseMateriel'),
-        meta: { title: '审核未通过物料', noCache: false },
-        menu: 'refuseMateriel'
-      },
-      {
-        path: '/materielList',
-        name: 'MaterielList',
-        component: () => import('@/views/basicManagement/materielList'),
-        meta: { title: '物料列表', noCache: false },
-        menu: 'materielList'
-      }
-    ]
-  },
-  {
-    path: '/purchaseManagement',
-    component: Layout,
-    redirect: '/purchaseManagement',
-    name: 'PurchaseManagement',
-    meta: {
-      title: '价目表管理',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: '/createPurchasePrice',
-        name: 'CreatePurchasePrice',
-        component: () => import('@/views/purchaseManagement/createPurchasePrice'),
-        meta: { title: '新增价目', noCache: false },
-        menu: 'createPurchasePrice'
-      },
-      {
-        path: '/editPurchasePrice/:id',
-        name: 'EditPurchasePrice',
-        component: () => import('@/views/purchaseManagement/editPurchasePrice'),
-        meta: { title: '修改价目', noCache: false },
-        menu: 'editPurchasePrice',
-        hidden: true
-      },
-      {
-        path: '/detailPurchasePrice/:id',
-        name: 'DetailPurchasePrice',
-        component: () => import('@/views/purchaseManagement/detailPurchasePrice'),
-        meta: { title: '详情价目' },
-        hidden: true,
-        menu: 'detailPurchasePrice'
-      },
-      {
-        path: '/untreatedPriceList',
-        name: 'UntreatedPriceList',
-        component: () => import('@/views/purchaseManagement/untreatedPriceList'),
-        meta: { title: '还未处理价目', noCache: false },
-        menu: 'untreatedPriceList'
-      },
-      {
-        path: '/underReviewPrice',
-        name: 'UnderReviewPrice',
-        component: () => import('@/views/purchaseManagement/underReviewPrice'),
-        meta: { title: '审核中价目', noCache: false },
-        menu: 'underReviewPrice'
-      },
-      {
-        path: '/refusePriceList',
-        name: 'RefusePriceList',
-        component: () => import('@/views/purchaseManagement/refusePriceList'),
-        meta: { title: '审核未通过价目', noCache: false },
-        menu: 'refusePriceList'
-      },
-      {
-        path: '/purchasePriceList',
-        name: 'PurchasePriceList',
-        component: () => import('@/views/purchaseManagement/purchasePriceList'),
-        meta: { title: '价目列表', noCache: false },
-        menu: 'purchasePriceList'
-      }
-    ]
-  },
-  {
-    path: '/modifyPriceManagement',
-    component: Layout,
-    redirect: '/modifyPriceManagement',
-    name: 'ModifyPriceManagement',
-    meta: {
-      title: '调价表管理',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: '/createModifyPrice',
-        name: 'CreateModifyPrice',
-        component: () => import('@/views/modifyPriceManagement/createModifyPrice'),
-        meta: { title: '新增调价', noCache: false },
-        menu: 'createModifyPrice'
-      },
-      {
-        path: '/editModifyPrice/:id',
-        name: 'EditModifyPrice',
-        component: () => import('@/views/modifyPriceManagement/editModifyPrice'),
-        meta: { title: '修改调价', noCache: false },
-        menu: 'editModifyPrice',
-        hidden: true
-      },
-      {
-        path: '/detailModifyPrice/:id',
-        name: 'DetailModifyPrice',
-        component: () => import('@/views/modifyPriceManagement/detailModifyPrice'),
-        meta: { title: '详情调价', noCache: false },
-        menu: 'detailModifyPrice',
-        hidden: true
-      },
-      {
-        path: '/untreatedModifyPrice',
-        name: 'UntreatedModifyPrice',
-        component: () => import('@/views/modifyPriceManagement/untreatedModifyPrice'),
-        meta: { title: '未处理调价', noCache: false },
-        menu: 'untreatedModifyPrice'
-      },
-      {
-        path: '/underReviewModifyPrice',
-        name: 'UnderReviewModifyPrice',
-        component: () => import('@/views/modifyPriceManagement/underReviewModifyPrice'),
-        meta: { title: '审核中调价', noCache: false },
-        menu: 'underReviewModifyPrice'
-      },
-      {
-        path: '/refuseModifyPrice',
-        name: 'RefuseModifyPrice',
-        component: () => import('@/views/modifyPriceManagement/refuseModifyPrice'),
-        meta: { title: '审核不通过调价', noCache: false },
-        menu: 'refuseModifyPrice'
-      },
-      {
-        path: '/modifyPriceList',
-        name: 'ModifyPriceList',
-        component: () => import('@/views/modifyPriceManagement/modifyPriceList'),
-        meta: { title: '调价列表', noCache: false },
-        menu: 'modifyPriceList'
-      }
-    ]
-  },
-  {
-    path: '/userRights',
-    component: Layout,
-    redirect: '/userRights',
-    name: 'UserRights',
-    meta: {
-      title: '用户权限',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: '/userList',
-        name: 'UserList',
-        component: () => import('@/views/userRights/userList/index'),
-        meta: { title: '用户列表' },
-        menu: 'userList'
-      },
-      {
-        path: '/roleList',
-        name: 'RoleList',
-        component: () => import('@/views/userRights/roleList/index'),
-        meta: { title: '权限管理' },
-        menu: 'roleList'
-      },
-      {
-        path: '/menuList',
-        name: 'MenuList',
-        component: () => import('@/views/userRights/menuList/index'),
-        meta: { title: '菜单列表' },
-        menu: 'menuList'
-      }
-    ]
-  },
-  {
-    path: '/encodingRules',
-    component: Layout,
-    redirect: '/encodingRules',
-    name: 'EncodingRules',
-    meta: {
-      title: '编码规则',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: '/categories',
-        name: 'Categories',
-        component: () => import('@/views/encodingRules/categories/index'),
-        meta: { title: '编码配置' },
-        menu: 'userList'
-      },
-      {
-        path: '/codeComparative',
-        name: 'CodeComparative',
-        component: () => import('@/views/encodingRules/codeComparative/index'),
-        meta: { title: '编码规则' },
-        menu: 'userList'
+        path: '/purchase',
+        component: () => import('@/views/purchasing/purchase'),
+        name: 'Purchase',
+        meta: {
+          title: '价目表管理'
+        },
+        children: [
+          {
+            path: '/createPurchasePrice',
+            name: 'CreatePurchasePrice',
+            component: () => import('@/views/purchasing/purchase/createPurchasePrice'),
+            meta: { title: '新增价目', noCache: false },
+            menu: 'createPurchasePrice'
+          },
+          {
+            path: '/editPurchasePrice/:id',
+            name: 'EditPurchasePrice',
+            component: () => import('@/views/purchasing/purchase/editPurchasePrice'),
+            meta: { title: '修改价目', noCache: false },
+            menu: 'editPurchasePrice',
+            hidden: true
+          },
+          {
+            path: '/detailPurchasePrice/:id',
+            name: 'DetailPurchasePrice',
+            component: () => import('@/views/purchasing/purchase/detailPurchasePrice'),
+            meta: { title: '详情价目' },
+            hidden: true,
+            menu: 'detailPurchasePrice'
+          },
+          {
+            path: '/untreatedPriceList',
+            name: 'UntreatedPriceList',
+            component: () => import('@/views/purchasing/purchase/untreatedPriceList'),
+            meta: { title: '还未处理价目', noCache: false },
+            menu: 'untreatedPriceList'
+          },
+          {
+            path: '/underReviewPrice',
+            name: 'UnderReviewPrice',
+            component: () => import('@/views/purchasing/purchase/underReviewPrice'),
+            meta: { title: '审核中价目', noCache: false },
+            menu: 'underReviewPrice'
+          },
+          {
+            path: '/refusePriceList',
+            name: 'RefusePriceList',
+            component: () => import('@/views/purchasing/purchase/refusePriceList'),
+            meta: { title: '审核未通过价目', noCache: false },
+            menu: 'refusePriceList'
+          },
+          {
+            path: '/purchasePriceList',
+            name: 'PurchasePriceList',
+            component: () => import('@/views/purchasing/purchase/purchasePriceList'),
+            meta: { title: '价目列表', noCache: false },
+            menu: 'purchasePriceList'
+          }
+        ]
       }
     ]
   },
@@ -499,6 +478,63 @@ export const asyncRouterMap = [
             menu: 'userList'
           }
         ]
+      }
+    ]
+  },
+  {
+    path: '/userRights',
+    component: Layout,
+    name: 'UserRights',
+    meta: {
+      title: '用户权限',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: '/userList',
+        name: 'UserList',
+        component: () => import('@/views/userRights/userList/index'),
+        meta: { title: '用户列表' },
+        menu: 'userList'
+      },
+      {
+        path: '/roleList',
+        name: 'RoleList',
+        component: () => import('@/views/userRights/roleList/index'),
+        meta: { title: '权限管理' },
+        menu: 'roleList'
+      },
+      {
+        path: '/menuList',
+        name: 'MenuList',
+        component: () => import('@/views/userRights/menuList/index'),
+        meta: { title: '菜单列表' },
+        menu: 'menuList'
+      },
+      {
+        path: '/juisdictionList',
+        name: 'JuisdictionList',
+        component: () => import('@/views/userRights/jurisdictionList/index'),
+        meta: { title: '审核权限列表' },
+        menu: 'menuList'
+      }
+    ]
+  },
+  {
+    path: '/MRPview',
+    component: Layout,
+    name: 'MrpView',
+    meta: {
+      title: 'MRP转单界面',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: '/mrpView',
+        name: 'mrpView',
+        component: () => import('@/views/MRPview/index'),
+        meta: { title: 'MRP转单界面' },
+        menu: 'userList'
       }
     ]
   },

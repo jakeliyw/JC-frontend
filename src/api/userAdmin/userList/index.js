@@ -17,3 +17,19 @@ export function updateUserDisable(data) {
     data
   })
 }
+// 查询角色列表
+export function queryRoleList(params) {
+  return request({
+    url: '/tJxRole/queryRoleList',
+    method: 'get',
+    params
+  })
+}
+// 给用户分配角色
+export function distributionRole(data) {
+  return request({
+    url: '/tJxAdminrole/distributionRole',
+    method: 'post',
+    data
+  })
+}

@@ -205,7 +205,7 @@ export default {
       FDESCRIPTION: '', // 弹窗描述
       FSPECIFICATION: '', // 弹窗规格型号
       materielDialogData: [],
-      materielDialogHeader: [
+      materielDialogHeader: [ // 物料表头
         { label: '使用组织', prop: 'fuseOrg', align: 'center' },
         { label: '物料编码', prop: 'fnumber', align: 'center' },
         { label: '描述', prop: 'fdescripTion', align: 'center', minWidth: '150px' },
@@ -217,16 +217,18 @@ export default {
       tableIndex: 0,
       tableHeader: [],
       teamList: [], // 组织
-      prodValue: { fcreateOrgId: '', fname: '', fcurrencyId: '', fdescription: '', fisIncludedTax: '', fcurrencyIdName: '', fid: '',
+      prodValue: { fcreateOrgId: 1, fname: '', fcurrencyId: '', fdescription: '', fisIncludedTax: '', fcurrencyIdName: '', fid: '',
         priceDetails: [{ fmaterialId: '', fmaterialIdName: '', funitId: '', funitName: '', fmaterialTypeId: '', fpriceBase: '', fprice: '', fdownPrice: '' }] },
       cellStyle: { padding: '10 10' },
-      prodValueRules: {
-        fbillTypeId: [
+      prodValueRules: { // 是否填写验证
+        fname: [
           { required: true, message: '请输入价目表名称', trigger: 'blue' }
-        ], fsaleOrgId: [
+        ], fcreateOrgId: [
           { required: true, message: '请选择销售组织', trigger: 'change' }
-        ], fcustId: [
+        ], fcurrencyId: [
           { required: true, message: '请选择币别', trigger: 'change' }
+        ], fdescription: [
+          { required: true, message: '请输入备注', trigger: 'blue' }
         ]
       },
       // 结算币别
@@ -347,7 +349,7 @@ export default {
     // 删除明细空行
     delectSale(index) {
       if (index === 0) {
-        this.$message.error('不能删除第一行')
+        this.$message.error('不能删除首行数据')
         return false
       }
       this.prodValue.priceDetails.splice(index, 1)

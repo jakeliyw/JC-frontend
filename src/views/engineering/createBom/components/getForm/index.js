@@ -33,19 +33,31 @@ export default {
           label: '物料规格',
           disabled: 'disabled'
         },
-        FLABORCOST: {
-          label: '人工成本',
-          type: 'number',
-          precision: 2,
-          min: 0.01,
-          step: 0.1
+        FBARCODE: {
+          label: '条码',
+          disabled: 'disabled'
+        },
+        FOLDNUMBER: {
+          label: '旧物料编码',
+          disabled: 'disabled'
+        },
+        FUNIT: {
+          label: '物料单位',
+          disabled: 'disabled'
         },
         FMATERIALCOST: {
           label: '物料成本',
           disabled: 'disabled'
         },
-        FUNIT: {
-          label: '物料单位',
+        FLABORCOST: {
+          label: '人工成本',
+          type: 'number',
+          precision: 2,
+          min: 0,
+          step: 0.1
+        },
+        FVOLUME: {
+          label: '体积',
           disabled: 'disabled'
         },
         FGROSSWEIGHT: {
@@ -60,28 +72,16 @@ export default {
           label: '重量单位',
           disabled: 'disabled'
         },
-        FVOLUME: {
-          label: '体积',
-          disabled: 'disabled'
-        },
-        FOLDNUMBER: {
-          label: '旧物料编码',
-          disabled: 'disabled'
-        },
-        FBARCODE: {
-          label: '条码',
-          disabled: 'disabled'
-        },
         FMAKINGS: {
           label: '材质',
           disabled: 'disabled'
         },
-        FDEFAULTROUTING: {
-          label: '工艺',
-          disabled: 'disabled'
-        },
         FTAXRATE: {
           label: '税率',
+          disabled: 'disabled'
+        },
+        FDEFAULTROUTING: {
+          label: '工艺',
           disabled: 'disabled'
         }
       }

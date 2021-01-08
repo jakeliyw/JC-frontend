@@ -189,8 +189,7 @@ export default {
     },
     // Form表单
     async handleSetForm() {
-      const FNUMBER = this.$route.params.FNUMBER
-      const { data: RES } = await queryBomchildList({ fnumber: FNUMBER })
+      const { data: RES } = await queryBomchildList({ fnumber: this.$route.params.FNUMBER })
       this.team = RES.FCREATEORG
       this.company = RES.FUSEORG
       this.sonTableData = RES.child
@@ -206,24 +205,32 @@ export default {
           label: '物料描述',
           disabled: 'disabled'
         },
-        FOLDNUMBER: {
-          label: '旧物料编码',
-          disabled: 'disabled'
-        },
         FSPECIFICATION: {
           label: '物料规格',
           disabled: 'disabled'
         },
-        FLABORCOST: {
-          label: '人工成本',
+        FBARCODE: {
+          label: '条码',
+          disabled: 'disabled'
+        },
+        FOLDNUMBER: {
+          label: '旧物料编码',
+          disabled: 'disabled'
+        },
+        FUNIT: {
+          label: '物料单位',
           disabled: 'disabled'
         },
         FMATERIALCOST: {
           label: '物料成本',
           disabled: 'disabled'
         },
-        FUNIT: {
-          label: '物料单位',
+        FLABORCOST: {
+          label: '人工成本',
+          disabled: 'disabled'
+        },
+        FVOLUME: {
+          label: '体积',
           disabled: 'disabled'
         },
         FGROSSWEIGHT: {
@@ -238,24 +245,16 @@ export default {
           label: '重量单位',
           disabled: 'disabled'
         },
-        FVOLUME: {
-          label: '体积',
-          disabled: 'disabled'
-        },
-        FBARCODE: {
-          label: '条码',
-          disabled: 'disabled'
-        },
         FMAKINGS: {
           label: '材质',
           disabled: 'disabled'
         },
-        FDEFAULTROUTING: {
-          label: '工艺',
-          disabled: 'disabled'
-        },
         FTAXRATE: {
           label: '税率',
+          disabled: 'disabled'
+        },
+        FDEFAULTROUTING: {
+          label: '工艺',
           disabled: 'disabled'
         }
       }

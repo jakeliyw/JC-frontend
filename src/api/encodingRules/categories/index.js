@@ -17,11 +17,11 @@ export function queryTwoMaterialNumbert(params) {
   })
 }
 // 获取小类组合列表数据
-export function querySerialTypeList(params) {
+export function querySerialTypeList(data) {
   return request({
     url: '/tJxSerialtype/querySerialTypeList',
-    method: 'get',
-    params
+    method: 'post',
+    data
   })
 }
 // 获取物料属性列表数据

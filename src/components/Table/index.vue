@@ -46,6 +46,8 @@
         <slot v-else-if="col.type === 'state'" name="btnState" :scope="scope" />
         <!--        button-->
         <slot v-else-if="col.type === 'btn'" name="btnSlot" :scope="scope" />
+        <!--        tag-->
+        <slot v-else-if="col.type === 'tag'" name="tagSlot" :scope="scope" />
       </template>
     </el-table-column>
   </el-table>

@@ -13,13 +13,19 @@
             :table-header="tableHeader"
             :cell-style="cellStyle"
           >
-            <el-table-column prop="fnumber" label="物料编码" min-width="100" align="center" />
+            <el-table-column prop="fnumber" label="物料编码" min-width="100" align="center" :show-overflow-tooltip="true">
+              <template slot-scope="scope">
+                <el-input v-model="scope.row.fnumber" size="mini" disabled>
+                  <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fnumber)" />
+                </el-input>
+              </template>
+            </el-table-column>
             <el-table-column prop="fdescripTion" label="物料描述" min-width="300" align="center" :show-overflow-tooltip="true" />
             <el-table-column prop="funit" label="基本单位" min-width="80" align="center" />
             <el-table-column prop="fpriceBase" label="价格系数" align="center" />
             <el-table-column prop="fprice" label="价格" align="center" />
             <el-table-column prop="fdownPrice" label="最低限价" align="center" />
-            <el-table-column prop="feffectiveDate" label="生效期" align="center" />
+            <el-table-column prop="feffectiveDate" label="生效期" align="center" :show-overflow-tooltip="true" />
           </jc-table>
         </div>
       </el-tab-pane>
@@ -36,12 +42,14 @@ import jcForm from '@/components/Form'
 import {
   querySalPriceNtry
 } from '@/api/marketManage/marketPriceList'
+import jumpMateriel from '@/components/JumpMateriel'
 
 export default {
   components: {
     jcTable,
     jcForm
   },
+  mixins: [jumpMateriel],
   data() {
     return {
       // 表头
@@ -102,5 +110,8 @@ export default {
 <style lang="scss" scoped>
 .content {
   @include listBom;
+  .iconfont{
+    cursor: pointer;
+  }
 }
 </style>

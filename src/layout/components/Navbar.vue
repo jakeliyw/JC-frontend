@@ -21,7 +21,7 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <span class="userName">{{userName}}</span>
+      <span class="userName">{{ userName }}</span>
     </div>
   </div>
 </template>

@@ -1,0 +1,220 @@
+<template>
+  <div class="content">
+    <div class="header">
+      <div class="header-name">
+        <span class="parentItemNo">角色名称</span>
+        <el-input
+          v-model="fname"
+          class="input-content"
+          placeholder="请输入角色名称"
+          size="mini"
+          @keyup.enter.native="getRoleList"
+        />
+        <el-button size="mini" type="primary" class="btn" @click="getRoleList">搜索</el-button>
+        <el-button size="mini" type="primary" class="btn" @click="insertTJQ">新增</el-button>
+      </div>
+    </div>
+    <div class="table-content">
+      <jc-table
+        :table-data="tableData"
+        :table-header="tableHeader"
+        :cell-style="cellStyle"
+      >
+        <template v-slot:btnSlot="col">
+          <el-button type="warning" @click="insertTJQ(col.scope.row)">修改</el-button>
+        </template>
+      </jc-table>
+    </div>
+    <div class="footer">
+      <jc-pagination
+        v-show="total > 0"
+        :total="total"
+        :page.sync="pageNum"
+        :limit.sync="size"
+        @pagination="getRoleList"
+      />
+    </div>
+    <!--新增/修改 审核权限弹窗-->
+    <el-dialog :title="newINsert" :visible.sync="insertTJQVisible">
+      <el-form ref="ruleForm" :model="form" label-width="120px" :rules="rules">
+        <el-form-item label="用户" prop="fuserId">
+          <el-select v-if="!form.fid" v-model="form.fuserId" placeholder="请选择用户">
+            <el-option v-for="(item, index) in regionData" :key="index" :label="item.fname" :value="item.fuserId" />
+          </el-select>
+          <el-select v-if="form.fid" v-model="form.fuserId" disabled>
+            <el-option v-for="(item, index) in regionData" :key="index" :label="item.fname" :value="item.fuserId" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="类型" prop="ftype">
+          <el-input v-model="form.ftype" />
+        </el-form-item>
+        <el-form-item label="原状态" prop="fvalueb">
+          <el-input v-model="form.fvalueb" />
+        </el-form-item>
+        <el-form-item label="原流程" prop="fvaluea">
+          <el-input v-model="form.fvaluea" />
+        </el-form-item>
+        <el-form-item label="审核后状态" prop="fvalued">
+          <el-input v-model="form.fvalued" />
+        </el-form-item>
+        <el-form-item label="审核后流程" prop="fvaluec">
+          <el-input v-model="form.fvaluec" />
+        </el-form-item>
+        <el-form-item label="描述" prop="fdepict">
+          <el-input v-model="form.fdepict" />
+        </el-form-item>
+        <el-form-item label="审核人字段" prop="fvaluef">
+          <el-input v-model="form.fvaluef" />
+        </el-form-item>
+        <el-form-item label="审核时间字段" prop="fvaluee">
+          <el-input v-model="form.fvaluee" />
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="insertTJQVisible = false">取 消</el-button>
+          <el-button type="primary" @click="insertTJxQuery">确 定</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import jcTable from '@/components/Table'
+import jcPagination from '@/components/Pagination'
+import { queryTJxQueryList, querySecUser, insertTJxQuery, updayeTJxQuery } from '@/api/userAdmin/jurisdictionList'
+export default {
+  name: 'JurisdictionList',
+  components: {
+    jcTable,
+    jcPagination
+  },
+  data() {
+    return {
+      fname: '',
+      total: 0, // 总条目
+      pageNum: 1, // 当前页
+      size: 10, // 每页显示多少条数据
+      tableData: [], // 列表数据
+      // 表头数据
+      tableHeader: [
+        { label: '审核名称', prop: 'fname', align: 'center' },
+        { label: '类型', prop: 'ftype', align: 'center' },
+        { label: '原状态', prop: 'fvalueb', align: 'center' },
+        { label: '原流程', prop: 'fvaluea', align: 'center' },
+        { label: '审核后状态', prop: 'fvalued', align: 'center' },
+        { label: '审核后流程', prop: 'fvaluec', align: 'center' },
+        { label: '描述', prop: 'fdepict', align: 'center', minWidth: '150px' },
+        { label: '审核人字段', prop: 'fvaluef', align: 'center' },
+        { label: '审核时间字段', prop: 'fvaluee', align: 'center' },
+        { label: '操作', type: 'btn', minWidth: '100px', align: 'center' }
+      ],
+      // 行高
+      cellStyle: { padding: '10 10' },
+      newINsert: '新增审核权限',
+      insertTJQVisible: false,
+      form: {
+        fuserId: '',
+        ftype: '',
+        fvalueb: '',
+        fvaluea: '',
+        fvalued: '',
+        fvaluec: '',
+        fdepict: '',
+        fvaluef: '',
+        fvaluee: '',
+        fid: ''
+      },
+      regionData: [], // 角色数组
+      rules: { // 验证不能为空
+        fuserId: [
+          { required: true, message: '请选择用户', trigger: 'change' }
+        ], ftype: [
+          { required: true, message: '请输入类型', trigger: 'blur' }
+        ], fvalueb: [
+          { required: true, message: '请输原状态', trigger: 'blur' }
+        ], fvaluea: [
+          { required: true, message: '请输入原流程', trigger: 'blur' }
+        ], fvalued: [
+          { required: true, message: '请输入审核后状态', trigger: 'blur' }
+        ], fvaluec: [
+          { required: true, message: '请输入审核后流程', trigger: 'blur' }
+        ], fdepict: [
+          { required: true, message: '请输入描述', trigger: 'blur' }
+        ], fvaluef: [
+          { required: true, message: '请输入审核人字段', trigger: 'blur' }
+        ], fvaluee: [
+          { required: true, message: '请输入审核时间字段', trigger: 'blur' }
+        ]
+      }
+    }
+  },
+  mounted() {
+    this.getRoleList()
+    this.querySecUser()
+  },
+  methods: {
+    insertTJQ(res) {
+      this.form = {}
+      if (!res.fid) {
+        this.newINsert = '新增审核权限'
+      } else {
+        this.form = res
+        this.newINsert = '修改审核权限'
+      }
+      this.insertTJQVisible = true
+    },
+    // 审核权限列表
+    async getRoleList() {
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, fname: this.fname }
+      const { data: res } = await queryTJxQueryList(DATA)
+      this.tableData = res.array
+      this.total = res.total
+    },
+    // 选择用户数据
+    async querySecUser() {
+      const { data: res } = await querySecUser()
+      this.regionData = res
+    },
+    // 新增/修改 审核权限
+    insertTJxQuery() {
+      this.$refs.ruleForm.validate((valid) => {
+        if (!valid) {
+          return false
+        }
+        if (!this.form.fid) {
+          insertTJxQuery(this.form).then(res => {
+            if (res.code === 0) {
+              this.$message.success(res.message)
+              this.getRoleList()
+              this.insertTJQVisible = false
+              this.form = {}
+            } else {
+              this.$message.error(res.message)
+            }
+          })
+        } else {
+          updayeTJxQuery(this.form).then(res => {
+            if (res.code === 0) {
+              this.$message.success('修改成功')
+              this.getRoleList()
+              this.insertTJQVisible = false
+              this.form = {}
+            } else {
+              this.$message.error(res.message)
+            }
+          })
+        }
+      })
+    }
+  }
+}
+</script>
+
+<style scoped lang="scss">
+.content {
+  @include listBom;
+  .el-form-item {
+    max-width: 70%;
+  }
+}
+</style>

@@ -7,8 +7,8 @@
           v-model="NAME"
           class="input-content"
           placeholder="请输入角色"
-          @keyup.enter.native="getRoleList"
           size="mini"
+          @keyup.enter.native="getRoleList"
         />
         <el-button size="mini" type="primary" class="btn" @click="getRoleList">搜索</el-button>
       </div>
@@ -26,7 +26,7 @@
         :total="total"
         :page.sync="pageNum"
         :limit.sync="size"
-        @pagination="handleQueryRoleList"
+        @pagination="getRoleList"
       />
     </div>
   </div>
@@ -67,10 +67,6 @@ export default {
   methods: {
     disableUser() {
       console.log('禁用成功')
-    },
-    handleQueryRoleList() {
-      this.pageNum = 1
-      this.getRoleList()
     },
     async getRoleList() {
       const DATA = { pageNum: this.pageNum, pageSize: this.size, NAME: this.NAME }

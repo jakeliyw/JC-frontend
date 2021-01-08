@@ -1,37 +1,5 @@
 <template>
   <div id="app">
-    <router-view v-if="isRouterAlive" />
+    <router-view />
   </div>
 </template>
-
-<script>
-export default {
-  name: 'App',
-  provide() {
-    return {
-      reload: this.reload
-    }
-  },
-  data() {
-    return {
-      isRouterAlive: true
-    }
-  },
-  methods: {
-    // 局部刷新
-    reload() {
-      this.isRouterAlive = false
-      this.$nextTick(function() {
-        this.isRouterAlive = true
-      })
-    }
-  }
-}
-</script>
-<style lang="scss">
-@media screen and (max-height: 768px){
-  .el-dialog{
-    margin-top: 5vh!important;
-  }
-}
-</style>

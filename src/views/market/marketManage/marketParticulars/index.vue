@@ -14,14 +14,20 @@
               :table-header="tableHeader"
               :cell-style="cellStyle"
             >
-              <el-table-column prop="fnumber" label="物料编码" min-width="100" align="center" />
-              <el-table-column prop="fdescripTion" label="物料描述" min-width="300" align="center" :show-overflow-tooltip="true" />
-              <el-table-column prop="funit" label="基本单位" min-width="80" align="center" />
+              <el-table-column prop="fnumber" label="物料编码" min-width="120px" align="center" :show-overflow-tooltip="true">
+                <template slot-scope="scope">
+                  <el-input v-model="scope.row.fnumber" size="mini" disabled>
+                    <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fnumber)" />
+                  </el-input>
+                </template>
+              </el-table-column>
+              <el-table-column prop="fdescripTion" label="物料描述" min-width="300px" align="center" :show-overflow-tooltip="true" />
+              <el-table-column prop="funit" label="基本单位" min-width="80px" align="center" />
               <el-table-column prop="fprice" label="产品单价" align="center" />
               <el-table-column prop="fqty" label="产品数量" align="center" />
               <el-table-column prop="totalPrice" label="总价" align="center" />
               <el-table-column prop="fsettleCurr" label="币别" align="center" />
-              <el-table-column prop="fdeliveryDate" label="交货日期" min-width="80" align="center" />
+              <el-table-column prop="fdeliveryDate" label="交货日期" min-width="120px" align="center" :show-overflow-tooltip="true" />
               <el-table-column prop="fvolume" label="产品体积" align="center" />
               <el-table-column prop="fisFree" label="是否赠品" align="center">
                 <template slot-scope="scope">
@@ -40,7 +46,7 @@
             >
               <el-table-column label="是否预收" prop="fqty" align="center" width="80px">
                 <template slot-scope="scope">
-                  <el-checkbox v-model="scope.row.fneedRecAdvance" :value="scope.row.fneedRecAdvance" />
+                  <el-checkbox v-model="scope.row.fneedRecAdvance" :value="scope.row.fneedRecAdvance" disabled />
                 </template>
               </el-table-column>
               <el-table-column label="应收比例%" align="center">
@@ -50,6 +56,7 @@
                     :min="0"
                     :max="100"
                     size="mini"
+                    disabled
                   />
                 </template>
               </el-table-column>
@@ -59,6 +66,7 @@
                     v-model="scope.row.frecAdvanCeamount"
                     :min="0"
                     size="mini"
+                    disabled
                   />
                 </template>
               </el-table-column>
@@ -79,12 +87,14 @@ import jcForm from '@/components/Form'
 import {
   queryTSalOrderNtry
 } from '@/api/marketManage/marketOrder'
+import jumpMateriel from '@/components/JumpMateriel'
 
 export default {
   components: {
     jcTable,
     jcForm
   },
+  mixins: [jumpMateriel],
   data() {
     return {
       // 表头
@@ -122,20 +132,14 @@ export default {
         }, fbillType: {
           label: '订单类型',
           disabled: 'disabled'
-        }, fbillNo: {
-          label: '销售订单号',
-          disabled: 'disabled'
         }, fsaleOrg: {
           label: '销售组织',
           disabled: 'disabled'
+        }, fbillNo: {
+          label: '单据编号',
+          disabled: 'disabled'
         }, customer: {
           label: '客户',
-          disabled: 'disabled'
-        }, fsettleCurr: {
-          label: '结算货币',
-          disabled: 'disabled'
-        }, frecCondition: {
-          label: '收款条件',
           disabled: 'disabled'
         }, fsaleDept: {
           label: '销售部门',
@@ -143,8 +147,11 @@ export default {
         }, fsaler: {
           label: '销售员',
           disabled: 'disabled'
-        }, fcloseStatus: {
-          label: '关闭状态',
+        }, frecCondition: {
+          label: '收款条件',
+          disabled: 'disabled'
+        }, fsettleCurr: {
+          label: '结算货币',
           disabled: 'disabled'
         }, fexchangeType: {
           label: '汇率类型',
@@ -169,6 +176,9 @@ export default {
           disabled: 'disabled'
         }, fpaezCombo: {
           label: '品质标准',
+          disabled: 'disabled'
+        }, fcloseStatus: {
+          label: '关闭状态',
           disabled: 'disabled'
         }, fnote: {
           label: '备注',

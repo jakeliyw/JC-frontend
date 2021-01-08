@@ -6,7 +6,7 @@
       :table-data="otherLogTableData"
       :cell-style="cellStyle"
     />
-    <slot name="slotPagination"></slot>
+    <slot name="slotPagination" />
   </div>
 </template>
 

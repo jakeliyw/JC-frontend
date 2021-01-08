@@ -136,11 +136,13 @@
 import { queryMaterialList } from '@/api/marketManage/marketOrder'
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
+import jumpMateriel from '@/components/JumpMateriel'
 export default {
   components: {
     jcTable,
     jcPagination
   },
+  mixins: [jumpMateriel],
   data() {
     return {
       activeName: 'first',
@@ -228,7 +230,7 @@ export default {
     // 删除明细空行
     delectSale(index) {
       if (index === 0) {
-        this.$message.error('不能删除第一行')
+        this.$message.error('不能删除首行数据')
         return false
       }
       this.tabTwo.saleDetails.splice(index, 1)

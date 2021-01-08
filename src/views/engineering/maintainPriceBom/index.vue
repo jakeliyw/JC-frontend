@@ -19,25 +19,27 @@
         :data="tableData"
         border
         row-key="loking"
+        height="calc(100vh - 250px)"
         :tree-props="{children: 'child', hasChildren: 'hasChildren'}"
         :header-cell-style="{background:'#E6EBFC', fontSize: '13px'}"
       >
         <el-table-column prop="index" label="序号" align="center" />
-        <el-table-column prop="fnumber" label="物料编码" align="center" :show-overflow-tooltip="true" />
+        <el-table-column prop="fnumber" label="物料编码" align="center" min-width="120px" :show-overflow-tooltip="true" />
         <el-table-column prop="fdescripTion" label="物料描述" align="center" min-width="200px" :show-overflow-tooltip="true" />
         <el-table-column prop="fdosage" label="用量" align="center" min-width="150px">
           <template slot-scope="scope">
-            <el-input-number v-model="scope.row.fdosage" :min="0"  size="mini" />
+            <el-input-number v-if="scope.row.fdosage" v-model="scope.row.fdosage" :min="1" size="mini" />
+            <el-input v-if="!scope.row.fdosage" v-model="scope.row.fdosage" size="mini" disabled style="width: 130px" />
           </template>
         </el-table-column>
         <el-table-column prop="fprice" label="单价" align="center" min-width="150px">
           <template slot-scope="scope">
-            <el-input-number v-if="Number(scope.row.fprice) <= Number(scope.row.fixedPrice)" v-model="scope.row.fprice" :disabled="!scope.row.flg" :min="0" :max="scope.row.fixedPrice" size="mini" />
-            <el-input-number v-if="Number(scope.row.fprice) > Number(scope.row.fixedPrice)" v-model="scope.row.fprice" :disabled="!scope.row.flg" :min="0" :max="scope.row.fprice" size="mini" />
+            <el-input-number v-if="scope.row.fprice <= scope.row.fixedPrice" v-model="scope.row.fprice" :disabled="!scope.row.flg" :min="0" :max="scope.row.fixedPrice" size="mini" />
+            <el-input-number v-if="scope.row.fprice > scope.row.fixedPrice" v-model="scope.row.fprice" :disabled="!scope.row.flg" :min="0" :max="scope.row.fprice" size="mini" />
           </template>
         </el-table-column>
         <el-table-column prop="flaborCost" label="人工成本" align="center" />
-        <el-table-column prop="fcreateDate" label="生效时间" align="center" :show-overflow-tooltip="true" />
+        <el-table-column prop="fcreateDate" label="生效时间" align="center" min-width="130px" :show-overflow-tooltip="true" />
         <el-table-column label="操作" align="center" fixed="right" min-width="90px">
           <template slot-scope="scope">
             <el-button v-if="scope.row.levels == '1'" type="primary" size="mini" @click="renovateAlone(scope.row)">更新</el-button>

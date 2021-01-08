@@ -213,7 +213,7 @@ export default {
   mixins: [jumpMateriel, getForm],
   data() {
     return {
-      total: 1, // 总条目
+      total: 0, // 总条目
       pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
       parentTableVisible: false, // 父项弹窗
@@ -325,16 +325,13 @@ export default {
     async createOrganization() {
       const { data: RES } = await queryTOrgOrganizationsL()
       this.teamList = RES.map(item => {
-        item.label = item.FNAME
-        item.value = item.FPKID
-        this.company = item.label
-        return item
+        this.company = item.FNAME
+        return { label: item.FNAME, value: item.FPKID }
       })
     },
     // 获取页面数据
     async getQueryBomchildList() {
-      const FNUMBER = this.$route.params.FNUMBER
-      const { data: RES } = await queryBomchildList({ fnumber: FNUMBER })
+      const { data: RES } = await queryBomchildList({ fnumber: this.$route.params.FNUMBER })
       this.FMATERIALID = RES.FMATERIALID
       this.prodValue = RES
       this.sonTableData = RES.child
@@ -467,8 +464,7 @@ export default {
       }
       const { FTYPE, fMaterialId } = await queryFtypeInfo({ fnumber: FNUMBER })
       if (FTYPE === 0) {
-        const materielCode = this.$route.params.FNUMBER
-        if (materielCode === FNUMBER) {
+        if (this.$route.params.FNUMBER === FNUMBER) {
           this.$message.error('没有查询到下层bom')
           return
         }

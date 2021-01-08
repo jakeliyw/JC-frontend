@@ -36,10 +36,14 @@
     align-items: center;
     flex-wrap: nowrap;
   }
+  .finance-input{
+    width: 10vw;
+  }
   .information {
     display: flex;
     justify-content: space-around;
-    margin-top: 20px;
+    align-items: center;
+    margin: 20px 0;
 
     .images {
       width: 300px;
@@ -92,6 +96,9 @@
         }
       }
     }
+  }
+  .el-input__icon{
+    cursor: pointer;
   }
   .materielAttribute {
     display: flex;

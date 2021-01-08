@@ -98,3 +98,21 @@ export function queryMaterialAttribute(data) {
     data
   })
 }
+
+// 修改时查询物料明细
+export function queryMaterialDetail(params) {
+  return request({
+    url: '/tBdMaterial/queryMaterialParticulars',
+    method: 'get',
+    params
+  })
+}
+
+// 更新物料
+export function updateMaterialDetail(data) {
+  return request({
+    url: '/tBdMaterial/updateMaterialDetail',
+    method: 'put',
+    data
+  })
+}

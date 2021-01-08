@@ -7,8 +7,8 @@
           v-model="SUBJECTION"
           class="input-content"
           placeholder="请输入菜单"
-          @keyup.enter.native="getMenuList"
           size="mini"
+          @keyup.enter.native="getMenuList"
         />
         <el-button size="mini" type="primary" class="btn" @click="getMenuList">搜索</el-button>
       </div>
@@ -26,7 +26,7 @@
         :total="total"
         :page.sync="pageNum"
         :limit.sync="size"
-        @pagination="handleQueryMenuList"
+        @pagination="getMenuList"
       />
     </div>
   </div>
@@ -69,10 +69,6 @@ export default {
     this.getMenuList()
   },
   methods: {
-    handleQueryMenuList() {
-      this.pageNum = 1
-      this.getMenuList()
-    },
     async getMenuList() {
       const DATA = { pageNum: this.pageNum, pageSize: this.size, SUBJECTION: this.SUBJECTION }
       const { data: res, total } = await queryTJxMenuList(DATA)

@@ -335,7 +335,7 @@ export default {
     // 删除明细空行
     delectSale(index) {
       if (index === 0) {
-        this.$message.error('不能删除第一行')
+        this.$message.error('不能删除首行数据')
         return false
       }
       this.tableData.splice(index, 1)

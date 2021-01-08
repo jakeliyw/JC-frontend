@@ -6,11 +6,11 @@
         <el-input
           v-model.trim="fbillNo"
           class="input-content"
+          size="mini"
           placeholder="请输入销售订单号"
           @keyup.enter.native="handleQuerySonClass"
         />
-        <el-button type="primary" class="btn" size="medium" @click="handleQuerySonClass">搜索</el-button>
-        <!--        <el-button type="primary" class="btn" size="medium" @click="newClass=true">新增</el-button>-->
+        <el-button type="primary" class="btn" size="mini" @click="handleQuerySonClass">搜索</el-button>
       </div>
     </div>
     <div class="table-content">
