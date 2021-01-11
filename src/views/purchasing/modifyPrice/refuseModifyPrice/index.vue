@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">调价名称</span>
@@ -47,13 +48,15 @@
 <script>
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
+import jcTitle from '@/components/Title'
 import { queryFailPurPatList, updateAgainReview } from '@/api/modifyPriceManagement/refuseModifyPrice'
 export default {
   name: 'RefuseModifyPrice',
   inject: ['reload'],
   components: {
     jcTable,
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   data() {
     return {

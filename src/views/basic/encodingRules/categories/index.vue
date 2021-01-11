@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">大类名称</span>
@@ -56,6 +57,7 @@
       title="中类集合"
       :visible.sync="dialogVisible"
       width="50%"
+      :close-on-click-modal="false"
     >
       <el-button type="primary" class="btn inTheBtn" size="medium" @click="increased(1)">新增</el-button>
       <jc-table
@@ -73,6 +75,7 @@
       title="小类集合"
       :visible.sync="dialogVisibleSmall"
       width="50%"
+      :close-on-click-modal="false"
     >
       <el-button type="primary" class="btn inTheBtn" size="medium" @click="increased(2)">新增</el-button>
       <jc-table
@@ -91,6 +94,7 @@
       title="属性集合"
       :visible.sync="dialogVisibleAttribute"
       width="50%"
+      :close-on-click-modal="false"
     >
       <el-button type="primary" class="btn inTheBtn" size="medium" @click="increased(3)">新增</el-button>
       <jc-table
@@ -108,6 +112,7 @@
       title="新增"
       :visible.sync="newClass"
       width="50%"
+      :close-on-click-modal="false"
     >
       <el-form label-width="100px" :model="formLabelAlign">
         <el-form-item label="大类编码">
@@ -189,6 +194,7 @@
     <el-dialog
       title="新增"
       :visible.sync="newInTheClass"
+      :close-on-click-modal="false"
       width="50%"
       append-to-body
     >
@@ -249,6 +255,7 @@
 <script>
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
+import jcTitle from '@/components/Title'
 import {
   queryLargeTypeList,
   queryTwoMaterialNumbert,
@@ -264,7 +271,8 @@ export default {
   name: 'Categories',
   components: {
     jcTable,
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   data() {
     return {

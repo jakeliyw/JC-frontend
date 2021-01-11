@@ -63,7 +63,7 @@
           </div>
           <div class="basics">
             <jc-form :option-value="basicValue" :options="basic">
-              <el-select v-model="basicValue.FBASEUNITID" placeholder="请选择基本单位" @change="handleCompany" size="small">
+              <el-select v-model="basicValue.FBASEUNITID" placeholder="请选择基本单位" size="small" @change="handleCompany">
                 <el-option
                   v-for="item in basicUnit"
                   :key="item.value"
@@ -129,15 +129,15 @@
         />
       </el-tab-pane>
     </el-tabs>
-    <!--    单位、重量、尺寸弹窗-->
+    <!--    重量弹窗-->
     <jc-popup
       v-model="weightPagination.FNAME"
       :dialog-title="dialogTitle"
-      :open-dialog="openDialog"
+      :open-dialog="openWeightDialog"
       :popup-title="popupTitle"
       @closeDialog="closeDialog"
       @emptyForm="emptyForm"
-      @handleSearch="searchCompany"
+      @handleSearch="searchWeight"
     >
       <template v-slot:content>
         <jc-table
@@ -147,11 +147,30 @@
           :table-header="tableHeader"
           :table-height="0"
           @clickRow="weightSelect"
-        >
-          <template v-slot:btnSlot="clo">
-            <el-button size="mini" type="primary" @click="weightSelect(clo.scope.row)">重量单位选中</el-button>
-          </template>
-        </jc-table>
+        />
+      </template>
+      <template v-slot:pagination>
+        <jc-pagination
+          v-if="dialogTitle === '重量单位'"
+          v-show="total > 0"
+          :total="total"
+          :page.sync="weightPagination.pageNum"
+          :limit.sync="weightPagination.pageSize"
+          @pagination="handleFweightList"
+        />
+      </template>
+    </jc-popup>
+    <!--    尺寸弹窗-->
+    <jc-popup
+      v-model="sizePagination.FNAME"
+      :dialog-title="dialogTitle"
+      :open-dialog="openSizeDialog"
+      :popup-title="popupTitle"
+      @closeDialog="closeDialog"
+      @emptyForm="emptyForm"
+      @handleSearch="searchSize"
+    >
+      <template v-slot:content>
         <jc-table
           v-show="dialogTitle === '尺寸单位'"
           :cell-style="cellStyle"
@@ -159,23 +178,11 @@
           :table-header="tableHeader"
           :table-height="0"
           @clickRow="sizeSelect"
-        >
-          <template v-slot:btnSlot="clo">
-            <el-button size="mini" type="primary" @click="sizeSelect(clo.scope.row)">尺寸单位选中</el-button>
-          </template>
-        </jc-table>
+        />
       </template>
       <template v-slot:pagination>
         <jc-pagination
-          v-if="type === '重量单位'"
-          v-show="total > 0"
-          :total="total"
-          :page.sync="weightPagination.pageNum"
-          :limit.sync="weightPagination.pageSize"
-          @pagination="handleFweightList"
-        />
-        <jc-pagination
-          v-else-if="type === '尺寸单位'"
+          v-if="dialogTitle === '尺寸单位'"
           v-show="total > 0"
           :total="total"
           :page.sync="sizePagination.pageNum"
@@ -316,7 +323,8 @@ export default {
     return {
       actionUrl: '/tBdMaterial/insertMaterialDetail',
       activeName: 'basic', // 选项卡默认
-      openDialog: false, // 重量、单位、尺寸弹窗
+      openWeightDialog: false, // 重量弹窗
+      openSizeDialog: false, // 尺寸弹窗
       openMaterial: false, // 物料弹窗
       FDESCRIPTION: '', // 描述后端返回值
       isMaterial: false, // 物料属性显示与隐藏
@@ -334,7 +342,6 @@ export default {
       dialogTitle: '', // 弹窗标题
       total: 0, // 条目
       materialCode: '', // 物料编码
-      type: '', // 判断分页
       serialNumber: '', // 流水号
       company: {}, // 选中单位中文名称
       oneMaterielData: [], // 一类物料
@@ -633,21 +640,26 @@ export default {
     closeDialog() {
       this.sizePagination.pageNum = 1
       this.weightPagination.pageNum = 1
-      this.openDialog = false
+      this.openWeightDialog = false
+      this.openSizeDialog = false
     },
     // 清空表单
     emptyForm() {
-      this.FNAME = ''
+      this.weightPagination.FNAME = ''
+      this.sizePagination.FNAME = ''
     },
-    // 搜索
-    searchCompany() {
+    // 重量搜索
+    searchWeight() {
       this.weightPagination.pageNum = 1
-      this.sizePagination.pageNum = 1
       this.handleFweightList()
+    },
+    // 尺寸搜索
+    searchSize() {
+      this.sizePagination.pageNum = 1
+      this.handleFvolumeList()
     },
     // 公共组件
     async dialogData(dialogTitle, DATA, apiInterface) {
-      this.openDialog = true
       this.dialogTitle = dialogTitle
       const RES = await apiInterface(DATA)
       this.popupTitle = RES.search
@@ -663,27 +675,27 @@ export default {
     },
     // 重量单位
     async handleFweightList() {
+      this.openWeightDialog = true
       const RES = await this.dialogData('重量单位', { ...this.weightPagination }, queryFweightList)
       this.weightTableData = RES.data
-      this.type = '重量单位'
     },
     // 重量单位选中
     weightSelect(row) {
       this.weightValue.FWEIGHTUNITID = row.FWEIGHTUNITID
       this.weightValue.FNAME = row.FNAME
-      this.openDialog = false
+      this.openWeightDialog = false
     },
     // 尺寸单位
     async handleFvolumeList() {
       const RES = await this.dialogData('尺寸单位', { ...this.sizePagination }, queryFvolumeList)
       this.sizeTableData = RES.data
-      this.type = '尺寸单位'
+      this.openSizeDialog = true
     },
     // 尺寸单位选中
     sizeSelect(row) {
       this.dimensionalValue.FVOLUMEUNITID = row.FVOLUMEUNITID
       this.dimensionalValue.FNAME = row.FNAME
-      this.openDialog = false
+      this.openSizeDialog = false
     },
     // 获取组织
     async getOrganization() {

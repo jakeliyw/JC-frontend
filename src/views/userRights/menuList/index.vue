@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">菜单名称</span>
@@ -35,6 +36,7 @@
 <script>
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
+import jcTitle from '@/components/Title'
 import { queryTJxMenuList } from '@/api/userAdmin/menuList'
 import { userDisable } from '@/components/ToMxamineState'
 
@@ -42,7 +44,8 @@ export default {
   name: 'Index',
   components: {
     jcTable,
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   data() {
     return {

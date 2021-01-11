@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane label="价目" name="purchase" class="layout">
         <div class="header">
@@ -115,9 +116,9 @@
                 v-model="scope.row.fprice"
                 size="mini"
                 :disabled="fpriceDisabled"
-                :precision="3"
-                :step="0.1"
-                :min="0.1"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 @change="handleUnitPrice(scope.row)"
               />
             </template>
@@ -128,16 +129,16 @@
                 v-model.number="scope.row.ftaxPrice"
                 size="mini"
                 :disabled="ftaxPriceDisabled"
-                :precision="3"
-                :step="0.1"
-                :min="0.1"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 @change="handleTaxIncluded(scope.row)"
               />
             </template>
           </el-table-column>
           <el-table-column label="价格系数" prop="fpriceCoefficient" align="center" min-width="150px">
             <template slot-scope="scope">
-              <el-input-number v-model.number="scope.row.fpriceCoefficient" size="mini" :precision="3" :step="0.1" :min="0.1" />
+              <el-input-number v-model.number="scope.row.fpriceCoefficient" size="mini" :precision="4" :step="0.0001" :min="0.0000" />
             </template>
           </el-table-column>
           <el-table-column label="生效时间" prop="fentryEffectiveDate" width="200px" align="center" min-width="150px">
@@ -156,9 +157,9 @@
               <el-input-number
                 v-model.number="scope.row.ftaxRate"
                 size="mini"
-                :precision="1"
-                :step="0.1"
-                :min="0.1"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 @change="handleTaxRate(scope.row)"
               />
             </template>
@@ -273,15 +274,16 @@
       :close-on-click-modal="false"
       width="60%"
       :before-close.sync="closeDialog"
+      @close="closeDialogForm"
     >
       <div class="materiel-form">
         <span class="materiel-code">物料编码</span>
-        <el-input v-model="FNUMBER" class="input-width" size="mini" placeholder="请输入物料编码" @keyup.enter.native="handleMaterielSearch" />
+        <el-input v-model="FNUMBER" class="input-width" size="mini" placeholder="请输入物料编码" @keyup.enter.native="getGetMateriel" />
         <span class="materiel-code">物料描述</span>
-        <el-input v-model="FDESCRIPTION" class="input-width" size="mini" placeholder="请输入物料描述" @keyup.enter.native="handleMaterielSearch" />
+        <el-input v-model="FDESCRIPTION" class="input-width" size="mini" placeholder="请输入物料描述" @keyup.enter.native="getGetMateriel" />
         <span class="materiel-code">物料规格</span>
-        <el-input v-model="FSPECIFICATION" class="input-width" size="mini" placeholder="请输入规格" @keyup.enter.native="handleMaterielSearch" />
-        <el-button size="mini" type="primary" @click="handleMaterielSearch">搜索</el-button>
+        <el-input v-model="FSPECIFICATION" class="input-width" size="mini" placeholder="请输入规格" @keyup.enter.native="getGetMateriel" />
+        <el-button size="mini" type="primary" @click="getGetMateriel">搜索</el-button>
       </div>
       <jc-table
         :table-data="materielDialogData"
@@ -316,6 +318,7 @@ import {
 } from '@/api/purchaseManagement/createPurchasePrice'
 import jumpMateriel from '@/components/JumpMateriel'
 import jcTable from '@/components/Table'
+import jcTitle from '@/components/Title'
 import jcPopup from '@/views/basic/createMateriel/components/Popup'
 import jcPagination from '@/components/Pagination/index'
 
@@ -324,7 +327,8 @@ export default {
   components: {
     jcTable,
     jcPopup,
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   mixins: [jumpMateriel],
   data() {
@@ -339,7 +343,7 @@ export default {
           fupPrice: 0, // 价格上限
           fdownPrice: 0, // 价格下限
           fentryEffectiveDate: '', // 生效时间
-          ftaxRate: 1, // 税率
+          ftaxRate: 0, // 税率
           fdescripTion: '', // 描述
           FMATERIALID: '' // 传递给后端的id
         }
@@ -482,8 +486,8 @@ export default {
       this.$refs.purchaseRef.validate(valid => {
         if (!valid) return
         for (const ITEM of this.tableData) {
-          if (ITEM.fmaterialId === '' || ITEM.fdescripTion === '') {
-            this.$message.error('表格不能为空,或数据不对')
+          if (ITEM.fmaterialId === '' || ITEM.fprice === 0 || ITEM.ftaxPrice === 0 || ITEM.fpriceCoefficient === 0) {
+            this.$message.error('表格不能为空,或表格值不能为0')
             return
           }
         }
@@ -718,6 +722,12 @@ export default {
       this.fname = ''
       this.taxRateName = ''
       this.supplierName = ''
+    },
+    // 关闭物料弹窗
+    closeDialogForm() {
+      this.FNUMBER = ''
+      this.FDESCRIPTION = ''
+      this.FSPECIFICATION = ''
     },
     // 刷新
     refresh() {

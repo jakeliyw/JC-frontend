@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">物料编号</span>
@@ -67,13 +68,15 @@
 <script>
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
+import jcTitle from '@/components/Title'
 import { queryTJxLargeitemtypeGroup, queryTBdMaterialList, deleteMaterial } from '@/api/basicManagement/materielList'
 import { toMxAmina, Disable } from '@/components/ToMxamineState'
 export default {
   name: 'MaterielList',
   components: {
     jcTable,
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   data() {
     return {

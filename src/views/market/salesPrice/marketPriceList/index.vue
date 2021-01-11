@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">价目名称</span>
@@ -59,6 +60,7 @@
 <script>
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
+import jcTitle from '@/components/Title'
 import {
   querySalPriceList
 } from '@/api/marketManage/marketPriceList'
@@ -66,7 +68,8 @@ import {
 export default {
   components: {
     jcTable,
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   data() {
     return {

@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <el-card class="header-card">
       <div class="tool">
         <el-button size="mini" disabled>刷新</el-button>
@@ -61,12 +62,12 @@
           </el-table-column>
           <el-table-column label="用量" prop="FDOSAGE" align="center" width="200px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.FDOSAGE" :precision="2" :step="0.1" :min="1" disabled size="mini" class="input-width" />
+              <el-input-number v-model="scope.row.FDOSAGE" :precision="4" :step="0.0001" :min="0.0000" disabled size="mini" class="input-width" />
             </template>
           </el-table-column>
           <el-table-column label="单价" prop="FPRICE" align="center" width="200px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.FPRICE" :precision="4" :step="0.1" :min="1" disabled size="mini" class="input-width" />
+              <el-input-number v-model="scope.row.FPRICE" :precision="4" :step="0.0001" :min="0.0000" disabled size="mini" class="input-width" />
             </template>
           </el-table-column>
           <el-table-column label="金额" prop="money" align="center" width="150px">
@@ -111,6 +112,7 @@
 import jcTable from '@/components/Table'
 import jcForm from '@/components/Form'
 import jcOther from '@/components/Other'
+import jcTitle from '@/components/Title'
 import { queryBomchildList, queryFtypeInfo } from '@/api/engineering/deitalBom'
 import JumpMateriel from '@/components/JumpMateriel'
 export default {
@@ -118,7 +120,8 @@ export default {
   components: {
     jcTable,
     jcForm,
-    jcOther
+    jcOther,
+    jcTitle
   },
   mixins: [JumpMateriel],
   data() {
@@ -126,22 +129,7 @@ export default {
       cellStyle: { padding: '10 10' }, // 行高
       activeName: 'product', // 默认主产品 product Other
       // 子表数据
-      sonTableData: [
-        {
-          FID: '',
-          FSEQ: '',
-          FNUMBER: '',
-          FMATERIALID: '',
-          FDESCRIPTION: '',
-          FSPECIFICATION: '',
-          FCREATEDATE: '', // 生效时间
-          FMATERIALNAME: '', // 选中值
-          FISSUENAME: '', // 选中值
-          FPRICE: '', // 单价
-          FDOSAGE: '', // 用量
-          money: '' // 金额
-        }
-      ],
+      sonTableData: [],
       // 子项表头
       sonTableHeader: [
         { label: '操作', type: 'btn', fixed: 'right', width: '100px', align: 'center' }

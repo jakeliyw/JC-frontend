@@ -52,9 +52,9 @@ export default {
         FLABORCOST: {
           label: '人工成本',
           type: 'number',
-          precision: 2,
-          min: 0,
-          step: 0.1
+          precision: 4,
+          min: 0.0000,
+          step: 0.0001
         },
         FVOLUME: {
           label: '体积',

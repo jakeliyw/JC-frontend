@@ -32,6 +32,14 @@ export function queryTBasBilltype(params) {
     params
   })
 }
+// 查询单据类型
+export function queryOrgList(params) {
+  return request({
+    url: '/tOrgOrganizationsL/queryOrgList',
+    method: 'get',
+    params
+  })
+}
 // 查询结算币别- 分页
 export function queryTBdCurrency(data) {
   return request({
@@ -81,11 +89,11 @@ export function queryFpaezCombo(params) {
   })
 }
 // 查询销售订单本位币和汇率类型
-export function querySalOrderFxxchange(params) {
+export function querySalOrderFxxchange(data) {
   return request({
-    url: '/tSalOrder/querySalOrderFxxchange',
-    method: 'get',
-    params
+    url: '/tSalOrder/queryFxxchange',
+    method: 'post',
+    data
   })
 }
 // 查询销售订单税率
@@ -96,7 +104,15 @@ export function querySalerRate(data) {
     data
   })
 }
-// 查询物料列表
+// 查询物料列表(销售订单)
+export function querySalMaterialList(data) {
+  return request({
+    url: '/tSalPricelistentry/querySalMaterialList',
+    method: 'post',
+    data
+  })
+}
+// 查询物料列表(销售价目)
 export function queryMaterialList(data) {
   return request({
     url: '/tBdMaterial/queryMaterialList',
@@ -107,7 +123,7 @@ export function queryMaterialList(data) {
 // 查询还未处理的销售订单列表-分页
 export function queryUntreateSalorderList(data) {
   return request({
-    url: '/tSalOrder/queryUntreateSalorderList',
+    url: 'tEngBom/queryBomFaterList',
     method: 'post',
     data
   })
@@ -152,12 +168,19 @@ export function againReviewSalorder(data) {
     data
   })
 }
-
 // 修改销售订单
 export function updateSalOrder(data) {
   return request({
     url: '/tSalOrder/updateSalOrder',
     method: 'put',
     data
+  })
+}
+// 根据客户查询销售价目名称
+export function querySalPriceCustomer(params) {
+  return request({
+    url: '/tSalPricelist/querySalPriceCustomer',
+    method: 'get',
+    params
   })
 }

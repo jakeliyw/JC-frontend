@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane label="调价" name="modifyPrice" class="layout">
         <div class="header">
@@ -49,9 +50,9 @@
               <el-input-number
                 v-model="scope.row.fprice"
                 size="mini"
-                :precision="3"
-                :step="0.1"
-                :min="0.1"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 disabled
               />
             </template>
@@ -61,9 +62,9 @@
               <el-input-number
                 v-model="scope.row.fafterPrice"
                 size="mini"
-                :precision="3"
-                :step="0.1"
-                :min="0.1"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 :disabled="scope.row.fisIncludedTax"
                 @change="handlePrice(scope.row)"
               />
@@ -74,9 +75,9 @@
               <el-input-number
                 v-model="scope.row.ftaxPrice"
                 size="mini"
-                :precision="3"
-                :step="0.1"
-                :min="0.1"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 disabled
               />
             </template>
@@ -86,9 +87,9 @@
               <el-input-number
                 v-model="scope.row.fafterTaxPrice"
                 size="mini"
-                :precision="3"
-                :step="0.1"
-                :min="0.1"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 :disabled="!scope.row.fisIncludedTax"
                 @change="handleTaxIncluded(scope.row)"
               />
@@ -96,7 +97,7 @@
           </el-table-column>
           <el-table-column label="调前税率" prop="ftaxRate" align="center" min-width="150px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.ftaxRate" size="mini" :precision="3" :step="0.1" :min="0.1" disabled />
+              <el-input-number v-model="scope.row.ftaxRate" size="mini" :precision="4" :step="0.0001" :min="0.0000" disabled />
             </template>
           </el-table-column>
           <el-table-column label="调后税率" prop="fafterTaxRate" align="center" min-width="150px">
@@ -104,9 +105,9 @@
               <el-input-number
                 v-model="scope.row.fafterTaxRate"
                 size="mini"
-                :precision="3"
-                :step="0.1"
-                :min="0.1"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 @change="handleTaxRate(scope.row)"
               />
             </template>
@@ -128,7 +129,7 @@
       :popup-title="popupTitle"
       @closeDialog="closeDialog"
       @emptyForm="emptyForm"
-      @handleSearch="searchPriceList"
+      @handleSearch="getPriceList"
     >
       <template v-slot:content>
         <jc-table
@@ -146,7 +147,7 @@
           :total="priceListPagination.total"
           :page.sync="priceListPagination.pageNum"
           :limit.sync="priceListPagination.pageSize"
-          @pagination="handlePriceList"
+          @pagination="getPriceList"
         />
       </template>
     </jc-popup>
@@ -158,7 +159,7 @@
       :popup-title="popupTitle"
       @closeDialog="closeDialog"
       @emptyForm="emptyForm"
-      @handleSearch="handleMateriel"
+      @handleSearch="getMateriel"
     >
       <template v-slot:content>
         <jc-table
@@ -176,7 +177,7 @@
           :total="materielPagination.total"
           :page.sync="materielPagination.pageNum"
           :limit.sync="materielPagination.pageSize"
-          @pagination="handleMateriel"
+          @pagination="getMateriel"
         />
       </template>
     </jc-popup>
@@ -186,6 +187,7 @@
 <script>
 import jcForm from '@/components/Form'
 import jcTable from '@/components/Table'
+import jcTitle from '@/components/Title'
 import jcPopup from '@/views/basic/createMateriel/components/Popup'
 import { queryTOrgOrganizationsL } from '@/api/engineering/createBom'
 import { queryTPurPatLs, queryTPurPatLm } from '@/api/modifyPriceManagement/createModifyPrice'
@@ -198,7 +200,8 @@ export default {
     jcForm,
     jcTable,
     jcPopup,
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   data() {
     return {
@@ -208,27 +211,7 @@ export default {
       openMaterial: false, // 物料编码弹窗
       popupTitle: '', // 弹窗名称
       teamList: [], // 组织数
-      modifyPriceTable: [
-        {
-          fpriceListId: '', // 价目ID
-          fmaterialId: '', // 物料ID
-          fname: '', // 价目表
-          fisIncludedTax: false, // 含税
-          fnumber: '', // 物料编码
-          fafterPrice: '', // 调后单价
-          fafterTaxPrice: '', // 调后含税单价
-          fafterTaxRate: '', // 调后税率
-          fsupplier: '', // 供应商名称
-          fcurrency: '', // 币别
-          fdescripTion: '', // 描述
-          fspecificaTion: '', // 规格型号
-          fprice: '', // 调前单价
-          ftaxPrice: '', // 调前含税单价
-          ftaxRate: '', // 调前税率
-          fupPrice: 0.1, // 上限
-          fdownPrice: 0.1 // 下限
-        }
-      ], // 调价表数据
+      modifyPriceTable: [], // 调价表数据
       modifyPriceHeader: [
         { label: '规格型号', prop: 'fspecificaTion', align: 'center' },
         { label: '价格上限', prop: 'fupPrice', align: 'center' },
@@ -283,8 +266,8 @@ export default {
     // 保存调价
     preservation() {
       for (const RES of this.modifyPriceTable) {
-        if (RES.fid === '' || RES.fmaterialId === '') {
-          this.$message.error('表格不能为空,或数据不对')
+        if (RES.fid === '' || RES.fmaterialId === '' || RES.fafterPrice === 0 || RES.fafterTaxPrice === 0) {
+          this.$message.error('表格不能为空,或表格值不能为0')
           return
         }
       }
@@ -340,11 +323,15 @@ export default {
     },
     // 获取价目表
     priceListSelectRow(item) {
+      this.modifyPriceTable[this.tableIndex].fpriceListId = item.fid
       this.modifyPriceTable[this.tableIndex].fname = item.fname
       this.modifyPriceTable[this.tableIndex].fsupplier = item.fsupplier
       this.modifyPriceTable[this.tableIndex].fisIncludedTax = item.fisIncludedTax
       this.modifyPriceTable[this.tableIndex].fcurrency = item.fcurrency
       this.modifyPriceTable[this.tableIndex].fid = item.fid
+      // 物料编码
+      this.modifyPriceTable[this.tableIndex].fmaterialId = ''
+      this.modifyPriceTable[this.tableIndex].fnumber = ''
       this.openPriceList = false
     },
     // 获取物料编码
@@ -358,12 +345,18 @@ export default {
       this.modifyPriceTable[this.tableIndex].ftaxRate = item.ftaxRate
       this.openMaterial = false
     },
+    async getMateriel() {
+      const { data: RES } = await queryTPurPatLm({ ...this.materielPagination })
+      this.materielDialogData = RES.array
+      this.materielPagination.total = RES.total
+    },
     // 获取物料编码
     async handleMateriel(row, index) {
       this.tableIndex = index
       if (index === this.modifyPriceTable.length - 1) {
         this.modifyPriceTable.push({
-          fid: '', // 价目id
+          fid: '', //
+          fpriceListId: '', // 价目id
           fmaterialId: '', // 物料ID
           fname: '', // 价目表`
           fisIncludedTax: false, // 含税
@@ -378,8 +371,8 @@ export default {
           fprice: '', // 调前单价
           ftaxPrice: '', // 调前含税单价
           ftaxRate: '', // 调前税率
-          fupPrice: 0.1, // 上限
-          fdownPrice: 0.1 // 下限
+          fupPrice: 0, // 上限
+          fdownPrice: 0 // 下限
         })
       }
       if (!row.fid) {
@@ -388,21 +381,23 @@ export default {
       }
       this.materielPagination.fid = this.modifyPriceTable[this.tableIndex].fid
       this.openMaterial = true
-      const { data: RES } = await queryTPurPatLm({ ...this.materielPagination })
       this.dialogTitle = '物料编码列表'
       this.popupTitle = '物料编码'
-      this.materielDialogData = RES.array
-      this.materielPagination.total = RES.total
+      this.getMateriel()
+    },
+    // 价目表
+    async getPriceList() {
+      const { data: RES } = await queryTPurPatLs({ ...this.priceListPagination })
+      this.priceListData = RES.array
+      this.priceListPagination.total = RES.total
     },
     // 价目表
     async handlePriceList(index) {
       this.tableIndex = index
       this.openPriceList = true
-      const { data: RES } = await queryTPurPatLs({ ...this.priceListPagination })
+      this.getPriceList()
       this.dialogTitle = '采购价目列表'
       this.popupTitle = '供应商名称'
-      this.priceListData = RES.array
-      this.priceListPagination.total = RES.total
     },
     // 关闭弹窗
     closeDialog() {
@@ -512,5 +507,8 @@ export default {
 }
 .layout ::v-deep .jcTable{
   min-height: calc(100vh - 380px);
+}
+.el-table ::v-deep .el-table__body-wrapper{
+  height: 480px;
 }
 </style>

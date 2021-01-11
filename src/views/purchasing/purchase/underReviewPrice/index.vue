@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">供应商名称</span>
@@ -8,6 +9,7 @@
           class="input-content"
           placeholder="请输入物料编号"
           @keyup.enter.native="handleQueryUnderReview"
+          size="mini"
         />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUnderReview">搜索</el-button>
       </div>
@@ -44,13 +46,15 @@
 <script>
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
+import jcTitle from '@/components/Title'
 import { queryReviewPurPriceList } from '@/api/purchaseManagement/underReviewPrice'
 
 export default {
   name: 'UnderReviewPrice',
   components: {
     jcTable,
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   data() {
     return {

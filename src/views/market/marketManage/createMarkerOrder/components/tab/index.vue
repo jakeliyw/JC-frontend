@@ -11,7 +11,11 @@
           <el-table-column label="物料编码" prop="fmaterialId" align="center" width="200px">
             <template slot-scope="scope">
               <el-input v-model.trim="scope.row.fmaterialIdName" placeholder="请选择物料编码" size="mini">
-                <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fmaterialIdName)" />
+                <i
+                  slot="prefix"
+                  class="iconfont icon-jin-rud-ao-bo"
+                  @click="sonJumpMateriel(scope.row.fmaterialIdName)"
+                />
                 <i
                   slot="suffix"
                   class="el-input__icon el-icon-search"
@@ -20,7 +24,14 @@
               </el-input>
             </template>
           </el-table-column>
-          <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" :show-overflow-tooltip="true" />
+          <el-table-column
+            label="物料描述"
+            prop="fdescripTion"
+            align="center"
+            min-width="200px"
+            :show-overflow-tooltip="true"
+          />
+          <el-table-column label="物料型号" prop="fmodel" align="center" min-width="80px" />
           <el-table-column label="销售单位" prop="funitName" align="center" />
           <el-table-column label="销售数量" prop="fqty" min-width="140px" align="center">
             <template slot-scope="scope">
@@ -34,10 +45,14 @@
           </el-table-column>
           <el-table-column label="是否赠品" prop="fisFree" align="center">
             <template slot-scope="scope">
-              <el-checkbox v-model="scope.row.fisFree" :value="scope.row.fisFree" @change="handleCheckedCitiesChange(scope.row.fisFree, scope.$index)" />
+              <el-checkbox
+                v-model="scope.row.fisFree"
+                :value="scope.row.fisFree"
+                @change="handleCheckedCitiesChange(scope.row.fisFree, scope.$index)"
+              />
             </template>
           </el-table-column>
-          <el-table-column label="税率" prop="fentryTaxRate" min-width="140px" align="center">
+          <el-table-column label="税率(%)" prop="fentryTaxRate" min-width="140px" align="center">
             <template slot-scope="scope">
               <el-input-number
                 v-model="scope.row.ftaxRate"
@@ -48,9 +63,16 @@
               />
             </template>
           </el-table-column>
-          <el-table-column label="要货时间" prop="fqty" min-width="220px" align="center">
+          <el-table-column label="图纸" prop="fpaezCombo" min-width="300px" align="center">
             <template slot-scope="scope">
-              <el-date-picker v-model="scope.row.fdeliveryDate" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" size="mini" placeholder="选择日期" />
+              <img
+                v-for="(item, index) in scope.row.salImage"
+                :key="index"
+                :src="item"
+                style="max-height: 28px"
+                @click="proviewImg(item)"
+              >
+              <el-button type="primary" size="mini" @click="drawingl(scope.$index)">上传</el-button>
             </template>
           </el-table-column>
           <el-table-column label="操作" prop="fqty" min-width="100px" align="center">
@@ -106,11 +128,29 @@
     >
       <div class="materiel-form">
         <span class="materiel-code">物料编码</span>
-        <el-input v-model.trim="FNUMBER" class="input-width" size="mini" placeholder="请输入物料编码" @keyup.enter.native="handleMaterielSearch" />
+        <el-input
+          v-model.trim="FNUMBER"
+          class="input-width"
+          size="mini"
+          placeholder="请输入物料编码"
+          @keyup.enter.native="handleMaterielSearch"
+        />
         <span class="materiel-code">物料描述</span>
-        <el-input v-model.trim="FDESCRIPTION" class="input-width" size="mini" placeholder="请输入物料描述" @keyup.enter.native="handleMaterielSearch" />
+        <el-input
+          v-model.trim="FDESCRIPTION"
+          class="input-width"
+          size="mini"
+          placeholder="请输入物料描述"
+          @keyup.enter.native="handleMaterielSearch"
+        />
         <span class="materiel-code">物料规格</span>
-        <el-input v-model.trim="FSPECIFICATION" class="input-width" size="mini" placeholder="请输入规格" @keyup.enter.native="handleMaterielSearch" />
+        <el-input
+          v-model.trim="FSPECIFICATION"
+          class="input-width"
+          size="mini"
+          placeholder="请输入规格"
+          @keyup.enter.native="handleMaterielSearch"
+        />
         <el-button size="mini" type="primary" @click="handleMaterielSearch">搜索</el-button>
       </div>
       <jc-table
@@ -129,6 +169,143 @@
         @pagination="handleGetMateriel"
       />
     </el-dialog>
+    <!--上传图纸-->
+    <el-dialog
+      title="上传图纸"
+      model
+      :visible.sync="isdrawinglDialog"
+      :close-on-click-modal="false"
+      width="60%"
+      :before-close="handleClose"
+    >
+      <el-form label-width="120px">
+        <el-form-item label="图纸1">
+          <el-upload
+            class="avatar-uploader"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+          >
+            <img
+              v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl"
+              :src="tabTwo.saleDetails[indexSelf].salImage.imageUrl"
+              class="avatar"
+            >
+            <div v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl" class="magnify">
+              <i class="el-icon-search" @click.stop="proviewImg(tabTwo.saleDetails[indexSelf].salImage.imageUrl)" />
+              <i class="el-icon-delete" @click.stop="tabTwo.saleDetails[indexSelf].salImage.imageUrl=''" />
+            </div>
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="图纸1">
+          <el-upload
+            class="avatar-uploader"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess1"
+          >
+            <img
+              v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl1"
+              :src="tabTwo.saleDetails[indexSelf].salImage.imageUrl1"
+              class="avatar"
+            >
+            <div v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl1" class="magnify">
+              <i class="el-icon-search" @click.stop="proviewImg(tabTwo.saleDetails[indexSelf].salImage.imageUrl1)" />
+              <i class="el-icon-delete" @click.stop="tabTwo.saleDetails[indexSelf].salImage.imageUrl1=''" />
+            </div>
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="图纸2">
+          <el-upload
+            class="avatar-uploader"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess2"
+          >
+            <img
+              v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl2"
+              :src="tabTwo.saleDetails[indexSelf].salImage.imageUrl2"
+              class="avatar"
+            >
+            <div v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl2" class="magnify">
+              <i class="el-icon-search" @click.stop="proviewImg(tabTwo.saleDetails[indexSelf].salImage.imageUrl2)" />
+              <i class="el-icon-delete" @click.stop="tabTwo.saleDetails[indexSelf].salImage.imageUrl2=''" />
+            </div>
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="图纸3">
+          <el-upload
+            class="avatar-uploader"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess3"
+          >
+            <img
+              v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl3"
+              :src="tabTwo.saleDetails[indexSelf].salImage.imageUrl3"
+              class="avatar"
+            >
+            <div v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl3" class="magnify">
+              <i class="el-icon-search" @click.stop="proviewImg(tabTwo.saleDetails[indexSelf].salImage.imageUrl3)" />
+              <i class="el-icon-delete" @click.stop="tabTwo.saleDetails[indexSelf].salImage.imageUrl3=''" />
+            </div>
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="图纸4">
+          <el-upload
+            class="avatar-uploader"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess4"
+          >
+            <img
+              v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl4"
+              :src="tabTwo.saleDetails[indexSelf].salImage.imageUrl4"
+              class="avatar"
+            >
+            <div v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl4" class="magnify">
+              <i class="el-icon-search" @click.stop="proviewImg(tabTwo.saleDetails[indexSelf].salImage.imageUrl4)" />
+              <i class="el-icon-delete" @click.stop="tabTwo.saleDetails[indexSelf].salImage.imageUrl4=''" />
+            </div>
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="图纸5">
+          <el-upload
+            class="avatar-uploader"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess5"
+          >
+            <img
+              v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl5"
+              :src="tabTwo.saleDetails[indexSelf].salImage.imageUrl5"
+              class="avatar"
+            >
+            <div v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl5" class="magnify">
+              <i class="el-icon-search" @click.stop="proviewImg(tabTwo.saleDetails[indexSelf].salImage.imageUrl5)" />
+              <i class="el-icon-delete" @click.stop="tabTwo.saleDetails[indexSelf].salImage.imageUrl5=''" />
+            </div>
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
+          </el-upload>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+    <!--图纸预览-->
+    <el-dialog
+      title="预览"
+      model
+      :visible.sync="imgVisible"
+      :close-on-click-modal="false"
+      append-to-body
+      top="10vh"
+    >
+      <img :src="priview" style="max-height: 600px">
+    </el-dialog>
   </div>
 </template>
 
@@ -137,14 +314,25 @@ import { queryMaterialList } from '@/api/marketManage/marketOrder'
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jumpMateriel from '@/components/JumpMateriel'
+
 export default {
   components: {
     jcTable,
     jcPagination
   },
   mixins: [jumpMateriel],
+  props: {
+    msg: {
+      type: Number,
+      default: 2
+    }
+  },
   data() {
     return {
+      indexSelf: 0, // 图片下标
+      imgVisible: false, // 预览图片
+      priview: '',
+      isdrawinglDialog: false, // 图纸弹窗
       activeName: 'first',
       tableHeader: [],
       isMaterielDialog: false,
@@ -164,15 +352,34 @@ export default {
       materielDialogData: [],
       materielDialogHeader: [
         { label: '使用组织', prop: 'fuseOrg', align: 'center' },
+        { label: '型号', prop: 'fmodel', align: 'center' },
         { label: '物料编码', prop: 'fnumber', align: 'center' },
         { label: '描述', prop: 'fdescripTion', align: 'center', minWidth: '150px' },
         { label: '物料规格', prop: 'fspecificaTion', align: 'center' },
-        { label: '型号', prop: 'fmodel', align: 'center' },
+        { label: '单价', prop: 'fprice', align: 'center' },
         { label: '创建时间', prop: 'fcreateDate', align: 'center' }
       ],
       tabTwo: {
         saleDetails: [ // 明细信息
-          { fmaterialId: '', fdescripTion: '', funitId: '', fqty: '', fisFree: false, ftaxRate: '', fdeliveryDate: '', fmaterialIdName: '', funitName: '' }
+          {
+            fmaterialId: '',
+            fdescripTion: '',
+            funitId: '',
+            fqty: '',
+            fisFree: false,
+            ftaxRate: '',
+            fdeliveryDate: '',
+            fmaterialIdName: '',
+            funitName: '',
+            salImage: {
+              imageUrl: '', // 图片
+              imageUrl1: '', // 图片
+              imageUrl2: '', // 图片
+              imageUrl3: '', // 图片
+              imageUrl4: '', // 图片
+              imageUrl5: '' // 图片
+            }
+          }
         ],
         // 收款计划
         planDetails: [{ fneedRecAdvance: false, frecAdvanceRate: '0', frecAdvanCeamount: '0' }]
@@ -187,6 +394,7 @@ export default {
       this.tabTwo.saleDetails[this.tableIndex].fdescripTion = item.fdescripTion
       this.tabTwo.saleDetails[this.tableIndex].funitId = item.funitId
       this.tabTwo.saleDetails[this.tableIndex].funitName = item.funitName
+      this.tabTwo.saleDetails[this.tableIndex].fmodel = item.fmodel
       this.isMaterielDialog = false
       this.$emit('visible', this.tabTwo)
     },
@@ -195,10 +403,28 @@ export default {
       if (index) {
         this.tableIndex = index
       }
+      if (!this.msg) {
+        this.$message.error('请先选择客户')
+        return false
+      }
       if (index === this.tabTwo.saleDetails.length - 1) {
         this.tabTwo.saleDetails.push(
           {
-            fmaterialId: '', fdescripTion: '', funitId: '', fqty: '', fisFree: false, ftaxRate: '', fdeliveryDate: ''
+            fmaterialId: '',
+            fdescripTion: '',
+            funitId: '',
+            fqty: '',
+            fisFree: false,
+            ftaxRate: '',
+            fdeliveryDate: '',
+            salImage: {
+              imageUrl: '', // 图片
+              imageUrl1: '', // 图片
+              imageUrl2: '', // 图片
+              imageUrl3: '', // 图片
+              imageUrl4: '', // 图片
+              imageUrl5: ''
+            }
           }
         )
       }
@@ -207,7 +433,8 @@ export default {
         pageSize: this.materielPagination.pageSize,
         fnumber: this.FNUMBER,
         fdescription: this.FDESCRIPTION,
-        fspecification: this.FSPECIFICATION
+        fspecification: this.FSPECIFICATION,
+        fid: this.msg
       }
       const { data: RES } = await queryMaterialList(DATA)
       this.materielDialogData = RES.array
@@ -248,16 +475,55 @@ export default {
     }, // 监听应收金额
     handleChange3(value) {
       this.$emit('visible', this.tabTwo)
-    },
+    }, // 监听是否预收
     check(value) {
       this.$emit('visible', this.tabTwo)
+    },
+    // 上传图片
+    handleAvatarSuccess(res, file) {
+      this.tabTwo.saleDetails[this.indexSelf].salImage.imageUrl = URL.createObjectURL(file.raw)
+    }, handleAvatarSuccess1(res, file) {
+      this.tabTwo.saleDetails[this.indexSelf].salImage.imageUrl1 = URL.createObjectURL(file.raw)
+    }, handleAvatarSuccess2(res, file) {
+      this.tabTwo.saleDetails[this.indexSelf].salImage.imageUrl2 = URL.createObjectURL(file.raw)
+    }, handleAvatarSuccess3(res, file) {
+      this.tabTwo.saleDetails[this.indexSelf].salImage.imageUrl3 = URL.createObjectURL(file.raw)
+    }, handleAvatarSuccess4(res, file) {
+      this.tabTwo.saleDetails[this.indexSelf].salImage.imageUrl4 = URL.createObjectURL(file.raw)
+    }, handleAvatarSuccess5(res, file) {
+      this.tabTwo.saleDetails[this.indexSelf].salImage.imageUrl5 = URL.createObjectURL(file.raw)
+    },
+    drawingl(index) {
+      this.indexSelf = index
+      this.isdrawinglDialog = true
+    },
+    // 关闭上传图片弹窗，并向父组件传值
+    handleClose() {
+      this.isdrawinglDialog = false
+      this.$emit('visible', this.tabTwo)
+    },
+    // 预览图片
+    proviewImg(img) {
+      this.imgVisible = true
+      this.priview = img
     }
   }
 }
 </script>
 
+<style lang="scss">
+.el-table .cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    padding: 0 5px;
+  }
+}
+</style>
 <style scoped lang="scss">
-.tab{
+.tab {
   .materiel-form {
     display: flex;
     align-items: center;
@@ -276,6 +542,68 @@ export default {
     .input-width {
       width: 200px;
       margin-right: 10px;
+    }
+  }
+
+  .el-form {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .avatar-uploader .el-upload {
+    height: 78px;
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 78px;
+    height: 78px;
+    line-height: 78px;
+    text-align: center;
+    border: 1px dashed #aaa;
+    border-radius: 6px;
+  }
+
+  .avatar {
+    width: 78px;
+    height: 78px;
+    display: block;
+    border-radius: 6px;
+  }
+
+  .avatar-uploader {
+    transition: all 1s;
+  }
+
+  .avatar-uploader:hover .magnify {
+    display: block;
+  }
+
+  .magnify {
+    display: none;
+    height: 78px;
+    background-color: rgba(0, 0, 0, .4);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    line-height: 78px;
+    border-radius: 6px;
+
+    i {
+      font-size: 18px;
+      color: #fff;
+      padding: 0 5px;
     }
   }
 }

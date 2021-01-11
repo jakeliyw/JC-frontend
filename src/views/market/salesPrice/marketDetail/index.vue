@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <el-tabs type="border-card">
       <el-tab-pane label="价目明细">
         <div class="header-card">
@@ -39,6 +40,7 @@
 <script>
 import jcTable from '@/components/Table'
 import jcForm from '@/components/Form'
+import jcTitle from '@/components/Title'
 import {
   querySalPriceNtry
 } from '@/api/marketManage/marketPriceList'
@@ -47,7 +49,8 @@ import jumpMateriel from '@/components/JumpMateriel'
 export default {
   components: {
     jcTable,
-    jcForm
+    jcForm,
+    jcTitle
   },
   mixins: [jumpMateriel],
   data() {

@@ -9,7 +9,7 @@
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         tag="span"
         class="tags-view-item"
-        @click.middle.native="!isAffix(tag)?closeSelectedTag(tag):''"
+        @click.middle.native="!b  (tag)?closeSelectedTag(tag):''"
         @contextmenu.prevent.native="openMenu(tag,$event)"
       >
         {{ tag.title }}

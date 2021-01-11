@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">物料编码</span>
@@ -55,6 +56,7 @@
 <script>
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
+import jcTitle from '@/components/Title'
 import { queryBomList } from '@/api/engineering/bomList'
 import { toMxAmina } from '@/components/ToMxamineState'
 import { queryFtypeInfo } from '@/api/engineering/deitalBom'
@@ -64,7 +66,8 @@ export default {
   inject: ['reload'],
   components: {
     jcTable,
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   data() {
     return {

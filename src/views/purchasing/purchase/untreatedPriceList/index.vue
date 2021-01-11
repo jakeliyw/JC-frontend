@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">供应商名称</span>
@@ -8,6 +9,7 @@
           class="input-content"
           placeholder="请输入价目表名称"
           @keyup.enter.native="handleQueryUntreated"
+          size="mini"
         />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
       </div>
@@ -46,6 +48,7 @@
 <script>
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
+import jcTitle from '@/components/Title'
 import { queryUntreatePurPriceList, reviewPurPrice, updateNotReview } from '@/api/purchaseManagement/untreatedPriceList'
 
 export default {
@@ -53,7 +56,8 @@ export default {
   inject: ['reload'],
   components: {
     jcTable,
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   data() {
     return {

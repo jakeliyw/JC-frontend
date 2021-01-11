@@ -7,6 +7,7 @@
       :visible.sync="isCurrencyDialog"
       :close-on-click-modal="false"
       width="60%"
+      :before-close="handleClose"
     >
       <div class="materiel-form">
         <span class="materiel-code">币别名称</span>
@@ -93,6 +94,11 @@ export default {
     currencySelectRow(item) {
       this.prodValue.fsettleCurrIdName = item.fname
       this.prodValue.fsettleCurrId = item.fcurrencyId
+      this.prodValue.isCurrencyDialog = false
+      this.$emit('currency', this.prodValue)
+    },
+    // 关闭前回调
+    handleClose() {
       this.prodValue.isCurrencyDialog = false
       this.$emit('currency', this.prodValue)
     }

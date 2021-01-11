@@ -1,6 +1,7 @@
 <template>
   <div class="content">
-    <el-button type="primary" style="width: 80px;margin-bottom: 10px" @click="subMarker()">保存</el-button>
+    <jc-title/>
+    <el-button type="primary" style="width: 80px;margin-bottom: 10px" @click="subMarker()" size="mini">保存</el-button>
     <el-tabs type="border-card">
       <el-tab-pane label="主产品">
         <el-form ref="purchaseRef" :model="prodValue" label-width="100px">
@@ -35,6 +36,16 @@
                 @click="deliveVisiblit=true"
               />
             </el-input>
+          </el-form-item>
+          <el-form-item label="要货时间" prop="fdeliveryDate">
+            <el-date-picker
+              v-model="prodValue.fdeliveryDate"
+              type="datetime"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              size="mini"
+              placeholder="选择日期"
+              style="width: 163px"
+            />
           </el-form-item>
           <el-form-item label="销售员" prop="fsalerId">
             <el-input v-model.trim="prodValue.fsaler" placeholder="请选择销售员" size="mini">
@@ -119,15 +130,12 @@
   </div>
 </template>
 <script>
-import {
-  queryTOrgOrganizationsL
-} from '@/api/engineering/createBom'
 import { queryTBasBilltype,
   queryFpaezCombo,
   querySalerRate,
-  querySalOrderFxxchange,
   queryTSalOrderNtry,
-  updateSalOrder
+  updateSalOrder,
+  queryOrgList
 } from '@/api/marketManage/marketOrder'
 import jumpMateriel from '@/components/JumpMateriel'
 import tab from '@/views/market/marketManage/marketRevising/components/tab'
@@ -136,6 +144,7 @@ import deliver from '@/views/market/marketManage/createMarkerOrder/components/de
 import market from '@/views/market/marketManage/createMarkerOrder/components/market'
 import currency from '@/views/market/marketManage/createMarkerOrder/components/currency'
 import gathering from '@/views/market/marketManage/createMarkerOrder/components/gathering'
+import jcTitle from '@/components/Title'
 import priceList from '@/views/market/marketManage/createMarkerOrder/components/priceListPagination'
 export default {
   name: 'CreateMarkerOrder',
@@ -146,7 +155,8 @@ export default {
     market,
     currency,
     gathering,
-    priceList
+    priceList,
+    jcTitle
   },
   mixins: [jumpMateriel],
   data() {
@@ -165,16 +175,13 @@ export default {
       billtypes: [], // 单据类型
       teamList: [], // 组织
       cellStyle: { padding: '10 10' },
-      prodValue: {}, // 表单数据
+      prodValue: { flocalCurrId: '' }, // 表单数据
       saleDetails: [], // 明细数据
       planDetails: [] // 明细数据
     }
   },
   created() {
-    this.queryTBasBilltype() // 查询单据类型
-    this.handleGetPurchase() // 获取组织
     this.queryFpaezCombo() // 品质标准
-    this.querySalOrderFxxchange() // 查询销售订单本位币和汇率类型
     this.queryTSalOrderNtry() // 获取订单列表数据
   },
   methods: {
@@ -237,7 +244,7 @@ export default {
     },
     // 获取组织
     async handleGetPurchase() {
-      const { data: RES } = await queryTOrgOrganizationsL()
+      const { data: RES } = await queryOrgList()
       this.teamList = RES
     },
     // 获取客户数据(子传父)
@@ -282,14 +289,6 @@ export default {
     async queryFpaezCombo() {
       const { data: RES } = await queryFpaezCombo()
       this.standard = RES
-    },
-    // 查询销售订单本位币和汇率类型
-    async querySalOrderFxxchange() {
-      const { data: RES } = await querySalOrderFxxchange()
-      this.prodValue.flocalCurrId = RES.flocalCurrId
-      this.prodValue.fxxchangeTypeId = RES.fxxchangeTypeId
-      this.prodValue.flocalCurr = RES.flocalCurr
-      this.prodValue.fxxchangeType = RES.fxxchangeType
     },
     // 查询销售订单汇率
     async querySalerRate() {

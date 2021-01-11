@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane label="价目" name="purchase" class="layout">
         <div class="header">
@@ -94,9 +95,9 @@
                 v-model="scope.row.fprice"
                 size="mini"
                 :disabled="fpriceDisabled"
-                :precision="3"
-                :step="0.1"
-                :min="0"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 @change="handleUnitPrice(scope.row)"
               />
             </template>
@@ -107,16 +108,16 @@
                 v-model.number="scope.row.ftaxPrice"
                 size="mini"
                 :disabled="ftaxPriceDisabled"
-                :precision="3"
-                :step="0.1"
-                :min="0"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 @change="handleTaxIncluded(scope.row)"
               />
             </template>
           </el-table-column>
           <el-table-column label="价格系数" prop="fpriceCoefficient" align="center" min-width="150px">
             <template slot-scope="scope">
-              <el-input-number v-model.number="scope.row.fpriceCoefficient" size="mini" :precision="3" :step="0.1" :min="0" />
+              <el-input-number v-model.number="scope.row.fpriceCoefficient" size="mini" :precision="4" :step="0.0001" :min="0.0000" />
             </template>
           </el-table-column>
           <el-table-column label="生效时间" prop="feffectiveDate" width="200px" align="center" min-width="150px">
@@ -135,9 +136,9 @@
               <el-input-number
                 v-model.number="scope.row.ftaxRate"
                 size="mini"
-                :precision="1"
-                :step="0.1"
-                :min="0"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 @change="handleTaxRate(scope.row)"
               />
             </template>
@@ -162,15 +163,16 @@
       :close-on-click-modal="false"
       width="60%"
       :before-close.sync="closeDialog"
+      @close="closeDialogForm"
     >
       <div class="materiel-form">
         <span class="materiel-code">物料编码</span>
-        <el-input v-model="FNUMBER" class="input-width" size="mini" placeholder="请输入物料编码" @keyup.enter.native="handleMaterielSearch" />
+        <el-input v-model="FNUMBER" class="input-width" size="mini" placeholder="请输入物料编码" @keyup.enter.native="getGetMateriel" />
         <span class="materiel-code">物料描述</span>
-        <el-input v-model="FDESCRIPTION" class="input-width" size="mini" placeholder="请输入物料描述" @keyup.enter.native="handleMaterielSearch" />
+        <el-input v-model="FDESCRIPTION" class="input-width" size="mini" placeholder="请输入物料描述" @keyup.enter.native="getGetMateriel" />
         <span class="materiel-code">物料规格</span>
-        <el-input v-model="FSPECIFICATION" class="input-width" size="mini" placeholder="请输入规格" @keyup.enter.native="handleMaterielSearch" />
-        <el-button size="mini" type="primary" @click="handleMaterielSearch">搜索</el-button>
+        <el-input v-model="FSPECIFICATION" class="input-width" size="mini" placeholder="请输入规格" @keyup.enter.native="getGetMateriel" />
+        <el-button size="mini" type="primary" @click="getGetMateriel">搜索</el-button>
       </div>
       <jc-table
         :table-data="materielDialogData"
@@ -184,7 +186,7 @@
         :total="materielPagination.total"
         :page.sync="materielPagination.pageNum"
         :limit.sync="materielPagination.pageSize"
-        @pagination="handleGetMateriel"
+        @pagination="getGetMateriel"
       />
     </el-dialog>
   </div>
@@ -193,6 +195,7 @@
 <script>
 import { queryBomSonList, queryMaterialSon } from '@/api/engineering/createBom'
 import { detailPriceList } from '@/api/purchaseManagement/purchasePrice'
+import jcTitle from '@/components/Title'
 import jumpMateriel from '@/components/JumpMateriel'
 import {
   updatePurPrice
@@ -204,26 +207,14 @@ export default {
   name: 'EditPurchasePrice',
   components: {
     jcTable,
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   mixins: [jumpMateriel],
   data() {
     return {
       activeName: 'purchase', // 默认在采购
-      tableData: [
-        {
-          fnumber: '', // 物料编码
-          fprice: 0, // 单价
-          ftaxPrice: 0, // 含税单价
-          fpriceCoefficient: 0, // 价格系数
-          fupPrice: 0, // 价格上限
-          fdownPrice: 0, // 价格下限
-          feffectiveDate: '', // 生效时间
-          ftaxRate: 12, // 税率
-          fdescripTion: '', // 描述
-          fmaterialId: '' // 传递给后端的id
-        }
-      ], // 采购价目表
+      tableData: [], // 采购价目表
       tableHeader: [
         { label: '价格上限', prop: 'fupPrice', align: 'center' },
         { label: '价格下限', prop: 'fdownPrice', align: 'center' },
@@ -282,11 +273,9 @@ export default {
     // 保存采购列表
     preservation() {
       for (const ITEM of this.tableData) {
-        for (const OBJ in ITEM) {
-          if (ITEM[OBJ] === '' || ITEM[OBJ] === undefined) {
-            this.$message.error('表格不能为空')
-            return
-          }
+        if (ITEM.fmaterialId === '' || ITEM.fprice === 0 || ITEM.ftaxPrice === 0 || ITEM.fpriceCoefficient === 0) {
+          this.$message.error('表格不能为空,或表格值不能为0')
+          return
         }
       }
       const DETAILS = this.tableData.map(item => {
@@ -304,7 +293,7 @@ export default {
       })
       const DATA = {
         fid: this.purchaseForm.fid,
-        DETAILS
+        details: DETAILS
       }
       updatePurPrice(DATA).then(res => {
         if (res.code === 0) {
@@ -324,6 +313,18 @@ export default {
       this.tableData[this.tableIndex].fdescripTion = RES.FDESCRIPTION
       this.openMaterialDialog = false
     },
+    // 获取物料编码
+    async getGetMateriel() {
+      const DATA = {
+        ...this.materielPagination,
+        fnumber: this.FNUMBER,
+        fdescription: this.FDESCRIPTION,
+        fspecification: this.FSPECIFICATION
+      }
+      const { data: RES, total } = await queryBomSonList(DATA)
+      this.materielDialogData = RES
+      this.materielPagination.total = total
+    },
     // 打开物料编码
     async handleGetMateriel(row, index) {
       this.tableIndex = index
@@ -342,15 +343,7 @@ export default {
           }
         )
       }
-      const DATA = {
-        ...this.materielPagination,
-        fnumber: this.FNUMBER,
-        fdescription: this.FDESCRIPTION,
-        fspecification: this.FSPECIFICATION
-      }
-      const { data: RES, total } = await queryBomSonList(DATA)
-      this.materielDialogData = RES
-      this.materielPagination.total = total
+      this.getGetMateriel()
       this.openMaterialDialog = true
     },
     // 搜索
@@ -410,6 +403,12 @@ export default {
     closeDialog() {
       this.materielPagination.pageNum = 1
       this.openMaterialDialog = false
+    },
+    // 关闭物料弹窗
+    closeDialogForm() {
+      this.FNUMBER = ''
+      this.FDESCRIPTION = ''
+      this.FSPECIFICATION = ''
     },
     // 刷新
     refresh() {

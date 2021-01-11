@@ -1,5 +1,6 @@
 <template>
   <div class="content codeTable">
+    <jc-title/>
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane v-for="(item, index) of oneMaterielData" :key="index" :label="item.largeName" :name="item.largeCode">
         <div class="codeRule">
@@ -17,12 +18,12 @@
           >
             <el-table-column prop="largeName" label="大类" align="center" class-name="valignTop">
               <template slot-scope="scope">
-                <div style="padding: 10px;font-size: 18px">{{ scope.row.largeName }}</div>
+                <div style="padding: 10px;">{{ scope.row.largeName }}</div>
               </template>
             </el-table-column>
             <el-table-column prop="largeCode" label="编码" align="center" class-name="valignTop">
               <template slot-scope="scope">
-                <div style="padding: 10px;font-size: 18px">{{ scope.row.largeCode }}</div>
+                <div style="padding: 10px;">{{ scope.row.largeCode }}</div>
               </template>
             </el-table-column>
             <el-table-column prop="medium" label="中类" align="center" class-name="valignTop">
@@ -65,8 +66,12 @@
 
 <script>
 import { queryLargeContrast, queryLargeList } from '@/api/encodingRules/codeComparative'
+import jcTitle from '@/components/Title'
 export default {
   name: 'CodeComparative',
+  components: {
+    jcTitle
+  },
   data() {
     return {
       activeName: '50', // 第一个选项卡

@@ -1,6 +1,7 @@
 <template>
   <div v-loading="loading" class="content">
-    <el-button type="primary" style="width: 80px;margin-bottom: 10px" @click="subMarker()">保存</el-button>
+    <jc-title/>
+    <el-button type="primary" style="width: 80px;margin-bottom: 10px" @click="subMarker()" size="mini">保存</el-button>
     <el-tabs type="border-card">
       <el-tab-pane label="主产品">
         <el-form ref="purchaseRef" :model="prodValue" label-width="100px" :rules="prodValueRules">
@@ -19,17 +20,18 @@
             </el-select>
           </el-form-item>
           <el-form-item label="销售组织" prop="fsaleOrgId">
-            <el-select v-model="prodValue.fsaleOrgId" placeholder="请选择组织" size="mini">
+            <el-select v-model="prodValue.fsaleOrgId" placeholder="请选择组织" size="mini" @change="fsale">
               <el-option
                 v-for="option in teamList"
                 :key="option.value"
-                :label="option.FNAME"
-                :value="option.FPKID"
+                :label="option.fname"
+                :value="option.forgId"
               />
             </el-select>
           </el-form-item>
           <el-form-item label="单据编号">
-            <el-input v-model="prodValue.fbillNo" placeholder="保存自动生成" size="mini" disabled /></el-form-item>
+            <el-input v-model="prodValue.fbillNo" placeholder="保存自动生成" size="mini" disabled />
+          </el-form-item>
           <el-form-item label="客户" prop="fcustId">
             <el-input v-model="prodValue.fname" placeholder="请选择客户" size="mini">
               <i
@@ -47,6 +49,16 @@
                 @click="deliveVisiblit=true"
               />
             </el-input>
+          </el-form-item>
+          <el-form-item label="要货时间" prop="fdeliveryDate">
+            <el-date-picker
+              v-model="prodValue.fdeliveryDate"
+              type="datetime"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              size="mini"
+              placeholder="选择日期"
+              style="width: 163px"
+            />
           </el-form-item>
           <el-form-item label="销售员" prop="fsalerId">
             <el-input v-model="prodValue.fsalerIdName" placeholder="请选择销售员" size="mini">
@@ -76,41 +88,36 @@
             </el-input>
           </el-form-item>
           <el-form-item label="汇率类型">
-            <el-input v-model="prodValue.fxxchangeType" placeholder="请输入汇率类型" disabled size="mini" /></el-form-item>
+            <el-input v-model="prodValue.fxxchangeType" placeholder="请输入汇率类型" disabled size="mini" />
+          </el-form-item>
           <el-form-item label="本位币">
-            <el-input v-model="prodValue.flocalCurr" placeholder="请输入本位币" disabled size="mini" /></el-form-item>
+            <el-input v-model="prodValue.flocalCurr" placeholder="请输入本位币" disabled size="mini" />
+          </el-form-item>
           <el-form-item label="汇率">
-            <el-input v-model="prodValue.fexchangeRate" disabled size="mini" /></el-form-item>
+            <el-input v-model="prodValue.fexchangeRate" disabled size="mini" />
+          </el-form-item>
           <el-form-item label="价目表" prop="fpriceListId">
-            <el-input v-model="prodValue.fpriceListIdName" placeholder="请选择价目表" size="mini">
-              <i
-                slot="suffix"
-                class="el-input__icon el-icon-search"
-                @click="priceListVisiblit = true"
-              />
-            </el-input></el-form-item>
+            <el-input v-model="prodValue.fpriceListIdName" placeholder="请输入价目表" size="mini" disabled />
+          </el-form-item>
           <el-form-item label="柜型" prop="fpaezText">
-            <el-input v-model.trim="prodValue.fpaezText" placeholder="请输入柜型" size="mini" /></el-form-item>
+            <el-input v-model.trim="prodValue.fpaezText" placeholder="请输入柜型" size="mini" />
+          </el-form-item>
           <el-form-item label="客户订单号" prop="fpaezText1">
-            <el-input v-model.trim="prodValue.fpaezText1" placeholder="请输入客户订单号" size="mini" /></el-form-item>
+            <el-input v-model.trim="prodValue.fpaezText1" placeholder="请输入客户订单号" size="mini" />
+          </el-form-item>
           <el-form-item label="客户PO NO" prop="fpaezText2">
-            <el-input v-model.trim="prodValue.fpaezText2" placeholder="请输入客户PO NO" size="mini" /></el-form-item>
+            <el-input v-model.trim="prodValue.fpaezText2" placeholder="请输入客户PO NO" size="mini" />
+          </el-form-item>
           <el-form-item label="品质标准" prop="fpaezCombo">
             <el-select v-model="prodValue.fpaezCombo" placeholder="请选择品质标准" size="mini">
-              <el-option v-for="(item, index) in standard" :key="index" :label="item.fpaezCombo" :value="item.fpaezCombo" />
+              <el-option
+                v-for="(item, index) in standard"
+                :key="index"
+                :label="item.fpaezCombo"
+                :value="item.fpaezCombo"
+              />
             </el-select>
           </el-form-item>
-          <!--          <el-form-item label="图片1" prop="fpaezCombo">-->
-          <!--            <el-upload-->
-          <!--              class="avatar-uploader"-->
-          <!--              action="https://jsonplaceholder.typicode.com/posts/"-->
-          <!--              :show-file-list="false"-->
-          <!--              :on-success="handleAvatarSuccess"-->
-          <!--            >-->
-          <!--              <img v-if="imageUrl" :src="imageUrl" class="avatar">-->
-          <!--              <i v-else class="el-icon-plus avatar-uploader-icon" />-->
-          <!--            </el-upload>-->
-          <!--          </el-form-item>-->
           <el-form-item label="备注" prop="fnote">
             <el-input v-model.trim="prodValue.fnote" type="textarea" placeholder="请填写备注" size="mini" />
           </el-form-item>
@@ -118,7 +125,7 @@
             <el-checkbox v-model="prodValue.fisIncludedTax" />
           </el-form-item>
         </el-form>
-        <tab @visible="prodOrder" />
+        <tab :msg="prodValue.fpriceListId" @visible="prodOrder" />
       </el-tab-pane>
       <el-tab-pane label="其他">
         <h1>开发中</h1>
@@ -140,13 +147,13 @@
 </template>
 <script>
 import {
-  queryTOrgOrganizationsL
-} from '@/api/engineering/createBom'
-import { queryTBasBilltype,
+  queryTBasBilltype,
   queryFpaezCombo,
   querySalerRate,
   querySalOrderFxxchange,
-  insertSalOrder
+  insertSalOrder,
+  queryOrgList,
+  querySalPriceCustomer
 } from '@/api/marketManage/marketOrder'
 import jumpMateriel from '@/components/JumpMateriel'
 import tab from '@/views/market/marketManage/createMarkerOrder/components/tab'
@@ -155,7 +162,9 @@ import deliver from '@/views/market/marketManage/createMarkerOrder/components/de
 import market from '@/views/market/marketManage/createMarkerOrder/components/market'
 import currency from '@/views/market/marketManage/createMarkerOrder/components/currency'
 import gathering from '@/views/market/marketManage/createMarkerOrder/components/gathering'
+import jcTitle from '@/components/Title'
 import priceList from '@/views/market/marketManage/createMarkerOrder/components/priceListPagination'
+
 export default {
   name: 'CreateMarkerOrder',
   components: {
@@ -165,29 +174,51 @@ export default {
     market,
     currency,
     gathering,
-    priceList
+    priceList,
+    jcTitle
   },
   mixins: [jumpMateriel],
   data() {
     return {
+      fid: '', // 价目ID
       clientVisiblit: false, // 客户列表弹窗
       deliveVisiblit: false, // 交货方式弹窗
       marketVisiblit: false, // 销售员弹窗
       currencyVisiblit: false, // 结算币别弹窗
       gatheringVisiblit: false, // 收款条件弹窗
       priceListVisiblit: false, // 价目表弹窗
-      imageUrl: '', // 图片
       tableHeight: '50vh', // 弹框中表格高度
       loading: false, // 加载中
       standard: [], // 品质标准
       billtypes: [], // 单据类型
       teamList: [], // 组织
       prodValue: { // 表单数据
-        fbillTypeId: '', fsaleOrgId: 1, fcustId: '', fdataValue: '', fname: '', fsettleCurrIdName: '', fbillNo: '',
-        fheadDeliveryWay: '', fsalerId: '', fnote: '', fsettleCurrId: '', fsalerIdName: '', fpriceListIdName: '', fpriceListId: '',
-        frecConditionId: '', fisIncludedTax: false, fexchangeRate: '1.0000', frecConditionIdName: '',
-        flocalCurrId: '', fxxchangeTypeId: '', fxxchangeType: '', flocalCurr: ''
+        fdeliveryDate: '', // 要货时间
+        fbillTypeId: '', // 单据类型
+        fsaleOrgId: '', // 销售组织
+        fcustId: '', // 客户id
+        fname: '', // 客户
+        fdataValue: '', // 交货方式名称
+        fheadDeliveryWay: '', // 交货方式编码
+        fnote: '', // 备注
+        fsettleCurrIdName: '', // 结算币别名称
+        fsettleCurrId: '', // 结算币别id
+        fbillNo: '', // 单据编号
+        fsalerId: '', // 销售员ID
+        fsalerIdName: '', // 销售员名称
+        fpriceListIdName: '', // 价目表名称
+        fpriceListId: 0, // 价目表id
+        frecConditionId: '', // 收款条件id
+        frecConditionIdName: '', // 收款条件名称
+        fisIncludedTax: false, // 是否含税
+        fexchangeRate: '', // 汇率
+        flocalCurrId: '', // 本位币id
+        fxxchangeTypeId: '', // 汇率类型id
+        fxxchangeType: '', // 汇率类型
+        flocalCurr: '' // 本位币
       },
+      fcurrencyId: '', // 汇率类型ID
+      frateTypeId: '', // 币别ID
       cellStyle: { padding: '10 10' },
       prodValueRules: { // 提交验证
         fbillTypeId: [
@@ -216,6 +247,8 @@ export default {
           { required: true, message: '请选择客户订单号', trigger: 'blur' }
         ], fpaezText2: [
           { required: true, message: '请选择客户PO NO', trigger: 'blur' }
+        ], fdeliveryDate: [
+          { required: true, message: '请选择要货时间', trigger: 'change' }
         ]
       }
     }
@@ -224,7 +257,6 @@ export default {
     this.queryTBasBilltype()
     this.handleGetPurchase()
     this.queryFpaezCombo()
-    this.querySalOrderFxxchange()
   },
   methods: {
     // 保存
@@ -235,8 +267,13 @@ export default {
           this.loading = false
           return false
         }
+        if (!this.prodValue.fexchangeRate) {
+          this.$message.error('汇率不能为空')
+          this.loading = false
+          return false
+        }
         for (const item of this.prodValue.saleDetails) {
-          if (item.fmaterialId === '' || item.funitId === '' || item.fqty === '' || item.fdeliveryDate === '') {
+          if (item.fmaterialId === '' || item.funitId === '' || item.fqty === '') {
             this.$message.error('表格不能为空或删除空行')
             this.loading = false
             return false
@@ -274,14 +311,31 @@ export default {
     },
     // 获取组织
     async handleGetPurchase() {
-      const { data: RES } = await queryTOrgOrganizationsL()
+      const { data: RES } = await queryOrgList()
       this.teamList = RES
+    },
+    // 监听选取组织获取本位币、汇率
+    fsale(val) {
+      this.teamList.filter(res => {
+        if (res.forgId === val) {
+          this.frateTypeId = res.frateTypeId
+          this.fcurrencyId = res.fcurrencyId
+          this.querySalOrderFxxchange()
+        }
+      })
     },
     // 获取客户数据(子传父)
     clientData(item) {
       this.prodValue.fcustId = item.fcustId
       this.prodValue.fname = item.fname
       this.clientVisiblit = item.isclientlDialog
+      if (item.fcustId) {
+        const DATA = { fcustId: item.fcustId }
+        querySalPriceCustomer(DATA).then(res => {
+          this.prodValue.fpriceListId = res.data.fid
+          this.prodValue.fpriceListIdName = res.data.fname
+        })
+      }
     },
     // 获取交货方式数据(子传父)
     deliveData(item) {
@@ -322,15 +376,21 @@ export default {
     },
     // 查询销售订单本位币和汇率类型
     async querySalOrderFxxchange() {
-      const { data: RES } = await querySalOrderFxxchange()
+      const DATA = { frateTypeId: this.frateTypeId, fcurrencyId: this.fcurrencyId }
+      const { data: RES } = await querySalOrderFxxchange(DATA)
       this.prodValue.flocalCurrId = RES.flocalCurrId
       this.prodValue.fxxchangeTypeId = RES.fxxchangeTypeId
       this.prodValue.flocalCurr = RES.flocalCurr
       this.prodValue.fxxchangeType = RES.fxxchangeType
+      this.querySalerRate()
     },
     // 查询销售订单汇率
     async querySalerRate() {
-      const DATA = { fxxchangeTypeId: this.prodValue.fxxchangeTypeId, fsettleCurrId: this.prodValue.fsettleCurrId, flocalCurrId: this.prodValue.flocalCurrId }
+      const DATA = {
+        fxxchangeTypeId: this.prodValue.fxxchangeTypeId,
+        fsettleCurrId: this.prodValue.fsettleCurrId,
+        flocalCurrId: this.prodValue.flocalCurrId
+      }
       const { data: RES } = await querySalerRate(DATA)
       if (RES) {
         this.prodValue.fexchangeRate = RES.fexchangeRate
@@ -342,10 +402,6 @@ export default {
     prodOrder(ev) {
       this.prodValue.saleDetails = ev.saleDetails
       this.prodValue.planDetails = ev.planDetails
-    },
-    // 上传图片
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw)
     }
   }
 }
@@ -353,17 +409,21 @@ export default {
 <style scoped lang="scss">
 .content {
   @include listBom;
-  .el-form{
+
+  .el-form {
     display: flex;
     flex-wrap: wrap;
+
     .el-form-item {
-     width: 263px;
+      width: 263px;
     }
   }
 }
-.el-input__icon{
+
+.el-input__icon {
   cursor: pointer;
 }
+
 .materiel-form {
   display: flex;
   align-items: center;
@@ -383,31 +443,5 @@ export default {
     width: 200px;
     margin-right: 10px;
   }
-}
- .avatar-uploader .el-upload {
-   border: 1px dashed #d9d9d9;
-   border-radius: 6px;
-   cursor: pointer;
-   position: relative;
-   overflow: hidden;
- }
-.avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 78px;
-  height: 78px;
-  line-height: 78px;
-  text-align: center;
-  border: 1px dashed  #aaa;
-  border-radius: 6px;
-}
-.avatar {
-  width: 78px;
-  height: 78px;
-  display: block;
-  border-radius: 6px;
 }
 </style>

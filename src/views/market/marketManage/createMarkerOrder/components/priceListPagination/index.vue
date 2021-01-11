@@ -7,6 +7,7 @@
       :visible.sync="openPriceList"
       :close-on-click-modal="false"
       width="60%"
+      :before-close="handleClose"
     >
       <div class="materiel-form">
         <span class="materiel-code">供应商名称</span>
@@ -78,6 +79,11 @@ export default {
     priceListSelectRow(item) {
       this.prodValue.fpriceListIdName = item.fname
       this.prodValue.fpriceListId = item.fid
+      this.prodValue.openPriceList = false
+      this.$emit('priceList', this.prodValue)
+    },
+    // 关闭前回调
+    handleClose() {
       this.prodValue.openPriceList = false
       this.$emit('priceList', this.prodValue)
     }

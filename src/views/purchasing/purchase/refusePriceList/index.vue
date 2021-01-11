@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">供应商名称</span>
@@ -8,6 +9,7 @@
           class="input-content"
           placeholder="请输入供应商名称"
           @keyup.enter.native="handleQueryRefuse"
+          size="mini"
         />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryRefuse">搜索</el-button>
         <el-button type="primary" size="mini" class="btn" @click="addPriceList">新增价目</el-button>
@@ -46,13 +48,15 @@
 <script>
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
+import jcTitle from '@/components/Title'
 import { queryFailPurPriceList, updateAgainReview } from '@/api/purchaseManagement/refusePriceList'
 export default {
   name: 'RefusePriceList',
   inject: ['reload'],
   components: {
     jcTable,
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   data() {
     return {

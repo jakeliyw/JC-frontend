@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane label="调价" name="modifyPrice" class="layout">
         <div class="header">
@@ -50,9 +51,9 @@
               <el-input-number
                 v-model="scope.row.fprice"
                 size="mini"
-                :precision="3"
-                :step="0.1"
-                :min="0.1"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 disabled
               />
             </template>
@@ -62,9 +63,9 @@
               <el-input-number
                 v-model="scope.row.fafterPrice"
                 size="mini"
-                :precision="3"
-                :step="0.1"
-                :min="0.1"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 :disabled="scope.row.fisIncludedTax"
                 @change="handlePrice(scope.row)"
               />
@@ -75,9 +76,9 @@
               <el-input-number
                 v-model="scope.row.ftaxPrice"
                 size="mini"
-                :precision="3"
-                :step="0.1"
-                :min="0.1"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 disabled
               />
             </template>
@@ -87,9 +88,9 @@
               <el-input-number
                 v-model="scope.row.fafterTaxPrice"
                 size="mini"
-                :precision="3"
-                :step="0.1"
-                :min="0.1"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 :disabled="!scope.row.fisIncludedTax"
                 @change="handleTaxIncluded(scope.row)"
               />
@@ -97,7 +98,7 @@
           </el-table-column>
           <el-table-column label="调前税率" prop="ftaxRate" align="center" min-width="150px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.ftaxRate" size="mini" :precision="3" :step="0.1" :min="0.1" disabled />
+              <el-input-number v-model="scope.row.ftaxRate" size="mini" :precision="4" :step="0.0001" :min="0.0000" disabled />
             </template>
           </el-table-column>
           <el-table-column label="调后税率" prop="fafterTaxRate" align="center" min-width="150px">
@@ -105,9 +106,9 @@
               <el-input-number
                 v-model="scope.row.fafterTaxRate"
                 size="mini"
-                :precision="3"
-                :step="0.1"
-                :min="0.1"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 @change="handleTaxRate(scope.row)"
               />
             </template>
@@ -159,7 +160,7 @@
       :popup-title="popupTitle"
       @closeDialog="closeDialog"
       @emptyForm="emptyForm"
-      @handleSearch="searchPriceList"
+      @handleSearch="getPriceList"
     >
       <template v-slot:content>
         <jc-table
@@ -189,7 +190,7 @@
       :popup-title="popupTitle"
       @closeDialog="closeDialog"
       @emptyForm="emptyForm"
-      @handleSearch="handleMateriel"
+      @handleSearch="getMateriel"
     >
       <template v-slot:content>
         <jc-table
@@ -217,6 +218,7 @@
 <script>
 import jcForm from '@/components/Form'
 import jcTable from '@/components/Table'
+import jcTitle from '@/components/Title'
 import jcPopup from '@/views/basic/createMateriel/components/Popup'
 import { queryTOrgOrganizationsL } from '@/api/engineering/createBom'
 import { queryFpareason, queryTPurPatLs, queryTPurPatLm, insertTPurPat } from '@/api/modifyPriceManagement/createModifyPrice'
@@ -228,7 +230,8 @@ export default {
     jcForm,
     jcTable,
     jcPopup,
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   mixins: [jumpMateriel],
   data() {
@@ -257,8 +260,8 @@ export default {
           fprice: '', // 调前单价
           ftaxPrice: '', // 调前含税单价
           ftaxRate: '', // 调前税率
-          fupPrice: 0.1, // 上限
-          fdownPrice: 0.1 // 下限
+          fupPrice: 0, // 上限
+          fdownPrice: 0 // 下限
         }
       ], // 调价表数据
       modifyPriceHeader: [
@@ -329,8 +332,8 @@ export default {
     preservation() {
       this.$refs.zrf.handleRefData()
       for (const ITEM of this.modifyPriceTable) {
-        if (ITEM.fid === '' || ITEM.fmaterialId === '') {
-          this.$message.error('表格不能为空,或数据不对')
+        if (ITEM.fid === '' || ITEM.fmaterialId === '' || ITEM.fafterPrice === 0 || ITEM.fafterTaxPrice === 0) {
+          this.$message.error('表格不能为空,或表格值不能为0')
           return
         }
       }
@@ -404,6 +407,9 @@ export default {
       this.modifyPriceTable[this.tableIndex].fisIncludedTax = item.fisIncludedTax
       this.modifyPriceTable[this.tableIndex].fcurrency = item.fcurrency
       this.modifyPriceTable[this.tableIndex].fid = item.fid
+      // 物料编码
+      this.modifyPriceTable[this.tableIndex].fmaterialId = ''
+      this.modifyPriceTable[this.tableIndex].fnumber = ''
       this.openPriceList = false
     },
     // 获取物料编码
@@ -451,8 +457,8 @@ export default {
           fprice: '', // 调前单价
           ftaxPrice: '', // 调前含税单价
           ftaxRate: '', // 调前税率
-          fupPrice: 0.1, // 上限
-          fdownPrice: 0.1 // 下限
+          fupPrice: 0, // 上限
+          fdownPrice: 0 // 下限
         })
       }
       if (!row.fid) {

@@ -1,6 +1,7 @@
 <template>
   <div class="content">
-    <el-button type="primary" style="width: 80px;margin-bottom: 10px" @click="subMarker()">保存</el-button>
+    <jc-title/>
+    <el-button type="primary" style="width: 80px;margin-bottom: 10px" @click="subMarker()" size="mini">保存</el-button>
     <el-tabs type="border-card">
       <el-tab-pane label="价目明细">
         <div class="header-card">
@@ -176,6 +177,7 @@
 <script>
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
+import jcTitle from '@/components/Title'
 import {
   querySalPriceNtry, queryTBdCurrency,
   updateSalPrice
@@ -188,7 +190,8 @@ import jumpMateriel from '@/components/JumpMateriel'
 export default {
   components: {
     jcTable,
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   mixins: [jumpMateriel],
   data() {
@@ -206,10 +209,10 @@ export default {
       materielDialogData: [],
       materielDialogHeader: [
         { label: '使用组织', prop: 'fuseOrg', align: 'center' },
+        { label: '型号', prop: 'fmodel', align: 'center' },
         { label: '物料编码', prop: 'fnumber', align: 'center' },
         { label: '描述', prop: 'fdescripTion', align: 'center', minWidth: '150px' },
         { label: '物料规格', prop: 'fspecificaTion', align: 'center' },
-        { label: '型号', prop: 'fmodel', align: 'center' },
         { label: '创建时间', prop: 'fcreateDate', align: 'center' }
       ],
       // 点击行的序号

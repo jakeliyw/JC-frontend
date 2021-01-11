@@ -1,9 +1,10 @@
 <template>
   <div class="content">
+    <jc-title/>
     <el-card class="header-card">
       <div class="tool">
         <el-button size="mini" @click="refresh">刷新</el-button>
-        <el-button size="mini" type="primary" @click="preservation">保存bom</el-button>
+        <el-button size="mini" type="primary" @click="preservation">确定更新</el-button>
       </div>
       <div class="organization">
         <span class="text-margin">创建组织</span>
@@ -79,12 +80,12 @@
           </el-table-column>
           <el-table-column label="用量" prop="FDOSAGE" align="center" width="200px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.FDOSAGE" :precision="2" :step="1" :min="1" size="mini" />
+              <el-input-number v-model="scope.row.FDOSAGE" :precision="4" :step="0.0001" :min="0.0000" size="mini" />
             </template>
           </el-table-column>
           <el-table-column label="单价" prop="FPRICE" align="center" width="200px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.FPRICE" :precision="4" :step="0.1" :min="1" size="mini" />
+              <el-input-number v-model="scope.row.FPRICE" :precision="4" :step="0.0001" :min="0.0000" size="mini" />
             </template>
           </el-table-column>
           <el-table-column label="金额" prop="money" align="center" width="150px">
@@ -191,6 +192,7 @@ import jcForm from '@/components/Form'
 import jcOther from '@/components/Other'
 import jumpMateriel from '@/components/JumpMateriel'
 import getForm from '../createBom/components/getForm'
+import jcTitle from '@/components/Title'
 import {
   queryFmaterialtype,
   queryFissuetype,
@@ -208,7 +210,8 @@ export default {
     jcTable,
     jcPagination,
     jcForm,
-    jcOther
+    jcOther,
+    jcTitle
   },
   mixins: [jumpMateriel, getForm],
   data() {
@@ -237,23 +240,7 @@ export default {
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '100px', align: 'center' }
       ],
       // 子表数据
-      sonTableData: [
-        {
-          FID: 0,
-          FSEQ: 0,
-          FNUMBER: '',
-          FMATERIALID: '',
-          FDESCRIPTION: '',
-          FSPECIFICATION: '',
-          FCREATEDATE: '', // 生效时间
-          FMATERIALTYPE: '1', // 选中值
-          FDOSAGETYPE: '1', // 选中值
-          FISSUETYPE: '1', // 选中值
-          FPRICE: 1, // 单价
-          FDOSAGE: 1, // 用量
-          money: 0 // 金额
-        }
-      ],
+      sonTableData: [],
       // 子项表头
       sonTableHeader: [
         { label: '操作', type: 'btn', fixed: 'right', width: '250px', align: 'center' }
@@ -392,8 +379,8 @@ export default {
             FMATERIALTYPE: '1', // 选中值
             FDOSAGETYPE: '1', // 选中值
             FISSUETYPE: '1', // 选中值
-            FPRICE: 1,
-            FDOSAGE: 1,
+            FPRICE: 0,
+            FDOSAGE: 0,
             money: 0
           }
         )
@@ -429,12 +416,14 @@ export default {
         FLABORCOST: this.prodValue.FLABORCOST,
         fTreeEntity
       }
-      for (const key of DATA.fTreeEntity) {
-        for (const obj in key) {
-          if (key[obj] === undefined || key[obj] === '') {
-            this.$message.error('编号不能为空,请选择再提交')
-            return
-          }
+      if (DATA.FLABORCOST === 0) {
+        this.$message.error('人工成本不能小于0,请重新输入!')
+        return
+      }
+      for (const ITEM of DATA.fTreeEntity) {
+        if (ITEM.FMATERIALID === undefined || ITEM.FDOSAGE === 0) {
+          this.$message.error('表格数据不能为空或用量不能为0')
+          return
         }
       }
       const { message, code } = await upDateBom(DATA)

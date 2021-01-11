@@ -7,6 +7,7 @@
       :visible.sync="isclientlDialog"
       :close-on-click-modal="false"
       width="60%"
+      :before-close="handleClose"
     >
       <div class="materiel-form">
         <span class="materiel-code">客户名称</span>
@@ -83,6 +84,11 @@ export default {
     clientSearch() {
       this.client.pageNum = 1
       this.queryTBdCustomerList()
+    },
+    // 关闭前回调
+    handleClose() {
+      this.prodValue.isclientlDialog = false
+      this.$emit('client', this.prodValue)
     }
   }
 }

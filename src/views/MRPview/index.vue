@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <div class="hearder">MRP转单界面</div>
+    <jc-title/>
     <el-form :model="orderNumber" label-width="90px">
       <el-form-item label="销售订单号">
         <el-input v-model.trim="fbillNo" size="mini" @keyup.enter.native="gainData" />
@@ -23,11 +23,13 @@
 </template>
 <script>
 import jcTable from '@/components/Table'
+import jcTitle from '@/components/Title'
 import { queryTOrgOrganizationsL } from '@/api/engineering/createBom'
 
 export default {
   components: {
-    jcTable
+    jcTable,
+    jcTitle
   },
   data() {
     return {
@@ -81,18 +83,6 @@ export default {
 <style scoped lang="scss">
 .content {
   @include listBom;
-
-  .hearder {
-    font-size: 20px;
-    font-weight: 540;
-    color: #263445;
-    background: #e6ebfc;
-    padding: 10px 0;
-    padding-left: 5px;
-    border-left: groove;
-    letter-spacing: 3px;
-    margin-bottom: 10px;
-  }
 
   .el-form {
     display: flex;

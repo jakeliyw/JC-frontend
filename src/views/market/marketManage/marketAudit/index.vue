@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">销售订单号</span>
@@ -47,9 +48,7 @@
             <el-button type="primary" size="mini" @click="detailPurchase(clo.row.fid)">详情</el-button>
           </template>
         </el-table-column>
-
       </jc-table>
-
     </div>
     <!--    分页器-->
     <div class="footer">
@@ -67,6 +66,7 @@
 <script>
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
+import jcTitle from '@/components/Title'
 import {
   queryReviewSalorderList
 } from '@/api/marketManage/marketOrder'
@@ -76,7 +76,8 @@ export default {
   inject: ['reload'],
   components: {
     jcTable,
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   data() {
     return {

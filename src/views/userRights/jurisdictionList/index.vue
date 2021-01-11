@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">角色名称</span>
@@ -35,7 +36,7 @@
       />
     </div>
     <!--新增/修改 审核权限弹窗-->
-    <el-dialog :title="newINsert" :visible.sync="insertTJQVisible">
+    <el-dialog :title="newINsert" :visible.sync="insertTJQVisible" :close-on-click-modal="false">
       <el-form ref="ruleForm" :model="form" label-width="120px" :rules="rules">
         <el-form-item label="用户" prop="fuserId">
           <el-select v-if="!form.fid" v-model="form.fuserId" placeholder="请选择用户">
@@ -81,12 +82,14 @@
 <script>
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
+import jcTitle from '@/components/Title'
 import { queryTJxQueryList, querySecUser, insertTJxQuery, updayeTJxQuery } from '@/api/userAdmin/jurisdictionList'
 export default {
   name: 'JurisdictionList',
   components: {
     jcTable,
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   data() {
     return {

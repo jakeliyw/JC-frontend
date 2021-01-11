@@ -7,6 +7,7 @@
       :visible.sync="isdeliverlDialog"
       :close-on-click-modal="false"
       width="60%"
+      :before-close="handleClose"
     >
       <div class="materiel-form">
         <span class="materiel-code">交货名称</span>
@@ -81,6 +82,11 @@ export default {
     deliverlSelectRow(item) {
       this.prodValue.fdataValue = item.fdataValue
       this.prodValue.fheadDeliveryWay = item.fheadDeliveryWay
+      this.prodValue.isdeliverlDialog = false
+      this.$emit('delive', this.prodValue)
+    },
+    // 关闭前回调
+    handleClose() {
       this.prodValue.isdeliverlDialog = false
       this.$emit('delive', this.prodValue)
     }

@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane label="价目" name="purchase">
         <jc-form :option-value="optionValue" :options="options" />
@@ -7,7 +8,6 @@
           :table-data="tableData"
           :table-header="tableHeader"
           :cell-style="cellStyle"
-          table-height="calc(100vh - 400px)"
         />
       </el-tab-pane>
       <el-tab-pane label="其它" name="other" />
@@ -18,12 +18,14 @@
 <script>
 import jcForm from '@/components/Form/index'
 import jcTable from '@/components/Table/index'
+import jcTitle from '@/components/Title'
 import { detailPriceList } from '@/api/purchaseManagement/purchasePrice'
 export default {
   name: 'DetailPurchasePrice',
   components: {
     jcForm,
-    jcTable
+    jcTable,
+    jcTitle
   },
   data() {
     return {

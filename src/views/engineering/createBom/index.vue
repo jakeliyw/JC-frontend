@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <el-card class="header-card">
       <div class="tool">
         <el-button size="mini" @click="refresh">刷新</el-button>
@@ -84,12 +85,12 @@
           </el-table-column>
           <el-table-column label="用量" prop="FDOSAGE" align="center" width="200px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.FDOSAGE" :precision="2" :step="1" :min="1" size="mini" />
+              <el-input-number v-model="scope.row.FDOSAGE" :precision="4" :step="0.0001" :min="0.0000" size="mini" />
             </template>
           </el-table-column>
           <el-table-column label="单价" prop="FPRICE" align="center" width="200px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.FPRICE" :precision="4" :step="0.1" :min="1" size="mini" />
+              <el-input-number v-model="scope.row.FPRICE" :precision="4" :step="0.0001" :min="0.0000" size="mini" />
             </template>
           </el-table-column>
           <el-table-column label="金额" prop="money" align="center" width="150px">
@@ -232,6 +233,7 @@ import jcPagination from '@/components/Pagination'
 import jcForm from '@/components/Form'
 import jcOther from '@/components/Other'
 import jumpMateriel from '@/components/JumpMateriel'
+import jcTitle from '@/components/Title'
 import getForm from './components/getForm'
 import {
   queryBomFaterList,
@@ -252,7 +254,8 @@ export default {
     jcTable,
     jcPagination,
     jcForm,
-    jcOther
+    jcOther,
+    jcTitle
   },
   mixins: [jumpMateriel, getForm],
   data() {
@@ -320,8 +323,8 @@ export default {
           FMATERIALTYPE: '1', // 选中值
           FDOSAGETYPE: '1', // 选中值
           FISSUETYPE: '1', // 选中值
-          FPRICE: 1, // 单价
-          FDOSAGE: 1, // 用量
+          FPRICE: 0, // 单价
+          FDOSAGE: 0, // 用量
           money: 0 // 金额
         }
       ],
@@ -470,8 +473,8 @@ export default {
             FMATERIALTYPE: '1', // 选中值
             FDOSAGETYPE: '1', // 选中值
             FISSUETYPE: '1', // 选中值
-            FPRICE: 1, // 单价
-            FDOSAGE: 1, // 单价
+            FPRICE: 0, // 单价
+            FDOSAGE: 0, // 用量
             money: 0 // 金额
           }
         )
@@ -518,11 +521,15 @@ export default {
         FMATERIALID: this.FMATERIALID,
         fTreeEntity
       }
+      if (DATA.FLABORCOST === 0) {
+        this.$message.error('人工成本不能小于0,请重新输入!')
+        return
+      }
       for (const item of DATA.fTreeEntity) {
         const ARRAY = Object.values(item)
         const RES = ARRAY.includes('' || undefined) || DATA.FMATERIALID === 0
-        if (RES === true) {
-          this.$message.error('请删除空行，或为空行填入数据')
+        if (RES === true || RES.FDOSAGE === 0) {
+          this.$message.error('表格数据不能为空或用量不能为0!')
           return
         }
       }

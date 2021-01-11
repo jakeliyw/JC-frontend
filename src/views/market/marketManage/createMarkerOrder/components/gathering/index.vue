@@ -7,6 +7,7 @@
       :visible.sync="isgatheringDialog"
       :close-on-click-modal="false"
       width="60%"
+      :before-close="handleClose"
     >
       <div class="materiel-form">
         <span class="materiel-code">收款条件名称</span>
@@ -83,6 +84,11 @@ export default {
     gatheringSelectRow(item) {
       this.prodValue.frecConditionIdName = item.fname
       this.prodValue.frecConditionId = item.frecConditionId
+      this.prodValue.isgatheringDialog = false
+      this.$emit('gathering', this.prodValue)
+    },
+    // 关闭前回调
+    handleClose() {
       this.prodValue.isgatheringDialog = false
       this.$emit('gathering', this.prodValue)
     }

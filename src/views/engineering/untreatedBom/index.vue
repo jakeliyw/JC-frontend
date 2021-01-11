@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">物料编号</span>
@@ -59,6 +60,7 @@
 <script>
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
+import jcTitle from '@/components/Title'
 import { queryUntreatedBomList, updateReview, updateNotReview } from '@/api/engineering/untreatedBom'
 import { queryFtypeInfo } from '@/api/engineering/deitalBom'
 
@@ -67,7 +69,8 @@ export default {
   inject: ['reload'],
   components: {
     jcTable,
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   data() {
     return {
@@ -123,7 +126,7 @@ export default {
     // 审批
     async approval(FID) {
       const { message, code } = await updateReview({ fid: FID })
-      if (code === 0) {
+      if (code !== 0) {
         return
       }
       this.$message.success(message)

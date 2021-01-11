@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane label="调价" name="modifyPrice" class="layout">
         <div class="header">
@@ -15,6 +16,7 @@
           :table-data="modifyPriceTable"
           :table-header="modifyPriceHeader"
           :cell-style="cellStyle"
+          table-height="calc(100vh - 400px)"
         >
           <el-table-column label="价目表" prop="fname" align="center" min-width="150px">
             <template slot-scope="scope">
@@ -46,9 +48,9 @@
               <el-input-number
                 v-model="scope.row.fprice"
                 size="mini"
-                :precision="3"
-                :step="0.1"
-                :min="0"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 disabled
               />
             </template>
@@ -58,9 +60,9 @@
               <el-input-number
                 v-model="scope.row.fafterPrice"
                 size="mini"
-                :precision="3"
-                :step="0.1"
-                :min="0.1"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 disabled
               />
             </template>
@@ -70,9 +72,9 @@
               <el-input-number
                 v-model="scope.row.ftaxPrice"
                 size="mini"
-                :precision="3"
-                :step="0.1"
-                :min="0.1"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 disabled
               />
             </template>
@@ -82,16 +84,16 @@
               <el-input-number
                 v-model="scope.row.fafterTaxPrice"
                 size="mini"
-                :precision="3"
-                :step="0.1"
-                :min="0.1"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 disabled
               />
             </template>
           </el-table-column>
           <el-table-column label="调前税率" prop="ftaxRate" align="center" min-width="150px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.ftaxRate" size="mini" :precision="3" :step="0.1" :min="0" disabled />
+              <el-input-number v-model="scope.row.ftaxRate" size="mini" :precision="4" :step="0.0001" :min="0.0000" disabled />
             </template>
           </el-table-column>
           <el-table-column label="调后税率" prop="fafterTaxRate" align="center" min-width="150px">
@@ -99,9 +101,9 @@
               <el-input-number
                 v-model="scope.row.fafterTaxRate"
                 size="mini"
-                :precision="3"
-                :step="0.1"
-                :min="0.1"
+                :precision="4"
+                :step="0.0001"
+                :min="0.0000"
                 disabled
               />
             </template>
@@ -121,39 +123,21 @@
 <script>
 import jcForm from '@/components/Form'
 import jcTable from '@/components/Table'
+import jcTitle from '@/components/Title'
 import { queryTPurPatDetailList } from '@/api/modifyPriceManagement/detailModifyPrice'
 import { queryTOrgOrganizationsL } from '@/api/engineering/createBom'
 export default {
   name: 'DetailModifyPrice',
   components: {
     jcForm,
-    jcTable
+    jcTable,
+    jcTitle
   },
   data() {
     return {
       activeName: 'modifyPrice',
       teamList: [], // 组织数
-      modifyPriceTable: [
-        {
-          fid: '', // 价目ID
-          fmaterialId: '', // 物料ID
-          fname: '', // 价目表
-          fisIncludedTax: false, // 含税
-          fnumber: '', // 物料编码
-          fafterPrice: '', // 调后单价
-          fafterTaxPrice: '', // 调后含税单价
-          fafterTaxRate: '', // 调后税率
-          fsupplier: '', // 供应商名称
-          fcurrency: '', // 币别
-          fdescripTion: '', // 描述
-          fspecificaTion: '', // 规格型号
-          fprice: '', // 调前单价
-          ftaxPrice: '', // 调前含税单价
-          ftaxRate: '', // 调前税率
-          fupPrice: 0, // 上限
-          fdownPrice: 0 // 下限
-        }
-      ], // 调价表数据
+      modifyPriceTable: [], // 调价表数据
       modifyPriceHeader: [
         { label: '规格型号', prop: 'fspecificaTion', align: 'center' },
         { label: '价格上限', prop: 'fupPrice', align: 'center' },
@@ -245,5 +229,8 @@ export default {
 }
 .el-input__icon {
   cursor: pointer;
+}
+.el-table ::v-deep .el-table__body-wrapper{
+  height: 30vw;
 }
 </style>

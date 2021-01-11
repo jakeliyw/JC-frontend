@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">物料编码</span>
@@ -62,6 +63,7 @@
 
 <script>
 import jcPagination from '@/components/Pagination'
+import jcTitle from '@/components/Title'
 import { queryBomPriceList,
   renovateBom,
   renovateAloneBom
@@ -70,7 +72,8 @@ export default {
   name: 'MaintainPriceBom',
   inject: ['reload'],
   components: {
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   data() {
     return {

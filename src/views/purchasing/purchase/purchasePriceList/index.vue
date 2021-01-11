@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title/>
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">物料编码</span>
@@ -63,6 +64,7 @@
 <script>
 import jcTable from '@/components/Table/index'
 import jcPagination from '@/components/Pagination/index'
+import jcTitle from '@/components/Title'
 import { queryTPurPriceList } from '@/api/purchaseManagement/purchasePrice'
 
 export default {
@@ -70,7 +72,8 @@ export default {
   inject: ['reload'],
   components: {
     jcTable,
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   data() {
     return {

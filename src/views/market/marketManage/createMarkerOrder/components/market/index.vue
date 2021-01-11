@@ -7,6 +7,7 @@
       :visible.sync="ismarketlDialog"
       :close-on-click-modal="false"
       width="60%"
+      :before-close="handleClose"
     >
       <div class="materiel-form">
         <span class="materiel-code">销售员名称</span>
@@ -81,6 +82,11 @@ export default {
     marketlSelectRow(item) {
       this.prodValue.fsalerIdName = item.fname
       this.prodValue.fsalerId = item.fsalerId
+      this.prodValue.ismarketlDialog = false
+      this.$emit('market', this.prodValue)
+    },
+    // 关闭前回调
+    handleClose() {
       this.prodValue.ismarketlDialog = false
       this.$emit('market', this.prodValue)
     }
