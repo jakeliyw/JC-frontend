@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <jc-title/>
+    <jc-title />
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">物料编号</span>
@@ -8,8 +8,8 @@
           v-model="FNUMBER"
           class="input-content"
           placeholder="请输入物料编号"
-          @keyup.enter.native="handleQueryRefuse"
           size="mini"
+          @keyup.enter.native="handleQueryRefuse"
         />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryRefuse">搜索</el-button>
         <el-button type="primary" size="mini" class="btn" @click="addBom">新增bom</el-button>
@@ -24,7 +24,6 @@
           label="物料编码"
           align="center"
           prop="c"
-          :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
             <span class="jumpMateriel" @click="jumpMateriel(scope.row.FNUMBER)">{{ scope.row.FNUMBER }}</span>

@@ -52,8 +52,8 @@ export default {
   data() {
     return {
       loginForm: {
-        userName: '邱刚',
-        password: '12345.'
+        userName: '',
+        password: ''
       },
       loginRules: {
         userName: [{ required: true, trigger: 'blur', message: '账号不能为空' }],
@@ -88,6 +88,10 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('login', this.loginForm).then(res => {
+            if (res.code !== 0) {
+              this.loading = false
+              return
+            }
             this.$router.push({ path: this.redirect || '/' })
             this.$message.success(`${this.loginForm.userName}${res.message}`)
             this.loading = false

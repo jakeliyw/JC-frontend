@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <jc-title/>
+    <jc-title />
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane label="调价" name="modifyPrice" class="layout">
         <div class="header">

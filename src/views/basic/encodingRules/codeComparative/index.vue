@@ -1,6 +1,6 @@
 <template>
   <div class="content codeTable">
-    <jc-title/>
+    <jc-title />
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane v-for="(item, index) of oneMaterielData" :key="index" :label="item.largeName" :name="item.largeCode">
         <div class="codeRule">
@@ -259,4 +259,3 @@ export default {
   }
 }
 </style>
-

@@ -46,7 +46,7 @@ export default {
           disabled: 'disabled'
         },
         FMATERIALCOST: {
-          label: '物料成本',
+          label: '材料成本',
           disabled: 'disabled'
         },
         FLABORCOST: {

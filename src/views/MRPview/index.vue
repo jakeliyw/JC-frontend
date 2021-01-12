@@ -1,9 +1,8 @@
 <template>
   <div class="content">
-    <jc-title/>
     <el-form :model="orderNumber" label-width="90px">
       <el-form-item label="销售订单号">
-        <el-input v-model.trim="fbillNo" size="mini" @keyup.enter.native="gainData" />
+        <el-input v-model.trim="Sonum" size="mini" @keyup.enter.native="gainData" />
       </el-form-item>
       <el-form-item label="客户">
         <el-input v-model="orderNumber.customer" disabled size="mini" />
@@ -17,62 +16,80 @@
       <el-form-item label="交货日期">
         <el-input v-model="orderNumber.fdeliveryDate" disabled size="mini" />
       </el-form-item>
+      <el-form-item>
+        <el-button type="primary" size="mini" @click="gainData">运算</el-button>
+      </el-form-item>
     </el-form>
-    <jc-table :table-data="tableData" :table-header="tableHeader" serial table-selection @selectionChange="selectData" />
+    <jc-table
+      :table-data="tableData"
+      :table-header="tableHeader"
+      :cell-style="cellStyle"
+      table-selection
+      @selectionChange="selectData"
+    />
+    <div class="footer">
+      <p>总金额： <span>{{ grossAmount }}</span></p>
+      <el-button type="primary">确认下发</el-button>
+    </div>
   </div>
 </template>
 <script>
 import jcTable from '@/components/Table'
-import jcTitle from '@/components/Title'
-import { queryTOrgOrganizationsL } from '@/api/engineering/createBom'
+import { MrpInfo } from '@/api/mrpView'
 
 export default {
   components: {
-    jcTable,
-    jcTitle
+    jcTable
   },
   data() {
     return {
-      fbillNo: '', // 销售订单号
+      Sonum: 'WX20122920', // 销售订单号
       orderNumber: {
         customer: '',
         fpaezText1: '',
         fpaezCombo: '',
         fdeliveryDate: ''
       },
+      cellStyle: { padding: '10 10' },
+      grossAmount: 0, // 总金额
       tableData: [],
       tableHeader: [
-        { label: '状态', prop: 'status', align: 'center' },
-        { label: '订单类型', prop: 'status', align: 'center' },
-        { label: '生产单号', prop: 'status', align: 'center' },
-        { label: '型号', prop: 'status', align: 'center' },
-        { label: '物料编号', prop: 'status', align: 'center' },
-        { label: '物料描述', prop: 'status', align: 'center' },
-        { label: '生产类型', type: 'btn', align: 'center' },
-        { label: '生产部门', type: 'status', align: 'center' },
-        { label: '仓库', type: 'status', align: 'center' },
-        { label: '库存', type: 'status', align: 'center' },
-        { label: '计划数量', prop: 'status', align: 'center' },
-        { label: '数量单位', prop: 'status', align: 'center' },
-        { label: '损耗率', prop: 'status', align: 'center' },
-        { label: '损耗数', prop: 'status', align: 'center' },
-        { label: '生产/采购数量', prop: 'status', align: 'center' },
-        { label: '加工/采购单价', prop: 'status', align: 'center' },
-        { label: '行金额(RMB)', prop: 'status', align: 'center' },
-        { label: '配件交期', prop: 'status', align: 'center' }
+        { label: '状态', prop: 'zt', align: 'center' },
+        { label: '订单类型', prop: 'ddlx', align: 'center' },
+        { label: '生产单号', prop: 'ssdh', align: 'center' },
+        { label: '型号', prop: 'itemXH', align: 'center' },
+        { label: '物料编号', prop: 'itemCode', align: 'center', minWidth: '100px' },
+        { label: '物料描述', prop: 'itemName', align: 'center', minWidth: '200px' },
+        { label: '生产类型', type: 'sclx', align: 'center' },
+        { label: '生产部门', type: 'scbm', align: 'center' },
+        { label: '仓库', type: 'ck', align: 'center' },
+        { label: '库存', type: 'kc', align: 'center' },
+        { label: '计划数量', prop: 'qty', align: 'center' },
+        { label: '数量单位', prop: 'dw', align: 'center' },
+        { label: '损耗率', prop: 'shl', align: 'center' },
+        { label: '损耗数', prop: 'shs', align: 'center' },
+        { label: '生产数量', prop: 'scQty', align: 'center' },
+        { label: '加工单价', prop: 'rprice', align: 'center' },
+        { label: '行金额', prop: 'hje', align: 'center' },
+        { label: '配件交期', prop: 'pjjq', align: 'center' },
+        { label: '包装方式', prop: 'BZBOM', align: 'center' }
       ]
-    }
-  },
-  watch: {
-    fbillNo(val) {
-      console.log(val)
     }
   },
   methods: {
     // 获取表格数据
     async gainData() {
-      const { data: RES } = await queryTOrgOrganizationsL()
-      this.teamList = RES
+      const DATA = { Sonum: this.Sonum }
+      const { data: RES } = await MrpInfo(DATA)
+      this.grossAmount = 0
+      RES.map(item => {
+        item.qty = Number(item.qty).toFixed(4)
+        item.scQty = Number(item.scQty).toFixed(4)
+        item.rprice = Number(item.rprice).toFixed(4)
+        item.hje = Number(item.hje).toFixed(2)
+        this.grossAmount += Number(item.hje)
+      })
+      this.tableData = RES
     },
     // 多选时触发的事件
     selectData(val) {
@@ -80,6 +97,14 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.el-table {
+  height: 500px!important;
+  .el-table__body{
+    height: 500px;
+  }
+}
+</style>
 <style scoped lang="scss">
 .content {
   @include listBom;
@@ -90,6 +115,25 @@ export default {
 
     .el-form-item {
       width: 263px;
+    }
+  }
+  .el-table__body-wrapper is-scrolling-left {
+    height: 500px !important;
+  }
+  .footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-right: 50px;
+
+    p {
+      width: 200px;
+    }
+
+    .el-button {
+      width: 200px;
+      font-size: 16px;
+      letter-spacing: 2px;
     }
   }
 }

@@ -11,7 +11,7 @@
         <el-select v-model="team" placeholder="请选择" size="mini" class="input-width" disabled />
         <span class="text-margin">使用组织</span>
         <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled />
-        <div class="summation">材料成本:
+        <div class="summation">物料成本:
           <span class="color-text">{{ Summation }}元</span>
         </div>
       </div>
@@ -189,10 +189,6 @@ export default {
           type: 'slot',
           disabled: 'disabled'
         },
-        FDESCRIPTION: {
-          label: '物料描述',
-          disabled: 'disabled'
-        },
         FSPECIFICATION: {
           label: '物料规格',
           disabled: 'disabled'
@@ -210,7 +206,7 @@ export default {
           disabled: 'disabled'
         },
         FMATERIALCOST: {
-          label: '物料成本',
+          label: '材料成本',
           disabled: 'disabled'
         },
         FLABORCOST: {
@@ -243,6 +239,11 @@ export default {
         },
         FDEFAULTROUTING: {
           label: '工艺',
+          disabled: 'disabled'
+        },
+        FDESCRIPTION: {
+          label: '物料描述',
+          type: 'textarea',
           disabled: 'disabled'
         }
       }

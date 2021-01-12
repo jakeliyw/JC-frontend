@@ -335,7 +335,7 @@ export default {
     font-size: 14px;
     color: #606266;
     line-height: 40px;
-   min-width: 65px;
+    min-width: 65px;
   }
 
   .input-width {

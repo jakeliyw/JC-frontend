@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <jc-title/>
+    <jc-title />
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">供应商名称</span>
@@ -8,8 +8,8 @@
           v-model="fsupplier"
           class="input-content"
           placeholder="请输入价目表名称"
-          @keyup.enter.native="handleQueryUntreated"
           size="mini"
+          @keyup.enter.native="handleQueryUntreated"
         />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
       </div>

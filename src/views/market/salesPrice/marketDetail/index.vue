@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <jc-title/>
+    <jc-title />
     <el-tabs type="border-card">
       <el-tab-pane label="价目明细">
         <div class="header-card">

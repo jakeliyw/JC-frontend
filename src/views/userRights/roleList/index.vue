@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <jc-title/>
+    <jc-title />
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">角色名称</span>

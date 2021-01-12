@@ -1,6 +1,5 @@
 <template>
   <div class="content">
-    <jc-title/>
     <el-tabs type="border-card">
       <el-tab-pane label="订单详情">
         <div class="header-card">
@@ -24,11 +23,10 @@
               </el-table-column>
               <el-table-column prop="fdescripTion" label="物料描述" min-width="300px" align="center" :show-overflow-tooltip="true" />
               <el-table-column prop="funit" label="基本单位" min-width="80px" align="center" />
-              <el-table-column prop="fprice" label="产品单价" align="center" />
               <el-table-column prop="fqty" label="产品数量" align="center" />
+              <el-table-column prop="fprice" label="产品单价" align="center" />
               <el-table-column prop="totalPrice" label="总价" align="center" />
               <el-table-column prop="fsettleCurr" label="币别" align="center" />
-              <el-table-column prop="fdeliveryDate" label="交货日期" min-width="120px" align="center" :show-overflow-tooltip="true" />
               <el-table-column prop="fvolume" label="产品体积" align="center" />
               <el-table-column prop="fisFree" label="是否赠品" align="center">
                 <template slot-scope="scope">
@@ -36,6 +34,11 @@
                 </template>
               </el-table-column>
               <el-table-column prop="ftaxRate" label="税率" align="center" />
+              <el-table-column prop="fdeliveryDate" label="图纸" min-width="230px" align="center">
+                <template slot-scope="scope">
+                  <img v-for="(item, index) in scope.row.salImage" :key="index" :src="item" style="max-height: 28px;padding: 0 3px" @click="proviewImg(item)">
+                </template>
+              </el-table-column>
             </jc-table>
           </el-tab-pane>
           <el-tab-pane label="收款计划">
@@ -79,13 +82,15 @@
         <h1>待开发</h1>
       </el-tab-pane>
     </el-tabs>
+    <el-dialog title="预览" model :visible.sync="imgVisible" append-to-body top="10vh">
+      <img :src="priview" style="max-height: 600px;max-width: 100%">
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import jcTable from '@/components/Table'
 import jcForm from '@/components/Form'
-import jcTitle from '@/components/Title'
 import {
   queryTSalOrderNtry
 } from '@/api/marketManage/marketOrder'
@@ -94,12 +99,13 @@ import jumpMateriel from '@/components/JumpMateriel'
 export default {
   components: {
     jcTable,
-    jcForm,
-    jcTitle
+    jcForm
   },
   mixins: [jumpMateriel],
   data() {
     return {
+      priview: '',
+      imgVisible: false,
       // 表头
       cellStyle: { padding: '10 10' }, // 行高
       saleDetails: [], // 销售数据
@@ -143,6 +149,9 @@ export default {
           disabled: 'disabled'
         }, customer: {
           label: '客户',
+          disabled: 'disabled'
+        }, fdeliveryDate: {
+          label: '要货时间',
           disabled: 'disabled'
         }, fsaleDept: {
           label: '销售部门',
@@ -193,6 +202,11 @@ export default {
           disabled: 'disabled'
         }
       }
+    },
+    // 预览图片
+    proviewImg(img) {
+      this.imgVisible = true
+      this.priview = img
     }
   }
 }

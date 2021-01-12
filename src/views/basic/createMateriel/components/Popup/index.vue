@@ -110,4 +110,8 @@ export default {
 .dialogClass ::v-deep .el-dialog__body {
   padding: 0 20px;
 }
+.content ::v-deep .pagination-container{
+  display: flex;
+  justify-content: center;
+}
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <jc-title/>
+    <jc-title />
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">物料编号</span>
@@ -8,8 +8,8 @@
           v-model="pagination.fnumber"
           class="input-content"
           placeholder="请输入物料编码"
-          @keyup.enter.native="searchMaterialList"
           size="mini"
+          @keyup.enter.native="searchMaterialList"
         />
         <el-button type="primary" size="mini" class="btn" @click="searchMaterialList">搜索</el-button>
         <el-button type="primary" size="mini" class="btn" @click="addMateril">新增物料</el-button>
@@ -44,7 +44,7 @@
             </template>
           </el-table-column>
           <template v-slot:btnState="clo">
-            <el-tag>{{clo.scope.row.FDOCUMENTSTATUS}}</el-tag>
+            <el-tag>{{ clo.scope.row.FDOCUMENTSTATUS }}</el-tag>
           </template>
           <template v-slot:btnSlot="clo">
             <el-button type="primary" size="mini" @click="detailMateriel(clo.scope.row.FNUMBER)">查询物料</el-button>

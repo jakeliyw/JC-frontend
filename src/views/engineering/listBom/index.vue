@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <jc-title/>
+    <jc-title />
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">物料编码</span>
@@ -24,7 +24,6 @@
         <el-table-column
           label="物料编码"
           align="center"
-          :show-overflow-tooltip="true"
         >
           <template slot-scope="scope">
             <span class="jumpMateriel" @click="jumpMateriel(scope.row.FNUMBER)">{{ scope.row.FNUMBER }}</span>

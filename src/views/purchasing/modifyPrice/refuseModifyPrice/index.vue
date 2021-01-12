@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <jc-title/>
+    <jc-title />
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">调价名称</span>
@@ -8,8 +8,8 @@
           v-model="fname"
           class="input-content"
           placeholder="请输入调价名称"
-          @keyup.enter.native="handleQueryRefuse"
           size="mini"
+          @keyup.enter.native="handleQueryRefuse"
         />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryRefuse">搜索</el-button>
         <el-button type="primary" size="mini" class="btn" @click="addPriceList">新增调价</el-button>

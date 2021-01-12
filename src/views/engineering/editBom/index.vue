@@ -19,7 +19,7 @@
         </el-select>
         <span class="text-margin">使用组织</span>
         <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled />
-        <div class="summation">材料成本:
+        <div class="summation">物料成本:
           <span class="color-text">{{ Summation }}元</span>
         </div>
       </div>
@@ -169,11 +169,7 @@
         :table-header="sonDialogHeaderTable"
         :cell-style="cellStyle"
         @clickRow="sonSelectRow"
-      >
-        <template v-slot:btnSlot="clo">
-          <el-button type="primary" size="mini" @click="sonSelectRow(clo.scope.row)">子项选择</el-button>
-        </template>
-      </jc-table>
+      />
       <jc-pagination
         v-show="total > 0"
         :total="total"
@@ -236,8 +232,7 @@ export default {
         { label: '物料规格', prop: 'FSPECIFICATION' },
         { label: '型号', prop: 'FMODEL', align: 'center' },
         { label: '描述', prop: 'FDESCRIPTION', minWidth: '150px' },
-        { label: '创建时间', prop: 'FCREATEDATE', align: 'center' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '100px', align: 'center' }
+        { label: '创建时间', prop: 'FCREATEDATE', align: 'center' }
       ],
       // 子表数据
       sonTableData: [],
@@ -439,6 +434,9 @@ export default {
           const { message, code } = await upDateBom(DATA)
           if (code === 0) {
             this.$message.success(message)
+            setTimeout(() => {
+              location.reload()
+            }, 2000)
           }
         }).catch(() => {
           this.$message.info('已取消保存')

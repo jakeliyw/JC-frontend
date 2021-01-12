@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <jc-title/>
+    <jc-title />
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane label="价目" name="purchase" class="layout">
         <div class="header">

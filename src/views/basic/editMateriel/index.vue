@@ -56,7 +56,13 @@
           </div>
           <div class="basics">
             <jc-form :option-value="basicValue" :options="basic">
-              <el-select v-model="basicValue.FBASEUNITID" placeholder="请选择基本单位" size="small" @change="handleCompany">
+              <el-select
+                v-model="basicValue.FBASEUNITID"
+                placeholder="请选择基本单位"
+                size="small"
+                @change="handleCompany"
+                filterable
+              >
                 <el-option
                   v-for="item in basicUnit"
                   :key="item.value"
@@ -367,15 +373,15 @@ export default {
         { label: '基本单位编码', prop: 'FNUMBER', align: 'center' },
         { label: '基本单位名称', prop: 'FNAME', align: 'center ' },
         { label: '基准计量单位', prop: 'FISBASEUNIT', align: 'center' },
-        { label: '数据状态', prop: 'FDOCUMENTSTATUS', align: 'center' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '150px', align: 'center' }
+        { label: '数据状态', prop: 'FDOCUMENTSTATUS', align: 'center' }
       ],
       contrastHeader: [
         { label: '组织', prop: 'FUSEORG', align: 'center' },
         { label: '物料编码', prop: 'FNUMBER', align: 'center' },
         { label: '描述', prop: 'FDESCRIPTION', align: 'center' },
         { label: '型号', prop: 'FMODEL', align: 'center' },
-        { label: '物料属性', prop: 'FSPECIFICATION', align: 'center' }
+        { label: '物料属性', prop: 'FSPECIFICATION', align: 'center' },
+        { label: '状态', prop: 'FDOCUMENTSTATUS', align: 'center' }
       ],
       contrastDataTable: [], // 三类物料
       materielProperty: [], // 物料属性
@@ -713,6 +719,7 @@ export default {
     // 获取表单
     async handleForm() {
       const { data: RES } = await queryMaterialDetail({ fnumber: this.$route.query.FNUMBER })
+      this.FDESCRIPTION = RES.FDESCRIPTION
       this.FISPURCHASE = RES.FISPURCHASE
       this.FISSALE = RES.FISSALE
       this.FISINVENTORY = RES.FISINVENTORY

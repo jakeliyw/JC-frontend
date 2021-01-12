@@ -355,7 +355,7 @@ export const asyncRouterMap = [
     path: '/market',
     component: Layout,
     redirect: '/createMarkerOrder',
-    name: 'MarketManage',
+    name: 'Market',
     meta: {
       title: '销售管理',
       icon: 'nested'
