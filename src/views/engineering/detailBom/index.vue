@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <jc-title/>
+    <jc-title />
     <el-card class="header-card">
       <div class="tool">
         <el-button size="mini" disabled>刷新</el-button>

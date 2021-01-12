@@ -12,7 +12,7 @@ export function queryTSalOrderList(data) {
 export function queryTSalOrderNtry(params) {
   return request({
     url: '/tSalOrder/queryTSalOrderNtry',
-    method: 'post',
+    method: 'get',
     params
   })
 }
@@ -123,7 +123,7 @@ export function queryMaterialList(data) {
 // 查询还未处理的销售订单列表-分页
 export function queryUntreateSalorderList(data) {
   return request({
-    url: 'tEngBom/queryBomFaterList',
+    url: '/tSalOrder/queryUntreateSalorderList',
     method: 'post',
     data
   })

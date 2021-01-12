@@ -23,6 +23,7 @@
     <jc-table
       :table-data="tableData"
       :table-header="tableHeader"
+      table-height="500px"
       :cell-style="cellStyle"
       table-selection
       @selectionChange="selectData"
@@ -97,14 +98,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-.el-table {
-  height: 500px!important;
-  .el-table__body{
-    height: 500px;
-  }
-}
-</style>
+
 <style scoped lang="scss">
 .content {
   @include listBom;
@@ -117,8 +111,8 @@ export default {
       width: 263px;
     }
   }
-  .el-table__body-wrapper is-scrolling-left {
-    height: 500px !important;
+  .el-table ::v-deep .el-table__body-wrapper {
+    height: 500px;
   }
   .footer {
     display: flex;

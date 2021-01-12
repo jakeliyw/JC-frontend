@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loading" class="content">
-    <jc-title/>
-    <el-button type="primary" style="width: 80px;margin-bottom: 10px" @click="subMarker()" size="mini">保存</el-button>
+    <jc-title />
+    <el-button type="primary" style="width: 80px;margin-bottom: 10px" size="mini" @click="subMarker()">保存</el-button>
     <el-tabs type="border-card">
       <el-tab-pane label="主产品">
         <el-form ref="purchaseRef" :model="prodValue" label-width="100px" :rules="prodValueRules">
@@ -10,6 +10,7 @@
               v-model="prodValue.fbillTypeId"
               placeholder="请选择单据类型"
               size="mini"
+              filterable
             >
               <el-option
                 v-for="billty in billtypes"
@@ -20,7 +21,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="销售组织" prop="fsaleOrgId">
-            <el-select v-model="prodValue.fsaleOrgId" placeholder="请选择组织" size="mini" @change="fsale">
+            <el-select v-model="prodValue.fsaleOrgId" placeholder="请选择组织" filterable size="mini" @change="fsale">
               <el-option
                 v-for="option in teamList"
                 :key="option.value"
@@ -53,8 +54,8 @@
           <el-form-item label="要货时间" prop="fdeliveryDate">
             <el-date-picker
               v-model="prodValue.fdeliveryDate"
-              type="datetime"
-              value-format="yyyy-MM-dd HH:mm:ss"
+              type="date"
+              value-format="yyyy-MM-dd"
               size="mini"
               placeholder="选择日期"
               style="width: 163px"
@@ -109,7 +110,7 @@
             <el-input v-model.trim="prodValue.fpaezText2" placeholder="请输入客户PO NO" size="mini" />
           </el-form-item>
           <el-form-item label="品质标准" prop="fpaezCombo">
-            <el-select v-model="prodValue.fpaezCombo" placeholder="请选择品质标准" size="mini">
+            <el-select v-model="prodValue.fpaezCombo" placeholder="请选择品质标准" size="mini" filterable>
               <el-option
                 v-for="(item, index) in standard"
                 :key="index"

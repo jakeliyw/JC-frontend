@@ -63,13 +63,7 @@
           </div>
           <div class="basics">
             <jc-form :option-value="basicValue" :options="basic">
-              <el-select
-                v-model="basicValue.FBASEUNITID"
-                placeholder="请选择基本单位"
-                size="small"
-                filterable
-                @change="handleCompany"
-              >
+              <el-select v-model="basicValue.FBASEUNITID" placeholder="请选择基本单位" size="small" @change="handleCompany">
                 <el-option
                   v-for="item in basicUnit"
                   :key="item.value"
@@ -395,8 +389,7 @@ export default {
         { label: '物料编码', prop: 'FNUMBER', align: 'center' },
         { label: '描述', prop: 'FDESCRIPTION', align: 'center' },
         { label: '型号', prop: 'FMODEL', align: 'center' },
-        { label: '物料属性', prop: 'FSPECIFICATION', align: 'center' },
-        { label: '状态', prop: 'FDOCUMENTSTATUS', align: 'center' }
+        { label: '物料属性', prop: 'FSPECIFICATION', align: 'center' }
       ],
       contrastDataTable: [], // 三类物料
       materielProperty: [], // 颜色属性

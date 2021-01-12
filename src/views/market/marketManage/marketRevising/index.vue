@@ -1,7 +1,7 @@
 <template>
   <div class="content">
-    <jc-title/>
-    <el-button type="primary" style="width: 80px;margin-bottom: 10px" @click="subMarker()" size="mini">保存</el-button>
+    <jc-title />
+    <el-button type="primary" style="width: 80px;margin-bottom: 10px" size="mini" @click="subMarker()">保存</el-button>
     <el-tabs type="border-card">
       <el-tab-pane label="主产品">
         <el-form ref="purchaseRef" :model="prodValue" label-width="100px">
@@ -20,16 +20,10 @@
             <el-input v-model="prodValue.fbillNo" placeholder="保存自动生成" disabled size="mini" />
           </el-form-item>
           <el-form-item label="客户" prop="fcustId">
-            <el-input v-model.trim="prodValue.customer" placeholder="请选择客户" size="mini">
-              <i
-                slot="suffix"
-                class="el-input__icon el-icon-search"
-                @click="clientVisiblit=true"
-              />
-            </el-input>
+            <el-input v-model.trim="prodValue.customer" placeholder="请选择客户" size="mini" disabled />
           </el-form-item>
           <el-form-item label="交货方式" prop="fheadDeliveryWay">
-            <el-input v-model.trim="prodValue.fdataValue" placeholder="请选择交货方式" size="mini">
+            <el-input v-model.trim="prodValue.fheadDeliveryWayName" placeholder="请选择交货方式" size="mini">
               <i
                 slot="suffix"
                 class="el-input__icon el-icon-search"
@@ -40,8 +34,8 @@
           <el-form-item label="要货时间" prop="fdeliveryDate">
             <el-date-picker
               v-model="prodValue.fdeliveryDate"
-              type="datetime"
-              value-format="yyyy-MM-dd HH:mm:ss"
+              type="date"
+              value-format="yyyy-MM-dd"
               size="mini"
               placeholder="选择日期"
               style="width: 163px"
@@ -84,13 +78,8 @@
             <el-input v-model="prodValue.fexchangeRate" disabled size="mini" />
           </el-form-item>
           <el-form-item label="价目表" prop="fpriceListId">
-            <el-input v-model.trim="prodValue.fpriceList" placeholder="请选择价目表" size="mini">
-              <i
-                slot="suffix"
-                class="el-input__icon el-icon-search"
-                @click="priceListVisiblit=true"
-              />
-            </el-input></el-form-item>
+            <el-input v-model.trim="prodValue.fpriceList" placeholder="请选择价目表" size="mini" disabled />
+          </el-form-item>
           <el-form-item label="柜型" prop="fpaezText">
             <el-input v-model.trim="prodValue.fpaezText" placeholder="请输入柜型" size="mini" /></el-form-item>
           <el-form-item label="客户订单号" prop="fpaezText1">
@@ -98,7 +87,7 @@
           <el-form-item label="客户PO NO" prop="fpaezText2">
             <el-input v-model.trim="prodValue.fpaezText2" placeholder="请输入客户PO NO" size="mini" /></el-form-item>
           <el-form-item label="品质标准" prop="fpaezCombo">
-            <el-select v-model="prodValue.fpaezCombo" placeholder="请选择品质标准" size="mini">
+            <el-select v-model="prodValue.fpaezCombo" placeholder="请选择品质标准" size="mini" filterable>
               <el-option v-for="(item, index) in standard" :key="index" :label="item.fpaezCombo" :value="item.fpaezCombo" />
             </el-select>
           </el-form-item>
@@ -109,7 +98,7 @@
             <el-checkbox v-model="prodValue.fisIncludedTax" />
           </el-form-item>
         </el-form>
-        <tab :msg="saleDetails" :msg1="planDetails" @visible="handlechange" />
+        <tab :msg="saleDetails" :msg1="planDetails" :msg2="prodValue" @visible="handlechange" />
       </el-tab-pane>
       <el-tab-pane label="其他">
         <h1>开发中</h1>
@@ -125,8 +114,6 @@
     <currency v-if="currencyVisiblit" @currency="currencyData" />
     <!--收款条件列表-->
     <gathering v-if="gatheringVisiblit" @gathering="gatheringData" />
-    <!--价目列表-->
-    <priceList v-if="priceListVisiblit" @priceList="priceListData" />
   </div>
 </template>
 <script>
@@ -145,7 +132,6 @@ import market from '@/views/market/marketManage/createMarkerOrder/components/mar
 import currency from '@/views/market/marketManage/createMarkerOrder/components/currency'
 import gathering from '@/views/market/marketManage/createMarkerOrder/components/gathering'
 import jcTitle from '@/components/Title'
-import priceList from '@/views/market/marketManage/createMarkerOrder/components/priceListPagination'
 export default {
   name: 'CreateMarkerOrder',
   components: {
@@ -155,7 +141,6 @@ export default {
     market,
     currency,
     gathering,
-    priceList,
     jcTitle
   },
   mixins: [jumpMateriel],
@@ -166,7 +151,6 @@ export default {
       marketVisiblit: false, // 销售员弹窗
       currencyVisiblit: false, // 结算币别弹窗
       gatheringVisiblit: false, // 收款条件弹窗
-      priceListVisiblit: false, // 价目表弹窗
       tableHeard1: [], // 明细信息
       tableHeader2: [], // 收款计划
       standard: [], // 品质标准
@@ -231,7 +215,7 @@ export default {
           })
           setTimeout(() => {
             location.reload()
-          }, 2000)
+          }, 1000)
         }
       }).catch(error => {
         this.$message.error(error)
@@ -255,7 +239,7 @@ export default {
     },
     // 获取交货方式数据(子传父)
     deliveData(item) {
-      this.prodValue.fdataValue = item.fdataValue
+      this.prodValue.fheadDeliveryWayName = item.fdataValue
       this.prodValue.fheadDeliveryWay = item.fheadDeliveryWay
       this.deliveVisiblit = item.isdeliverlDialog
     },
@@ -278,12 +262,6 @@ export default {
       this.prodValue.frecCondition = item.frecConditionIdName
       this.prodValue.frecConditionId = item.frecConditionId
       this.gatheringVisiblit = false
-    },
-    // 价目表
-    priceListData(item) {
-      this.prodValue.fpriceList = item.fpriceListIdName
-      this.prodValue.fpriceListId = item.fpriceListId
-      this.priceListVisiblit = false
     },
     // 品质标准
     async queryFpaezCombo() {
@@ -335,7 +313,7 @@ export default {
     font-size: 14px;
     color: #606266;
     line-height: 40px;
-    min-width: 65px;
+   min-width: 65px;
   }
 
   .input-width {

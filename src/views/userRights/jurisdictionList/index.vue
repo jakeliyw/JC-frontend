@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <jc-title/>
+    <jc-title />
     <div class="header">
       <div class="header-name">
         <span class="parentItemNo">角色名称</span>
@@ -22,7 +22,7 @@
         :cell-style="cellStyle"
       >
         <template v-slot:btnSlot="col">
-          <el-button type="warning" @click="insertTJQ(col.scope.row)">修改</el-button>
+          <el-button type="warning" size="mini" @click="insertTJQ(col.scope.row)">修改</el-button>
         </template>
       </jc-table>
     </div>
@@ -108,7 +108,7 @@ export default {
         { label: '审核后流程', prop: 'fvaluec', align: 'center' },
         { label: '描述', prop: 'fdepict', align: 'center', minWidth: '150px' },
         { label: '审核人字段', prop: 'fvaluef', align: 'center' },
-        { label: '审核时间字段', prop: 'fvaluee', align: 'center' },
+        { label: '审核时间字段', prop: 'fvaluee', align: 'center', minWidth: '120px' },
         { label: '操作', type: 'btn', minWidth: '100px', align: 'center' }
       ],
       // 行高

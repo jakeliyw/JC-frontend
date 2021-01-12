@@ -120,7 +120,6 @@ export default {
   methods: {
     handleControl() {
       queryMaterialDetail({ fnumber: this.$route.params.id }).then(RES => {
-        console.log(RES)
         this.property = RES.data.property
         this.imageUrl = RES.data.material.FIMG
         this.organizationValue = {
@@ -185,16 +184,6 @@ export default {
           },
           FBARCODE: {
             label: '条码',
-            span: 8,
-            disabled: 'disabled'
-          },
-          FERPCLS: {
-            label: '物料类型',
-            span: 8,
-            disabled: 'disabled'
-          },
-          FREMARKS: {
-            label: '物料备注',
             span: 8,
             disabled: 'disabled'
           },

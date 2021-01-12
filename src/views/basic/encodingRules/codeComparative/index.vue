@@ -14,6 +14,7 @@
           <el-table
             :data="tableData"
             :cell-style="cellStyle"
+            height="500"
             loading
           >
             <el-table-column prop="largeName" label="大类" align="center" class-name="valignTop">
@@ -202,6 +203,12 @@ export default {
     .el-table th, .el-table tr{
       font-size: 13px;
     }
+    .el-table .cell{
+      padding: 10px 0;
+    }
+    .el-table td, .el-table th{
+      padding: 0;
+    }
     @media screen and (max-width: 1360px){
       .el-table thead.is-group th{
         font-size: 13px;
@@ -212,9 +219,6 @@ export default {
     }
     .el-table .is-leaf{
       vertical-align: middle;
-    }
-    .el-table .cell{
-      padding: 0;
     }
   }
 }
@@ -241,7 +245,11 @@ export default {
     text-overflow: ellipsis;
     white-space: nowrap
   }
+  .overHei:nth-child(1){
+    margin-top: -12px;
+  }
   .overHei:nth-last-child(1){
+    margin-bottom: -10px;
     border-bottom: none;
   }
   .overHei:nth-child(even){

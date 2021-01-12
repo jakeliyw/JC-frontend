@@ -5,7 +5,7 @@
       <el-tab-pane label="价目" name="purchase" class="layout">
         <div class="header">
           <el-button size="mini" @click="refresh">刷新</el-button>
-          <el-button size="mini" type="primary" @click="preservation">保存价目</el-button>
+          <el-button size="mini" type="primary" @click="preservation">确定更新</el-button>
         </div>
         <el-form ref="purchaseRef" :model="purchaseForm" label-width="100px" size="mini">
           <el-row :gutter="30" type="flex" justify="start" class="elRow">
@@ -273,13 +273,14 @@ export default {
     // 保存采购列表
     preservation() {
       for (const ITEM of this.tableData) {
-        if (ITEM.fmaterialId === '' || ITEM.fprice === 0 || ITEM.ftaxPrice === 0 || ITEM.fpriceCoefficient === 0) {
+        if (ITEM.fmaterialId === '' || ITEM.fprice === 0 ||
+        ITEM.ftaxPrice === 0 || ITEM.fpriceCoefficient === 0 || ITEM.feffectiveDate == null) {
           this.$message.error('表格不能为空,或表格值不能为0')
           return
         }
       }
       const DETAILS = this.tableData.map(item => {
-        item.fentryEffectiveDate = this.$moment(item.fentryEffectiveDate).format('YYYY-MM-DD HH:mm:ss')
+        item.feffectiveDate = this.$moment(item.feffectiveDate).format('YYYY-MM-DD HH:mm:ss')
         return {
           fmaterialId: item.fmaterialId,
           fprice: item.fprice,
@@ -288,7 +289,7 @@ export default {
           fupPrice: item.fupPrice,
           fdownPrice: item.fdownPrice,
           ftaxRate: item.ftaxRate,
-          fentryEffectiveDate: item.fentryEffectiveDate
+          fentryEffectiveDate: item.feffectiveDate
         }
       })
       const DATA = {

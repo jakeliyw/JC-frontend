@@ -141,10 +141,10 @@
               <el-input-number v-model.number="scope.row.fpriceCoefficient" size="mini" :precision="4" :step="0.0001" :min="0.0000" />
             </template>
           </el-table-column>
-          <el-table-column label="生效时间" prop="fentryEffectiveDate" width="200px" align="center" min-width="150px">
+          <el-table-column label="生效时间" prop="feffectiveDate" width="200px" align="center" min-width="150px">
             <template slot-scope="scope">
               <el-date-picker
-                v-model="scope.row.fentryEffectiveDate"
+                v-model="scope.row.feffectiveDate"
                 size="mini"
                 type="date"
                 style="width: 150px"
@@ -342,7 +342,7 @@ export default {
           fpriceCoefficient: 0, // 价格系数
           fupPrice: 0, // 价格上限
           fdownPrice: 0, // 价格下限
-          fentryEffectiveDate: '', // 生效时间
+          feffectiveDate: '', // 生效时间
           ftaxRate: 0, // 税率
           fdescripTion: '', // 描述
           FMATERIALID: '' // 传递给后端的id
@@ -486,13 +486,14 @@ export default {
       this.$refs.purchaseRef.validate(valid => {
         if (!valid) return
         for (const ITEM of this.tableData) {
-          if (ITEM.fmaterialId === '' || ITEM.fprice === 0 || ITEM.ftaxPrice === 0 || ITEM.fpriceCoefficient === 0) {
+          if (ITEM.fmaterialId === '' ||
+            ITEM.fprice === 0 || ITEM.ftaxPrice === 0 || ITEM.fpriceCoefficient === 0 || ITEM.feffectiveDate == null) {
             this.$message.error('表格不能为空,或表格值不能为0')
             return
           }
         }
         const DETAILS = this.tableData.map(item => {
-          item.fentryEffectiveDate = this.$moment(item.fentryEffectiveDate).format('YYYY-MM-DD HH:mm:ss')
+          item.feffectiveDate = this.$moment(item.feffectiveDate).format('YYYY-MM-DD HH:mm:ss')
           return {
             fmaterialId: item.FMATERIALID,
             fprice: item.fprice,
@@ -500,7 +501,7 @@ export default {
             fpriceCoefficient: item.fpriceCoefficient,
             fupPrice: item.fupPrice,
             fdownPrice: item.fdownPrice,
-            fentryEffectiveDate: item.fentryEffectiveDate,
+            fentryEffectiveDate: item.feffectiveDate,
             ftaxRate: item.ftaxRate,
             fdescripTion: item.fdescripTion
           }
@@ -645,7 +646,7 @@ export default {
             fpriceCoefficient: 0, // 价格系数
             fupPrice: 0, // 价格上限
             fdownPrice: 0, // 价格下限
-            fentryEffectiveDate: '', // 生效时间
+            feffectiveDate: '', // 生效时间
             ftaxRate: 0, // 税率
             fdescripTion: '' // 描述
           }
@@ -745,7 +746,7 @@ export default {
     // 默认显示当前时间
     getDataTime() {
       this.tableData.forEach(item => {
-        item.fentryEffectiveDate = new Date()
+        item.feffectiveDate = new Date()
       })
     }
   }
