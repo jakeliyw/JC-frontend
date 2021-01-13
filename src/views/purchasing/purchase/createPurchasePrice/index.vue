@@ -331,6 +331,7 @@ export default {
     jcTitle
   },
   mixins: [jumpMateriel],
+  inject: ['reload'],
   data() {
     return {
       activeName: 'purchase', // 默认在价目
@@ -522,9 +523,7 @@ export default {
           if (res.code === 0) {
             this.purchaseForm.code = res.data
             this.$message.success(res.message)
-            setTimeout(() => {
-              location.reload()
-            }, 2000)
+            this.reload()
           }
         }).catch(error => {
           this.$message.error(error)
@@ -712,10 +711,14 @@ export default {
         row.ftaxPrice = row.fprice * (1 + row.ftaxRate / 100)
         row.fupPrice = row.ftaxPrice
         row.fdownPrice = row.ftaxPrice
+        row.fupPrice = row.fupPrice.toFixed(4)
+        row.fdownPrice = row.fdownPrice.toFixed(4)
       } else {
         row.fprice = row.ftaxPrice / (1 + row.ftaxRate / 100)
         row.fupPrice = row.fprice
         row.fdownPrice = row.fprice
+        row.fupPrice = row.fupPrice.toFixed(4)
+        row.fdownPrice = row.fdownPrice.toFixed(4)
       }
     },
     // 清空弹窗表单

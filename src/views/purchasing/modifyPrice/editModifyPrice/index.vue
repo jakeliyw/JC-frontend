@@ -203,6 +203,7 @@ export default {
     jcPagination,
     jcTitle
   },
+  inject: ['reload'],
   data() {
     return {
       activeName: 'modifyPrice',
@@ -289,6 +290,7 @@ export default {
       updateTPurPat(DATA).then(res => {
         if (res.code === 0) {
           this.$message.success(res.message)
+          this.reload()
         }
       }).catch(error => {
         this.$message.error(error)

@@ -29,10 +29,14 @@
         </el-table-column>
         <template v-slot:btnState="clo">
           <el-steps :active="clo.scope.row.FSTATUS" align-center class="font-style" finish-status="success" process-status="finish">
-            <el-step title="研发审核" />
-            <el-step title="IE审核" />
-            <el-step title="财务审核" />
-            <el-step title="信息部审核" />
+            <el-step title="研发部门" />
+            <el-step title="打样" />
+            <el-step title="工程" />
+            <el-step title="成本经理" />
+            <el-step title="生产部" />
+            <el-step title="工厂" />
+            <el-step title="信息部" />
+            <el-step title="总裁" />
           </el-steps>
         </template>
         <template v-slot:btnSlot="clo">
@@ -84,7 +88,7 @@ export default {
         { label: '价格清单', prop: 'PRICELIST', align: 'center' },
         { label: '使用组织', prop: 'FUSEORG', align: 'center' },
         { label: '生效时间', prop: 'FCREATEDATE', align: 'center' },
-        { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', minWidth: '300px' },
+        { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', minWidth: '450px' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '250px', align: 'center' }
       ],
       // 表格数据

@@ -1,4 +1,15 @@
 export default {
+  // 材料成本
+  Summation() {
+    const num = this.sonTableData.map(item => {
+      item.money = item.FPRICE * item.FDOSAGE
+      return item.money
+    })
+    const total = num.reduce((total, num) => {
+      return total + num
+    }, 0)
+    return parseInt(total * 100) / 100
+  },
   methods: {
     // Form表单
     handleSetForm() {
@@ -8,12 +19,12 @@ export default {
         FDESCRIPTION: '',
         FSPECIFICATION: '',
         FLABORCOST: '',
-        FMATERIALCOST: '',
+        FMATERIALCOST: 0,
         FUNIT: '',
-        FGROSSWEIGHT: '',
+        FGROSSWEIGHT: 0,
         FNETWEIGHT: '',
         FWEIGHTUNIT: '',
-        FVOLUME: '',
+        FVOLUME: 0,
         FOLDNUMBER: '',
         FBARCODE: '',
         FMAKINGS: '',
@@ -21,17 +32,16 @@ export default {
         FTAXRATE: ''
       }
       this.prodOptions = {
-        FNUMBER: {
-          label: '物料编码',
-          type: 'slot'
-        },
-        FDESCRIPTION: {
-          label: '物料描述',
+        FMATERIALCOST: {
+          label: '物料成本',
           disabled: 'disabled'
         },
-        FSPECIFICATION: {
-          label: '物料规格',
-          disabled: 'disabled'
+        FLABORCOST: {
+          label: '人工成本',
+          type: 'number',
+          precision: 4,
+          min: 0.0000,
+          step: 0.0001
         },
         FBARCODE: {
           label: '条码',
@@ -45,19 +55,16 @@ export default {
           label: '物料单位',
           disabled: 'disabled'
         },
-        FMATERIALCOST: {
-          label: '物料成本',
+        FTAXRATE: {
+          label: '税率',
           disabled: 'disabled'
         },
-        FLABORCOST: {
-          label: '人工成本',
-          type: 'number',
-          precision: 4,
-          min: 0.0000,
-          step: 0.0001
+        FDEFAULTROUTING: {
+          label: '工艺',
+          disabled: 'disabled'
         },
-        FVOLUME: {
-          label: '体积',
+        FMAKINGS: {
+          label: '材质',
           disabled: 'disabled'
         },
         FGROSSWEIGHT: {
@@ -72,16 +79,21 @@ export default {
           label: '重量单位',
           disabled: 'disabled'
         },
-        FMAKINGS: {
-          label: '材质',
+        FVOLUME: {
+          label: '体积',
           disabled: 'disabled'
         },
-        FTAXRATE: {
-          label: '税率',
+        FNUMBER: {
+          label: '物料编码',
+          type: 'slot'
+        },
+        FSPECIFICATION: {
+          label: '物料规格',
           disabled: 'disabled'
         },
-        FDEFAULTROUTING: {
-          label: '工艺',
+        FDESCRIPTION: {
+          label: '物料描述',
+          type: 'textarea',
           disabled: 'disabled'
         }
       }

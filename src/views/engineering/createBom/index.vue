@@ -19,8 +19,8 @@
         </el-select>
         <span class="text-margin">使用组织</span>
         <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled />
-        <div class="summation">物料成本:
-          <span class="color-text">{{ Summation }}元</span>
+        <div class="summation">材料成本:
+          <span class="color-text">{{ materialScience }}元</span>
         </div>
       </div>
     </el-card>
@@ -250,6 +250,7 @@ export default {
     jcTitle
   },
   mixins: [jumpMateriel, getForm],
+  inject: ['reload'],
   data() {
     return {
       activeName: 'product', // 默认主产品 product Other
@@ -333,6 +334,7 @@ export default {
       // 点击行的序号
       tableIndex: 0,
       serial: 1, // 序列号
+      FMATERIALCOST: 0, // 物料成本
       FMATERIALID: 0 // 父项物料ID
     }
   },
@@ -346,6 +348,21 @@ export default {
         return total + num
       }, 0)
       return parseInt(total * 100) / 100
+    },
+    materialScience() {
+      return this.prodValue.FMATERIALCOST + this.prodValue.FLABORCOST
+    }
+  },
+  watch: {
+    Summation: {
+      handler(val) {
+        if (val === 0) {
+          return
+        }
+        this.prodValue.FMATERIALCOST = val
+      },
+      immediate: true,
+      deep: true
     }
   },
   mounted() {
@@ -484,6 +501,10 @@ export default {
       this.prodValue = RES
       this.disabled = false
       this.iconIsShow = true
+      this.sonTableData.forEach(item => {
+        item.FPRICE = 0
+        item.FDOSAGE = 0
+      })
       this.parentTableVisible = false
     },
     // 选中子项弹窗表格行
@@ -526,9 +547,7 @@ export default {
       const { code, message } = await insertBom(DATA)
       if (code === 0) {
         this.$message.success(message)
-        setTimeout(() => {
-          location.reload()
-        }, 2000)
+        this.reload()
       } else if (code === 2) {
         this.$confirm(message, '提示', {
           confirmButtonText: '确定',
@@ -539,6 +558,7 @@ export default {
           const { message, code } = await insertBom(DATA)
           if (code === 0) {
             this.$message.success(message)
+            this.reload()
           }
         }).catch(() => {
           this.$message.info('已取消保存')

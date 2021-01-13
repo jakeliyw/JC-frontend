@@ -40,9 +40,9 @@
           </template>
         </el-table-column>
         <template v-slot:btnSlot="clo">
-          <el-button type="warning" size="mini" @click="editPurchase(clo.scope.row.fid)">修改价目</el-button>
+          <el-button type="danger" size="mini" @click="editPurchase(clo.scope.row.fid)">反审核</el-button>
           <el-button v-show="false" size="mini" type="danger" @click="deletePurchase(clo.scope.row.fid)">删除价目</el-button>
-          <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">详情价目</el-button>
+          <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">查询价目</el-button>
         </template>
       </jc-table>
 
@@ -64,7 +64,7 @@
 import jcTable from '@/components/Table/index'
 import jcPagination from '@/components/Pagination/index'
 import jcTitle from '@/components/Title'
-import { queryTPurPriceList } from '@/api/purchaseManagement/purchasePrice'
+import { queryTPurPriceList, updateAgainReview } from '@/api/purchaseManagement/purchasePrice'
 
 export default {
   name: 'PurchasePriceList',
@@ -127,9 +127,15 @@ export default {
     detailPurchase(fid) {
       this.$router.push({ path: `/detailPurchasePrice/${fid}` })
     },
-    // 修改采购
-    editPurchase(fid) {
-      this.$router.push({ path: `/editPurchasePrice/${fid}` })
+    // 反审核
+    async editPurchase(fid) {
+      const { message, code } = await updateAgainReview({ fid })
+      if (code !== 0) {
+        return
+      }
+      this.$message.success(message)
+      this.$router.push({ name: 'UntreatedPriceList' })
+      this.reload()
     },
     // 删除采购
     deletePurchase(fid) {

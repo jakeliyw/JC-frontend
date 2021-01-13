@@ -187,6 +187,16 @@ export default {
             span: 8,
             disabled: 'disabled'
           },
+          FERPCLS: {
+            label: '物料类型',
+            span: 8,
+            disabled: 'disabled'
+          },
+          FREMARKS: {
+            label: '物料备注',
+            disabled: 'disabled',
+            span: 16
+          },
           FDESCRIPTION: {
             label: '物料描述',
             disabled: 'disabled',

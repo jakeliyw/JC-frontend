@@ -319,6 +319,7 @@ export default {
     jcInformation
   },
   mixins: [jcFormFunction],
+  inject: ['reload'],
   data() {
     return {
       actionUrl: '/tBdMaterial/insertMaterialDetail',
@@ -409,12 +410,12 @@ export default {
       thereMaterial: {}, // 三类物料控件
       information: {
         fsupplierId: 0, // 供应商id
-        fdefaultvendor: '', // 供应商名称
+        fdefaultvendor: null, // 供应商名称
         fbillTypeId: 0, // 采购类型id
-        fpobillTypeName: '', // 采购类型名称
+        fpobillTypeName: null, // 采购类型名称
         fquotaType: '1', // 配额方式id
         fstockId: 0, // 仓库
-        fstockName: '', // 仓库名称
+        fstockName: null, // 仓库名称
         position: 0, // 仓位
         fminStock: 0, // 最小库存
         fsafeStock: 0, // 安全库存
@@ -588,8 +589,17 @@ export default {
         FISSUBCONTRACT: this.FISSUBCONTRACT,
         // 允许资产
         FISASSET: this.FISASSET,
+        FBASEUNITID: this.basicValue.FBASEUNITID,
+        FNUMBER: this.basicValue.FNUMBER,
+        FOLDNUMBER: this.basicValue.FOLDNUMBER,
+        FBARCODE: this.basicValue.FBARCODE,
+        FERPCLSID: this.basicValue.FERPCLSID,
+        FPROTECT: this.basicValue.FPROTECT,
+        FMODEL: this.basicValue.FMODEL,
+        FDESCRIPTION: this.basicValue.FDESCRIPTION,
         FATTRIBTTE: JSON.stringify(FATTRIBTTE)
       }
+      Object.assign(DATA, this.dimensionalValue, this.weightValue, this.information)
       for (const key in DATA) {
         if (DATA[key] === '' || DATA[key] === undefined) {
           this.$message.error('内容输入不完整，请重新输入！')
@@ -605,23 +615,20 @@ export default {
         this.$message.error('净重不能大于毛重')
         return
       } else if (!this.information.fstockId) {
-        this.$message.error('请切换到信息，选择仓库')
+        this.$message.warning('请切换到信息，选择仓库')
         return
       }
-      // 物料备注可以为空
-      DATA.FREMARKS = this.basicValue.FREMARKS
       // 图片可以为空
       DATA.FIMG = this.imageUrl
-      Object.assign(this.basicValue, DATA, this.dimensionalValue, this.weightValue, this.information)
-      const { code, message } = await insertMaterialDetail(this.basicValue)
+      // 物料备注可以为空
+      DATA.FREMARKS = this.basicValue.FREMARKS
+      const { code, message } = await insertMaterialDetail(DATA)
       if (code !== 0) {
         this.$message.error(message)
         return
       }
       this.$message.success(message)
-      setTimeout(() => {
-        location.reload()
-      }, 2000)
+      this.reload()
     },
     // 三类物料
     async openMaterialDialog() {

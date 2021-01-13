@@ -26,7 +26,7 @@
           </el-steps>
         </template>
         <template v-slot:btnSlot="clo">
-          <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">详情价目</el-button>
+          <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">查询价目</el-button>
         </template>
       </jc-table>
     </div>

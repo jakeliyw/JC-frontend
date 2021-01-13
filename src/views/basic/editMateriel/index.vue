@@ -305,6 +305,7 @@ export default {
     jcInformation
   },
   mixins: [jcFormFunction],
+  inject: ['reload'],
   data() {
     return {
       actionUrl: '/tBdMaterial/insertMaterialDetail',
@@ -394,7 +395,7 @@ export default {
       thereMaterial: {}, // 三类物料控件
       information: {
         fsupplierId: 0, // 供应商id
-        fdefaultvendor: '', // 供应商名称
+        fdefaultvendor: null, // 供应商名称
         fbillTypeId: 0, // 采购类型id
         fpobillTypeName: '', // 采购类型名称
         fquotaType: '1', // 配额方式id
@@ -589,7 +590,7 @@ export default {
         this.$message.error('净重不能大于毛重')
         return
       } else if (!this.information.fstockId) {
-        this.$message.error('请切换到信息，选择仓库')
+        this.$message.warning('请切换到信息，选择仓库')
         return
       }
       // 物料备注可以为空
@@ -603,9 +604,7 @@ export default {
         return
       }
       this.$message.success(message)
-      setTimeout(() => {
-        location.reload()
-      }, 2000)
+      this.reload()
     },
     // 三类物料
     async openMaterialDialog() {
@@ -712,6 +711,7 @@ export default {
     // 获取表单
     async handleForm() {
       const { data: RES } = await queryMaterialDetail({ fnumber: this.$route.query.FNUMBER })
+      this.FDESCRIPTION = RES.FDESCRIPTION
       this.FISPURCHASE = RES.FISPURCHASE
       this.FISSALE = RES.FISSALE
       this.FISINVENTORY = RES.FISINVENTORY

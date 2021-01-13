@@ -17,3 +17,12 @@ export function detailPriceList(params) {
     params
   })
 }
+
+// 采购价目表重新审核
+export function updateAgainReview(data) {
+  return request({
+    url: '/tPurPricelist/updateAgainReview',
+    method: 'put',
+    data
+  })
+}

@@ -234,6 +234,7 @@ export default {
     jcTitle
   },
   mixins: [jumpMateriel],
+  inject: ['reload'],
   data() {
     return {
       activeName: 'modifyPrice',
@@ -359,9 +360,7 @@ export default {
         this.optionValue.billCode = res.data
         if (res.code === 0) {
           this.$message.success(res.message)
-          setTimeout(() => {
-            location.reload()
-          }, 2000)
+          this.reload()
         }
       }).catch(error => {
         this.$message.error(error)

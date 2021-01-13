@@ -19,8 +19,8 @@
         </el-select>
         <span class="text-margin">使用组织</span>
         <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled />
-        <div class="summation">物料成本:
-          <span class="color-text">{{ Summation }}元</span>
+        <div class="summation">材料成本:
+          <span class="color-text">{{ materialScience }}元</span>
         </div>
       </div>
     </el-card>
@@ -210,6 +210,7 @@ export default {
     jcTitle
   },
   mixins: [jumpMateriel, getForm],
+  inject: ['reload'],
   data() {
     return {
       total: 0, // 总条目
@@ -254,6 +255,7 @@ export default {
       // 点击行的序号
       tableIndex: 0,
       serial: 1, // 序列号
+      FMATERIALCOST: '', // 物料成本
       FMATERIALID: 0 // 父项物料ID
     }
   },
@@ -267,6 +269,18 @@ export default {
         return total + num
       }, 0)
       return parseInt(total * 100) / 100
+    },
+    materialScience() {
+      return this.prodValue.FMATERIALCOST + this.prodValue.FLABORCOST
+    }
+  },
+  watch: {
+    Summation: {
+      handler(val) {
+        this.prodValue.FMATERIALCOST = val
+      },
+      immediate: true,
+      deep: true
     }
   },
   mounted() {
@@ -276,9 +290,6 @@ export default {
     this.createOrganization()
     this.getQueryBomchildList()
     this.btnSearch()
-  },
-  updated() {
-    this.getDataTime()
   },
   methods: {
     fun(index, value) {
@@ -315,6 +326,7 @@ export default {
     async getQueryBomchildList() {
       const { data: RES } = await queryBomchildList({ fnumber: this.$route.params.FNUMBER })
       this.FMATERIALID = RES.FMATERIALID
+      this.FMATERIALCOST = RES.FMATERIALCOST
       this.prodValue = RES
       this.sonTableData = RES.child
       // 其它
@@ -424,6 +436,7 @@ export default {
       const { message, code } = await upDateBom(DATA)
       if (code === 0) {
         this.$message.success(message)
+        this.reload()
       } else if (code === 2) {
         this.$confirm(message, '提示', {
           confirmButtonText: '确定',
@@ -434,9 +447,7 @@ export default {
           const { message, code } = await upDateBom(DATA)
           if (code === 0) {
             this.$message.success(message)
-            setTimeout(() => {
-              location.reload()
-            }, 2000)
+            this.reload()
           }
         }).catch(() => {
           this.$message.info('已取消保存')
@@ -474,12 +485,6 @@ export default {
       }
       this.sonTableData.splice(index, 1)
       this.$message.success('删除行成功')
-    },
-    // 默认显示当前时间
-    getDataTime() {
-      this.sonTableData.forEach(item => {
-        item.FCREATEDATE = new Date()
-      })
     }
   }
 }

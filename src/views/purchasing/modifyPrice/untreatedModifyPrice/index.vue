@@ -28,7 +28,7 @@
         <template v-slot:btnSlot="clo">
           <el-button type="success" size="mini" @click="approval(clo.scope.row.fid)">通过</el-button>
           <el-button type="danger" size="mini" @click="approvalRejection(clo.scope.row.fid)">不通过</el-button>
-          <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">详情调价</el-button>
+          <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">查询调价</el-button>
         </template>
       </jc-table>
     </div>

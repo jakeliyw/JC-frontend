@@ -33,7 +33,7 @@
         <template v-slot:btnSlot="clo">
           <el-button v-show="false" type="warning" size="mini" @click="editPurchase(clo.scope.row.fid)">修改价目</el-button>
           <el-button v-show="false" type="danger" size="mini" @click="deletePurchase(clo.scope.row.fid)">删除价目</el-button>
-          <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">详情价目</el-button>
+          <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">查询价目</el-button>
         </template>
       </jc-table>
     </div>
