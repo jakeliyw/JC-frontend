@@ -44,7 +44,7 @@ export default {
       cellStyle: { padding: '10 10' }, // 行高
       // 日志头部
       logTableHeader: [
-        { label: '日期', prop: 'createdate', align: 'center' },
+        { label: '日期', prop: 'createDate', align: 'center' },
         { label: '操作人', prop: 'fname', align: 'center' },
         { label: '部门', prop: 'fdeaprt', align: 'center' },
         { label: 'IP地址', prop: 'fip', align: 'center' },
@@ -67,44 +67,36 @@ export default {
   },
   methods: {
     handleGetForm() {
+      this.otherValue = {
+        fcreator: '',
+        fcreateDate: '',
+        fsalter: '',
+        fsalterDate: '',
+        fsalters: '',
+        fsaltersDate: ''
+      }
       this.otherOptions = {
         fcreator: {
           label: '创建人',
-          disabled: 'disabled'
-        },
-        fdevel: {
-          label: '研发审核人',
-          disabled: 'disabled'
-        },
-        fieid: {
-          label: 'IE审核人',
           disabled: 'disabled'
         },
         fcreateDate: {
           label: '创建时间',
           disabled: 'disabled'
         },
-        fdeveldate: {
+        fsalter: {
+          label: '销售员审核',
+          disabled: 'disabled'
+        },
+        fsalterDate: {
           label: '审核时间',
           disabled: 'disabled'
         },
-        fiedate: {
-          label: '审核时间',
+        fsalters: {
+          label: '主管审核',
           disabled: 'disabled'
         },
-        ffinanceid: {
-          label: '财务审核人',
-          disabled: 'disabled'
-        },
-        finfoid: {
-          label: '信息部审核人',
-          disabled: 'disabled'
-        },
-        ffinancedate: {
-          label: '审核时间',
-          disabled: 'disabled'
-        },
-        finfodate: {
+        fsaltersDate: {
           label: '审核时间',
           disabled: 'disabled'
         }

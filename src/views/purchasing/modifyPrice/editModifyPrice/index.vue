@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <jc-title />
-    <el-tabs v-model="activeName" type="border-card">
+    <el-tabs v-model="activeName" type="border-card"  @tab-click="handleOther">
       <el-tab-pane label="调价" name="modifyPrice" class="layout">
         <div class="header">
           <el-button size="mini" @click="refresh">刷新</el-button>
@@ -118,7 +118,19 @@
         </jc-table>
       </el-tab-pane>
       <el-tab-pane label="其它" name="other">
-        <h2>待开发</h2>
+        <jc-other
+          :other-url-object="otherUrlObject"
+          :other-log-table-data="otherLogTableData"
+        >
+          <jc-pagination
+            v-show="otherPagination.total > 0"
+            slot="slotPagination"
+            :total="otherPagination.total"
+            :page.sync="otherPagination.pageNum"
+            :limit.sync="otherPagination.pageSize"
+            @pagination="handleOther"
+          />
+        </jc-other>
       </el-tab-pane>
     </el-tabs>
     <!--    采购价目列表-->
@@ -189,11 +201,12 @@ import jcForm from '@/components/Form'
 import jcTable from '@/components/Table'
 import jcTitle from '@/components/Title'
 import jcPopup from '@/views/basic/createMateriel/components/Popup'
+import jcPagination from '@/components/Pagination/index'
+import jcOther from '@/components/Other'
 import { queryTOrgOrganizationsL } from '@/api/engineering/createBom'
 import { queryTPurPatLs, queryTPurPatLm } from '@/api/modifyPriceManagement/createModifyPrice'
-import jcPagination from '@/components/Pagination/index'
 import { updateTPurPat } from '@/api/modifyPriceManagement/editModifyPrice'
-import { queryTPurPatDetailList } from '@/api/modifyPriceManagement/detailModifyPrice'
+import { queryPurPatLog, queryTPurPatDetailList } from '@/api/modifyPriceManagement/detailModifyPrice'
 export default {
   name: 'EditModifyPrice',
   components: {
@@ -201,7 +214,8 @@ export default {
     jcTable,
     jcPopup,
     jcPagination,
-    jcTitle
+    jcTitle,
+    jcOther
   },
   inject: ['reload'],
   data() {
@@ -254,6 +268,13 @@ export default {
         fnumber: '', // 物料编码
         fid: '' // 价目ID
       },
+      otherUrlObject: {}, // 其它审核人
+      otherLogTableData: [], // 日志数据
+      otherPagination: {
+        pageNum: 1,
+        pageSize: 10,
+        total: 0
+      },
       cellStyle: { padding: '10 10' }, // 行高
       optionValue: {}, // 表单值
       options: {}, // 表单控件
@@ -268,7 +289,7 @@ export default {
     preservation() {
       for (const RES of this.modifyPriceTable) {
         if (RES.fid === '' || RES.fmaterialId === '' || RES.fafterPrice === 0 || RES.fafterTaxPrice === 0) {
-          this.$message.error('表格不能为空,或表格值不能为0')
+          this.$message.warning('表格不能为空,或表格值不能为0')
           return
         }
       }
@@ -378,7 +399,7 @@ export default {
         })
       }
       if (!row.fid) {
-        this.$message.error('价目表未选择或数据出错,请重新选择')
+        this.$message.warning('价目表未选择或数据出错,请重新选择')
         return
       }
       this.materielPagination.fid = this.modifyPriceTable[this.tableIndex].fid
@@ -424,7 +445,7 @@ export default {
     // 删除行数据
     handleDelete(index) {
       if (index === 0) {
-        this.$message.error('不能删除首行数据')
+        this.$message.warning('不能删除首行数据')
         return
       }
       this.modifyPriceTable.splice(index, 1)
@@ -432,6 +453,13 @@ export default {
     },
     refresh() {
       location.reload()
+    },
+    // 获取其它
+    async handleOther() {
+      const RES = await queryPurPatLog({ ...this.otherPagination, fid: this.$route.params.id })
+      this.otherLogTableData = RES.data.array
+      this.otherPagination.total = RES.data.total
+      this.otherUrlObject = RES.data.operator
     },
     // 获取表格
     async getForm() {

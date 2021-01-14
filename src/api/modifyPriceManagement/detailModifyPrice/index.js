@@ -8,3 +8,12 @@ export function queryTPurPatDetailList(params) {
     params
   })
 }
+
+// 查询采购价目表日志、操作人
+export function queryPurPatLog(data) {
+  return request({
+    url: '/TJxLog/queryPurPatLog',
+    method: 'post',
+    data
+  })
+}

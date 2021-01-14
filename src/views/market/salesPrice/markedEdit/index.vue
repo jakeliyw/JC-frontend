@@ -2,7 +2,7 @@
   <div class="content">
     <jc-title />
     <el-button type="primary" style="width: 80px;margin-bottom: 10px" size="mini" @click="subMarker()">保存</el-button>
-    <el-tabs type="border-card">
+    <el-tabs type="border-card" @tab-click="handleOther">
       <el-tab-pane label="价目明细">
         <div class="header-card">
           <div class="organization">
@@ -40,7 +40,7 @@
             :table-header="tableHeader"
             :cell-style="cellStyle"
           >
-            <el-table-column label="物料编码" prop="fmaterialId" align="center" width="200px">
+            <el-table-column label="物料编码" prop="fmaterialId" align="center" min-width="200px">
               <template slot-scope="scope">
                 <el-input v-model.trim="scope.row.fmaterialIdName" placeholder="请选择物料编码" size="mini">
                   <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fmaterialIdName)" />
@@ -52,18 +52,19 @@
                 </el-input>
               </template>
             </el-table-column>
-            <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" :show-overflow-tooltip="true" />
-            <el-table-column label="单位" prop="funit" align="center" />
-            <el-table-column label="价格系数" prop="fpriceBase" min-width="140px" align="center">
+            <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="250px" :show-overflow-tooltip="true" />
+            <el-table-column label="销售单位" prop="funit" align="center" />
+            <el-table-column label="销售系数(%)" prop="fpriceBase" min-width="140px" align="center">
               <template slot-scope="scope">
                 <el-input-number
                   v-model="scope.row.fpriceBase"
                   :min="1"
                   size="mini"
+                  @change="inputNum(scope.$index)"
                 />
               </template>
             </el-table-column>
-            <el-table-column label="单价" prop="fprice" min-width="140px" align="center">
+            <el-table-column label="销售单价" prop="fprice" min-width="140px" align="center">
               <template slot-scope="scope">
                 <el-input-number
                   v-model="scope.row.fprice"
@@ -72,11 +73,10 @@
                 />
               </template>
             </el-table-column>
-            <el-table-column label="最低限价" prop="fdownPrice" min-width="140px" align="center">
+            <el-table-column label="销售基准价" prop="fdownPrice" min-width="140px" align="center">
               <template slot-scope="scope">
                 <el-input-number
                   v-model="scope.row.fdownPrice"
-                  :min="1"
                   size="mini"
                 />
               </template>
@@ -90,7 +90,20 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="其他">
-        <h1>待开发</h1>
+        <jc-marker
+          :other-url-object="otherUrlObject"
+          :other-log-table-data="otherLogTableData"
+        >
+          <div slot="slotPagination">
+            <jc-pagination
+              v-show="total > 0"
+              :total="total"
+              :page.sync="pageNum"
+              :limit.sync="size"
+              @pagination="handleOther"
+            />
+          </div>
+        </jc-marker>>
       </el-tab-pane>
     </el-tabs>
     <!--    物料弹窗-->
@@ -179,19 +192,23 @@ import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
 import {
+  querySalPriceMaterial,
   querySalPriceNtry, queryTBdCurrency,
   updateSalPrice
 } from '@/api/marketManage/marketPriceList'
 import {
-  queryMaterialList
+  queryMaterialList,
+  querySalOrderLog
 } from '@/api/marketManage/marketOrder'
 import jumpMateriel from '@/components/JumpMateriel'
+import jcMarker from '@/components/marker'
 
 export default {
   components: {
     jcTable,
     jcPagination,
-    jcTitle
+    jcTitle,
+    jcMarker
   },
   mixins: [jumpMateriel],
   data() {
@@ -233,7 +250,12 @@ export default {
         fname: ''
       },
       currencyDialogData: [],
-      currencyDialogHeader: []
+      currencyDialogHeader: [],
+      otherUrlObject: {}, // 其它审核人
+      otherLogTableData: [], // 日志数据
+      pageNum: 1,
+      size: 10,
+      total: 0
     }
   },
   mounted() {
@@ -289,6 +311,7 @@ export default {
       this.tableData[this.tableIndex].funit = item.funitName
       this.tableData[this.tableIndex].fmaterialTypeId = item.fcategoryId
       this.isMaterielDialog = false
+      this.querySalPriceMaterial()
     },
     // 打开物料编码
     async handleGetMateriel(row, index) {
@@ -342,6 +365,30 @@ export default {
         return false
       }
       this.tableData.splice(index, 1)
+    },
+    // 获取出厂价
+    async querySalPriceMaterial() {
+      const DATA = { fmaterialId: this.tableData[this.tableIndex].fmaterialId }
+      const { data: RES } = await querySalPriceMaterial(DATA)
+      const fpriceBase = (this.tableData[this.tableIndex].fpriceBase) / 100
+      // 基准价
+      this.tableData[this.tableIndex].fdownPrice = (RES * (1 + fpriceBase)).toFixed(4)
+    },
+    // 监听销售系数
+    inputNum(index) {
+      this.tableIndex = index
+      if (this.tableData[this.tableIndex].fmaterialId) {
+        this.querySalPriceMaterial()
+      }
+    },
+    // 获取其它
+    async handleOther() {
+      const id = this.$route.params.id
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, fid: id }
+      const { data: RES } = await querySalOrderLog(DATA)
+      this.otherUrlObject = RES.operator
+      this.total = RES.total
+      this.otherLogTableData = RES.array
     }
   }
 }

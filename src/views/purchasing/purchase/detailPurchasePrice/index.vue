@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <jc-title />
-    <el-tabs v-model="activeName" type="border-card">
+    <el-tabs v-model="activeName" type="border-card" @tab-click="handleOther">
       <el-tab-pane label="价目" name="purchase">
         <jc-form :option-value="optionValue" :options="options" />
         <jc-table
@@ -10,7 +10,21 @@
           :cell-style="cellStyle"
         />
       </el-tab-pane>
-      <el-tab-pane label="其它" name="other" />
+      <el-tab-pane label="其它" name="other">
+        <jc-other
+          :other-url-object="otherUrlObject"
+          :other-log-table-data="otherLogTableData"
+        >
+          <jc-pagination
+            v-show="otherPagination.total > 0"
+            slot="slotPagination"
+            :total="otherPagination.total"
+            :page.sync="otherPagination.pageNum"
+            :limit.sync="otherPagination.pageSize"
+            @pagination="handleOther"
+          />
+        </jc-other>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -19,13 +33,17 @@
 import jcForm from '@/components/Form/index'
 import jcTable from '@/components/Table/index'
 import jcTitle from '@/components/Title'
-import { detailPriceList } from '@/api/purchaseManagement/purchasePrice'
+import jcOther from '@/components/Other'
+import jcPagination from '@/components/Pagination'
+import { detailPriceList, queryPricelistLog } from '@/api/purchaseManagement/purchasePrice'
 export default {
   name: 'DetailPurchasePrice',
   components: {
     jcForm,
     jcTable,
-    jcTitle
+    jcTitle,
+    jcOther,
+    jcPagination
   },
   data() {
     return {
@@ -48,13 +66,27 @@ export default {
         { label: '税率', prop: 'ftaxRate', align: 'center' }
       ],
       optionValue: {},
-      options: {}
+      options: {},
+      otherUrlObject: {}, // 其它审核人
+      otherLogTableData: [], // 日志数据
+      otherPagination: {
+        pageNum: 1,
+        pageSize: 10,
+        total: 0
+      }
     }
   },
   mounted() {
     this.handleGetPurchase()
   },
   methods: {
+    // 获取其它
+    async handleOther() {
+      const RES = await queryPricelistLog({ ...this.otherPagination, fid: this.$route.params.id })
+      this.otherLogTableData = RES.data.array
+      this.otherPagination.total = RES.data.total
+      this.otherUrlObject = RES.data.operator
+    },
     async handleGetPurchase() {
       const FID = this.$route.params.id
       const { data: RES } = await detailPriceList(

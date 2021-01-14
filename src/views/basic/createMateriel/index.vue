@@ -122,12 +122,6 @@
           :information.sync="information"
         />
       </el-tab-pane>
-      <el-tab-pane label="其它" name="log">
-        <jc-other
-          :other-url-object="{}"
-          :other-log-table-data="[]"
-        />
-      </el-tab-pane>
     </el-tabs>
     <!--    重量弹窗-->
     <jc-popup
@@ -307,7 +301,7 @@ import {
   queryMaterialAttribute,
   queryMaterialAttributes
 } from '@/api/basicManagement/createMateriel'
-
+import { queryMaterialLog } from '@/api/basicManagement/materielList'
 export default {
   name: 'CreateMateriel',
   components: {
@@ -537,7 +531,7 @@ export default {
     async materialSelection() {
       const codeNumber = this.SmallCode()
       if (this.serialNumber === '') {
-        this.$message.error('数据填写不完整，请重新填写！')
+        this.$message.warning('数据填写不完整，请重新填写！')
         return
       }
       const DATA = {
@@ -568,6 +562,10 @@ export default {
         return VALUE
       })
       if (codeNumber === undefined) {
+        return
+      }
+      if (FATTRIBTTE.includes(undefined)) {
+        this.$message.warning('物料属性必须选择')
         return
       }
       const SmallCode = `${codeNumber.toString()}`
@@ -602,17 +600,17 @@ export default {
       Object.assign(DATA, this.dimensionalValue, this.weightValue, this.information)
       for (const key in DATA) {
         if (DATA[key] === '' || DATA[key] === undefined) {
-          this.$message.error('内容输入不完整，请重新输入！')
+          this.$message.warning('内容输入不完整，请重新输入！')
           return
         }
       }
       const RES = [this.FISASSET, this.FISINVENTORY, this.FISPRODUCE, this.FISPURCHASE, this.FISSALE,
         this.FISSUBCONTRACT].includes(false)
       if (RES === false) {
-        this.$message.error('控制信息必选一项！')
+        this.$message.warning('控制信息必选一项！')
         return
       } else if (this.weightValue.FNETWEIGHT > this.weightValue.FGROSSWEIGHT) {
-        this.$message.error('净重不能大于毛重')
+        this.$message.warning('净重不能大于毛重')
         return
       } else if (!this.information.fstockId) {
         this.$message.warning('请切换到信息，选择仓库')

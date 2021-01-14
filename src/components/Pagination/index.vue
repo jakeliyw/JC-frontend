@@ -99,6 +99,9 @@ export default {
   background: #fff;
   padding: 16px;
 }
+.el-pagination{
+  text-align: center;
+}
 .pagination-container.hidden {
   display: none;
 }

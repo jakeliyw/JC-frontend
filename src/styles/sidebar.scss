@@ -99,7 +99,9 @@
     .main-container {
       margin-left: 54px;
     }
-
+    .posit-navber{
+      width: calc(100% - 54px);
+    }
     .submenu-title-noDropdown {
       padding: 0 !important;
       position: relative;
@@ -161,7 +163,9 @@
     .main-container {
       margin-left: 0px;
     }
-
+    .posit-navber{
+      width: 100%;
+    }
     .sidebar-container {
       transition: transform .28s;
       width: $sideBarWidth !important;

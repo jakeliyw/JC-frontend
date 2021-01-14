@@ -38,7 +38,7 @@
         </jc-form>
       </div>
     </el-card>
-    <el-tabs v-model="activeName" type="border-card">
+    <el-tabs v-model="activeName" type="border-card" @tab-click="handleOther">
       <el-tab-pane label="基础" name="basic">
         <span class="title-background">综合信息</span>
         <div class="information">
@@ -117,8 +117,16 @@
       </el-tab-pane>
       <el-tab-pane label="其它" name="log">
         <jc-other
-          :other-url-object="{}"
-          :other-log-table-data="[]"
+          :other-url-object="otherUrlObject"
+          :other-log-table-data="otherData"
+        />
+        <jc-pagination
+          v-show="otherPagination.total > 0"
+          slot="slotPagination"
+          :total="otherPagination.total"
+          :page.sync="otherPagination.pageNum"
+          :limit.sync="otherPagination.pageSize"
+          @pagination="handleOther"
         />
       </el-tab-pane>
     </el-tabs>
@@ -293,6 +301,7 @@ import {
   queryMaterialDetail,
   updateMaterialDetail
 } from '@/api/basicManagement/createMateriel'
+import { queryMaterialLog } from '@/api/basicManagement/materielList'
 
 export default {
   name: 'CreateMateriel',
@@ -330,6 +339,13 @@ export default {
       total: 0, // 条目
       materialCode: '', // 物料编码
       serialNumber: '', // 流水号
+      otherData: [], // 其它数据
+      otherPagination: {
+        pageNum: 1,
+        pageSize: 10,
+        total: 0
+      },
+      otherUrlObject: {}, // 其它表单
       company: {}, // 选中单位中文名称
       toMaterielData: [], // 二类物料
       threeMaterielData: [], // 三类物料
@@ -523,7 +539,7 @@ export default {
     async materialSelection() {
       const codeNumber = this.SmallCode()
       if (this.serialNumber === '') {
-        this.$message.error('数据填写不完整，请重新填写！')
+        this.$message.warning('数据填写不完整，请重新填写！')
         return
       }
       const DATA = {
@@ -553,6 +569,10 @@ export default {
         })
         return VALUE
       })
+      if (FATTRIBTTE.includes(undefined)) {
+        this.$message.warning('物料属性必须选择')
+        return
+      }
       const SmallCode = `${codeNumber.toString()}`
       const DATA = {
         FCREATEORGID: ITEM.value,
@@ -575,19 +595,20 @@ export default {
         FISASSET: this.FISASSET,
         FATTRIBTTE: JSON.stringify(FATTRIBTTE)
       }
+      Object.assign(DATA, this.basicValue, this.dimensionalValue, this.weightValue, this.information, SmallCode)
       for (const key in DATA) {
         if (DATA[key] === '' || DATA[key] === undefined) {
-          this.$message.error('内容输入不完整，请重新输入！')
+          this.$message.warning('内容输入不完整，请重新输入！')
           return
         }
       }
       const RES = [this.FISASSET, this.FISINVENTORY, this.FISPRODUCE, this.FISPURCHASE, this.FISSALE,
         this.FISSUBCONTRACT].includes(false)
       if (RES === false) {
-        this.$message.error('控制信息必选一项！')
+        this.$message.warning('控制信息必选一项！')
         return
       } else if (this.weightValue.FNETWEIGHT > this.weightValue.FGROSSWEIGHT) {
-        this.$message.error('净重不能大于毛重')
+        this.$message.warning('净重不能大于毛重')
         return
       } else if (!this.information.fstockId) {
         this.$message.warning('请切换到信息，选择仓库')
@@ -597,8 +618,7 @@ export default {
       DATA.FREMARKS = this.basicValue.FREMARKS
       // 图片可以为空
       DATA.FIMG = this.imageUrl
-      Object.assign(this.basicValue, DATA, this.dimensionalValue, this.weightValue, this.information, SmallCode)
-      const { code, message } = await updateMaterialDetail(this.basicValue)
+      const { code, message } = await updateMaterialDetail(DATA)
       if (code !== 0) {
         this.$message.error(message)
         return
@@ -707,6 +727,14 @@ export default {
     // 刷新页面
     refresh() {
       location.reload()
+    },
+    // 获取其它
+    async handleOther() {
+      const DATA = { ...this.otherPagination, fmaterialId: this.$route.query.FMATERIALID }
+      const RES = await queryMaterialLog(DATA)
+      this.otherData = RES.data.array
+      this.otherPagination.total = RES.data.total
+      this.otherUrlObject = RES.data.operator
     },
     // 获取表单
     async handleForm() {

@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <jc-title />
-    <el-tabs v-model="activeName" type="border-card">
+    <el-tabs v-model="activeName" type="border-card" @tab-click="handleOther">
       <el-tab-pane label="价目" name="purchase" class="layout">
         <div class="header">
           <el-button size="mini" @click="refresh">刷新</el-button>
@@ -150,7 +150,19 @@
         </jc-table>
       </el-tab-pane>
       <el-tab-pane label="其它" name="other">
-        <h2>待开发</h2>
+        <jc-other
+          :other-url-object="otherUrlObject"
+          :other-log-table-data="otherLogTableData"
+        >
+          <jc-pagination
+            v-show="otherPagination.total > 0"
+            slot="slotPagination"
+            :total="otherPagination.total"
+            :page.sync="otherPagination.pageNum"
+            :limit.sync="otherPagination.pageSize"
+            @pagination="handleOther"
+          />
+        </jc-other>
       </el-tab-pane>
     </el-tabs>
 
@@ -194,8 +206,9 @@
 
 <script>
 import { queryBomSonList, queryMaterialSon } from '@/api/engineering/createBom'
-import { detailPriceList } from '@/api/purchaseManagement/purchasePrice'
+import { detailPriceList, queryPricelistLog } from '@/api/purchaseManagement/purchasePrice'
 import jcTitle from '@/components/Title'
+import jcOther from '@/components/Other'
 import jumpMateriel from '@/components/JumpMateriel'
 import {
   updatePurPrice
@@ -208,7 +221,8 @@ export default {
   components: {
     jcTable,
     jcPagination,
-    jcTitle
+    jcTitle,
+    jcOther
   },
   mixins: [jumpMateriel],
   inject: ['reload'],
@@ -245,6 +259,13 @@ export default {
       ftaxPriceDisabled: true, // 含税单价禁用
       // 点击行的序号
       tableIndex: 0,
+      otherUrlObject: {}, // 其它审核人
+      otherLogTableData: [], // 日志数据
+      otherPagination: {
+        pageNum: 1,
+        pageSize: 10,
+        total: 0
+      },
       // 采购价目表头
       purchaseForm: {
         fid: '', // 价目表ID
@@ -265,6 +286,13 @@ export default {
     this.getPriceList()
   },
   methods: {
+    // 获取其它
+    async handleOther() {
+      const RES = await queryPricelistLog({ ...this.otherPagination, fid: this.$route.params.id })
+      this.otherLogTableData = RES.data.array
+      this.otherPagination.total = RES.data.total
+      this.otherUrlObject = RES.data.operator
+    },
     async getPriceList() {
       const { data: RES } = await detailPriceList({ fid: this.$route.params.id })
       RES.fisIncludedTax = JSON.parse(RES.fisIncludedTax)
@@ -276,7 +304,7 @@ export default {
       for (const ITEM of this.tableData) {
         if (ITEM.fmaterialId === '' || ITEM.fprice === 0 ||
         ITEM.ftaxPrice === 0 || ITEM.fpriceCoefficient === 0 || ITEM.feffectiveDate == null) {
-          this.$message.error('表格不能为空,或表格值不能为0')
+          this.$message.warning('表格不能为空,或表格值不能为0')
           return
         }
       }
@@ -424,7 +452,7 @@ export default {
     // 删除行数据
     deleteMateriel(item, index) {
       if (index === 0) {
-        this.$message.error('不能删除首行数据')
+        this.$message.warning('不能删除首行数据')
         return
       }
       this.tableData.splice(index, 1)

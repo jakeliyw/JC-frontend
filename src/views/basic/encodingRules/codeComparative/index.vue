@@ -4,17 +4,17 @@
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane v-for="(item, index) of oneMaterielData" :key="index" :label="item.largeName" :name="item.largeCode">
         <div class="codeRule">
-          <div style="font-weight: 600;padding: 12px 5px;">1.编码:(10位) 2 + 2 + 2 + 4
+          <div style="font-weight: 600;padding: 5px;">1.编码:(10位) 2 + 2 + 2 + 4
             ( 2位大类数字 + 2位中类数字 + 2位小类数字 + 4位流水号数字 )
           </div>
           <hr class="hrBag">
-          <div style="font-weight: 600;padding: 12px 5px;">2.编码规则说明：</div>
+          <div style="font-weight: 600;padding: 5px;">2.编码规则说明：</div>
         </div>
         <div class="table-content">
           <el-table
             :data="tableData"
             :cell-style="cellStyle"
-            height="500"
+            height="550"
             loading
           >
             <el-table-column prop="largeName" label="大类" align="center" class-name="valignTop">
@@ -187,14 +187,14 @@ export default {
       .el-table .valignTop {
         vertical-align: top;
         padding: 0;
-        border-color: #ddd;
+        border-color: #888;
       }
     .el-table--border td{
-      border-right: 1px solid #ddd;
+      border-right: 1px solid #888;
     }
     .el-table--border th{
-      border-bottom: 1px solid #ddd;
-      border-right: 1px solid #ddd;
+      border-bottom: 1px solid #888;
+      border-right: 1px solid #888;
     }
     .el-table thead.is-group th{
       background: #e6ebfc;
@@ -204,7 +204,7 @@ export default {
       font-size: 13px;
     }
     .el-table .cell{
-      padding: 10px 0;
+      padding: 0;
     }
     .el-table td, .el-table th{
       padding: 0;
@@ -229,38 +229,39 @@ export default {
   .parentItemN1{
     margin-right: 10px;
   }
+  .el-tabs ::v-deep .el-tabs__item{
+    padding: 0 10px;
+    height: 30px;
+    line-height: 30px;
+  }
   .table-content{
     margin-top: 0;
-    border:1px solid #ddd;
+    border:1px solid #888;
   }
   .btn1{
     margin-left: 20px;
   }
   .overHei{
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #888;
     max-height: 25px;
-    padding: 10px;
-    padding-bottom: 30px;
+    padding: 5px;
+    padding-bottom: 25px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap
   }
-  .overHei:nth-child(1){
-    margin-top: -12px;
-  }
   .overHei:nth-last-child(1){
-    margin-bottom: -10px;
     border-bottom: none;
   }
   .overHei:nth-child(even){
     background: #ececec;
   }
   .codeRule{
-    margin-top: 10px;
-    border: 1px solid #ddd;
+    font-size: 14px;
+    border: 1px solid #888;
     border-bottom: none;
     .hrBag {
-      background-color: #ddd;
+      background-color: #888;
       height:1px; border:none;
       margin: 0;
     }

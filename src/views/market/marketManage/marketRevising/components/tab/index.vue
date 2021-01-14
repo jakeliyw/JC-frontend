@@ -24,11 +24,10 @@
           <el-table-column
             label="物料描述"
             prop="fdescripTion"
-            align="center"
             min-width="200px"
             :show-overflow-tooltip="true"
           />
-          <el-table-column label="型号" prop="fmodel" align="center" min-width="80px" />
+          <el-table-column label="型号" prop="fmodel" align="center" min-width="100px" />
           <el-table-column label="单位" prop="funit" align="center" />
           <el-table-column label="数量" prop="fqty" min-width="140px" align="center">
             <template slot-scope="scope">
@@ -40,6 +39,7 @@
               />
             </template>
           </el-table-column>
+          <el-table-column label="销售单价" prop="fprice" align="center" />
           <el-table-column label="是否赠品" prop="fisFree" align="center">
             <template slot-scope="scope">
               <el-checkbox
@@ -298,6 +298,9 @@
           </el-upload>
         </el-form-item>
       </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="isdrawinglDialog = false">确 定</el-button>
+      </span>
     </el-dialog>
     <!--图纸预览-->
     <el-dialog
@@ -306,8 +309,9 @@
       :visible.sync="imgVisible"
       append-to-body
       top="10vh"
+      width="70%"
     >
-      <img :src="priview" style="max-height: 450px">
+      <img :src="priview">
     </el-dialog>
   </div>
 </template>
@@ -364,11 +368,10 @@ export default {
       FSPECIFICATION: '', // 弹窗规格型号
       materielDialogData: [],
       materielDialogHeader: [
-        { label: '使用组织', prop: 'fuseOrg', align: 'center' },
+        { label: '物料编码', prop: 'fnumber', align: 'center', minWidth: '140px' },
+        { label: '物料规格', prop: 'fspecificaTion', align: 'center', minWidth: '120px' },
         { label: '型号', prop: 'fmodel', align: 'center' },
-        { label: '物料编码', prop: 'fnumber', align: 'center' },
-        { label: '描述', prop: 'fdescripTion', align: 'center', minWidth: '150px' },
-        { label: '物料规格', prop: 'fspecificaTion', align: 'center' },
+        { label: '描述', prop: 'fdescripTion', align: 'left', minWidth: '180px' },
         { label: '单价', prop: 'fprice', align: 'center' },
         { label: '创建时间', prop: 'fcreateDate', align: 'center' }
       ],
@@ -393,19 +396,18 @@ export default {
     msg() {
       this.tabTwo.saleDetails = this.msg
       this.tabTwo.planDetails = this.msg1
-      console.log(12)
     }
   },
   methods: {
     // 物料弹窗选中
     async materielSelectRow(item) {
-      console.log(item)
       this.tabTwo.saleDetails[this.tableIndex].fmaterialId = item.fmaterialId
       this.tabTwo.saleDetails[this.tableIndex].fnumber = item.fnumber
       this.tabTwo.saleDetails[this.tableIndex].fdescripTion = item.fdescripTion
       this.tabTwo.saleDetails[this.tableIndex].funitId = item.funitId
       this.tabTwo.saleDetails[this.tableIndex].funit = item.funitName
       this.tabTwo.saleDetails[this.tableIndex].fmodel = item.fmodel
+      this.tabTwo.saleDetails[this.tableIndex].fprice = item.fprice
       this.isMaterielDialog = false
       this.$emit('visible', this.tabTwo)
     },
@@ -505,7 +507,18 @@ export default {
 }
 </script>
 <style lang="scss">
-.el-table .cell {
+.el-dialog__body {
+  overflow: auto;
+  img{
+    max-width: 1000px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+</style>
+<style scoped lang="scss">
+.el-table ::v-deep .cell {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -514,8 +527,6 @@ export default {
     padding: 0 5px;
   }
 }
-</style>
-<style scoped lang="scss">
 .tab {
   .materiel-form {
     display: flex;

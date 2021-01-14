@@ -16,7 +16,7 @@
         </div>
       </div>
     </el-card>
-    <el-tabs v-model="activeName" type="border-card">
+    <el-tabs v-model="activeName" type="border-card" @tab-click="handleOther">
       <el-tab-pane label="主产品" name="product">
         <jc-form ref="createBomForm" :option-value="prodValue" :options="prodOptions" label-width="100px">
           <el-input
@@ -99,9 +99,18 @@
         </jc-table>
       </el-tab-pane>
       <el-tab-pane label="其它" name="other">
-        <jc-other
-          :other-url-object="otherUrlObject"
-          :other-log-table-data="otherLogTableData"
+        <jc-form :option-value="otherUrlObject" :options="otherOptions" />
+        <jc-table
+          :table-header="logTableHeader"
+          :table-data="otherLogTableData"
+          :cell-style="cellStyle"
+        />
+        <jc-pagination
+          v-show="otherPagination.total > 0"
+          :total="otherPagination.total"
+          :page.sync="otherPagination.pageNum"
+          :limit.sync="otherPagination.pageSize"
+          @pagination="handleOther"
         />
       </el-tab-pane>
     </el-tabs>
@@ -111,17 +120,17 @@
 <script>
 import jcTable from '@/components/Table'
 import jcForm from '@/components/Form'
-import jcOther from '@/components/Other'
 import jcTitle from '@/components/Title'
-import { queryBomchildList, queryFtypeInfo } from '@/api/engineering/deitalBom'
+import jcPagination from '@/components/Pagination'
+import { queryBomchildList, queryFtypeInfo, queryBomLog } from '@/api/engineering/deitalBom'
 import JumpMateriel from '@/components/JumpMateriel'
 export default {
   name: 'DetailBom',
   components: {
     jcTable,
     jcForm,
-    jcOther,
-    jcTitle
+    jcTitle,
+    jcPagination
   },
   mixins: [JumpMateriel],
   data() {
@@ -136,10 +145,24 @@ export default {
       ],
       prodValue: {}, // 产品表单值
       prodOptions: {}, // 产品表单元素
-      otherUrlObject: {}, // 其它审核人
       otherLogTableData: [], // 日志数据
+      otherPagination: {
+        pageNum: 1,
+        pageSize: 10,
+        total: 0
+      },
       FMATERIALCOST: '', // 物料成本
+      logTableHeader: [
+        { label: '日期', prop: 'createDate', align: 'center' },
+        { label: '操作人', prop: 'fname', align: 'center' },
+        { label: '部门', prop: 'fdeaprt', align: 'center' },
+        { label: 'IP地址', prop: 'fip', align: 'center' },
+        { label: '行为', prop: 'fdescribe', align: 'center' }
+      ],
       team: 1,
+      otherUrlObject: {}, // 其它审核人
+      otherOptions: {}, // 其它
+      FID: '', // 父类物料ID
       company: ''
     }
   },
@@ -176,9 +199,91 @@ export default {
         this.$message.success('进入物料清单')
       }
     },
+    // 获取其它
+    async handleOther() {
+      const RES = await queryBomLog({ ...this.otherPagination, fid: this.FID })
+      this.otherLogTableData = RES.data.array
+      this.otherPagination.total = RES.data.total
+      this.otherUrlObject = RES.data.operator
+      this.otherOptions = {
+        fcheck1: {
+          label: '研发审核人',
+          disabled: 'disabled'
+        },
+        fcheck2: {
+          label: '打样审核人',
+          disabled: 'disabled'
+        },
+        fcheck3: {
+          label: '工程审核人',
+          disabled: 'disabled'
+        },
+        fcheck4: {
+          label: '成本审核人',
+          disabled: 'disabled'
+        },
+        fcheck5: {
+          label: '成本审核人',
+          disabled: 'disabled'
+        },
+        fcheck6: {
+          label: '工厂审核人',
+          disabled: 'disabled'
+        },
+        fcheck7: {
+          label: '信息化审核人',
+          disabled: 'disabled'
+        },
+        fcheck8: {
+          label: '总裁审核人',
+          disabled: 'disabled'
+        },
+        fcheckDate1: {
+          label: '研发审核时间',
+          disabled: 'disabled'
+        },
+        fcheckDate2: {
+          label: '打样审核时间',
+          disabled: 'disabled'
+        },
+        fcheckDate3: {
+          label: '工程审核时间',
+          disabled: 'disabled'
+        },
+        fcheckDate4: {
+          label: '成本审核时间',
+          disabled: 'disabled'
+        },
+        fcheckDate5: {
+          label: '成本审核时间',
+          disabled: 'disabled'
+        },
+        fcheckDate6: {
+          label: '工厂审核时间',
+          disabled: 'disabled'
+        },
+        fcheckDate7: {
+          label: '信息化审核时间',
+          disabled: 'disabled'
+        },
+        fcheckDate8: {
+          label: '总裁审核时间',
+          disabled: 'disabled'
+        },
+        fcreateDate: {
+          label: '创建时间',
+          disabled: 'disabled'
+        },
+        fcreator: {
+          label: '创建人',
+          disabled: 'disabled'
+        }
+      }
+    },
     // Form表单
     async handleSetForm() {
       const { data: RES } = await queryBomchildList({ fnumber: this.$route.params.FNUMBER })
+      this.FID = RES.FID
       this.FMATERIALCOST = RES.FMATERIALCOST
       this.team = RES.FCREATEORG
       this.company = RES.FUSEORG

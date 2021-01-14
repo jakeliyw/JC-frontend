@@ -34,3 +34,12 @@ export function deleteMaterial(params) {
     params
   })
 }
+
+// 查询物料日志、操作人
+export function queryMaterialLog(data) {
+  return request({
+    url: '/TJxLog/queryMaterialLog',
+    method: 'post',
+    data
+  })
+}

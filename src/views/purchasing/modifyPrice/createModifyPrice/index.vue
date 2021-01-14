@@ -118,9 +118,6 @@
           </template>
         </jc-table>
       </el-tab-pane>
-      <el-tab-pane label="其它" name="other">
-        <h2>待开发</h2>
-      </el-tab-pane>
     </el-tabs>
     <!--    采购调价原因选择表-->
     <jc-popup
@@ -334,7 +331,7 @@ export default {
       this.$refs.zrf.handleRefData()
       for (const ITEM of this.modifyPriceTable) {
         if (ITEM.fid === '' || ITEM.fmaterialId === '' || ITEM.fafterPrice === 0 || ITEM.fafterTaxPrice === 0) {
-          this.$message.error('表格不能为空,或表格值不能为0')
+          this.$message.warning('表格不能为空,或表格值不能为0')
           return
         }
       }
@@ -461,7 +458,7 @@ export default {
         })
       }
       if (!row.fid) {
-        this.$message.error('价目表未选择或数据出错,请重新选择')
+        this.$message.warning('价目表未选择或数据出错,请重新选择')
         return
       }
       this.materielPagination.fid = this.modifyPriceTable[this.tableIndex].fid
@@ -514,7 +511,7 @@ export default {
     // 删除行数据
     handleDelete(index) {
       if (index === 0) {
-        this.$message.error('不能删除首行数据')
+        this.$message.warning('不能删除首行数据')
         return
       }
       this.modifyPriceTable.splice(index, 1)

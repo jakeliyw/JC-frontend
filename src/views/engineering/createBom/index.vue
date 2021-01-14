@@ -133,12 +133,6 @@
           </template>
         </jc-table>
       </el-tab-pane>
-      <el-tab-pane label="其它" name="other">
-        <jc-other
-          :other-url-object="{}"
-          :other-log-table-data="[]"
-        />
-      </el-tab-pane>
     </el-tabs>
     <!--    父项列表弹窗-->
     <el-dialog
@@ -223,7 +217,6 @@
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jcForm from '@/components/Form'
-import jcOther from '@/components/Other'
 import jumpMateriel from '@/components/JumpMateriel'
 import jcTitle from '@/components/Title'
 import getForm from './components/getForm'
@@ -246,7 +239,6 @@ export default {
     jcTable,
     jcPagination,
     jcForm,
-    jcOther,
     jcTitle
   },
   mixins: [jumpMateriel, getForm],
@@ -533,14 +525,14 @@ export default {
         fTreeEntity
       }
       if (DATA.FLABORCOST === 0) {
-        this.$message.error('人工成本不能小于0,请重新输入!')
+        this.$message.warning('人工成本不能小于0,请重新输入!')
         return
       }
       for (const item of DATA.fTreeEntity) {
         const ARRAY = Object.values(item)
         const RES = ARRAY.includes('' || undefined) || DATA.FMATERIALID === 0
         if (RES === true || RES.FDOSAGE === 0) {
-          this.$message.error('表格数据不能为空或用量不能为0!')
+          this.$message.warning('表格数据不能为空或用量不能为0!')
           return
         }
       }
@@ -568,7 +560,7 @@ export default {
     // 进入bom
     async getIntoBom(FNUMBER) {
       if (!FNUMBER) {
-        this.$message.error('物料编码为空,无法进入子bom')
+        this.$message.warning('物料编码为空,无法进入子bom')
         return
       }
       const { FTYPE, fMaterialId } = await queryFtypeInfo({ fnumber: FNUMBER })
@@ -587,7 +579,7 @@ export default {
     // 删除bom
     deleteBom(item, index) {
       if (index === 0) {
-        this.$message.error('不能删除首行数据')
+        this.$message.warning('不能删除首行数据')
         return
       }
       this.sonTableData.splice(index, 1)

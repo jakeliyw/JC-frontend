@@ -59,15 +59,14 @@
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
-          <div slot="slotPagination">
-            <jc-pagination
-              v-show="total > 0"
-              :total="total"
-              :page.sync="pageNum"
-              :limit.sync="size"
-              @pagination="handleOther"
-            />
-          </div>
+          <jc-pagination
+            v-show="total > 0"
+            slot="slotPagination"
+            :total="total"
+            :page.sync="pageNum"
+            :limit.sync="size"
+            @pagination="handleOther"
+          />
         </jc-other>
       </el-tab-pane>
     </el-tabs>
@@ -78,8 +77,7 @@
 import jcForm from '@/components/Form'
 import jcOther from '@/components/Other'
 import jcPagination from '@/components/Pagination'
-import { queryMaterialDetail } from '@/api/basicManagement/materielList'
-import { queryMaterialLog } from '@/api/basicManagement/editMateriel'
+import { queryMaterialDetail, queryMaterialLog } from '@/api/basicManagement/materielList'
 
 export default {
   name: 'DetailMateriel',
@@ -98,6 +96,7 @@ export default {
       property: [], // 物料属性
       FWEIGHTUNITID: '', // 重量单位
       FVOLUMEUNITID: '', // 尺寸单位
+      fmaterialId: '', // id
       otherUrlObject: {}, // 其它审核人
       otherLogTableData: [], // 日志数据
       imagesValue: {}, // 图片值
@@ -122,6 +121,7 @@ export default {
       queryMaterialDetail({ fnumber: this.$route.params.id }).then(RES => {
         this.property = RES.data.property
         this.imageUrl = RES.data.material.FIMG
+        this.fmaterialId = RES.data.material.FMATERIALID
         this.organizationValue = {
           FCREATEORG: RES.data.material.FCREATEORGID,
           FUSEORG: RES.data.material.FUSEORGID,
@@ -299,12 +299,11 @@ export default {
     },
     // 获取其它
     async handleOther() {
-      const id = this.$route.params.id
-      const DATA = { pageNum: this.pageNum, pageSize: this.size, FMATERIALID: id }
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, fmaterialId: this.fmaterialId }
       const RES = await queryMaterialLog(DATA)
-      this.otherUrlObject = RES.operator
-      this.total = RES.total
-      this.otherLogTableData = RES.log
+      this.otherUrlObject = RES.data.operator
+      this.total = RES.data.total
+      this.otherLogTableData = RES.data.array
     }
   }
 }

@@ -129,7 +129,20 @@
         <tab :msg="prodValue.fpriceListId" @visible="prodOrder" />
       </el-tab-pane>
       <el-tab-pane label="其他">
-        <h1>开发中</h1>
+        <jc-marker
+          :other-url-object="otherUrlObject"
+          :other-log-table-data="otherLogTableData"
+        >
+          <div slot="slotPagination">
+            <jc-pagination
+              v-show="total > 0"
+              :total="total"
+              :page.sync="pageNum"
+              :limit.sync="size"
+              @pagination="handleOther"
+            />
+          </div>
+        </jc-marker>
       </el-tab-pane>
     </el-tabs>
     <!--客户列表-->
@@ -154,10 +167,12 @@ import {
   querySalOrderFxxchange,
   insertSalOrder,
   queryOrgList,
-  querySalPriceCustomer
+  querySalPriceCustomer,
+  querySalOrderLog
 } from '@/api/marketManage/marketOrder'
 import jumpMateriel from '@/components/JumpMateriel'
 import tab from '@/views/market/marketManage/createMarkerOrder/components/tab'
+import jcMarker from '@/components/marker'
 import client from '@/views/market/marketManage/createMarkerOrder/components/client'
 import deliver from '@/views/market/marketManage/createMarkerOrder/components/deliver'
 import market from '@/views/market/marketManage/createMarkerOrder/components/market'
@@ -165,10 +180,13 @@ import currency from '@/views/market/marketManage/createMarkerOrder/components/c
 import gathering from '@/views/market/marketManage/createMarkerOrder/components/gathering'
 import jcTitle from '@/components/Title'
 import priceList from '@/views/market/marketManage/createMarkerOrder/components/priceListPagination'
+import jcPagination from '@/components/Pagination'
 
 export default {
   name: 'CreateMarkerOrder',
   components: {
+    jcMarker,
+    jcPagination,
     tab,
     client,
     deliver,
@@ -251,7 +269,12 @@ export default {
         ], fdeliveryDate: [
           { required: true, message: '请选择要货时间', trigger: 'change' }
         ]
-      }
+      },
+      pageNum: 1,
+      size: 10,
+      total: 0,
+      otherUrlObject: {}, // 其它审核人
+      otherLogTableData: [] // 日志数据
     }
   },
   created() {
@@ -327,48 +350,70 @@ export default {
     },
     // 获取客户数据(子传父)
     clientData(item) {
-      this.prodValue.fcustId = item.fcustId
-      this.prodValue.fname = item.fname
-      this.clientVisiblit = item.isclientlDialog
       if (item.fcustId) {
+        this.prodValue.fcustId = item.fcustId
+        this.prodValue.fname = item.fname
+        this.clientVisiblit = item.isclientlDialog
         const DATA = { fcustId: item.fcustId }
         querySalPriceCustomer(DATA).then(res => {
           this.prodValue.fpriceListId = res.data.fid
           this.prodValue.fpriceListIdName = res.data.fname
         })
+      } else {
+        this.clientVisiblit = item.isclientlDialog
       }
     },
     // 获取交货方式数据(子传父)
     deliveData(item) {
-      this.prodValue.fdataValue = item.fdataValue
-      this.prodValue.fheadDeliveryWay = item.fheadDeliveryWay
-      this.deliveVisiblit = item.isdeliverlDialog
+      if (item.fdataValue) {
+        this.prodValue.fdataValue = item.fdataValue
+        this.prodValue.fheadDeliveryWay = item.fheadDeliveryWay
+        this.deliveVisiblit = item.isdeliverlDialog
+      } else {
+        this.deliveVisiblit = item.isdeliverlDialog
+      }
     },
     // 获取销售员数据(子传父)
     marketData(item) {
-      this.prodValue.fsalerIdName = item.fsalerIdName
-      this.prodValue.fsalerId = item.fsalerId
-      this.marketVisiblit = item.ismarketlDialog
+      if (item.fsalerIdName) {
+        this.prodValue.fsalerIdName = item.fsalerIdName
+        this.prodValue.fsalerId = item.fsalerId
+        this.marketVisiblit = item.ismarketlDialog
+      } else {
+        this.marketVisiblit = item.ismarketlDialog
+      }
     },
     // 获取结算币别数据(子传父)
     currencyData(item) {
-      this.prodValue.fsettleCurrIdName = item.fsettleCurrIdName
-      this.prodValue.fsettleCurrId = item.fsettleCurrId
-      this.currencyVisiblit = item.isCurrencyDialog
-      // 获取汇率
-      this.querySalerRate()
+      if (item.fsettleCurrId) {
+        this.prodValue.fsettleCurrIdName = item.fsettleCurrIdName
+        this.prodValue.fsettleCurrId = item.fsettleCurrId
+        this.currencyVisiblit = item.isCurrencyDialog
+        // 获取汇率
+        this.querySalerRate()
+      } else {
+        this.currencyVisiblit = item.isCurrencyDialog
+      }
     },
     // 收款条件列表
     gatheringData(item) {
-      this.prodValue.frecConditionIdName = item.frecConditionIdName
-      this.prodValue.frecConditionId = item.frecConditionId
-      this.gatheringVisiblit = false
+      if (item.frecConditionId) {
+        this.prodValue.frecConditionIdName = item.frecConditionIdName
+        this.prodValue.frecConditionId = item.frecConditionId
+        this.gatheringVisiblit = false
+      } else {
+        this.gatheringVisiblit = false
+      }
     },
     // 价目表
     priceListData(item) {
-      this.prodValue.fpriceListIdName = item.fpriceListIdName
-      this.prodValue.fpriceListId = item.fpriceListId
-      this.priceListVisiblit = false
+      if (item.fpriceListId) {
+        this.prodValue.fpriceListIdName = item.fpriceListIdName
+        this.prodValue.fpriceListId = item.fpriceListId
+        this.priceListVisiblit = false
+      } else {
+        this.priceListVisiblit = false
+      }
     },
     // 品质标准
     async queryFpaezCombo() {
@@ -379,10 +424,10 @@ export default {
     async querySalOrderFxxchange() {
       const DATA = { frateTypeId: this.frateTypeId, fcurrencyId: this.fcurrencyId }
       const { data: RES } = await querySalOrderFxxchange(DATA)
-      this.prodValue.flocalCurrId = RES.flocalCurrId
-      this.prodValue.fxxchangeTypeId = RES.fxxchangeTypeId
       this.prodValue.flocalCurr = RES.flocalCurr
+      this.prodValue.flocalCurrId = RES.flocalCurrId
       this.prodValue.fxxchangeType = RES.fxxchangeType
+      this.prodValue.fxxchangeTypeId = RES.fxxchangeTypeId
       this.querySalerRate()
     },
     // 查询销售订单汇率
@@ -403,6 +448,15 @@ export default {
     prodOrder(ev) {
       this.prodValue.saleDetails = ev.saleDetails
       this.prodValue.planDetails = ev.planDetails
+    },
+    // 获取其它
+    async handleOther() {
+      const id = this.$route.params.id
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, fid: id }
+      const { data: RES } = await querySalOrderLog(DATA)
+      this.otherUrlObject = RES.operator
+      this.total = RES.total
+      this.otherLogTableData = RES.array
     }
   }
 }
@@ -417,6 +471,7 @@ export default {
 
     .el-form-item {
       width: 263px;
+      margin-bottom: 15px;
     }
   }
 }

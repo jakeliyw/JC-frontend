@@ -68,6 +68,11 @@
       >
         <el-table-column prop="mediumCode" label="中类编码" align="center" />
         <el-table-column prop="mediumName" label="中类名称" align="center" />
+        <el-table-column label="操作" align="center">
+          <template slot-scope="">
+            <el-button type="danger">删除</el-button>
+          </template>
+        </el-table-column>
       </jc-table>
     </el-dialog>
     <!--    小类列表弹框-->
@@ -87,6 +92,11 @@
         <el-table-column prop="mediumName" label="中类名称" align="center" />
         <el-table-column prop="number" label="小类编码" align="center" />
         <el-table-column prop="name" label="小类名称" align="center" />
+        <el-table-column label="操作" align="center">
+          <template slot-scope="">
+            <el-button type="danger">删除</el-button>
+          </template>
+        </el-table-column>
       </jc-table>
     </el-dialog>
     <!--    属性列表弹框-->
@@ -105,6 +115,11 @@
       >
         <el-table-column prop="attributeName" label="属性名称" align="center" />
         <el-table-column prop="name" label="物料属性明细名称" align="center" />
+        <el-table-column label="操作" align="center">
+          <template slot-scope="">
+            <el-button type="danger">删除</el-button>
+          </template>
+        </el-table-column>
       </jc-table>
     </el-dialog>
     <!--新增大类弹框-->

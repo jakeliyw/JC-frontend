@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <el-tabs type="border-card">
+    <el-tabs type="border-card" @tab-click="handleOther">
       <el-tab-pane label="订单详情">
         <div class="header-card">
           <div class="organization">
@@ -79,7 +79,20 @@
         </el-tabs>
       </el-tab-pane>
       <el-tab-pane label="其他">
-        <h1>待开发</h1>
+        <jc-marker
+          :other-url-object="otherUrlObject"
+          :other-log-table-data="otherLogTableData"
+        >
+          <div slot="slotPagination">
+            <jc-pagination
+              v-show="total > 0"
+              :total="total"
+              :page.sync="pageNum"
+              :limit.sync="size"
+              @pagination="handleOther"
+            />
+          </div>
+        </jc-marker>
       </el-tab-pane>
     </el-tabs>
     <el-dialog title="预览" model :visible.sync="imgVisible" append-to-body top="10vh">
@@ -92,14 +105,19 @@
 import jcTable from '@/components/Table'
 import jcForm from '@/components/Form'
 import {
-  queryTSalOrderNtry
+  queryTSalOrderNtry,
+  querySalOrderLog
 } from '@/api/marketManage/marketOrder'
+import jcMarker from '@/components/marker'
+import jcPagination from '@/components/Pagination'
 import jumpMateriel from '@/components/JumpMateriel'
 
 export default {
   components: {
     jcTable,
-    jcForm
+    jcForm,
+    jcMarker,
+    jcPagination
   },
   mixins: [jumpMateriel],
   data() {
@@ -114,7 +132,12 @@ export default {
       tableHeader1: [],
       // 表单
       organizationValue: {}, // 表单组织值
-      organization: {} // 表单组织控件
+      organization: {}, // 表单组织控件
+      otherUrlObject: {}, // 其它审核人
+      otherLogTableData: [], // 日志数据
+      pageNum: 1,
+      size: 10,
+      total: 0
     }
   },
   mounted() {
@@ -201,12 +224,22 @@ export default {
           type: 'checkbox',
           disabled: 'disabled'
         }
+
       }
     },
     // 预览图片
     proviewImg(img) {
       this.imgVisible = true
       this.priview = img
+    },
+    // 获取其它
+    async handleOther() {
+      const id = this.$route.params.id
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, fid: id }
+      const { data: RES } = await querySalOrderLog(DATA)
+      this.otherUrlObject = RES.operator
+      this.total = RES.total
+      this.otherLogTableData = RES.array
     }
   }
 }

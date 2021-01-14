@@ -31,7 +31,7 @@
             min-width="200px"
             :show-overflow-tooltip="true"
           />
-          <el-table-column label="物料型号" prop="fmodel" align="center" min-width="80px" />
+          <el-table-column label="物料型号" prop="fmodel" align="center" min-width="100px" />
           <el-table-column label="销售单位" prop="funitName" align="center" />
           <el-table-column label="销售数量" prop="fqty" min-width="140px" align="center">
             <template slot-scope="scope">
@@ -43,6 +43,7 @@
               />
             </template>
           </el-table-column>
+          <el-table-column label="销售单价" prop="fprice" align="center" />
           <el-table-column label="是否赠品" prop="fisFree" align="center">
             <template slot-scope="scope">
               <el-checkbox
@@ -119,56 +120,7 @@
       </el-tab-pane>
     </el-tabs>
     <!--    物料弹窗-->
-    <el-dialog
-      title="物料列表"
-      model
-      :visible.sync="isMaterielDialog"
-      :close-on-click-modal="false"
-      width="60%"
-    >
-      <div class="materiel-form">
-        <span class="materiel-code">物料编码</span>
-        <el-input
-          v-model.trim="FNUMBER"
-          class="input-width"
-          size="mini"
-          placeholder="请输入物料编码"
-          @keyup.enter.native="handleMaterielSearch"
-        />
-        <span class="materiel-code">物料描述</span>
-        <el-input
-          v-model.trim="FDESCRIPTION"
-          class="input-width"
-          size="mini"
-          placeholder="请输入物料描述"
-          @keyup.enter.native="handleMaterielSearch"
-        />
-        <span class="materiel-code">物料规格</span>
-        <el-input
-          v-model.trim="FSPECIFICATION"
-          class="input-width"
-          size="mini"
-          placeholder="请输入规格"
-          @keyup.enter.native="handleMaterielSearch"
-        />
-        <el-button size="mini" type="primary" @click="handleMaterielSearch">搜索</el-button>
-      </div>
-      <jc-table
-        :table-data="materielDialogData"
-        :table-header="materielDialogHeader"
-        table-height="53vh"
-        serial
-        :cell-style="cellStyle"
-        @clickRow="materielSelectRow"
-      />
-      <jc-pagination
-        v-show="materielPagination.total > 0"
-        :total="materielPagination.total"
-        :page.sync="materielPagination.pageNum"
-        :limit.sync="materielPagination.pageSize"
-        @pagination="handleGetMateriel"
-      />
-    </el-dialog>
+    <material v-if="isMateria" :msg="material" :msg1="fid" @material="materialData" />
     <!--上传图纸-->
     <el-dialog
       title="上传图纸"
@@ -179,12 +131,13 @@
       :before-close="handleClose"
     >
       <el-form label-width="120px">
-        <el-form-item label="图纸1">
+        <el-form-item label="图纸">
           <el-upload
             class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            :action="actionURL"
             :show-file-list="false"
-            :on-success="handleAvatarSuccess"
+            :auto-upload="false"
+            :on-change="handleAvatarSuccess"
           >
             <img
               v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl"
@@ -201,9 +154,10 @@
         <el-form-item label="图纸1">
           <el-upload
             class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            :action="actionURL"
             :show-file-list="false"
-            :on-success="handleAvatarSuccess1"
+            :auto-upload="false"
+            :on-change="handleAvatarSuccess1"
           >
             <img
               v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl1"
@@ -220,9 +174,10 @@
         <el-form-item label="图纸2">
           <el-upload
             class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            :action="actionURL"
             :show-file-list="false"
-            :on-success="handleAvatarSuccess2"
+            :auto-upload="false"
+            :on-change="handleAvatarSuccess2"
           >
             <img
               v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl2"
@@ -239,9 +194,10 @@
         <el-form-item label="图纸3">
           <el-upload
             class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            :action="actionURL"
             :show-file-list="false"
-            :on-success="handleAvatarSuccess3"
+            :auto-upload="false"
+            :on-change="handleAvatarSuccess3"
           >
             <img
               v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl3"
@@ -258,9 +214,10 @@
         <el-form-item label="图纸4">
           <el-upload
             class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            :action="actionURL"
             :show-file-list="false"
-            :on-success="handleAvatarSuccess4"
+            :auto-upload="false"
+            :on-change="handleAvatarSuccess4"
           >
             <img
               v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl4"
@@ -277,9 +234,10 @@
         <el-form-item label="图纸5">
           <el-upload
             class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            :action="actionURL"
             :show-file-list="false"
-            :on-success="handleAvatarSuccess5"
+            :auto-upload="false"
+            :on-change="handleAvatarSuccess5"
           >
             <img
               v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl5"
@@ -294,33 +252,36 @@
           </el-upload>
         </el-form-item>
       </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="isdrawinglDialog = false">确 定</el-button>
+      </span>
     </el-dialog>
     <!--图纸预览-->
     <el-dialog
       title="预览"
       model
       :visible.sync="imgVisible"
-      :close-on-click-modal="false"
       append-to-body
       top="10vh"
+      width="70%"
     >
-      <img :src="priview" style="max-height: 600px">
+      <img :src="priview">
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { queryMaterialList } from '@/api/marketManage/marketOrder'
 import jcTable from '@/components/Table'
-import jcPagination from '@/components/Pagination'
 import jumpMateriel from '@/components/JumpMateriel'
+import mixinsImg from '@/views/market/marketManage/createMarkerOrder/components/mixinsImg'
+import material from '@/views/market/marketManage/createMarkerOrder/components/material'
 
 export default {
   components: {
     jcTable,
-    jcPagination
+    material
   },
-  mixins: [jumpMateriel],
+  mixins: [jumpMateriel, mixinsImg],
   props: {
     msg: {
       type: Number,
@@ -329,36 +290,17 @@ export default {
   },
   data() {
     return {
+      fid: '', // 客户ID
+      material: '', // 父传子
+      isMateria: false, // 物料弹窗
+      actionURL: '', // 图片上传地址
       indexSelf: 0, // 图片下标
-      imgVisible: false, // 预览图片
-      priview: '',
+      imgVisible: false, // 预览图片src
+      priview: '', // 预览图片
       isdrawinglDialog: false, // 图纸弹窗
-      activeName: 'first',
+      activeName: 'first', // 标签tabs名
       tableHeader: [],
-      isMaterielDialog: false,
       cellStyle: { padding: '10 10' },
-      // 点击行的序号
-      tableIndex: 0,
-      rateIndex: '', // 行序号(第几行)
-      // 物料弹窗分页
-      materielPagination: {
-        total: 0, // 总条目
-        pageNum: 1, // 当前页
-        pageSize: 10 // 每页显示多少条数据
-      },
-      FNUMBER: '', // 弹窗编码
-      FDESCRIPTION: '', // 弹窗描述
-      FSPECIFICATION: '', // 弹窗规格型号
-      materielDialogData: [],
-      materielDialogHeader: [
-        { label: '使用组织', prop: 'fuseOrg', align: 'center' },
-        { label: '型号', prop: 'fmodel', align: 'center' },
-        { label: '物料编码', prop: 'fnumber', align: 'center' },
-        { label: '描述', prop: 'fdescripTion', align: 'center', minWidth: '150px' },
-        { label: '物料规格', prop: 'fspecificaTion', align: 'center' },
-        { label: '单价', prop: 'fprice', align: 'center' },
-        { label: '创建时间', prop: 'fcreateDate', align: 'center' }
-      ],
       tabTwo: {
         saleDetails: [ // 明细信息
           {
@@ -371,6 +313,7 @@ export default {
             fdeliveryDate: '',
             fmaterialIdName: '',
             funitName: '',
+            fprice: '',
             salImage: {
               imageUrl: '', // 图片
               imageUrl1: '', // 图片
@@ -386,27 +329,21 @@ export default {
       }
     }
   },
+  watch: {
+    msg() {
+      this.fid = this.msg
+    }
+  },
   methods: {
-    // 物料弹窗选中
-    async materielSelectRow(item) {
-      this.tabTwo.saleDetails[this.tableIndex].fmaterialId = item.fmaterialId
-      this.tabTwo.saleDetails[this.tableIndex].fmaterialIdName = item.fnumber
-      this.tabTwo.saleDetails[this.tableIndex].fdescripTion = item.fdescripTion
-      this.tabTwo.saleDetails[this.tableIndex].funitId = item.funitId
-      this.tabTwo.saleDetails[this.tableIndex].funitName = item.funitName
-      this.tabTwo.saleDetails[this.tableIndex].fmodel = item.fmodel
-      this.isMaterielDialog = false
-      this.$emit('visible', this.tabTwo)
-    },
-    // 打开物料编码
-    async handleGetMateriel(row, index) {
-      if (index) {
-        this.tableIndex = index
-      }
-      if (!this.msg) {
+    // 打开物料弹窗
+    handleGetMateriel(row, index) {
+      if (!this.fid) {
         this.$message.error('请先选择客户')
         return false
       }
+      this.isMateria = true
+      this.material = index
+      // 新增一行
       if (index === this.tabTwo.saleDetails.length - 1) {
         this.tabTwo.saleDetails.push(
           {
@@ -428,23 +365,17 @@ export default {
           }
         )
       }
-      const DATA = {
-        pageNum: this.materielPagination.pageNum,
-        pageSize: this.materielPagination.pageSize,
-        fnumber: this.FNUMBER,
-        fdescription: this.FDESCRIPTION,
-        fspecification: this.FSPECIFICATION,
-        fid: this.msg
-      }
-      const { data: RES } = await queryMaterialList(DATA)
-      this.materielDialogData = RES.array
-      this.materielPagination.total = RES.total
-      this.isMaterielDialog = true
     },
-    // 搜索
-    handleMaterielSearch() {
-      this.materielPagination.pageNum = 1
-      this.handleGetMateriel()
+    // 物料数据
+    materialData(item) {
+      this.tabTwo.saleDetails[this.material].fmaterialId = item.fmaterialId
+      this.tabTwo.saleDetails[this.material].fmaterialIdName = item.fnumber
+      this.tabTwo.saleDetails[this.material].fdescripTion = item.fdescripTion
+      this.tabTwo.saleDetails[this.material].funitId = item.funitId
+      this.tabTwo.saleDetails[this.material].funitName = item.funitName
+      this.tabTwo.saleDetails[this.material].fmodel = item.fmodel
+      this.tabTwo.saleDetails[this.material].fprice = item.fprice
+      this.isMateria = item.isMaterialDialog
     },
     // 监听是否勾选赠品
     handleCheckedCitiesChange(val, index) {
@@ -478,21 +409,7 @@ export default {
     }, // 监听是否预收
     check(value) {
       this.$emit('visible', this.tabTwo)
-    },
-    // 上传图片
-    handleAvatarSuccess(res, file) {
-      this.tabTwo.saleDetails[this.indexSelf].salImage.imageUrl = URL.createObjectURL(file.raw)
-    }, handleAvatarSuccess1(res, file) {
-      this.tabTwo.saleDetails[this.indexSelf].salImage.imageUrl1 = URL.createObjectURL(file.raw)
-    }, handleAvatarSuccess2(res, file) {
-      this.tabTwo.saleDetails[this.indexSelf].salImage.imageUrl2 = URL.createObjectURL(file.raw)
-    }, handleAvatarSuccess3(res, file) {
-      this.tabTwo.saleDetails[this.indexSelf].salImage.imageUrl3 = URL.createObjectURL(file.raw)
-    }, handleAvatarSuccess4(res, file) {
-      this.tabTwo.saleDetails[this.indexSelf].salImage.imageUrl4 = URL.createObjectURL(file.raw)
-    }, handleAvatarSuccess5(res, file) {
-      this.tabTwo.saleDetails[this.indexSelf].salImage.imageUrl5 = URL.createObjectURL(file.raw)
-    },
+    }, // 打开上传图片弹窗
     drawingl(index) {
       this.indexSelf = index
       this.isdrawinglDialog = true
@@ -512,18 +429,27 @@ export default {
 </script>
 
 <style lang="scss">
-.el-table .cell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  img {
-    padding: 0 5px;
+.el-dialog__body {
+  overflow: auto;
+  img{
+    max-width: 1000px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 </style>
 <style scoped lang="scss">
 .tab {
+  .el-table ::v-deep .cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      padding: 0 5px;
+    }
+  }
   .materiel-form {
     display: flex;
     align-items: center;

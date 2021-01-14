@@ -3,11 +3,13 @@
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
     <sidebar class="sidebar-container" />
     <div class="main-container">
-      <div :class="{'fixed-header':fixedHeader}">
-        <navbar />
+      <div class="posit-navber">
+        <div :class="{'fixed-header':fixedHeader}">
+          <navbar />
+        </div>
+        <tags-view />    <!-- 此处增加tag-->
       </div>
-      <tags-view />    <!-- 此处增加tag-->
-      <app-main />
+      <app-main />     <!-- 出口-->
     </div>
   </div>
 </template>
@@ -55,6 +57,7 @@ export default {
 <style lang="scss" scoped>
   @import "~@/styles/mixin.scss";
   @import "~@/styles/variables.scss";
+  @import "~@/styles/sidebar.scss";
 
   .app-wrapper {
     @include clearfix;
@@ -65,6 +68,17 @@ export default {
       position: fixed;
       top: 0;
     }
+  }
+  .main-container ::v-deep .app-main{
+    padding-top: 84px;
+  }
+  .posit-navber{
+    transition: width 0.28s;
+    background: #ffffff;
+    width: calc(100% - #{$sideBarWidth});
+    position: fixed;
+    top: 0;
+    z-index: 99;
   }
   .drawer-bg {
     background: #000;

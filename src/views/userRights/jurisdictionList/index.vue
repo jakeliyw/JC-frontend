@@ -39,36 +39,33 @@
     <el-dialog :title="newINsert" :visible.sync="insertTJQVisible" :close-on-click-modal="false">
       <el-form ref="ruleForm" :model="form" label-width="120px" :rules="rules">
         <el-form-item label="用户" prop="fuserId">
-          <el-select v-if="!form.fid" v-model="form.fuserId" placeholder="请选择用户">
-            <el-option v-for="(item, index) in regionData" :key="index" :label="item.fname" :value="item.fuserId" />
-          </el-select>
-          <el-select v-if="form.fid" v-model="form.fuserId" disabled>
+          <el-select v-model="form.fuserId" placeholder="请选择用户" size="mini" filterable>
             <el-option v-for="(item, index) in regionData" :key="index" :label="item.fname" :value="item.fuserId" />
           </el-select>
         </el-form-item>
         <el-form-item label="类型" prop="ftype">
-          <el-input v-model="form.ftype" />
+          <el-input v-model="form.ftype" size="mini" />
         </el-form-item>
         <el-form-item label="原状态" prop="fvalueb">
-          <el-input v-model="form.fvalueb" />
+          <el-input v-model="form.fvalueb" size="mini" />
         </el-form-item>
         <el-form-item label="原流程" prop="fvaluea">
-          <el-input v-model="form.fvaluea" />
+          <el-input v-model="form.fvaluea" size="mini" />
         </el-form-item>
         <el-form-item label="审核后状态" prop="fvalued">
-          <el-input v-model="form.fvalued" />
+          <el-input v-model="form.fvalued" size="mini" />
         </el-form-item>
         <el-form-item label="审核后流程" prop="fvaluec">
-          <el-input v-model="form.fvaluec" />
+          <el-input v-model="form.fvaluec" size="mini" />
         </el-form-item>
         <el-form-item label="描述" prop="fdepict">
-          <el-input v-model="form.fdepict" />
+          <el-input v-model="form.fdepict" size="mini" />
         </el-form-item>
         <el-form-item label="审核人字段" prop="fvaluef">
-          <el-input v-model="form.fvaluef" />
+          <el-input v-model="form.fvaluef" size="mini" />
         </el-form-item>
         <el-form-item label="审核时间字段" prop="fvaluee">
-          <el-input v-model="form.fvaluee" />
+          <el-input v-model="form.fvaluee" size="mini" />
         </el-form-item>
         <el-form-item>
           <el-button @click="insertTJQVisible = false">取 消</el-button>

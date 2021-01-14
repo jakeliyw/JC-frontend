@@ -26,3 +26,12 @@ export function updateAgainReview(data) {
     data
   })
 }
+
+// 查询采购价目表日志、操作人
+export function queryPricelistLog(data) {
+  return request({
+    url: '/TJxLog/queryPricelistLog',
+    method: 'post',
+    data
+  })
+}

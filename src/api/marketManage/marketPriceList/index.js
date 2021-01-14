@@ -88,3 +88,11 @@ export function updateSalPrice(data) {
     data
   })
 }
+// 修改销售价目表
+export function querySalPriceMaterial(params) {
+  return request({
+    url: '/tSalPricelist/querySalPriceMaterial',
+    method: 'get',
+    params
+  })
+}

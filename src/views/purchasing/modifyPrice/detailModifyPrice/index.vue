@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <jc-title />
-    <el-tabs v-model="activeName" type="border-card">
+    <el-tabs v-model="activeName" type="border-card" @tab-click="handleOther">
       <el-tab-pane label="调价" name="modifyPrice" class="layout">
         <div class="header">
           <el-button size="mini" @click="refresh">刷新</el-button>
@@ -114,7 +114,19 @@
         </jc-table>
       </el-tab-pane>
       <el-tab-pane label="其它" name="other">
-        <h2>待开发</h2>
+        <jc-other
+          :other-url-object="otherUrlObject"
+          :other-log-table-data="otherLogTableData"
+        >
+          <jc-pagination
+            v-show="otherPagination.total > 0"
+            slot="slotPagination"
+            :total="otherPagination.total"
+            :page.sync="otherPagination.pageNum"
+            :limit.sync="otherPagination.pageSize"
+            @pagination="handleOther"
+          />
+        </jc-other>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -124,14 +136,18 @@
 import jcForm from '@/components/Form'
 import jcTable from '@/components/Table'
 import jcTitle from '@/components/Title'
-import { queryTPurPatDetailList } from '@/api/modifyPriceManagement/detailModifyPrice'
+import jcOther from '@/components/Other'
+import jcPagination from '@/components/Pagination'
+import { queryTPurPatDetailList, queryPurPatLog } from '@/api/modifyPriceManagement/detailModifyPrice'
 import { queryTOrgOrganizationsL } from '@/api/engineering/createBom'
 export default {
   name: 'DetailModifyPrice',
   components: {
     jcForm,
     jcTable,
-    jcTitle
+    jcTitle,
+    jcOther,
+    jcPagination
   },
   data() {
     return {
@@ -144,6 +160,13 @@ export default {
         { label: '价格下限', prop: 'fdownPrice', align: 'center' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '100px', align: 'center' }
       ], // 调价表头数据
+      otherUrlObject: {}, // 其它审核人
+      otherLogTableData: [], // 日志数据
+      otherPagination: {
+        pageNum: 1,
+        pageSize: 10,
+        total: 0
+      },
       cellStyle: { padding: '10 10' }, // 行高
       optionValue: {}, // 表单值
       options: {} // 表单控件
@@ -153,6 +176,13 @@ export default {
     this.getForm()
   },
   methods: {
+    // 获取其它
+    async handleOther() {
+      const RES = await queryPurPatLog({ ...this.otherPagination, fid: this.$route.params.id })
+      this.otherLogTableData = RES.data.array
+      this.otherPagination.total = RES.data.total
+      this.otherUrlObject = RES.data.operator
+    },
     async getForm() {
       const { data: RES } = await queryTPurPatDetailList({ fid: this.$route.params.id })
       this.modifyPriceTable = RES.detail

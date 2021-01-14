@@ -13,16 +13,8 @@ export function queryBomchildList(params) {
 export function upDateBom(data) {
   return request({
     url: '/tEngBom/updateBom',
-    method: 'post',
+    method: 'put',
     data
   })
 }
 
-// 查询BOM的操作人和日志
-export function queryBomLog(data) {
-  return request({
-    url: '/tEngBom/queryBomLog',
-    method: 'post',
-    data
-  })
-}

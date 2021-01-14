@@ -18,6 +18,20 @@
           <el-form-item label="价目表名称" prop="fname">
             <el-input v-model.trim="prodValue.fname" placeholder="请输入价目表名称" size="mini" />
           </el-form-item>
+          <el-form-item label="客户" prop="fcustId">
+            <el-input v-model="prodValue.fcust" placeholder="请选择客户" size="mini">
+              <i
+                slot="suffix"
+                class="el-input__icon el-icon-search"
+                @click="clientVisiblit=true"
+              />
+            </el-input>
+          </el-form-item>
+          <el-form-item label="限定客户" prop="limitName">
+            <el-select v-model.trim="prodValue.limitName" size="mini" disabled>
+              <option label="客户" value="1">客户</option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="币别" prop="fcurrencyId">
             <el-input v-model.trim="prodValue.fcurrencyIdName" placeholder="请选择币别" size="mini">
               <i
@@ -28,7 +42,8 @@
             </el-input>
           </el-form-item>
           <el-form-item label="备注" prop="fdescription">
-            <el-input v-model.trim="prodValue.fdescription" type="textarea" placeholder="请填写备注" size="mini" /></el-form-item>
+            <el-input v-model.trim="prodValue.fdescription" type="textarea" placeholder="请填写备注" size="mini" />
+          </el-form-item>
           <el-form-item label="是否含税">
             <el-checkbox v-model="prodValue.fisIncludedTax" />
           </el-form-item>
@@ -42,7 +57,11 @@
           <el-table-column label="物料编码" prop="fmaterialId" align="center" width="200px">
             <template slot-scope="scope">
               <el-input v-model.trim="scope.row.fmaterialIdName" placeholder="请选择物料编码" size="mini">
-                <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fmaterialIdName)" />
+                <i
+                  slot="prefix"
+                  class="iconfont icon-jin-rud-ao-bo"
+                  @click="sonJumpMateriel(scope.row.fmaterialIdName)"
+                />
                 <i
                   slot="suffix"
                   class="el-input__icon el-icon-search"
@@ -51,18 +70,26 @@
               </el-input>
             </template>
           </el-table-column>
-          <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" :show-overflow-tooltip="true" />
+          <el-table-column
+            label="物料描述"
+            prop="fdescripTion"
+            align="center"
+            min-width="200px"
+            :show-overflow-tooltip="true"
+          />
           <el-table-column label="单位" prop="funitName" align="center" />
-          <el-table-column label="价格系数" prop="fpriceBase" min-width="140px" align="center">
+          <el-table-column label="销售系数(%)" prop="fpriceBase" min-width="140px" align="center">
             <template slot-scope="scope">
               <el-input-number
                 v-model="scope.row.fpriceBase"
                 :min="1"
                 size="mini"
+                disabled
+                @change="inputNum(scope.$index)"
               />
             </template>
           </el-table-column>
-          <el-table-column label="单价" prop="fprice" min-width="140px" align="center">
+          <el-table-column label="销售单价" prop="fprice" min-width="140px" align="center">
             <template slot-scope="scope">
               <el-input-number
                 v-model="scope.row.fprice"
@@ -71,12 +98,12 @@
               />
             </template>
           </el-table-column>
-          <el-table-column label="最低限价" prop="fdownPrice" min-width="140px" align="center">
+          <el-table-column label="销售基准价" prop="fdownPrice" min-width="140px" align="center">
             <template slot-scope="scope">
               <el-input-number
                 v-model="scope.row.fdownPrice"
-                :min="1"
                 size="mini"
+                disabled
               />
             </template>
           </el-table-column>
@@ -88,7 +115,20 @@
         </jc-table>
       </el-tab-pane>
       <el-tab-pane label="其他">
-        <h1>开发中</h1>
+        <jc-marker
+          :other-url-object="otherUrlObject"
+          :other-log-table-data="otherLogTableData"
+        >
+          <div slot="slotPagination">
+            <jc-pagination
+              v-show="total > 0"
+              :total="total"
+              :page.sync="pageNum"
+              :limit.sync="size"
+              @pagination="handleOther"
+            />
+          </div>
+        </jc-marker>
       </el-tab-pane>
     </el-tabs>
     <!--    币别列表弹窗-->
@@ -101,7 +141,13 @@
     >
       <div class="materiel-form">
         <span class="materiel-code">币别名称</span>
-        <el-input v-model.trim="currency.fname" class="input-width" size="mini" placeholder="请输入币别名称" @keyup.enter.native="currencySearch" />
+        <el-input
+          v-model.trim="currency.fname"
+          class="input-width"
+          size="mini"
+          placeholder="请输入币别名称"
+          @keyup.enter.native="currencySearch"
+        />
         <el-button size="mini" type="primary" @click="currencySearch">搜索</el-button>
       </div>
       <jc-table
@@ -146,11 +192,29 @@
     >
       <div class="materiel-form">
         <span class="materiel-code">物料编码</span>
-        <el-input v-model.trim="FNUMBER" class="input-width" size="mini" placeholder="请输入物料编码" @keyup.enter.native="handleMaterielSearch" />
+        <el-input
+          v-model.trim="FNUMBER"
+          class="input-width"
+          size="mini"
+          placeholder="请输入物料编码"
+          @keyup.enter.native="handleMaterielSearch"
+        />
         <span class="materiel-code">物料描述</span>
-        <el-input v-model.trim="FDESCRIPTION" class="input-width" size="mini" placeholder="请输入物料描述" @keyup.enter.native="handleMaterielSearch" />
+        <el-input
+          v-model.trim="FDESCRIPTION"
+          class="input-width"
+          size="mini"
+          placeholder="请输入物料描述"
+          @keyup.enter.native="handleMaterielSearch"
+        />
         <span class="materiel-code">物料规格</span>
-        <el-input v-model.trim="FSPECIFICATION" class="input-width" size="mini" placeholder="请输入规格" @keyup.enter.native="handleMaterielSearch" />
+        <el-input
+          v-model.trim="FSPECIFICATION"
+          class="input-width"
+          size="mini"
+          placeholder="请输入规格"
+          @keyup.enter.native="handleMaterielSearch"
+        />
         <el-button size="mini" type="primary" @click="handleMaterielSearch">搜索</el-button>
       </div>
       <jc-table
@@ -169,6 +233,8 @@
         @pagination="handleGetMateriel"
       />
     </el-dialog>
+    <!--客户列表-->
+    <client v-if="clientVisiblit" @client="clientData" />
   </div>
 </template>
 <script>
@@ -177,25 +243,32 @@ import {
 } from '@/api/engineering/createBom'
 import {
   queryTBdCurrency,
-  insertSalPrice
+  insertSalPrice,
+  querySalPriceMaterial
 } from '@/api/marketManage/marketPriceList'
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jumpMateriel from '@/components/JumpMateriel'
 import jcTitle from '@/components/Title'
+import client from '@/views/market/marketManage/createMarkerOrder/components/client'
 import {
-  queryMaterialList
+  queryMaterialList,
+  querySalOrderLog
 } from '@/api/marketManage/marketOrder'
+import jcMarker from '@/components/marker'
 export default {
   name: 'CreateMarketPrice',
   components: {
     jcTable,
     jcPagination,
-    jcTitle
+    jcTitle,
+    jcMarker,
+    client
   },
   mixins: [jumpMateriel],
   data() {
     return {
+      clientVisiblit: false, // 客户弹窗
       disabled: false, // 税率是否禁用
       isMaterielDialog: false, // 物料弹窗
       // 物料弹窗分页
@@ -209,19 +282,36 @@ export default {
       FSPECIFICATION: '', // 弹窗规格型号
       materielDialogData: [],
       materielDialogHeader: [ // 物料表头
-        { label: '使用组织', prop: 'fuseOrg', align: 'center' },
-        { label: '型号', prop: 'fmodel', align: 'center' },
         { label: '物料编码', prop: 'fnumber', align: 'center' },
-        { label: '描述', prop: 'fdescripTion', align: 'center', minWidth: '150px' },
         { label: '物料规格', prop: 'fspecificaTion', align: 'center' },
+        { label: '型号', prop: 'fmodel', align: 'center' },
+        { label: '描述', prop: 'fdescripTion', align: 'center', minWidth: '150px' },
         { label: '创建时间', prop: 'fcreateDate', align: 'center' }
       ],
       // 点击行的序号
       tableIndex: 0,
       tableHeader: [],
       teamList: [], // 组织
-      prodValue: { fcreateOrgId: 1, fname: '', fcurrencyId: '', fdescription: '', fisIncludedTax: '', fcurrencyIdName: '', fid: '',
-        priceDetails: [{ fmaterialId: '', fmaterialIdName: '', funitId: '', funitName: '', fmaterialTypeId: '', fpriceBase: '', fprice: '', fdownPrice: '' }] },
+      prodValue: {
+        fcreateOrgId: 1, // 销售组织
+        fname: '', // 价目表名称
+        fcurrencyId: '', // 币别ID
+        fdescription: '', // 备注
+        fisIncludedTax: false, // 含税
+        fcurrencyIdName: '', // 币别名称
+        limitName: '客户', // 限定客户
+        fcust: '', // 选择客户
+        priceDetails: [{
+          fmaterialId: '', // 物料编码ID
+          fmaterialIdName: '', // 物料编码
+          funitId: '', // 单位ID
+          funitName: '', // 单位
+          fmaterialTypeId: '', // 存货类型ID
+          fpriceBase: 40, // 销售系数
+          fprice: '', // 销售单价
+          fdownPrice: '' // 销售基准价
+        }]
+      },
       cellStyle: { padding: '10 10' },
       prodValueRules: { // 是否填写验证
         fname: [
@@ -244,13 +334,19 @@ export default {
       },
       currencyDialogData: [],
       currencyDialogHeader: [],
-      loading: false
+      loading: false,
+      otherUrlObject: {}, // 其它审核人
+      otherLogTableData: [], // 日志数据
+      pageNum: 1,
+      size: 10,
+      total: 0
     }
   },
   created() {
     this.handleGetPurchase()
   },
   methods: {
+    // 保存
     subMarker() {
       this.loading = true
       this.$refs.purchaseRef.validate(valid => {
@@ -261,6 +357,11 @@ export default {
         for (const item of this.prodValue.priceDetails) {
           if (item.fmaterialId === '' || item.fprice === '' || item.fdownPrice === '' || item.fpriceBase === '') {
             this.$message.error('表格不能为空或删除空行')
+            this.loading = false
+            return false
+          }
+          if (item.fprice < item.fdownPrice) {
+            this.$message.error('销售单价不能小于销售基准价')
             this.loading = false
             return false
           }
@@ -292,6 +393,7 @@ export default {
       this.prodValue.priceDetails[this.tableIndex].funitName = item.funitName
       this.prodValue.priceDetails[this.tableIndex].fmaterialTypeId = item.fcategoryId
       this.isMaterielDialog = false
+      this.querySalPriceMaterial()
     },
     // 打开物料编码
     async handleGetMateriel(row, index) {
@@ -320,6 +422,27 @@ export default {
       this.materielPagination.pageNum = 1
       this.handleGetMateriel()
     },
+    // 获取出厂价
+    async querySalPriceMaterial() {
+      const DATA = { fmaterialId: this.prodValue.priceDetails[this.tableIndex].fmaterialId }
+      const { data: RES } = await querySalPriceMaterial(DATA)
+      const fpriceBase = (this.prodValue.priceDetails[this.tableIndex].fpriceBase) / 100
+      // 基准价
+      this.prodValue.priceDetails[this.tableIndex].fdownPrice = (RES * (1 + fpriceBase)).toFixed(4)
+    },
+    // 监听销售系数
+    inputNum(index) {
+      this.tableIndex = index
+      if (this.prodValue.priceDetails[this.tableIndex].fmaterialId) {
+        this.querySalPriceMaterial()
+      }
+    },
+    // 获取客户数据(子传父)
+    clientData(item) {
+      this.prodValue.fcustId = item.fcustId
+      this.prodValue.fcust = item.fname
+      this.clientVisiblit = item.isclientlDialog
+    },
     // 获取组织
     async handleGetPurchase() {
       const { data: RES } = await queryTOrgOrganizationsL()
@@ -343,12 +466,6 @@ export default {
       this.prodValue.fcurrencyId = item.fcurrencyId
       this.isCurrencyDialog = false
     },
-    // 获取价目表
-    priceListSelectRow(item) {
-      this.prodValue.fname = item.fname
-      this.prodValue.fid = item.fid
-      this.openPriceList = false
-    },
     // 删除明细空行
     delectSale(index) {
       if (index === 0) {
@@ -356,6 +473,15 @@ export default {
         return false
       }
       this.prodValue.priceDetails.splice(index, 1)
+    },
+    // 获取其它
+    async handleOther() {
+      const id = this.$route.params.id
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, fid: id }
+      const { data: RES } = await querySalOrderLog(DATA)
+      this.otherUrlObject = RES.operator
+      this.total = RES.total
+      this.otherLogTableData = RES.array
     }
   }
 }
@@ -363,20 +489,21 @@ export default {
 <style scoped lang="scss">
 .content {
   @include listBom;
-  .el-form{
+
+  .el-form {
     display: flex;
     flex-wrap: wrap;
+
     .el-form-item {
-      max-width: 278px;
+      max-width: 263px;
     }
   }
 }
-.el-input__icon{
+
+.el-input__icon {
   cursor: pointer;
 }
-el-form-item{
-  max-width: 178px;
-}
+
 .materiel-form {
   display: flex;
   align-items: center;

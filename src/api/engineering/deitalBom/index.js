@@ -17,3 +17,12 @@ export function queryFtypeInfo(params) {
     params
   })
 }
+
+// 查询BOM的操作人和日志
+export function queryBomLog(data) {
+  return request({
+    url: '/TJxLog/queryBomLog',
+    method: 'post',
+    data
+  })
+}

@@ -123,15 +123,17 @@
         </jc-table>
       </el-tab-pane>
       <el-tab-pane label="其它" name="other">
-        <jc-other
-          :other-url-object="otherUrlObject"
-          :other-log-table-data="otherLogTableData"
+        <jc-form :option-value="otherUrlObject" :options="otherOptions" />
+        <jc-table
+          :table-header="logTableHeader"
+          :table-data="otherLogTableData"
+          :cell-style="cellStyle"
         />
         <jc-pagination
-          v-show="total > 0"
-          :total="total"
-          :page.sync="pageNum"
-          :limit.sync="size"
+          v-show="otherPagination.total > 0"
+          :total="otherPagination.total"
+          :page.sync="otherPagination.pageNum"
+          :limit.sync="otherPagination.pageSize"
           @pagination="handleOther"
         />
       </el-tab-pane>
@@ -185,7 +187,6 @@
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jcForm from '@/components/Form'
-import jcOther from '@/components/Other'
 import jumpMateriel from '@/components/JumpMateriel'
 import getForm from '../createBom/components/getForm'
 import jcTitle from '@/components/Title'
@@ -196,8 +197,8 @@ import {
   queryMaterialSon,
   queryTOrgOrganizationsL
 } from '@/api/engineering/createBom'
-import { queryBomchildList, upDateBom, queryBomLog } from '@/api/engineering/editBom'
-import { queryFtypeInfo } from '@/api/engineering/deitalBom'
+import { queryBomchildList, upDateBom } from '@/api/engineering/editBom'
+import { queryFtypeInfo, queryBomLog } from '@/api/engineering/deitalBom'
 import { Disable, toMxAmina } from '@/components/ToMxamineState'
 
 export default {
@@ -206,7 +207,6 @@ export default {
     jcTable,
     jcPagination,
     jcForm,
-    jcOther,
     jcTitle
   },
   mixins: [jumpMateriel, getForm],
@@ -235,6 +235,14 @@ export default {
         { label: '描述', prop: 'FDESCRIPTION', minWidth: '150px' },
         { label: '创建时间', prop: 'FCREATEDATE', align: 'center' }
       ],
+      // 其它表头
+      logTableHeader: [
+        { label: '日期', prop: 'createDate', align: 'center' },
+        { label: '操作人', prop: 'fname', align: 'center' },
+        { label: '部门', prop: 'fdeaprt', align: 'center' },
+        { label: 'IP地址', prop: 'fip', align: 'center' },
+        { label: '行为', prop: 'fdescribe', align: 'center' }
+      ],
       // 子表数据
       sonTableData: [],
       // 子项表头
@@ -249,12 +257,20 @@ export default {
       issueMaterialsOptions: [],
       otherUrlObject: {}, // 其它审核人
       otherLogTableData: [], // 日志数据
+      // 日志分页
+      otherPagination: {
+        pageNum: 1,
+        pageSize: 10,
+        total: 0
+      },
+      otherOptions: {}, // 其它
       teamList: [],
       team: 1, // 组织选中
       company: '', // 公司名
       // 点击行的序号
       tableIndex: 0,
       serial: 1, // 序列号
+      FID: '', // 父类物料ID
       FMATERIALCOST: '', // 物料成本
       FMATERIALID: 0 // 父项物料ID
     }
@@ -326,6 +342,7 @@ export default {
     async getQueryBomchildList() {
       const { data: RES } = await queryBomchildList({ fnumber: this.$route.params.FNUMBER })
       this.FMATERIALID = RES.FMATERIALID
+      this.FID = RES.FID
       this.FMATERIALCOST = RES.FMATERIALCOST
       this.prodValue = RES
       this.sonTableData = RES.child
@@ -345,10 +362,10 @@ export default {
     },
     // 隐藏显示日志, 获取表单数据
     async handleOther() {
-      const DATA = { pageNum: this.pageNum, pageSize: this.size, FID: this.FID }
-      const RES = await queryBomLog(DATA)
-      this.otherUrlObject = RES.operator
-      this.otherLogTableData = RES.log
+      const RES = await queryBomLog({ ...this.otherPagination, fid: this.FID })
+      this.otherLogTableData = RES.data.array
+      this.otherPagination.total = RES.data.total
+      this.otherUrlObject = RES.data.operator
     },
     // 获取子项类型数据
     handleGetSubType() {
@@ -418,18 +435,19 @@ export default {
         return { FMATERIALID, FMATERIALTYPE, FDOSAGE, FISSUETYPE, FPRICE }
       })
       const DATA = {
+        FID: this.FID,
         flg: this.flg,
         FMATERIALID: this.FMATERIALID,
         FLABORCOST: this.prodValue.FLABORCOST,
         fTreeEntity
       }
       if (DATA.FLABORCOST === 0) {
-        this.$message.error('人工成本不能小于0,请重新输入!')
+        this.$message.warning('人工成本不能小于0,请重新输入!')
         return
       }
       for (const ITEM of DATA.fTreeEntity) {
         if (ITEM.FMATERIALID === undefined || ITEM.FDOSAGE === 0) {
-          this.$message.error('表格数据不能为空或用量不能为0')
+          this.$message.warning('表格数据不能为空或用量不能为0')
           return
         }
       }
@@ -457,13 +475,13 @@ export default {
     // 进入bom
     async getIntoBom(FNUMBER) {
       if (!FNUMBER) {
-        this.$message.error('物料编码为空,无法进入子bom')
+        this.$message.warning('物料编码为空,无法进入子bom')
         return
       }
       const { FTYPE, fMaterialId } = await queryFtypeInfo({ fnumber: FNUMBER })
       if (FTYPE === 0) {
         if (this.$route.params.FNUMBER === FNUMBER) {
-          this.$message.error('没有查询到下层bom')
+          this.$message.warning('没有查询到下层bom')
           return
         }
         this.$router.push({ path: `/detailBom/${FNUMBER}` })

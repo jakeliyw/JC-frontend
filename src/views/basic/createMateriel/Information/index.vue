@@ -240,10 +240,10 @@ export default {
       purchaseTypeName: '', // 采购列表关键字
       supplierName: '', // 供应商弹窗关键词
       warehouseName: '', // 仓库关键词
+      openWarehouse: false, // 仓库弹窗
       dialogTitle: '', // 弹窗标题
       popupTitle: '', // 查询条件文本
       openPurchaseType: false, // 采购类型弹窗
-      openWarehouse: false, // 仓库弹窗
       openSupplier: false, // 供应商弹窗
       cellStyle: { padding: '10 10' } // 行高
     }

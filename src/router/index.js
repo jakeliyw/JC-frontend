@@ -213,7 +213,7 @@ export const asyncRouterMap = [
         path: '/maintainPriceBom',
         name: 'MaintainPriceBom',
         component: () => import('@/views/engineering/maintainPriceBom'),
-        meta: { title: '价格维护', noCache: false },
+        meta: { title: 'BOM单价更新', noCache: false },
         menu: 'maintainPriceBom'
       }
     ]
@@ -239,14 +239,14 @@ export const asyncRouterMap = [
             path: '/createModifyPrice',
             name: 'CreateModifyPrice',
             component: () => import('@/views/purchasing/modifyPrice/createModifyPrice'),
-            meta: { title: '新增调价', noCache: false },
+            meta: { title: '新增调价' },
             menu: 'createModifyPrice'
           },
           {
             path: '/editModifyPrice/:id',
             name: 'EditModifyPrice',
             component: () => import('@/views/purchasing/modifyPrice/editModifyPrice'),
-            meta: { title: '修改调价', noCache: false },
+            meta: { title: '修改调价' },
             menu: 'editModifyPrice',
             hidden: true
           },
@@ -254,7 +254,7 @@ export const asyncRouterMap = [
             path: '/detailModifyPrice/:id',
             name: 'DetailModifyPrice',
             component: () => import('@/views/purchasing/modifyPrice/detailModifyPrice'),
-            meta: { title: '详情调价', noCache: false },
+            meta: { title: '详情调价' },
             menu: 'detailModifyPrice',
             hidden: true
           },
@@ -262,28 +262,28 @@ export const asyncRouterMap = [
             path: '/untreatedModifyPrice',
             name: 'UntreatedModifyPrice',
             component: () => import('@/views/purchasing/modifyPrice/untreatedModifyPrice'),
-            meta: { title: '未处理调价', noCache: false },
+            meta: { title: '未处理调价' },
             menu: 'untreatedModifyPrice'
           },
           {
             path: '/underReviewModifyPrice',
             name: 'UnderReviewModifyPrice',
             component: () => import('@/views/purchasing/modifyPrice/underReviewModifyPrice'),
-            meta: { title: '审核中调价', noCache: false },
+            meta: { title: '审核中调价' },
             menu: 'underReviewModifyPrice'
           },
           {
             path: '/refuseModifyPrice',
             name: 'RefuseModifyPrice',
             component: () => import('@/views/purchasing/modifyPrice/refuseModifyPrice'),
-            meta: { title: '审核不通过调价', noCache: false },
+            meta: { title: '审核不通过调价' },
             menu: 'refuseModifyPrice'
           },
           {
             path: '/modifyPriceList',
             name: 'ModifyPriceList',
             component: () => import('@/views/purchasing/modifyPrice/modifyPriceList'),
-            meta: { title: '调价列表', noCache: false },
+            meta: { title: '调价列表' },
             menu: 'modifyPriceList'
           }
         ]
@@ -293,7 +293,8 @@ export const asyncRouterMap = [
         component: () => import('@/views/purchasing/purchase'),
         name: 'Purchase',
         meta: {
-          title: '价目表管理'
+          title: '价目表管理',
+          noCache: false
         },
         children: [
           {

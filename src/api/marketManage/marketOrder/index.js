@@ -184,3 +184,11 @@ export function querySalPriceCustomer(params) {
     params
   })
 }
+// 查询销售订单日志、操作人
+export function querySalOrderLog(data) {
+  return request({
+    url: '/TJxLog/querySalOrderLog',
+    method: 'post',
+    data
+  })
+}

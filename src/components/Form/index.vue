@@ -23,7 +23,7 @@
             v-else-if="item.type === 'text' || item.type === 'password' || !item.type"
             :label="item.label"
             :prop="key"
-            label-width="100px"
+            label-width="120px"
             :rules="item.rules"
           >
             <el-input

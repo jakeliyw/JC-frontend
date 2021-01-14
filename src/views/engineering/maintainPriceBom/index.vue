@@ -20,17 +20,17 @@
         :data="tableData"
         border
         row-key="loking"
-        height="calc(100vh - 250px)"
+        height="calc(100vh - 300px)"
         :tree-props="{children: 'child', hasChildren: 'hasChildren'}"
         :header-cell-style="{background:'#E6EBFC', fontSize: '13px'}"
       >
         <el-table-column prop="index" label="序号" align="center" />
-        <el-table-column prop="fnumber" label="物料编码" align="center" min-width="120px" :show-overflow-tooltip="true" />
+        <el-table-column prop="fnumber" label="物料编码" align="center" min-width="120px" />
         <el-table-column
           prop="fdescripTion"
           label="物料描述"
           align="center"
-          min-width="200px"
+          min-width="240px"
           :show-overflow-tooltip="true"
         />
         <el-table-column prop="fdosage" label="用量" align="center" min-width="150px">
@@ -174,6 +174,7 @@ export default {
       await renovateAloneBom(DATA).then(res => {
         if (res.code === 0) {
           this.$message.success(res.message)
+          this.handleGetBomList()
         } else {
           this.$message.error(res.message)
         }
@@ -196,6 +197,7 @@ export default {
       await renovateBom(DATA).then(res => {
         if (res.code === 0) {
           this.$message.success(res.message)
+          this.handleGetBomList()
         } else {
           this.$message.error(res.message)
         }

@@ -169,10 +169,6 @@
             </el-button>
           </template>
         </jc-table>
-
-      </el-tab-pane>
-      <el-tab-pane label="其它" name="other">
-        <h2>页面待开发</h2>
       </el-tab-pane>
     </el-tabs>
     <!--    币别弹窗-->
@@ -489,7 +485,7 @@ export default {
         for (const ITEM of this.tableData) {
           if (ITEM.fmaterialId === '' ||
             ITEM.fprice === 0 || ITEM.ftaxPrice === 0 || ITEM.fpriceCoefficient === 0 || ITEM.feffectiveDate == null) {
-            this.$message.error('表格不能为空,或表格值不能为0')
+            this.$message.warning('表格不能为空,或表格值不能为0')
             return
           }
         }
@@ -740,7 +736,7 @@ export default {
     // 删除行数据
     handleDelete(item, index) {
       if (index === 0) {
-        this.$message.error('不能删除首行数据')
+        this.$message.warning('不能删除首行数据')
         return
       }
       this.tableData.splice(index, 1)
