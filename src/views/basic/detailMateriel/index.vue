@@ -54,6 +54,11 @@
           </div>
         </jc-form>
       </el-tab-pane>
+      <el-tab-pane label="信息" name="information">
+        <jc-information
+          :information="information"
+        />
+      </el-tab-pane>
       <el-tab-pane label="其它" name="log">
         <jc-other
           :other-url-object="otherUrlObject"
@@ -77,6 +82,7 @@
 import jcForm from '@/components/Form'
 import jcOther from '@/components/Other'
 import jcPagination from '@/components/Pagination'
+import jcInformation from '../createMateriel/Information'
 import { queryMaterialDetail, queryMaterialLog } from '@/api/basicManagement/materielList'
 
 export default {
@@ -84,7 +90,8 @@ export default {
   components: {
     jcForm,
     jcOther,
-    jcPagination
+    jcPagination,
+    jcInformation
   },
   data() {
     return {
@@ -110,7 +117,8 @@ export default {
       basicValue: {}, // 基本数据
       basic: {}, // 基本控件
       organizationValue: {}, // 组织值
-      organization: {} // 组织控件
+      organization: {}, // 组织控件
+      information: {}
     }
   },
   mounted() {
@@ -122,6 +130,16 @@ export default {
         this.property = RES.data.property
         this.imageUrl = RES.data.material.FIMG
         this.fmaterialId = RES.data.material.FMATERIALID
+        this.information = {
+          fdefaultvendor: RES.data.material.fsupplier,
+          fpobillTypeName: RES.data.material.fbillType,
+          fquotaType: RES.data.material.fquotaType,
+          fstockName: RES.data.material.fstockId,
+          fminStock: RES.data.material.fminStock,
+          fsafeStock: RES.data.material.fsafeStock,
+          fmaxStock: RES.data.material.fmaxStock,
+          position: RES.data.material.fsafeStock
+        }
         this.organizationValue = {
           FCREATEORG: RES.data.material.FCREATEORGID,
           FUSEORG: RES.data.material.FUSEORGID,

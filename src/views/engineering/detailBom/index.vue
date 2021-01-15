@@ -11,7 +11,7 @@
         <el-select v-model="team" placeholder="请选择" size="mini" class="input-width" disabled />
         <span class="text-margin">使用组织</span>
         <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled />
-        <div class="summation">材料成本:
+        <div class="summation">物料成本:
           <span class="color-text">{{ FMATERIALCOST }}元</span>
         </div>
       </div>
@@ -293,7 +293,7 @@ export default {
       this.prodValue.FMATERIALCOST = this.Summation
       this.prodOptions = {
         FMATERIALCOST: {
-          label: '物料成本',
+          label: '材料成本',
           disabled: 'disabled'
         },
         FLABORCOST: {

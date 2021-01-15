@@ -19,7 +19,7 @@
         </el-select>
         <span class="text-margin">使用组织</span>
         <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled />
-        <div class="summation">材料成本:
+        <div class="summation">物料成本:
           <span class="color-text">{{ materialScience }}元</span>
         </div>
       </div>

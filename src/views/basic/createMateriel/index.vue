@@ -270,7 +270,7 @@
         :total="total"
         :page.sync="contrastPagination.pageNum"
         :limit.sync="contrastPagination.pageSize"
-        @pagination="openMaterialDialog"
+        @pagination="createSerial"
       />
       <span slot="footer">
         <el-button size="small" @click="openMaterial = false">取消</el-button>
@@ -285,7 +285,6 @@ import jcForm from '@/components/Form'
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jcPopup from '@/views/basic/createMateriel/components/Popup'
-import jcOther from '@/components/Other'
 import jcFormFunction from '@/components/Form/FormFunction'
 import jcInformation from './Information'
 import {
@@ -301,7 +300,6 @@ import {
   queryMaterialAttribute,
   queryMaterialAttributes
 } from '@/api/basicManagement/createMateriel'
-import { queryMaterialLog } from '@/api/basicManagement/materielList'
 export default {
   name: 'CreateMateriel',
   components: {
@@ -309,7 +307,6 @@ export default {
     jcPopup,
     jcTable,
     jcPagination,
-    jcOther,
     jcInformation
   },
   mixins: [jcFormFunction],

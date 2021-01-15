@@ -14,6 +14,7 @@
             v-if="item.type === 'slot'"
             :label="item.label"
             :prop="key"
+            label-width="120px"
             :rules="item.rules"
           >
             <slot />
@@ -60,7 +61,7 @@
             :label="item.label"
             :prop="key"
             :rules="item.rules"
-            label-width="100px"
+            label-width="120px"
           >
             <el-select
               v-model="optionValue[key]"

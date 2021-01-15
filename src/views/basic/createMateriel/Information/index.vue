@@ -181,7 +181,6 @@ export default {
   props: {
     company: {
       type: Object,
-      required: true,
       default: () => {
         return {}
       }
