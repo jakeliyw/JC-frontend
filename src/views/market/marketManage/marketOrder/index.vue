@@ -43,7 +43,7 @@
         </el-table-column>
         <el-table-column prop="attributeArray" label="操作" min-width="100px" align="center" fixed="right">
           <template slot-scope="scope">
-            <el-button type="primary" class="btn" size="medium" @click="particulars(scope.row.fid)">详情</el-button>
+            <el-button type="primary" class="btn" size="mioni" @click="particulars(scope.row.fid)">详情</el-button>
           </template>
         </el-table-column>
       </jc-table>

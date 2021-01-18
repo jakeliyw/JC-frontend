@@ -29,10 +29,7 @@
         </el-table-column>
         <template v-slot:btnState="clo">
           <el-steps :active="clo.scope.row.FSTATUS" align-center class="font-style" finish-status="success" process-status="finish">
-            <el-step title="研发审核" />
-            <el-step title="IE审核" />
-            <el-step title="财务审核" />
-            <el-step title="信息部审核" />
+            <el-step title="研发部审核" />
           </el-steps>
         </template>
         <template v-slot:btnSlot="clo">

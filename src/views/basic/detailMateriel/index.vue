@@ -60,19 +60,19 @@
         />
       </el-tab-pane>
       <el-tab-pane label="其它" name="log">
-        <jc-other
-          :other-url-object="otherUrlObject"
-          :other-log-table-data="otherLogTableData"
-        >
-          <jc-pagination
-            v-show="total > 0"
-            slot="slotPagination"
-            :total="total"
-            :page.sync="pageNum"
-            :limit.sync="size"
-            @pagination="handleOther"
-          />
-        </jc-other>
+        <jc-form :option-value="otherUrlObject" :options="otherOptions" />
+        <jc-table
+          :table-header="logTableHeader"
+          :table-data="otherLogTableData"
+          :cell-style="cellStyle"
+        />
+        <jc-pagination
+          v-show="total > 0"
+          :total="total"
+          :page.sync="pageNum"
+          :limit.sync="size"
+          @pagination="handleOther"
+        />
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -80,7 +80,7 @@
 
 <script>
 import jcForm from '@/components/Form'
-import jcOther from '@/components/Other'
+import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jcInformation from '../createMateriel/Information'
 import { queryMaterialDetail, queryMaterialLog } from '@/api/basicManagement/materielList'
@@ -89,14 +89,15 @@ export default {
   name: 'DetailMateriel',
   components: {
     jcForm,
-    jcOther,
     jcPagination,
-    jcInformation
+    jcInformation,
+    jcTable
   },
   data() {
     return {
       activeName: 'basic',
       total: 0, // 总条目
+      cellStyle: { padding: '10 10' }, // 行高
       imageUrl: '', // 上传图片
       pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
@@ -105,6 +106,7 @@ export default {
       FVOLUMEUNITID: '', // 尺寸单位
       fmaterialId: '', // id
       otherUrlObject: {}, // 其它审核人
+      otherOptions: {}, // 其它审核人控件
       otherLogTableData: [], // 日志数据
       imagesValue: {}, // 图片值
       imagesOptions: {}, // 图片控件
@@ -118,6 +120,13 @@ export default {
       basic: {}, // 基本控件
       organizationValue: {}, // 组织值
       organization: {}, // 组织控件
+      logTableHeader: [
+        { label: '日期', prop: 'createDate', align: 'center' },
+        { label: '操作人', prop: 'fname', align: 'center' },
+        { label: '部门', prop: 'fdeaprt', align: 'center' },
+        { label: 'IP地址', prop: 'fip', align: 'center' },
+        { label: '行为', prop: 'fdescribe', align: 'center' }
+      ],
       information: {}
     }
   },
@@ -320,6 +329,28 @@ export default {
       const DATA = { pageNum: this.pageNum, pageSize: this.size, fmaterialId: this.fmaterialId }
       const RES = await queryMaterialLog(DATA)
       this.otherUrlObject = RES.data.operator
+      this.otherOptions = {
+        fcreator: {
+          label: '创建人',
+          span: 8,
+          disabled: 'disabled'
+        },
+        fdevel: {
+          label: '研发审核人',
+          span: 8,
+          disabled: 'disabled'
+        },
+        fieid: {
+          label: 'IE审核人',
+          span: 8,
+          disabled: 'disabled'
+        },
+        fcreateDate: {
+          label: '创建时间',
+          span: 8,
+          disabled: 'disabled'
+        }
+      }
       this.total = RES.data.total
       this.otherLogTableData = RES.data.array
     }

@@ -33,7 +33,6 @@
             <el-steps :active="clo.row.fstatus" align-center class="font-style" finish-status="success" process-status="error">
               <el-step title="销售员" />
               <el-step title="销售主管" />
-              <el-step title="已审核" />
             </el-steps>
           </template>
         </el-table-column>

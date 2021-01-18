@@ -356,20 +356,6 @@ export default {
       weightTableData: [], // 重量单位数据
       sizeTableData: [], // 尺寸单位
       basicUnit: [], // 基本单位
-      protect: [
-        {
-          label: 'A级',
-          value: 'A级'
-        },
-        {
-          label: 'B级',
-          value: 'B级'
-        },
-        {
-          label: 'C级',
-          value: 'C级'
-        }
-      ],
       tableHeader: [
         { label: '基本单位编码', prop: 'FNUMBER', align: 'center' },
         { label: '基本单位名称', prop: 'FNAME', align: 'center ' },
@@ -584,8 +570,8 @@ export default {
         FISSUBCONTRACT: this.FISSUBCONTRACT,
         // 允许资产
         FISASSET: this.FISASSET,
-        FBASEUNITID: this.basicValue.FBASEUNITID,
         FNUMBER: this.basicValue.FNUMBER,
+        FBASEUNITID: this.basicValue.FBASEUNITID,
         FOLDNUMBER: this.basicValue.FOLDNUMBER,
         FBARCODE: this.basicValue.FBARCODE,
         FERPCLSID: this.basicValue.FERPCLSID,
@@ -719,17 +705,12 @@ export default {
         return item.value === num
       })
     },
-    // 获取环境
-    async getKit() {
-      return this.protect
-    },
     // 刷新页面
     refresh() {
       location.reload()
     },
     async handleControl() {
       const organizationRes = await this.getOrganization()
-      const kitRes = await this.getKit()
       this.basicUnit = await this.getBasicUnit()
       const materielType = await this.getMaterielType()
       this.organizationValue = {
@@ -827,11 +808,9 @@ export default {
         },
         FPROTECT: {
           label: '环保等级',
-          type: 'select',
-          selectItems: kitRes,
           span: 8,
           rules: [
-            { required: true, message: '请选择环保等级', trigger: 'change' }
+            { required: true, message: '请输入环保等级', trigger: 'blur' }
           ]
         },
         FERPCLSID: {

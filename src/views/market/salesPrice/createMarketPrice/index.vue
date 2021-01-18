@@ -37,12 +37,12 @@
               <i
                 slot="suffix"
                 class="el-input__icon el-icon-search"
-                @click="queryTBdCurrency()"
+                @click="currencyVisiblit=true"
               />
             </el-input>
           </el-form-item>
-          <el-form-item label="备注" prop="fdescription">
-            <el-input v-model.trim="prodValue.fdescription" type="textarea" placeholder="请填写备注" size="mini" />
+          <el-form-item label="备注" prop="fdescripTion">
+            <el-input v-model.trim="prodValue.fdescripTion" type="textarea" placeholder="请填写备注" size="mini" />
           </el-form-item>
           <el-form-item label="是否含税">
             <el-checkbox v-model="prodValue.fisIncludedTax" />
@@ -77,28 +77,24 @@
             min-width="200px"
             :show-overflow-tooltip="true"
           />
-          <el-table-column label="单位" prop="funitName" align="center" />
-          <el-table-column label="销售系数(%)" prop="fpriceBase" min-width="140px" align="center">
+          <el-table-column label="销售单位" prop="funitName" align="center" />
+          <el-table-column label="出厂价" align="center">
+            <template slot-scope="scope">
+              {{ scope.row.deliveryPrice }}
+            </template>
+          </el-table-column>
+          <el-table-column label="销售系数(%)" prop="fpriceBase" min-width="150px" align="center">
             <template slot-scope="scope">
               <el-input-number
                 v-model="scope.row.fpriceBase"
-                :min="1"
+                :min="10"
+                :max="40"
                 size="mini"
-                disabled
                 @change="inputNum(scope.$index)"
               />
             </template>
           </el-table-column>
-          <el-table-column label="销售单价" prop="fprice" min-width="140px" align="center">
-            <template slot-scope="scope">
-              <el-input-number
-                v-model="scope.row.fprice"
-                :min="1"
-                size="mini"
-              />
-            </template>
-          </el-table-column>
-          <el-table-column label="销售基准价" prop="fdownPrice" min-width="140px" align="center">
+          <el-table-column label="销售基准价" prop="fdownPrice" min-width="150px" align="center">
             <template slot-scope="scope">
               <el-input-number
                 v-model="scope.row.fdownPrice"
@@ -109,7 +105,7 @@
           </el-table-column>
           <el-table-column label="操作" prop="fqty" min-width="100px" align="center">
             <template slot-scope="scope">
-              <el-button type="danger" size="medium" @click="delectSale(scope.$index)">删除</el-button>
+              <el-button type="danger" size="mini" @click="delectSale(scope.$index)">删除</el-button>
             </template>
           </el-table-column>
         </jc-table>
@@ -132,56 +128,9 @@
       </el-tab-pane>
     </el-tabs>
     <!--    币别列表弹窗-->
-    <el-dialog
-      title="币别"
-      model
-      :visible.sync="isCurrencyDialog"
-      :close-on-click-modal="false"
-      width="60%"
-    >
-      <div class="materiel-form">
-        <span class="materiel-code">币别名称</span>
-        <el-input
-          v-model.trim="currency.fname"
-          class="input-width"
-          size="mini"
-          placeholder="请输入币别名称"
-          @keyup.enter.native="currencySearch"
-        />
-        <el-button size="mini" type="primary" @click="currencySearch">搜索</el-button>
-      </div>
-      <jc-table
-        :table-data="currencyDialogData"
-        :table-header="currencyDialogHeader"
-        table-height="52vh"
-        serial
-        :cell-style="cellStyle"
-        @clickRow="currencySelectRow"
-      >
-        <el-table-column label="编码" prop="fnumber" align="center" />
-        <el-table-column label="名称" prop="fname" align="center" />
-        <el-table-column label="货币代码" prop="fcode" align="center" />
-        <el-table-column label="审核状态" align="center">
-          <template slot-scope="scope">
-            <span v-if="scope.row.fdocumentStatus=='C'">已审核</span>
-            <span v-else>否</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="禁用状态" align="center">
-          <template slot-scope="scope">
-            <span v-if="scope.row.fforbidStatus=='C'">已审核</span>
-            <span v-else>否</span>
-          </template>
-        </el-table-column>
-      </jc-table>
-      <jc-pagination
-        v-show="currency.total > 0"
-        :total="currency.total"
-        :page.sync="currency.pageNum"
-        :limit.sync="currency.pageSize"
-        @pagination="queryTBdCurrency"
-      />
-    </el-dialog>
+    <currency v-if="currencyVisiblit" @currency="currencyData" />
+    <!--客户列表-->
+    <client v-if="clientVisiblit" @client="clientData" />
     <!--    物料弹窗-->
     <el-dialog
       title="物料列表"
@@ -233,8 +182,6 @@
         @pagination="handleGetMateriel"
       />
     </el-dialog>
-    <!--客户列表-->
-    <client v-if="clientVisiblit" @client="clientData" />
   </div>
 </template>
 <script>
@@ -242,7 +189,6 @@ import {
   queryTOrgOrganizationsL
 } from '@/api/engineering/createBom'
 import {
-  queryTBdCurrency,
   insertSalPrice,
   querySalPriceMaterial
 } from '@/api/marketManage/marketPriceList'
@@ -250,6 +196,7 @@ import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jumpMateriel from '@/components/JumpMateriel'
 import jcTitle from '@/components/Title'
+import currency from '@/views/market/marketManage/createMarkerOrder/components/currency'
 import client from '@/views/market/marketManage/createMarkerOrder/components/client'
 import {
   queryMaterialList,
@@ -263,14 +210,17 @@ export default {
     jcPagination,
     jcTitle,
     jcMarker,
-    client
+    client,
+    currency
   },
   mixins: [jumpMateriel],
+  inject: ['reload'],
   data() {
     return {
       clientVisiblit: false, // 客户弹窗
       disabled: false, // 税率是否禁用
       isMaterielDialog: false, // 物料弹窗
+      materialId: '', // 物料ID
       // 物料弹窗分页
       materielPagination: {
         total: 0, // 总条目
@@ -296,19 +246,18 @@ export default {
         fcreateOrgId: 1, // 销售组织
         fname: '', // 价目表名称
         fcurrencyId: '', // 币别ID
-        fdescription: '', // 备注
+        fdescripTion: '', // 备注
         fisIncludedTax: false, // 含税
         fcurrencyIdName: '', // 币别名称
         limitName: '客户', // 限定客户
         fcust: '', // 选择客户
+        fcustId: '', // 客户ID
         priceDetails: [{
           fmaterialId: '', // 物料编码ID
           fmaterialIdName: '', // 物料编码
-          funitId: '', // 单位ID
           funitName: '', // 单位
-          fmaterialTypeId: '', // 存货类型ID
-          fpriceBase: 40, // 销售系数
-          fprice: '', // 销售单价
+          fpriceBase: 10, // 销售系数
+          deliveryPrice: '', // 出厂价
           fdownPrice: '' // 销售基准价
         }]
       },
@@ -320,20 +269,14 @@ export default {
           { required: true, message: '请选择销售组织', trigger: 'change' }
         ], fcurrencyId: [
           { required: true, message: '请选择币别', trigger: 'change' }
-        ], fdescription: [
+        ], fdescripTion: [
           { required: true, message: '请输入备注', trigger: 'blue' }
+        ], fcustId: [
+          { required: true, message: '请选择客户', trigger: 'change' }
         ]
       },
       // 结算币别
-      isCurrencyDialog: false,
-      currency: {
-        total: 0, // 总条目
-        pageNum: 1, // 当前页
-        pageSize: 10, // 每页显示多少条数据
-        fname: ''
-      },
-      currencyDialogData: [],
-      currencyDialogHeader: [],
+      currencyVisiblit: false,
       loading: false,
       otherUrlObject: {}, // 其它审核人
       otherLogTableData: [], // 日志数据
@@ -355,13 +298,8 @@ export default {
           return false
         }
         for (const item of this.prodValue.priceDetails) {
-          if (item.fmaterialId === '' || item.fprice === '' || item.fdownPrice === '' || item.fpriceBase === '') {
+          if (item.fmaterialId === '' || item.fdownPrice === '' || item.fpriceBase === '') {
             this.$message.error('表格不能为空或删除空行')
-            this.loading = false
-            return false
-          }
-          if (item.fprice < item.fdownPrice) {
-            this.$message.error('销售单价不能小于销售基准价')
             this.loading = false
             return false
           }
@@ -375,7 +313,7 @@ export default {
               message: '新增成功'
             })
             setTimeout(() => {
-              location.reload()
+              this.reload()
             }, 2000)
           }
         }).catch(error => {
@@ -386,12 +324,7 @@ export default {
     },
     // 物料弹窗选中
     async materielSelectRow(item) {
-      this.prodValue.priceDetails[this.tableIndex].fmaterialId = item.fmaterialId
-      this.prodValue.priceDetails[this.tableIndex].fmaterialIdName = item.fnumber
-      this.prodValue.priceDetails[this.tableIndex].fdescripTion = item.fdescripTion
-      this.prodValue.priceDetails[this.tableIndex].funitId = item.funitId
-      this.prodValue.priceDetails[this.tableIndex].funitName = item.funitName
-      this.prodValue.priceDetails[this.tableIndex].fmaterialTypeId = item.fcategoryId
+      this.materialId = item.fmaterialId
       this.isMaterielDialog = false
       this.querySalPriceMaterial()
     },
@@ -402,7 +335,7 @@ export default {
       }
       if (index === this.prodValue.priceDetails.length - 1) {
         this.prodValue.priceDetails.push(
-          { fmaterialId: '', funitId: '', fmaterialTypeId: '', fpriceBase: '', fprice: '', fdownPrice: '' }
+          { fpriceBase: 10, fdownPrice: 0 }
         )
       }
       const DATA = {
@@ -422,13 +355,20 @@ export default {
       this.materielPagination.pageNum = 1
       this.handleGetMateriel()
     },
-    // 获取出厂价
+    // 获取出厂价及物料信息
     async querySalPriceMaterial() {
-      const DATA = { fmaterialId: this.prodValue.priceDetails[this.tableIndex].fmaterialId }
+      const DATA = { fmaterialId: this.materialId }
       const { data: RES } = await querySalPriceMaterial(DATA)
+      // 销售系数
       const fpriceBase = (this.prodValue.priceDetails[this.tableIndex].fpriceBase) / 100
+      this.prodValue.priceDetails[this.tableIndex].fmaterialId = RES.fmaterialId
+      this.prodValue.priceDetails[this.tableIndex].fmaterialIdName = RES.fnumber
+      this.prodValue.priceDetails[this.tableIndex].fdescripTion = RES.fdescripTion
+      this.prodValue.priceDetails[this.tableIndex].funitId = RES.funitId
+      this.prodValue.priceDetails[this.tableIndex].funitName = RES.funitName
+      this.prodValue.priceDetails[this.tableIndex].deliveryPrice = RES.deliveryPrice
       // 基准价
-      this.prodValue.priceDetails[this.tableIndex].fdownPrice = (RES * (1 + fpriceBase)).toFixed(4)
+      this.prodValue.priceDetails[this.tableIndex].fdownPrice = (RES.deliveryPrice * (1 + fpriceBase)).toFixed(4)
     },
     // 监听销售系数
     inputNum(index) {
@@ -439,32 +379,29 @@ export default {
     },
     // 获取客户数据(子传父)
     clientData(item) {
-      this.prodValue.fcustId = item.fcustId
-      this.prodValue.fcust = item.fname
-      this.clientVisiblit = item.isclientlDialog
+      if (item.fcustId) {
+        this.prodValue.fcustId = item.fcustId
+        this.prodValue.fcust = item.fname
+        this.clientVisiblit = item.isclientlDialog
+      } else {
+        this.clientVisiblit = item.isclientlDialog
+      }
     },
     // 获取组织
     async handleGetPurchase() {
       const { data: RES } = await queryTOrgOrganizationsL()
       this.teamList = RES
     },
-    // 查询币别
-    async queryTBdCurrency() {
-      this.isCurrencyDialog = true
-      const DATA = this.currency
-      const { data: RES } = await queryTBdCurrency(DATA)
-      this.currencyDialogData = RES.array
-      this.currency.total = RES.total
-    },
-    currencySearch() {
-      this.currency.pageNum = 1
-      this.queryTBdCurrency()
-    },
-    // 选择结算货币
-    currencySelectRow(item) {
-      this.prodValue.fcurrencyIdName = item.fname
-      this.prodValue.fcurrencyId = item.fcurrencyId
-      this.isCurrencyDialog = false
+    // 选择币别
+    currencyData(item) {
+      if (item.fsettleCurrId) {
+        this.prodValue.fcurrencyIdName = item.fsettleCurrIdName
+        this.prodValue.fcurrencyId = item.fsettleCurrId
+        this.currencyVisiblit = item.isCurrencyDialog
+      } else {
+        // 点击关闭按钮
+        this.currencyVisiblit = item.isCurrencyDialog
+      }
     },
     // 删除明细空行
     delectSale(index) {

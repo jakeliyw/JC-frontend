@@ -14,7 +14,7 @@
               :table-header="tableHeader"
               :cell-style="cellStyle"
             >
-              <el-table-column prop="fnumber" label="物料编码" min-width="120px" align="center" :show-overflow-tooltip="true">
+              <el-table-column prop="fnumber" label="物料编码" min-width="150px" align="center" :show-overflow-tooltip="true">
                 <template slot-scope="scope">
                   <el-input v-model="scope.row.fnumber" size="mini" disabled>
                     <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fnumber)" />
@@ -25,6 +25,7 @@
               <el-table-column prop="funit" label="基本单位" min-width="80px" align="center" />
               <el-table-column prop="fqty" label="产品数量" align="center" />
               <el-table-column prop="fprice" label="产品单价" align="center" />
+              <el-table-column prop="fdownprice" label="基准价" align="center" />
               <el-table-column prop="totalPrice" label="总价" align="center" />
               <el-table-column prop="fsettleCurr" label="币别" align="center" />
               <el-table-column prop="fvolume" label="产品体积" align="center" />
@@ -150,6 +151,7 @@ export default {
       const DATA = { fid: id }
       const { data: RES } = await queryTSalOrderNtry(DATA)
       this.saleDetails = RES.saleDetails
+      console.log(RES.saleDetails)
       this.planDetails = RES.planDetails
       if (RES.fcloseStatus === 'A') {
         RES.fcloseStatus = '正常'

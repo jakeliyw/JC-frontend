@@ -48,7 +48,7 @@
           </template>
           <template v-slot:btnSlot="clo">
             <el-button type="primary" size="mini" @click="detailMateriel(clo.scope.row.FNUMBER)">查询物料</el-button>
-            <el-button v-if="false" type="danger" size="mini" @click="deleteMateriel(clo.scope.row.FMATERIALID)">删除物料</el-button>
+            <el-button type="danger" size="mini" @click="Retrial(clo.scope.row.FMATERIALID)">反审核</el-button>
           </template>
         </jc-table>
         <div class="footer">
@@ -69,8 +69,9 @@
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
-import { queryTJxLargeitemtypeGroup, queryTBdMaterialList, deleteMaterial } from '@/api/basicManagement/materielList'
+import { queryTJxLargeitemtypeGroup, queryTBdMaterialList } from '@/api/basicManagement/materielList'
 import { toMxAmina, Disable } from '@/components/ToMxamineState'
+import { updateMaterialNotReview } from '@/api/basicManagement/untreatedMaterie'
 export default {
   name: 'MaterielList',
   components: {
@@ -96,7 +97,7 @@ export default {
         { label: '禁用状态', prop: 'FFORBIDSTATUS', align: 'center' },
         { label: '生效时间', prop: 'FCREATEDATE', align: 'center' },
         { label: '审核状态', type: 'state', prop: 'FDOCUMENTSTATUS', align: 'center' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '120px', align: 'center' }
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
       ], // 表头数据
       materialTableData: [], // 表格数据
       defaultProps: {
@@ -158,13 +159,15 @@ export default {
     detailMateriel(FNUMBER) {
       this.$router.push({ path: `/detailMateriel/${FNUMBER}` })
     },
-    // 删除物料
-    async deleteMateriel(FMATERIALID) {
-      const { code, message } = await deleteMaterial({ fmaterial: FMATERIALID })
-      if (code === 0) {
-        this.$message.success(message)
-        this.getMaterialList()
+    // 反审核
+    async Retrial(FMATERIALID) {
+      const { code, message } = await updateMaterialNotReview({ fmaterial: FMATERIALID })
+      if (code !== 0) {
+        return
       }
+      this.$message.success(message)
+      this.$router.push({ name: 'RefuseMateriel' })
+      this.reload()
     }
   }
 }

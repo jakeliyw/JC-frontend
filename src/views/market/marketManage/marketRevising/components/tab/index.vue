@@ -39,7 +39,16 @@
               />
             </template>
           </el-table-column>
-          <el-table-column label="销售单价" prop="fprice" align="center" />
+          <el-table-column label="销售单价" prop="fprice" align="center" min-width="140px">
+            <template slot-scope="scope">
+              <el-input-number
+                v-model="scope.row.fprice"
+                :min="0"
+                size="mini"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column label="销售基准价" prop="fdownprice" align="center" min-width="100px" />
           <el-table-column label="是否赠品" prop="fisFree" align="center">
             <template slot-scope="scope">
               <el-checkbox
@@ -407,7 +416,7 @@ export default {
       this.tabTwo.saleDetails[this.tableIndex].funitId = item.funitId
       this.tabTwo.saleDetails[this.tableIndex].funit = item.funitName
       this.tabTwo.saleDetails[this.tableIndex].fmodel = item.fmodel
-      this.tabTwo.saleDetails[this.tableIndex].fprice = item.fprice
+      this.tabTwo.saleDetails[this.tableIndex].fdownprice = item.fdownPrice
       this.isMaterielDialog = false
       this.$emit('visible', this.tabTwo)
     },

@@ -93,7 +93,6 @@ export default {
         { label: '物料规格', prop: 'fspecificaTion', align: 'center', minWidth: '120px' },
         { label: '型号', prop: 'fmodel', align: 'center' },
         { label: '描述', prop: 'fdescripTion', align: 'left', minWidth: '180px' },
-        { label: '单价', prop: 'fprice', align: 'center' },
         { label: '创建时间', prop: 'fcreateDate', align: 'center' }
       ],
       cellStyle: { padding: '10 10' },

@@ -59,7 +59,7 @@
       width="50%"
       :close-on-click-modal="false"
     >
-      <el-button type="primary" class="btn inTheBtn" size="medium" @click="increased(1)">新增</el-button>
+      <el-button type="primary" class="btn inTheBtn" size="mini" @click="increased(1)">新增</el-button>
       <jc-table
         :table-data="inTheData"
         :table-header="inTheHeader"
@@ -82,7 +82,7 @@
       width="50%"
       :close-on-click-modal="false"
     >
-      <el-button type="primary" class="btn inTheBtn" size="medium" @click="increased(2)">新增</el-button>
+      <el-button type="primary" class="btn inTheBtn" size="mini" @click="increased(2)">新增</el-button>
       <jc-table
         :table-data="smallData"
         :table-header="smallHeader"
@@ -106,7 +106,7 @@
       width="50%"
       :close-on-click-modal="false"
     >
-      <el-button type="primary" class="btn inTheBtn" size="medium" @click="increased(3)">新增</el-button>
+      <el-button type="primary" class="btn inTheBtn" size="mini" @click="increased(3)">新增</el-button>
       <jc-table
         :table-data="attributeData"
         :table-header="attributeHeader"
@@ -423,9 +423,6 @@ export default {
           this.newMediumName = ''
           this.inTheClass(this.newLargeCode)
           return
-        } else {
-          this.$message.error(message)
-          return
         }
       } else if (this.newClassID === 2) { // 新增小类
         const DATA = { serialType: this.newSerialType, name: this.serial.join(','), mediumCode: this.newMediumName }
@@ -439,9 +436,6 @@ export default {
           this.serial = []
           this.smallClass(this.newSerialType)
           return
-        } else {
-          this.$message.error(message)
-          return
         }
       } else if (this.newClassID === 3) { // 新增属性
         const DATA = { attributeType: this.newAttributeType, name: this.newMediumName }
@@ -454,9 +448,6 @@ export default {
           this.newInTheClass = false
           this.newMediumName = ''
           this.attribute(this.newAttributeType)
-          return
-        } else {
-          this.$message.error(message)
           return
         }
       }

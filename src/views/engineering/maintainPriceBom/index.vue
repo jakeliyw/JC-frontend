@@ -175,8 +175,6 @@ export default {
         if (res.code === 0) {
           this.$message.success(res.message)
           this.handleGetBomList()
-        } else {
-          this.$message.error(res.message)
         }
       })
     },
@@ -198,8 +196,6 @@ export default {
         if (res.code === 0) {
           this.$message.success(res.message)
           this.handleGetBomList()
-        } else {
-          this.$message.error(res.message)
         }
       })
     }

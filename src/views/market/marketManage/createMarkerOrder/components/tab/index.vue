@@ -43,7 +43,16 @@
               />
             </template>
           </el-table-column>
-          <el-table-column label="销售单价" prop="fprice" align="center" />
+          <el-table-column label="销售单价" prop="fprice" align="center" min-width="140px">
+            <template slot-scope="scope">
+              <el-input-number
+                v-model="scope.row.fprice"
+                :min="0"
+                size="mini"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column label="销售基准价" prop="fdownPrice" align="center" min-width="100px" />
           <el-table-column label="是否赠品" prop="fisFree" align="center">
             <template slot-scope="scope">
               <el-checkbox
@@ -374,7 +383,7 @@ export default {
       this.tabTwo.saleDetails[this.material].funitId = item.funitId
       this.tabTwo.saleDetails[this.material].funitName = item.funitName
       this.tabTwo.saleDetails[this.material].fmodel = item.fmodel
-      this.tabTwo.saleDetails[this.material].fprice = item.fprice
+      this.tabTwo.saleDetails[this.material].fdownPrice = item.fdownPrice
       this.isMateria = item.isMaterialDialog
     },
     // 监听是否勾选赠品

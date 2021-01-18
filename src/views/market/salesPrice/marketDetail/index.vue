@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <jc-title />
-    <el-tabs type="border-card"  @tab-click="handleOther">
+    <el-tabs type="border-card" @tab-click="handleOther">
       <el-tab-pane label="价目明细">
         <div class="header-card">
           <div class="organization">
@@ -24,7 +24,7 @@
             <el-table-column prop="fdescripTion" label="物料描述" min-width="300" align="center" :show-overflow-tooltip="true" />
             <el-table-column prop="funit" label="基本单位" min-width="80" align="center" />
             <el-table-column prop="fpriceBase" label="销售系数(%)" align="center" />
-            <el-table-column prop="fprice" label="销售单价" align="center" />
+            <el-table-column prop="deliveryPrice" label="出厂价" align="center" />
             <el-table-column prop="fdownPrice" label="销售基准价" align="center" />
             <el-table-column prop="feffectiveDate" label="生效期" align="center" :show-overflow-tooltip="true" />
           </jc-table>
@@ -58,12 +58,9 @@ import {
   querySalPriceNtry
 } from '@/api/marketManage/marketPriceList'
 import jumpMateriel from '@/components/JumpMateriel'
-import {
-  querySalOrderLog
-} from '@/api/marketManage/marketOrder'
 import jcMarker from '@/components/marker'
 import jcPagination from '@/components/Pagination'
-
+import salPrice from '@/views/market/salesPrice/createMarketPrice/components/mixin'
 export default {
   components: {
     jcTable,
@@ -72,7 +69,7 @@ export default {
     jcMarker,
     jcPagination
   },
-  mixins: [jumpMateriel],
+  mixins: [jumpMateriel, salPrice],
   data() {
     return {
       // 表头
@@ -86,7 +83,8 @@ export default {
       otherLogTableData: [], // 日志数据
       pageNum: 1,
       size: 10,
-      total: 0
+      total: 0,
+      tableIndex: 0
     }
   },
   mounted() {
@@ -99,6 +97,11 @@ export default {
       const DATA = { fid: id }
       const { data: RES } = await querySalPriceNtry(DATA)
       this.tableData = RES.detail
+      this.tableData.forEach((item, index) => {
+        this.tableIndex = index
+        this.querySalPriceMaterial()
+      })
+      RES.limitName = '客户'
       this.organizationValue = RES
       this.organization = {
         fsaleOrg: {
@@ -110,7 +113,15 @@ export default {
           disabled: 'disabled'
         },
         fname: {
-          label: '销售价目名称',
+          label: '价目表名称',
+          disabled: 'disabled'
+        },
+        fcustName: {
+          label: '客户名称',
+          disabled: 'disabled'
+        },
+        limitName: {
+          label: '限定客户',
           disabled: 'disabled'
         },
         fcurrency: {
@@ -131,15 +142,6 @@ export default {
           disabled: 'disabled'
         }
       }
-    },
-    // 获取其它
-    async handleOther() {
-      const id = this.$route.params.id
-      const DATA = { pageNum: this.pageNum, pageSize: this.size, fid: id }
-      const { data: RES } = await querySalOrderLog(DATA)
-      this.otherUrlObject = RES.operator
-      this.total = RES.total
-      this.otherLogTableData = RES.array
     }
   }
 }

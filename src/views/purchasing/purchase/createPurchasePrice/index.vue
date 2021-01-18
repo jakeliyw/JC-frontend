@@ -469,6 +469,35 @@ export default {
       }
     }
   },
+  computed: {
+    ftaxRate() {
+      const RES = this.tableData.find(item => item.ftaxRate)
+      return RES
+    }
+  },
+  watch: {
+    ftaxRate(newVal) {
+      if (!this.fpriceDisabled) {
+        // 含税单价
+        newVal.ftaxPrice = newVal.fprice * (1 + newVal.ftaxRate / 100)
+        // 价格上限
+        newVal.fupPrice = newVal.ftaxPrice
+        // 价格下限
+        newVal.fdownPrice = newVal.ftaxPrice
+        newVal.fupPrice = newVal.fupPrice.toFixed(4)
+        newVal.fdownPrice = newVal.fdownPrice.toFixed(4)
+      } else {
+        // 单价
+        newVal.fprice = newVal.ftaxPrice / (1 + newVal.ftaxRate / 100)
+        // 价格上限
+        newVal.fupPrice = newVal.fprice
+        // 价格下限
+        newVal.fdownPrice = newVal.fprice
+        newVal.fupPrice = newVal.fupPrice.toFixed(4)
+        newVal.fdownPrice = newVal.fdownPrice.toFixed(4)
+      }
+    }
+  },
   mounted() {
     this.handleGetPurchase()
     this.handleGetPriceList()
@@ -549,6 +578,9 @@ export default {
     },
     // 供应商税率选中
     taxRateSelectRow(item) {
+      this.tableData.forEach(list => {
+        list.ftaxRate = item.ftaxRate
+      })
       this.purchaseForm.fpaezBase = item.ftaxrateId
       this.purchaseForm.fpaezBaseName = item.fname
       this.openTaxRate = false
@@ -687,6 +719,7 @@ export default {
     },
     // 单价
     handleUnitPrice(row) {
+      // 含税单价
       row.ftaxPrice = row.fprice * (1 + row.ftaxPrice / 100)
       // // 上限
       row.fupPrice = row.fprice
@@ -695,6 +728,7 @@ export default {
     },
     // 含税单价
     handleTaxIncluded(row) {
+      // 单价
       row.fprice = row.ftaxPrice / (1 + row.ftaxRate / 100)
       // 上限
       row.fupPrice = row.ftaxPrice
@@ -704,14 +738,20 @@ export default {
     // 税率影响
     handleTaxRate(row) {
       if (!this.fpriceDisabled) {
+        // 含税单价
         row.ftaxPrice = row.fprice * (1 + row.ftaxRate / 100)
+        // 价格上限
         row.fupPrice = row.ftaxPrice
+        // 价格下限
         row.fdownPrice = row.ftaxPrice
         row.fupPrice = row.fupPrice.toFixed(4)
         row.fdownPrice = row.fdownPrice.toFixed(4)
       } else {
+        // 单价
         row.fprice = row.ftaxPrice / (1 + row.ftaxRate / 100)
+        // 价格上限
         row.fupPrice = row.fprice
+        // 价格下限
         row.fdownPrice = row.fprice
         row.fupPrice = row.fupPrice.toFixed(4)
         row.fdownPrice = row.fdownPrice.toFixed(4)

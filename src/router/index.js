@@ -128,14 +128,14 @@ export const asyncRouterMap = [
             name: 'Categories',
             component: () => import('@/views/basic/encodingRules/categories'),
             meta: { title: '编码配置' },
-            menu: 'userList'
+            menu: 'categories'
           },
           {
             path: '/codeComparative',
             name: 'CodeComparative',
             component: () => import('@/views/basic/encodingRules/codeComparative'),
             meta: { title: '编码规则' },
-            menu: 'userList'
+            menu: 'codeComparative'
           }
         ]
       }
@@ -185,14 +185,14 @@ export const asyncRouterMap = [
         name: 'UnderReviewBom',
         component: () => import('@/views/engineering/underReviewBom'),
         meta: { title: '审核中BOM', noCache: false },
-        menu: 'UnderReviewBom'
+        menu: 'underReviewBom'
       },
       {
         path: '/refuseBom',
         name: 'RefuseBom',
         component: () => import('@/views/engineering/refuseBom'),
         meta: { title: '审核未通过BOM', noCache: false },
-        menu: 'RefuseBom'
+        menu: 'refuseBom'
       },
       {
         path: '/reportForm/:id',
@@ -301,14 +301,14 @@ export const asyncRouterMap = [
             path: '/createPurchasePrice',
             name: 'CreatePurchasePrice',
             component: () => import('@/views/purchasing/purchase/createPurchasePrice'),
-            meta: { title: '新增价目', noCache: false },
+            meta: { title: '新增价目' },
             menu: 'createPurchasePrice'
           },
           {
             path: '/editPurchasePrice/:id',
             name: 'EditPurchasePrice',
             component: () => import('@/views/purchasing/purchase/editPurchasePrice'),
-            meta: { title: '修改价目', noCache: false },
+            meta: { title: '修改价目' },
             menu: 'editPurchasePrice',
             hidden: true
           },
@@ -324,28 +324,28 @@ export const asyncRouterMap = [
             path: '/untreatedPriceList',
             name: 'UntreatedPriceList',
             component: () => import('@/views/purchasing/purchase/untreatedPriceList'),
-            meta: { title: '还未处理价目', noCache: false },
+            meta: { title: '还未处理价目' },
             menu: 'untreatedPriceList'
           },
           {
             path: '/underReviewPrice',
             name: 'UnderReviewPrice',
             component: () => import('@/views/purchasing/purchase/underReviewPrice'),
-            meta: { title: '审核中价目', noCache: false },
+            meta: { title: '审核中价目' },
             menu: 'underReviewPrice'
           },
           {
             path: '/refusePriceList',
             name: 'RefusePriceList',
             component: () => import('@/views/purchasing/purchase/refusePriceList'),
-            meta: { title: '审核未通过价目', noCache: false },
+            meta: { title: '审核未通过价目' },
             menu: 'refusePriceList'
           },
           {
             path: '/purchasePriceList',
             name: 'PurchasePriceList',
             component: () => import('@/views/purchasing/purchase/purchasePriceList'),
-            meta: { title: '价目列表', noCache: false },
+            meta: { title: '价目列表' },
             menu: 'purchasePriceList'
           }
         ]
@@ -368,20 +368,23 @@ export const asyncRouterMap = [
         component: () => import('@/views/market/marketManage/index'),
         name: 'MarketManage',
         meta: {
-          title: '销售订单'
+          title: '销售订单',
+          noCache: false
         },
         children: [
           {
             path: '/createMarkerOrder',
             name: 'CreateMarkerOrder',
             component: () => import('@/views/market/marketManage/createMarkerOrder/index'),
-            meta: { title: '新增销售订单' }
+            meta: { title: '新增销售订单' },
+            menu: 'createMarkerOrder'
           },
           {
             path: '/marketParticulars/:id',
             name: 'MarketParticulars',
             component: () => import('@/views/market/marketManage/marketParticulars/index'),
             meta: { title: '销售订单详情' },
+            menu: 'marketParticulars',
             hidden: true
           },
           {
@@ -390,31 +393,35 @@ export const asyncRouterMap = [
             component: () => import('@/views/market/marketManage/marketRevising/index'),
             meta: { title: '修改订单' },
             hidden: true,
-            menu: 'userList'
+            menu: 'marketRevising'
           },
           {
             path: '/marketUntreated',
             name: 'MarketUntreated',
             component: () => import('@/views/market/marketManage/marketUntreated/index'),
-            meta: { title: '未处理订单' }
+            meta: { title: '未处理订单' },
+            menu: 'marketUntreated'
           },
           {
             path: '/marketAudit',
             name: 'MarketAudit',
             component: () => import('@/views/market/marketManage/marketAudit/index'),
-            meta: { title: '审核中订单' }
+            meta: { title: '审核中订单' },
+            menu: 'marketAudit'
           },
           {
             path: '/marketNoPass',
             name: 'MarketNoPass',
             component: () => import('@/views/market/marketManage/marketNoPass/index'),
-            meta: { title: '审核未通过订单' }
+            meta: { title: '审核未通过订单' },
+            menu: 'marketNoPass'
           },
           {
             path: '/marketOrder',
             name: 'MarketOrder',
             component: () => import('@/views/market/marketManage/marketOrder/index'),
-            meta: { title: '销售订单列表' }
+            meta: { title: '销售订单列表' },
+            menu: 'marketOrder'
           }
         ]
       },
@@ -432,7 +439,7 @@ export const asyncRouterMap = [
             name: 'CreateMarketPrice',
             component: () => import('@/views/market/salesPrice/createMarketPrice/index'),
             meta: { title: '新增销售价目表' },
-            menu: 'userList'
+            menu: 'createMarketPrice'
           },
           {
             path: '/marketDetail/:id',
@@ -440,7 +447,7 @@ export const asyncRouterMap = [
             component: () => import('@/views/market/salesPrice/marketDetail/index'),
             meta: { title: '销售价目明细' },
             hidden: true,
-            menu: 'userList'
+            menu: 'marketDetail'
           },
           {
             path: '/markedEdit/:id',
@@ -448,35 +455,35 @@ export const asyncRouterMap = [
             component: () => import('@/views/market/salesPrice/markedEdit/index'),
             meta: { title: '修改价目' },
             hidden: true,
-            menu: 'userList'
+            menu: 'markedEdit'
           },
           {
             path: '/markedUntreated',
             name: 'MarkedUntreated',
             component: () => import('@/views/market/salesPrice/markedUntreated/index'),
             meta: { title: '未处理价目' },
-            menu: 'userList'
+            menu: 'markedUntreated'
           },
           {
             path: '/markedAudit',
             name: 'MarkedAudit',
             component: () => import('@/views/market/salesPrice/markedAudit/index'),
             meta: { title: '审核中价目' },
-            menu: 'userList'
+            menu: 'markedAudit'
           },
           {
             path: '/markedNoPass',
             name: 'MarkedNoPass',
             component: () => import('@/views/market/salesPrice/markedNoPass/index'),
             meta: { title: '审核未通过价目' },
-            menu: 'userList'
+            menu: 'markedNoPass'
           },
           {
             path: '/marketPriceList',
             name: 'MarketPriceList',
             component: () => import('@/views/market/salesPrice/marketPriceList/index'),
             meta: { title: '销售价目表' },
-            menu: 'userList'
+            menu: 'marketPriceList'
           }
         ]
       }
@@ -517,14 +524,14 @@ export const asyncRouterMap = [
         name: 'JuisdictionList',
         component: () => import('@/views/userRights/jurisdictionList/index'),
         meta: { title: '审核权限列表' },
-        menu: 'menuList'
+        menu: 'juisdictionList'
       }
     ]
   },
   {
     path: '/MRPview',
     component: Layout,
-    name: 'MrpView',
+    name: 'MRPview',
     meta: {
       title: 'MRP转单界面',
       icon: 'nested'
@@ -532,10 +539,10 @@ export const asyncRouterMap = [
     children: [
       {
         path: '/mrpView',
-        name: 'mrpView',
+        name: 'MrpView',
         component: () => import('@/views/MRPview/index'),
-        meta: { title: 'MRP转单界面' },
-        menu: 'userList'
+        meta: { title: 'MRP转单界面', noCache: false },
+        menu: 'mrpView'
       }
     ]
   },

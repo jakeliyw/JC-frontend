@@ -27,7 +27,7 @@ export function Show_StockInfo(params) {
 // 获取销售订单表头
 export function Show_SALOrder(params) {
   return request({
-    url: '/tSalOrder/Show_SALOrder',
+    url: '/tSalOrder/show_SALOrder',
     method: 'get',
     params
   })

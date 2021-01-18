@@ -88,7 +88,7 @@ export function updateSalPrice(data) {
     data
   })
 }
-// 修改销售价目表
+// 根据物料ID查询出厂价
 export function querySalPriceMaterial(params) {
   return request({
     url: '/tSalPricelist/querySalPriceMaterial',

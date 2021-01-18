@@ -5,7 +5,7 @@
       <div class="header-name">
         <span class="parentItemNo">角色名称</span>
         <el-input
-          v-model="fname"
+          v-model.trim="fname"
           class="input-content"
           placeholder="请输入角色名称"
           size="mini"
@@ -39,33 +39,33 @@
     <el-dialog :title="newINsert" :visible.sync="insertTJQVisible" :close-on-click-modal="false">
       <el-form ref="ruleForm" :model="form" label-width="120px" :rules="rules">
         <el-form-item label="用户" prop="fuserId">
-          <el-select v-model="form.fuserId" placeholder="请选择用户" size="mini" filterable>
+          <el-select v-model.trim="form.fuserId" placeholder="请选择用户" size="mini" filterable>
             <el-option v-for="(item, index) in regionData" :key="index" :label="item.fname" :value="item.fuserId" />
           </el-select>
         </el-form-item>
         <el-form-item label="类型" prop="ftype">
-          <el-input v-model="form.ftype" size="mini" />
+          <el-input v-model.trim="form.ftype" size="mini" />
         </el-form-item>
         <el-form-item label="原状态" prop="fvalueb">
-          <el-input v-model="form.fvalueb" size="mini" />
+          <el-input v-model.trim="form.fvalueb" size="mini" />
         </el-form-item>
         <el-form-item label="原流程" prop="fvaluea">
-          <el-input v-model="form.fvaluea" size="mini" />
+          <el-input v-model.trim="form.fvaluea" size="mini" />
         </el-form-item>
         <el-form-item label="审核后状态" prop="fvalued">
-          <el-input v-model="form.fvalued" size="mini" />
+          <el-input v-model.trim="form.fvalued" size="mini" />
         </el-form-item>
         <el-form-item label="审核后流程" prop="fvaluec">
-          <el-input v-model="form.fvaluec" size="mini" />
+          <el-input v-model.trim="form.fvaluec" size="mini" />
         </el-form-item>
         <el-form-item label="描述" prop="fdepict">
-          <el-input v-model="form.fdepict" size="mini" />
+          <el-input v-model.trim="form.fdepict" size="mini" />
         </el-form-item>
         <el-form-item label="审核人字段" prop="fvaluef">
-          <el-input v-model="form.fvaluef" size="mini" />
+          <el-input v-model.trim="form.fvaluef" size="mini" />
         </el-form-item>
         <el-form-item label="审核时间字段" prop="fvaluee">
-          <el-input v-model="form.fvaluee" size="mini" />
+          <el-input v-model.trim="form.fvaluee" size="mini" />
         </el-form-item>
         <el-form-item>
           <el-button @click="insertTJQVisible = false">取 消</el-button>
@@ -82,7 +82,7 @@ import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
 import { queryTJxQueryList, querySecUser, insertTJxQuery, updayeTJxQuery } from '@/api/userAdmin/jurisdictionList'
 export default {
-  name: 'JurisdictionList',
+  name: 'JuisdictionList',
   components: {
     jcTable,
     jcPagination,
@@ -104,8 +104,8 @@ export default {
         { label: '审核后状态', prop: 'fvalued', align: 'center' },
         { label: '审核后流程', prop: 'fvaluec', align: 'center' },
         { label: '描述', prop: 'fdepict', align: 'center', minWidth: '150px' },
-        { label: '审核人字段', prop: 'fvaluef', align: 'center' },
-        { label: '审核时间字段', prop: 'fvaluee', align: 'center', minWidth: '120px' },
+        { label: '审核人字段', prop: 'fvaluee', align: 'center' },
+        { label: '审核时间字段', prop: 'fvaluef', align: 'center', minWidth: '120px' },
         { label: '操作', type: 'btn', minWidth: '100px', align: 'center' }
       ],
       // 行高
@@ -215,6 +215,7 @@ export default {
   @include listBom;
   .el-form-item {
     max-width: 70%;
+    margin-bottom: 15px;
   }
 }
 </style>

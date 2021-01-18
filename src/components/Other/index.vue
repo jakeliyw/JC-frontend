@@ -55,6 +55,7 @@ export default {
   watch: {
     otherUrlObject: {
       handler(val) {
+        console.log(val)
         this.otherValue = val
       },
       // 是否一开始就监视

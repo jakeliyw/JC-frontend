@@ -39,7 +39,7 @@
         <el-table-column prop="fcreateDate" label="创建时间" min-width="80" align="center" />
         <el-table-column prop="attributeArray" label="操作" min-width="120" align="center" fixed="right">
           <template slot-scope="scope">
-            <el-button type="primary" class="btn" size="medium" @click="particulars(scope.row.fid)">详情</el-button>
+            <el-button type="primary" class="btn" size="mini" @click="particulars(scope.row.fid)">详情</el-button>
           </template>
         </el-table-column>
       </jc-table>

@@ -5,7 +5,7 @@
       <div class="header-name">
         <span class="parentItemNo">用户名称</span>
         <el-input
-          v-model="fname"
+          v-model.trim="fname"
           class="input-content"
           placeholder="请输入用户"
           size="mini"
@@ -49,7 +49,7 @@
     <el-dialog title="分配角色" :visible.sync="dialogFormVisible" :close-on-click-modal="false">
       <el-form>
         <el-form-item label="活动区域" label-width="100px">
-          <el-select v-model="region" placeholder="请选择角色" filterable>
+          <el-select v-model.trim="region" placeholder="请选择角色" filterable>
             <el-option v-for="(item, index) in regionData" :key="index" :label="item.role" :value="item.roleId" />
           </el-select>
         </el-form-item>

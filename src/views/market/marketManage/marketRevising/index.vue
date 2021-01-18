@@ -172,6 +172,7 @@ export default {
     jcTitle
   },
   mixins: [jumpMateriel],
+  inject: ['reload'],
   data() {
     return {
       clientVisiblit: false, // 客户列表弹窗
@@ -224,6 +225,7 @@ export default {
           fqty: '',
           fisFree: false,
           ftaxRate: '',
+          fdownPrice: '',
           fdeliveryDate: '',
           salImage: {
             imageUrl: '', // 图片
@@ -247,6 +249,11 @@ export default {
           this.$message.error('表格不能为空或删除空行')
           return false
         }
+        if (item.fprice < item.fdownprice) {
+          this.$message.error('销售单价不能小于基准价')
+          this.loading = false
+          return false
+        }
       }
       for (const item of this.prodValue.planDetails) {
         if (item.frecAdvanceRate === '' || item.frecAdvanCeamount === '') {
@@ -261,11 +268,9 @@ export default {
             message: '修改成功'
           })
           setTimeout(() => {
-            location.reload()
+            this.reload()
           }, 1000)
         }
-      }).catch(error => {
-        this.$message.error(error)
       })
     },
     // 查询单据类型

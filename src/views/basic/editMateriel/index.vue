@@ -116,13 +116,14 @@
         />
       </el-tab-pane>
       <el-tab-pane label="其它" name="log">
-        <jc-other
-          :other-url-object="otherUrlObject"
-          :other-log-table-data="otherData"
+        <jc-form :option-value="otherUrlObject" :options="otherOptions" />
+        <jc-table
+          :table-header="logTableHeader"
+          :table-data="otherData"
+          :cell-style="cellStyle"
         />
         <jc-pagination
           v-show="otherPagination.total > 0"
-          slot="slotPagination"
           :total="otherPagination.total"
           :page.sync="otherPagination.pageNum"
           :limit.sync="otherPagination.pageSize"
@@ -285,7 +286,6 @@ import jcForm from '@/components/Form'
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jcPopup from '@/views/basic/createMateriel/components/Popup'
-import jcOther from '@/components/Other'
 import jcFormFunction from '@/components/Form/FormFunction'
 import jcInformation from '../createMateriel/Information'
 import {
@@ -310,7 +310,6 @@ export default {
     jcPopup,
     jcTable,
     jcPagination,
-    jcOther,
     jcInformation
   },
   mixins: [jcFormFunction],
@@ -339,12 +338,12 @@ export default {
       total: 0, // 条目
       materialCode: '', // 物料编码
       serialNumber: '', // 流水号
-      otherData: [], // 其它数据
       otherPagination: {
         pageNum: 1,
         pageSize: 10,
         total: 0
       },
+      otherOptions: {},
       otherUrlObject: {}, // 其它表单
       company: {}, // 选中单位中文名称
       toMaterielData: [], // 二类物料
@@ -366,20 +365,6 @@ export default {
       weightTableData: [], // 重量单位数据
       sizeTableData: [], // 尺寸单位
       basicUnit: [], // 基本单位
-      protect: [
-        {
-          label: 'A级',
-          value: 'A级'
-        },
-        {
-          label: 'B级',
-          value: 'B级'
-        },
-        {
-          label: 'C级',
-          value: 'C级'
-        }
-      ],
       tableHeader: [
         { label: '基本单位编码', prop: 'FNUMBER', align: 'center' },
         { label: '基本单位名称', prop: 'FNAME', align: 'center ' },
@@ -392,6 +377,14 @@ export default {
         { label: '描述', prop: 'FDESCRIPTION', align: 'center' },
         { label: '型号', prop: 'FMODEL', align: 'center' },
         { label: '物料属性', prop: 'FSPECIFICATION', align: 'center' }
+      ],
+      otherData: [], // 其它数据
+      logTableHeader: [
+        { label: '日期', prop: 'createDate', align: 'center' },
+        { label: '操作人', prop: 'fname', align: 'center' },
+        { label: '部门', prop: 'fdeaprt', align: 'center' },
+        { label: 'IP地址', prop: 'fip', align: 'center' },
+        { label: '行为', prop: 'fdescribe', align: 'center' }
       ],
       contrastDataTable: [], // 三类物料
       materielProperty: [], // 物料属性
@@ -425,14 +418,6 @@ export default {
     }
   },
   watch: {
-    dimensionalValue: {
-      handler(val) {
-        const { FLENGTH, FWIDTH, FHEIGHT } = val
-        const SIZE = ''
-        this.basicValue.FDESCRIPTION = SIZE.concat(`${this.FDESCRIPTION}*${FLENGTH}`, `*${FWIDTH}`, `*${FHEIGHT}`)
-      },
-      deep: true
-    },
     'oneMaterialValue.LargeCode': {
       handler(oldValue) {
         this.getToMaterial(oldValue)
@@ -593,9 +578,26 @@ export default {
         FISSUBCONTRACT: this.FISSUBCONTRACT,
         // 允许资产
         FISASSET: this.FISASSET,
+        FBASEUNITID: this.basicValue.FBASEUNITID,
+        FOLDNUMBER: this.basicValue.FOLDNUMBER,
+        FBARCODE: this.basicValue.FBARCODE,
+        FERPCLSID: this.basicValue.FERPCLSID,
+        FPROTECT: this.basicValue.FPROTECT,
+        FMODEL: this.basicValue.FMODEL,
+        FDESCRIPTION: this.basicValue.FDESCRIPTION,
+        FVOLUMEUNITNAME: this.dimensionalValue.FVOLUMEUNITNAME,
+        FVOLUME: this.dimensionalValue.FVOLUME,
+        FTHICKNESS: this.dimensionalValue.FTHICKNESS,
+        FLENGTH: this.dimensionalValue.FLENGTH,
+        FWIDTH: this.dimensionalValue.FWIDTH,
+        FHEIGHT: this.dimensionalValue.FHEIGHT,
+        FWEIGHTUNITNAME: this.weightValue.FWEIGHTUNITNAME,
+        FGROSSWEIGHT: this.weightValue.FGROSSWEIGHT,
+        FNETWEIGHT: this.weightValue.FNETWEIGHT,
         FATTRIBTTE: JSON.stringify(FATTRIBTTE)
       }
-      Object.assign(DATA, this.basicValue, this.dimensionalValue, this.weightValue, this.information, SmallCode)
+      console.log(DATA, 'DATA')
+      Object.assign(DATA, this.information, SmallCode)
       for (const key in DATA) {
         if (DATA[key] === '' || DATA[key] === undefined) {
           this.$message.warning('内容输入不完整，请重新输入！')
@@ -720,10 +722,6 @@ export default {
         return item.value === num
       })
     },
-    // 获取环境
-    async getKit() {
-      return this.protect
-    },
     // 刷新页面
     refresh() {
       location.reload()
@@ -733,13 +731,34 @@ export default {
       const DATA = { ...this.otherPagination, fmaterialId: this.$route.query.FMATERIALID }
       const RES = await queryMaterialLog(DATA)
       this.otherData = RES.data.array
+      this.otherOptions = {
+        fcreator: {
+          label: '创建人',
+          span: 8,
+          disabled: 'disabled'
+        },
+        fdevel: {
+          label: '研发审核人',
+          span: 8,
+          disabled: 'disabled'
+        },
+        fieid: {
+          label: 'IE审核人',
+          span: 8,
+          disabled: 'disabled'
+        },
+        fcreateDate: {
+          label: '创建时间',
+          span: 8,
+          disabled: 'disabled'
+        }
+      }
       this.otherPagination.total = RES.data.total
       this.otherUrlObject = RES.data.operator
     },
     // 获取表单
     async handleForm() {
       const { data: RES } = await queryMaterialDetail({ fnumber: this.$route.query.FNUMBER })
-      this.FDESCRIPTION = RES.FDESCRIPTION
       this.FISPURCHASE = RES.FISPURCHASE
       this.FISSALE = RES.FISSALE
       this.FISINVENTORY = RES.FISINVENTORY
@@ -748,9 +767,20 @@ export default {
       this.FISASSET = RES.FISASSET
       this.imageUrl = RES.FIMG
       this.company.label = RES.FBASEUNIT
-      this.information = RES
+      this.information = {
+        fstockName: RES.fstockName,
+        fdefaultvendor: RES.fdefaultvendor,
+        fsupplierId: RES.fdefaultvendorId,
+        fmaxStock: RES.fmaxStock,
+        fminStock: RES.fminStock,
+        fbillTypeId: RES.fpobillTypeId,
+        fpobillTypeName: RES.fpobillTypeName,
+        fquotaType: RES.fquotaType,
+        fsafeStock: RES.fsafeStock,
+        fstockId: RES.fstockId,
+        position: RES.fstockplaceId
+      }
       const organizationRes = await this.getOrganization()
-      const kitRes = await this.getKit()
       this.basicUnit = await this.getBasicUnit()
       this.materielProperty = RES.attribute
       const materielType = await this.getMaterielType()
@@ -840,11 +870,9 @@ export default {
         },
         FPROTECT: {
           label: '环保等级',
-          type: 'select',
-          selectItems: kitRes,
           span: 8,
           rules: [
-            { required: true, message: '请选择环保等级', trigger: 'change' }
+            { required: true, message: '请输入环保等级', trigger: 'blur' }
           ]
         },
         FERPCLSID: {
