@@ -23,27 +23,27 @@ export default {
     // 上传图片
     handleAvatarSuccess(file, fileListe) {
       this.getBase64(file.raw).then(res => {
-        this.tabTwo.saleDetails[this.indexSelf].salImage.imageUrl = res
+        this.prodValue.imageUrl = res
       })
     }, handleAvatarSuccess1(file, fileListe) {
       this.getBase64(file.raw).then(res => {
-        this.tabTwo.saleDetails[this.indexSelf].salImage.imageUrl1 = res
+        this.prodValue.imageUrl1 = res
       })
     }, handleAvatarSuccess2(file, fileListe) {
       this.getBase64(file.raw).then(res => {
-        this.tabTwo.saleDetails[this.indexSelf].salImage.imageUrl2 = res
+        this.prodValue.imageUrl2 = res
       })
     }, handleAvatarSuccess3(file, fileListe) {
       this.getBase64(file.raw).then(res => {
-        this.tabTwo.saleDetails[this.indexSelf].salImage.imageUrl3 = res
+        this.prodValue.imageUrl3 = res
       })
     }, handleAvatarSuccess4(file, fileListe) {
       this.getBase64(file.raw).then(res => {
-        this.tabTwo.saleDetails[this.indexSelf].salImage.imageUrl4 = res
+        this.prodValue.imageUrl4 = res
       })
     }, handleAvatarSuccess5(file, fileListe) {
       this.getBase64(file.raw).then(res => {
-        this.tabTwo.saleDetails[this.indexSelf].salImage.imageUrl5 = res
+        this.prodValue.imageUrl5 = res
       })
     }
   }

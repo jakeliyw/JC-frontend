@@ -21,7 +21,11 @@
         :cell-style="cellStyle"
       >
         <el-table-column prop="fsaleOrg" label="销售组织" align="center" min-width="130px" :show-overflow-tooltip="true" />
-        <el-table-column prop="fnumber" label="编码" align="center" min-width="110px" />
+        <el-table-column prop="fnumber" label="编码" align="center" min-width="110px">
+          <template slot-scope="scope">
+            <el-link type="primary" @click="particulars(scope.row.fid)">{{ scope.row.fnumber }}</el-link>
+          </template>
+        </el-table-column>
         <el-table-column prop="fname" label="价目名称" align="center" />
         <el-table-column prop="fcurrency" label="币别" align="center" />
         <el-table-column prop="fisIncludedTax" label="含税" align="center">
@@ -117,6 +121,10 @@ export default {
       }
       this.$message.success(message)
       this.reload()
+    },
+    // 价目详情
+    particulars(id) {
+      this.$router.push({ path: `/marketDetail/${id}` })
     }
   }
 }

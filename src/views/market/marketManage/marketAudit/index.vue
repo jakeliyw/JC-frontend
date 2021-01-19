@@ -21,7 +21,11 @@
       >
         <el-table-column prop="fcreateDate" label="订单时间" align="center" min-width="155px" />
         <el-table-column prop="fbillType" label="订单类型" align="center" min-width="110px" />
-        <el-table-column prop="fbillNo" label="订单号" align="center" min-width="110px" :show-overflow-tooltip="true" />
+        <el-table-column prop="fbillNo" label="订单号" align="center" min-width="110px" :show-overflow-tooltip="true">
+          <template slot-scope="scope">
+            <el-link type="primary" @click="detailPurchase(scope.row.fid)">{{ scope.row.fbillNo }}</el-link>
+          </template>
+        </el-table-column>
         <el-table-column prop="fprimaryGroup" label="客户分组" align="center" />
         <el-table-column prop="customer" label="客户" align="center" min-width="100px" :show-overflow-tooltip="true" />
         <el-table-column prop="fqty" label="产品数量" align="center" />

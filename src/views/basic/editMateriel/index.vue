@@ -121,6 +121,7 @@
           :table-header="logTableHeader"
           :table-data="otherData"
           :cell-style="cellStyle"
+          table-height="calc(100vh - 550px)"
         />
         <jc-pagination
           v-show="otherPagination.total > 0"

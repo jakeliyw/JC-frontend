@@ -11,6 +11,22 @@
           size="mini"
           @keyup.enter.native="handleQueryBomList"
         />
+        <span class="parentItemNo">物料规格</span>
+        <el-input
+          v-model="FSPECIFICATION"
+          class="input-content"
+          placeholder="请输入物料规格"
+          size="mini"
+          @keyup.enter.native="handleQueryBomList"
+        />
+        <span class="parentItemNo">型号</span>
+        <el-input
+          v-model="FMODEL"
+          class="input-content"
+          placeholder="请输入型号"
+          size="mini"
+          @keyup.enter.native="handleQueryBomList"
+        />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryBomList">搜索</el-button>
         <el-button type="primary" size="mini" class="btn" @click="addBom">新增bom</el-button>
       </div>
@@ -60,6 +76,7 @@ import { queryBomList } from '@/api/engineering/bomList'
 import { toMxAmina } from '@/components/ToMxamineState'
 import { queryFtypeInfo } from '@/api/engineering/deitalBom'
 import { updateAgainReview } from '@/api/engineering/refuseBom'
+
 export default {
   name: 'ListBom',
   inject: ['reload'],
@@ -71,6 +88,8 @@ export default {
   data() {
     return {
       FNUMBER: '', // 产品描述
+      FMODEL: '', // 型号
+      FSPECIFICATION: '', // 物料规格
       total: 0, // 总条目
       pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
@@ -79,11 +98,9 @@ export default {
       tableHeader: [
         { label: '物料描述', prop: 'FDESCRIPTION', minWidth: '400px', align: 'center' },
         { label: '物料规格', prop: 'FSPECIFICATION', minWidth: '100px', align: 'center' },
-        { label: '发料方式', prop: 'FISSUETYPE', minWidth: '100px', align: 'center' },
+        { label: '型号', prop: 'FMODEL', minWidth: '200px', align: 'center' },
         { label: '仓库', prop: 'FSTOCK', align: 'center' },
-        { label: '使用组织', prop: 'FUSEORG', align: 'center' },
         { label: '生效时间', prop: 'FAPPROVEDATE', align: 'center' },
-        { label: '审核状态', prop: 'FDOCUMENTSTATUS', align: 'center' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '300px', align: 'center' }
       ],
       // 表格数据
@@ -100,7 +117,13 @@ export default {
     },
     // 获取列表数据
     async handleGetBomList() {
-      const DATA = { pageNum: this.pageNum, pageSize: this.size, FNUMBER: this.FNUMBER }
+      const DATA = {
+        pageNum: this.pageNum,
+        pageSize: this.size,
+        FNUMBER: this.FNUMBER,
+        FMODEL: this.FMODEL,
+        FSPECIFICATION: this.FSPECIFICATION
+      }
       const { data: RES, total } = await queryBomList(DATA)
       this.tableData = RES.map(item => {
         return toMxAmina(item)

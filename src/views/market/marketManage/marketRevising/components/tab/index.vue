@@ -7,6 +7,7 @@
           :table-data="tabTwo.saleDetails"
           :table-header="tableHeader"
           serial
+          table-height="44vh"
           :cell-style="cellStyle"
         >
           <el-table-column label="物料编码" prop="fmaterialId" align="center" width="200px">
@@ -33,7 +34,7 @@
             <template slot-scope="scope">
               <el-input-number
                 v-model="scope.row.fqty"
-                :min="1"
+                :min="0"
                 size="mini"
                 @change="handleChange"
               />
@@ -78,7 +79,7 @@
                 style="max-height: 28px"
                 @click="proviewImg(item)"
               >
-              <el-button type="primary" size="mini" @click="drawingl(scope.row.salImage, scope.$index)">上传</el-button>
+              <el-button type="primary" size="mini" @click="drawingl(scope)">上传</el-button>
             </template>
           </el-table-column>
           <el-table-column label="操作" prop="fqty" min-width="100px" align="center">
@@ -94,6 +95,7 @@
           :table-data="tabTwo.planDetails"
           :table-header="tableHeader"
           serial
+          table-height="44vh"
           :cell-style="cellStyle"
         >
           <el-table-column label="是否预收" prop="fqty" align="center" width="80px">
@@ -177,140 +179,7 @@
       />
     </el-dialog>
     <!--    上传图纸-->
-    <el-dialog
-      title="上传图纸"
-      model
-      :visible.sync="isdrawinglDialog"
-      :close-on-click-modal="false"
-      width="60%"
-      :before-close="handleClose"
-    >
-      <el-form label-width="120px">
-        <el-form-item label="图纸">
-          <el-upload
-            class="avatar-uploader"
-            :action="actionURL"
-            :show-file-list="false"
-            :auto-upload="false"
-            :on-change="handleAvatarSuccess"
-          >
-            <img
-              v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl"
-              :src="tabTwo.saleDetails[indexSelf].salImage.imageUrl"
-              class="avatar"
-            >
-            <div v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl" class="magnify">
-              <i class="el-icon-search" @click.stop="proviewImg(tabTwo.saleDetails[indexSelf].salImage.imageUrl)" />
-              <i class="el-icon-delete" @click.stop="tabTwo.saleDetails[indexSelf].salImage.imageUrl=''" />
-            </div>
-            <i v-else class="el-icon-plus avatar-uploader-icon" />
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="图纸1">
-          <el-upload
-            class="avatar-uploader"
-            :action="actionURL"
-            :show-file-list="false"
-            :auto-upload="false"
-            :on-change="handleAvatarSuccess1"
-          >
-            <img
-              v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl1"
-              :src="tabTwo.saleDetails[indexSelf].salImage.imageUrl1"
-              class="avatar"
-            >
-            <div v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl1" class="magnify">
-              <i class="el-icon-search" @click.stop="proviewImg(tabTwo.saleDetails[indexSelf].salImage.imageUrl1)" />
-              <i class="el-icon-delete" @click.stop="tabTwo.saleDetails[indexSelf].salImage.imageUrl1=''" />
-            </div>
-            <i v-else class="el-icon-plus avatar-uploader-icon" />
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="图纸2">
-          <el-upload
-            class="avatar-uploader"
-            :action="actionURL"
-            :show-file-list="false"
-            :auto-upload="false"
-            :on-change="handleAvatarSuccess2"
-          >
-            <img
-              v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl2"
-              :src="tabTwo.saleDetails[indexSelf].salImage.imageUrl2"
-              class="avatar"
-            >
-            <div v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl2" class="magnify">
-              <i class="el-icon-search" @click.stop="proviewImg(tabTwo.saleDetails[indexSelf].salImage.imageUrl2)" />
-              <i class="el-icon-delete" @click.stop="tabTwo.saleDetails[indexSelf].salImage.imageUrl2=''" />
-            </div>
-            <i v-else class="el-icon-plus avatar-uploader-icon" />
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="图纸3">
-          <el-upload
-            class="avatar-uploader"
-            :action="actionURL"
-            :show-file-list="false"
-            :auto-upload="false"
-            :on-change="handleAvatarSuccess3"
-          >
-            <img
-              v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl3"
-              :src="tabTwo.saleDetails[indexSelf].salImage.imageUrl3"
-              class="avatar"
-            >
-            <div v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl3" class="magnify">
-              <i class="el-icon-search" @click.stop="proviewImg(tabTwo.saleDetails[indexSelf].salImage.imageUrl3)" />
-              <i class="el-icon-delete" @click.stop="tabTwo.saleDetails[indexSelf].salImage.imageUrl3=''" />
-            </div>
-            <i v-else class="el-icon-plus avatar-uploader-icon" />
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="图纸4">
-          <el-upload
-            class="avatar-uploader"
-            :action="actionURL"
-            :show-file-list="false"
-            :auto-upload="false"
-            :on-change="handleAvatarSuccess4"
-          >
-            <img
-              v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl4"
-              :src="tabTwo.saleDetails[indexSelf].salImage.imageUrl4"
-              class="avatar"
-            >
-            <div v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl4" class="magnify">
-              <i class="el-icon-search" @click.stop="proviewImg(tabTwo.saleDetails[indexSelf].salImage.imageUrl4)" />
-              <i class="el-icon-delete" @click.stop="tabTwo.saleDetails[indexSelf].salImage.imageUrl4=''" />
-            </div>
-            <i v-else class="el-icon-plus avatar-uploader-icon" />
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="图纸5">
-          <el-upload
-            class="avatar-uploader"
-            :action="actionURL"
-            :show-file-list="false"
-            :auto-upload="false"
-            :on-change="handleAvatarSuccess5"
-          >
-            <img
-              v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl5"
-              :src="tabTwo.saleDetails[indexSelf].salImage.imageUrl5"
-              class="avatar"
-            >
-            <div v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl5" class="magnify">
-              <i class="el-icon-search" @click.stop="proviewImg(tabTwo.saleDetails[indexSelf].salImage.imageUrl5)" />
-              <i class="el-icon-delete" @click.stop="tabTwo.saleDetails[indexSelf].salImage.imageUrl5=''" />
-            </div>
-            <i v-else class="el-icon-plus avatar-uploader-icon" />
-          </el-upload>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="isdrawinglDialog = false">确 定</el-button>
-      </span>
-    </el-dialog>
+    <upload-img v-if="isUploadImg" :msg="salImg" @upload="drawing" />
     <!--图纸预览-->
     <el-dialog
       title="预览"
@@ -330,14 +199,15 @@ import { querySalMaterialList } from '@/api/marketManage/marketOrder'
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jumpMateriel from '@/components/JumpMateriel'
-import mixinsImg from '@/views/market/marketManage/createMarkerOrder/components/mixinsImg'
+import uploadImg from '@/views/market/marketManage/createMarkerOrder/components/uploadImg'
 
 export default {
   components: {
     jcTable,
-    jcPagination
+    jcPagination,
+    uploadImg
   },
-  mixins: [jumpMateriel, mixinsImg],
+  mixins: [jumpMateriel],
   props: {
     msg: {
       type: Array,
@@ -354,7 +224,8 @@ export default {
   },
   data() {
     return {
-      actionURL: '',
+      isUploadImg: false,
+      salImg: {},
       indexSelf: 0, // 图片下标
       imgVisible: false, // 预览图片
       priview: '',
@@ -432,6 +303,7 @@ export default {
             fdescripTion: '',
             funitId: '',
             fqty: '',
+            fprice: '',
             fisFree: false,
             ftaxRate: '',
             fdeliveryDate: '',
@@ -498,13 +370,15 @@ export default {
       this.$emit('visible', this.tabTwo)
     },
     // 获取当前行下标
-    drawingl(data, index) {
-      this.indexSelf = index
-      this.isdrawinglDialog = true
+    drawingl(scope) {
+      this.salImg = scope.row.salImage
+      this.indexSelf = scope.$index
+      this.isUploadImg = true
     },
-    // 关闭上传图片弹窗，并向父组件传值
-    handleClose() {
-      this.isdrawinglDialog = false
+    // 获取图片
+    drawing(ev) {
+      this.isUploadImg = false
+      this.tabTwo.saleDetails[this.indexSelf].salImage = ev
       this.$emit('visible', this.tabTwo)
     },
     // 预览图片

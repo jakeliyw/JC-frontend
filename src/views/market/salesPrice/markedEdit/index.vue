@@ -52,6 +52,7 @@
           <jc-table
             :table-data="tableData"
             :table-header="tableHeader"
+            table-height="500px"
             :cell-style="cellStyle"
           >
             <el-table-column label="物料编码" prop="fmaterialId" align="center" min-width="200px">
@@ -103,6 +104,7 @@
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
+          otherHeight="500px"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -115,7 +117,7 @@
               @pagination="handleOther"
             />
           </div>
-        </jc-marker>>
+        </jc-marker>
       </el-tab-pane>
     </el-tabs>
     <!--    物料弹窗-->
@@ -344,11 +346,15 @@ export default {
 <style lang="scss" scoped>
 .content {
   @include listBom;
+  .el-tabs{
+    height: calc( 100vh - 230px );
+  }
   .el-form{
     display: flex;
     flex-wrap: wrap;
     .el-form-item {
       max-width: 263px;
+      margin-bottom: 15px;
     }
   }
 }

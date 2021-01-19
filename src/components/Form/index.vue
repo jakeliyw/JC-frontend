@@ -29,7 +29,7 @@
           >
             <el-input
               v-model="optionValue[key]"
-              size="small"
+              size="mini"
               class="input-width"
               :disabled="item.disabled"
               :maxlength="item.maxlength || ''"
@@ -155,6 +155,7 @@
             :label="item.label"
             :datafld="item.datafld"
             :prop="key"
+            size="mini"
             :rules="item.rules"
             label-width="100px"
             :class="{ 'describe': item.isActive }"

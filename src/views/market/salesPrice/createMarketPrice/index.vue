@@ -51,6 +51,7 @@
         <jc-table
           :table-data="prodValue.priceDetails"
           :table-header="tableHeader"
+          table-height="500px"
           serial
           :cell-style="cellStyle"
         >
@@ -112,6 +113,7 @@
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
+          other-height="500px"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -426,7 +428,9 @@ export default {
 <style scoped lang="scss">
 .content {
   @include listBom;
-
+  .el-tabs{
+    height: calc( 100vh - 230px );
+  }
   .el-form {
     display: flex;
     flex-wrap: wrap;

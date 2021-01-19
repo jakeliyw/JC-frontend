@@ -11,6 +11,22 @@
           size="mini"
           @keyup.enter.native="handleQueryUntreated"
         />
+        <span class="parentItemNo">物料规格</span>
+        <el-input
+          v-model="FSPECIFICATION"
+          class="input-content"
+          placeholder="请输入物料规格"
+          size="mini"
+          @keyup.enter.native="handleQueryUntreated"
+        />
+        <span class="parentItemNo">型号</span>
+        <el-input
+          v-model="FMODEL"
+          class="input-content"
+          placeholder="请输入型号"
+          size="mini"
+          @keyup.enter.native="handleQueryUntreated"
+        />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
       </div>
     </div>
@@ -78,6 +94,8 @@ export default {
   data() {
     return {
       FNUMBER: '', // 产品描述
+      FMODEL: '', // 型号
+      FSPECIFICATION: '', // 物料规格
       total: 0, // 总条目
       pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
@@ -105,7 +123,13 @@ export default {
     },
     // 获取列表数据
     async handleGetBomList() {
-      const DATA = { pageNum: this.pageNum, pageSize: this.size, FNUMBER: this.FNUMBER }
+      const DATA = {
+        pageNum: this.pageNum,
+        pageSize: this.size,
+        FNUMBER: this.FNUMBER,
+        FMODEL: this.FMODEL,
+        FSPECIFICATION: this.FSPECIFICATION
+      }
       const { data: RES, total } = await queryUntreatedBomList(DATA)
       this.tableData = RES
       this.total = total

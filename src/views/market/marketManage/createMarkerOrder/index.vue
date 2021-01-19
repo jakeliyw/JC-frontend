@@ -130,6 +130,7 @@
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
+          other-height="540px"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -459,7 +460,7 @@ export default {
       this.prodValue.saleDetails = ev.saleDetails
       this.prodValue.planDetails = ev.planDetails
     },
-    // 获取其它
+    // 获取 其它页面 数据
     async handleOther() {
       const id = this.$route.params.id
       const DATA = { pageNum: this.pageNum, pageSize: this.size, fid: id }
@@ -481,7 +482,7 @@ export default {
 
     .el-form-item {
       width: 263px;
-      margin-bottom: 15px;
+      margin-bottom: 5px;
     }
   }
 }

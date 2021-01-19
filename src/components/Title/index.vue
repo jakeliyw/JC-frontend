@@ -20,12 +20,12 @@ export default {
 <style scoped lang="scss">
 .layout{
   margin-bottom: 10px;
+  width: 100%;
   .title{
     color: wheat;
-    display: table-cell;
+    display: block;
     font-weight: 800;
     background-color: #848383;
-    width: 90vw;
     font-size: 14px;
     height: 30px;
     line-height: 30px;

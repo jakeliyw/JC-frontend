@@ -12,26 +12,28 @@
           <jc-table
             :table-data="tableData"
             :table-header="tableHeader"
+            table-height="500px"
             :cell-style="cellStyle"
           >
-            <el-table-column prop="fnumber" label="物料编码" min-width="200px" align="center" :show-overflow-tooltip="true">
+            <el-table-column prop="fnumber" label="物料编码" min-width="140px" align="center" :show-overflow-tooltip="true">
               <template slot-scope="scope">
                 <el-input v-model="scope.row.fnumber" size="mini" disabled>
                   <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fnumber)" />
                 </el-input>
               </template>
             </el-table-column>
-            <el-table-column prop="fdescripTion" label="物料描述" min-width="300" align="center" :show-overflow-tooltip="true" />
-            <el-table-column prop="funit" label="基本单位" min-width="80" align="center" />
-            <el-table-column prop="fpriceBase" label="销售系数(%)" align="center" />
+            <el-table-column prop="fdescripTion" label="物料描述" min-width="300px" align="center" :show-overflow-tooltip="true" />
+            <el-table-column prop="funit" label="基本单位" min-width="80px" align="center" />
+            <el-table-column prop="fpriceBase" label="销售系数(%)" min-width="90px" align="center" />
             <el-table-column prop="deliveryPrice" label="出厂价" align="center" />
-            <el-table-column prop="fdownPrice" label="销售基准价" align="center" />
-            <el-table-column prop="feffectiveDate" label="生效期" align="center" :show-overflow-tooltip="true" />
+            <el-table-column prop="fdownPrice" label="销售基准价" min-width="90px" align="center" />
+            <el-table-column prop="feffectiveDate" label="生效期" min-width="100px" align="center" :show-overflow-tooltip="true" />
           </jc-table>
         </div>
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
+          other-height="550px"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -151,6 +153,9 @@ export default {
   @include listBom;
   .iconfont{
     cursor: pointer;
+  }
+  .el-tabs{
+    height: calc( 100vh - 180px );
   }
 }
 </style>

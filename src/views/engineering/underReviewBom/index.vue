@@ -11,6 +11,22 @@
           size="mini"
           @keyup.enter.native="handleQueryUnderReview"
         />
+        <span class="parentItemNo">物料规格</span>
+        <el-input
+          v-model="FSPECIFICATION"
+          class="input-content"
+          placeholder="请输入物料规格"
+          size="mini"
+          @keyup.enter.native="handleQueryUnderReview"
+        />
+        <span class="parentItemNo">型号</span>
+        <el-input
+          v-model="FMODEL"
+          class="input-content"
+          placeholder="请输入型号"
+          size="mini"
+          @keyup.enter.native="handleQueryUnderReview"
+        />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUnderReview">搜索</el-button>
       </div>
     </div>
@@ -76,16 +92,17 @@ export default {
   data() {
     return {
       FNUMBER: '', // 产品描述
+      FMODEL: '', // 型号
+      FSPECIFICATION: '', // 物料规格
       total: 0, // 总条目
       pageNum: 0, // 当前页
       size: 10, // 每页显示多少条数据
       // 表头
       tableHeader: [
         { label: '物料描述', prop: 'FDESCRIPTION', minWidth: '400px', align: 'center' },
-        { label: '物料规格', prop: 'FSPECIFICATION', align: 'center' },
+        { label: '物料规格', prop: 'FSPECIFICATION', minWidth: '100px', align: 'center' },
+        { label: '型号', prop: 'FMODEL', minWidth: '200px', align: 'center' },
         { label: '仓库', prop: 'FSTOCK', align: 'center' },
-        { label: '价格清单', prop: 'PRICELIST', align: 'center' },
-        { label: '使用组织', prop: 'FUSEORG', align: 'center' },
         { label: '生效时间', prop: 'FCREATEDATE', align: 'center' },
         { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', minWidth: '450px' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '120px', align: 'center' }
@@ -104,7 +121,13 @@ export default {
     },
     // 获取列表数据
     async handleGetBomList() {
-      const DATA = { pageNum: this.pageNum, pageSize: this.size, FNUMBER: this.FNUMBER }
+      const DATA = {
+        pageNum: this.pageNum,
+        pageSize: this.size,
+        FNUMBER: this.FNUMBER,
+        FMODEL: this.FMODEL,
+        FSPECIFICATION: this.FSPECIFICATION
+      }
       const { data: res, total } = await queryReviewBomList(DATA)
       this.tableData = res
       this.total = total

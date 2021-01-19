@@ -110,6 +110,7 @@
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
+          other-height="480px"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -223,6 +224,7 @@ export default {
           fdescripTion: '',
           funitId: '',
           fqty: '',
+          fprice: '',
           fisFree: false,
           ftaxRate: '',
           fdownPrice: '',
@@ -245,19 +247,13 @@ export default {
       this.prodValue.saleDetails = this.saleDetails
       // 表格不能为空
       for (const item of this.prodValue.saleDetails) {
-        if (item.fmaterialId === '' || item.funitId === '' || item.fqty === '' || item.fdeliveryDate === '') {
+        if (item.fmaterialId === '' || item.funitId === '' || item.fqty === '') {
           this.$message.error('表格不能为空或删除空行')
           return false
         }
         if (item.fprice < item.fdownprice) {
           this.$message.error('销售单价不能小于基准价')
           this.loading = false
-          return false
-        }
-      }
-      for (const item of this.prodValue.planDetails) {
-        if (item.frecAdvanceRate === '' || item.frecAdvanCeamount === '') {
-          this.$message.error('表格不能为空')
           return false
         }
       }
@@ -381,7 +377,7 @@ export default {
 
     .el-form-item {
       max-width: 263px;
-      margin-bottom: 15px;
+      margin-bottom: 5px;
     }
   }
 }

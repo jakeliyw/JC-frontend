@@ -15,6 +15,14 @@ export default {
     handleSetForm() {
       // 其它
       this.otherOptions = {
+        fcreator: {
+          label: '创建人',
+          disabled: 'disabled'
+        },
+        fcreateDate: {
+          label: '创建时间',
+          disabled: 'disabled'
+        },
         fcheck1: {
           label: '研发审核人',
           disabled: 'disabled'
@@ -77,14 +85,6 @@ export default {
         },
         fcheckDate8: {
           label: '总裁审核时间',
-          disabled: 'disabled'
-        },
-        fcreateDate: {
-          label: '创建时间',
-          disabled: 'disabled'
-        },
-        fcreator: {
-          label: '创建人',
           disabled: 'disabled'
         }
       }

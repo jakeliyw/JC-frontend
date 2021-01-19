@@ -8,7 +8,7 @@ export function MrpInfo(params) {
     params
   })
 }
-// 显示换单需求
+// MRP转单生产和委外
 export function InsertMO(data) {
   return request({
     url: '/tSalOrder/InsertMO',
@@ -30,5 +30,29 @@ export function Show_SALOrder(params) {
     url: '/tSalOrder/show_SALOrder',
     method: 'get',
     params
+  })
+}
+// 显示采购转单需求
+export function MrpCGInfor(params) {
+  return request({
+    url: '/tSalOrder/MrpCGInfo',
+    method: 'get',
+    params
+  })
+}
+// 获取上限单价
+export function MrpGetCGprice(params) {
+  return request({
+    url: '/tSalOrder/MrpGetCGprice',
+    method: 'get',
+    params
+  })
+}
+// 采购MRP转单
+export function InsertPO(data) {
+  return request({
+    url: '/tSalOrder/InsertPO',
+    method: 'post',
+    data
   })
 }

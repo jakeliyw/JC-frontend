@@ -34,6 +34,7 @@
           :cell-style="cellStyle"
           serial
           :table-header="sonTableHeader"
+          table-height="calc(100vh - 600px)"
         >
           <el-table-column v-if="false" label="子物料ID" prop="FMATERIALID" align="center" />
           <el-table-column label="物料编码" prop="FNUMBER" align="center" width="200px">
@@ -104,6 +105,7 @@
           :table-header="logTableHeader"
           :table-data="otherLogTableData"
           :cell-style="cellStyle"
+          table-height="calc(100vh - 720px)"
         />
         <jc-pagination
           v-show="otherPagination.total > 0"

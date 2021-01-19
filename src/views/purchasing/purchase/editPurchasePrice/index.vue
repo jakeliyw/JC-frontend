@@ -115,9 +115,9 @@
               />
             </template>
           </el-table-column>
-          <el-table-column label="价格系数" prop="fpriceCoefficient" align="center" min-width="150px">
+          <el-table-column label="最小起订量" prop="fminNum" align="center" min-width="150px">
             <template slot-scope="scope">
-              <el-input-number v-model.number="scope.row.fpriceCoefficient" size="mini" :precision="4" :step="0.0001" :min="0.0000" />
+              <el-input-number v-model.number="scope.row.fminNum" size="mini" :precision="4" :step="0.0001" :min="0.0000" />
             </template>
           </el-table-column>
           <el-table-column label="生效时间" prop="feffectiveDate" width="200px" align="center" min-width="150px">
@@ -303,7 +303,7 @@ export default {
     preservation() {
       for (const ITEM of this.tableData) {
         if (ITEM.fmaterialId === '' || ITEM.fprice === 0 ||
-        ITEM.ftaxPrice === 0 || ITEM.fpriceCoefficient === 0 || ITEM.feffectiveDate == null) {
+        ITEM.ftaxPrice === 0 || ITEM.fminNum === 0 || ITEM.feffectiveDate == null) {
           this.$message.warning('表格不能为空,或表格值不能为0')
           return
         }
@@ -314,7 +314,7 @@ export default {
           fmaterialId: item.fmaterialId,
           fprice: item.fprice,
           ftaxPrice: item.ftaxPrice,
-          fpriceCoefficient: item.fpriceCoefficient,
+          fminNum: item.fminNum,
           fupPrice: item.fupPrice,
           fdownPrice: item.fdownPrice,
           ftaxRate: item.ftaxRate,
@@ -365,7 +365,7 @@ export default {
             fmaterialId: '', // 物料编码
             fprice: 0, // 单价
             ftaxPrice: 0, // 含税单价
-            fpriceCoefficient: 0, // 价格系数
+            fminNum: 0, // 最小起订量
             fupPrice: 0, // 价格上限
             fdownPrice: 0, // 价格下限
             feffectiveDate: '', // 生效时间
@@ -527,6 +527,6 @@ export default {
   padding: 0 20px;
 }
 .layout ::v-deep .jcTable{
-  min-height: calc(100vh - 400px);
+  min-height: calc(100vh - 450px);
 }
 </style>

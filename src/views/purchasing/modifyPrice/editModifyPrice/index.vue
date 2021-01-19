@@ -536,7 +536,7 @@ export default {
   cursor: pointer;
 }
 .layout ::v-deep .jcTable{
-  min-height: calc(100vh - 380px);
+  min-height: calc(100vh - 450px);
 }
 .el-table ::v-deep .el-table__body-wrapper{
   height: 480px;

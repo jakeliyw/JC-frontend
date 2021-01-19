@@ -22,7 +22,7 @@
         serial
       >
         <el-table-column v-if="false" prop="fid" label="销售价目ID" min-width="80" align="center" />
-        <el-table-column prop="fsaleOrg" label="销售组织" min-width="150" align="center" />
+        <el-table-column prop="fsaleOrg" label="销售组织" min-width="150" align="center" :show-overflow-tooltip="true" />
         <el-table-column prop="fnumber" label="编码" min-width="120" align="center">
           <template slot-scope="scope">
             <el-link type="primary" @click="particulars(scope.row.fid)">{{ scope.row.fnumber }}</el-link>
@@ -36,7 +36,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="fpriceObject" label="价目对象" min-width="80" align="center" />
-        <el-table-column prop="fcreateDate" label="创建时间" min-width="80" align="center" />
+        <el-table-column prop="fcreateDate" label="创建时间" min-width="80" align="center"  :show-overflow-tooltip="true" />
         <el-table-column prop="attributeArray" label="操作" min-width="120" align="center" fixed="right">
           <template slot-scope="scope">
             <el-button type="primary" class="btn" size="mini" @click="particulars(scope.row.fid)">详情</el-button>

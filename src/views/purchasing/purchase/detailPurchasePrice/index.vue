@@ -8,6 +8,7 @@
           :table-data="tableData"
           :table-header="tableHeader"
           :cell-style="cellStyle"
+          table-height="calc(100vh - 450px)"
         />
       </el-tab-pane>
       <el-tab-pane label="其它" name="other">
@@ -58,7 +59,7 @@ export default {
         { label: '计价单位', prop: 'funit', align: 'center' },
         { label: '单价', prop: 'fprice', align: 'center' },
         { label: '含税单价', prop: 'ftaxPrice', align: 'center' },
-        { label: '价格系数', prop: 'fpriceCoefficient', align: 'center' },
+        { label: '最小起订量', prop: 'fminNum', align: 'center' },
         { label: '价格上限', prop: 'fupPrice', align: 'center' },
         { label: '价格下限', prop: 'fdownPrice', align: 'center' },
         { label: '生效日期', prop: 'feffectiveDate', align: 'center' },

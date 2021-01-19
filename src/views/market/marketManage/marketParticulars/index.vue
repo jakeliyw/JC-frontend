@@ -1,5 +1,6 @@
 <template>
-  <div class="content">
+  <div class="Particules">
+    <jc-title/>
     <el-tabs type="border-card" @tab-click="handleOther">
       <el-tab-pane label="订单详情">
         <div class="header-card">
@@ -13,6 +14,7 @@
               :table-data="saleDetails"
               :table-header="tableHeader"
               :cell-style="cellStyle"
+              table-height="48vh"
             >
               <el-table-column prop="fnumber" label="物料编码" min-width="150px" align="center" :show-overflow-tooltip="true">
                 <template slot-scope="scope">
@@ -46,6 +48,7 @@
             <jc-table
               :table-data="planDetails"
               :table-header="tableHeader1"
+              table-height="48vh"
               serial
               :cell-style="cellStyle"
             >
@@ -81,6 +84,7 @@
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
+          other-height="580px"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -112,13 +116,15 @@ import {
 import jcMarker from '@/components/marker'
 import jcPagination from '@/components/Pagination'
 import jumpMateriel from '@/components/JumpMateriel'
+import jcTitle from '@/components/Title'
 
 export default {
   components: {
     jcTable,
     jcForm,
     jcMarker,
-    jcPagination
+    jcPagination,
+    jcTitle
   },
   mixins: [jumpMateriel],
   data() {
@@ -151,7 +157,6 @@ export default {
       const DATA = { fid: id }
       const { data: RES } = await queryTSalOrderNtry(DATA)
       this.saleDetails = RES.saleDetails
-      console.log(RES.saleDetails)
       this.planDetails = RES.planDetails
       if (RES.fcloseStatus === 'A') {
         RES.fcloseStatus = '正常'
@@ -246,8 +251,29 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.Particules{
+  .el-form{
+    .el-form-item{
+      margin-bottom: 5px;
+    }
+    .el-form-item__label{
+      width: 100px!important;
+    }
+    .el-form-item__content{
+      margin-left: 100px!important;
+    }
+    .el-input__inner{
+      width: 163px;
+    }
+  }
+  .el-col-6{
+    width: 263px;
+  }
+}
+</style>
 <style lang="scss" scoped>
-.content {
+.Particules {
   @include listBom;
 }
 .inTheBtn{

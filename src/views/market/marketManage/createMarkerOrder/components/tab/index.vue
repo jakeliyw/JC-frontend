@@ -6,6 +6,7 @@
           :table-data="tabTwo.saleDetails"
           :table-header="tableHeader"
           serial
+          table-height="44vh"
           :cell-style="cellStyle"
         >
           <el-table-column label="物料编码" prop="fmaterialId" align="center" width="200px">
@@ -82,7 +83,7 @@
                 style="max-height: 28px"
                 @click="proviewImg(item)"
               >
-              <el-button type="primary" size="mini" @click="drawingl(scope.$index)">上传</el-button>
+              <el-button type="primary" size="mini" @click="drawingl(scope)">上传</el-button>
             </template>
           </el-table-column>
           <el-table-column label="操作" prop="fqty" min-width="100px" align="center">
@@ -97,6 +98,7 @@
           :table-data="tabTwo.planDetails"
           :table-header="tableHeader"
           serial
+          table-height="44vh"
           :cell-style="cellStyle"
         >
           <el-table-column label="是否预收" prop="fqty" align="center" width="80px">
@@ -131,140 +133,7 @@
     <!--    物料弹窗-->
     <material v-if="isMateria" :msg="material" :msg1="fid" @material="materialData" />
     <!--上传图纸-->
-    <el-dialog
-      title="上传图纸"
-      model
-      :visible.sync="isdrawinglDialog"
-      :close-on-click-modal="false"
-      width="60%"
-      :before-close="handleClose"
-    >
-      <el-form label-width="120px">
-        <el-form-item label="图纸">
-          <el-upload
-            class="avatar-uploader"
-            :action="actionURL"
-            :show-file-list="false"
-            :auto-upload="false"
-            :on-change="handleAvatarSuccess"
-          >
-            <img
-              v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl"
-              :src="tabTwo.saleDetails[indexSelf].salImage.imageUrl"
-              class="avatar"
-            >
-            <div v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl" class="magnify">
-              <i class="el-icon-search" @click.stop="proviewImg(tabTwo.saleDetails[indexSelf].salImage.imageUrl)" />
-              <i class="el-icon-delete" @click.stop="tabTwo.saleDetails[indexSelf].salImage.imageUrl=''" />
-            </div>
-            <i v-else class="el-icon-plus avatar-uploader-icon" />
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="图纸1">
-          <el-upload
-            class="avatar-uploader"
-            :action="actionURL"
-            :show-file-list="false"
-            :auto-upload="false"
-            :on-change="handleAvatarSuccess1"
-          >
-            <img
-              v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl1"
-              :src="tabTwo.saleDetails[indexSelf].salImage.imageUrl1"
-              class="avatar"
-            >
-            <div v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl1" class="magnify">
-              <i class="el-icon-search" @click.stop="proviewImg(tabTwo.saleDetails[indexSelf].salImage.imageUrl1)" />
-              <i class="el-icon-delete" @click.stop="tabTwo.saleDetails[indexSelf].salImage.imageUrl1=''" />
-            </div>
-            <i v-else class="el-icon-plus avatar-uploader-icon" />
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="图纸2">
-          <el-upload
-            class="avatar-uploader"
-            :action="actionURL"
-            :show-file-list="false"
-            :auto-upload="false"
-            :on-change="handleAvatarSuccess2"
-          >
-            <img
-              v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl2"
-              :src="tabTwo.saleDetails[indexSelf].salImage.imageUrl2"
-              class="avatar"
-            >
-            <div v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl2" class="magnify">
-              <i class="el-icon-search" @click.stop="proviewImg(tabTwo.saleDetails[indexSelf].salImage.imageUrl2)" />
-              <i class="el-icon-delete" @click.stop="tabTwo.saleDetails[indexSelf].salImage.imageUrl2=''" />
-            </div>
-            <i v-else class="el-icon-plus avatar-uploader-icon" />
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="图纸3">
-          <el-upload
-            class="avatar-uploader"
-            :action="actionURL"
-            :show-file-list="false"
-            :auto-upload="false"
-            :on-change="handleAvatarSuccess3"
-          >
-            <img
-              v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl3"
-              :src="tabTwo.saleDetails[indexSelf].salImage.imageUrl3"
-              class="avatar"
-            >
-            <div v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl3" class="magnify">
-              <i class="el-icon-search" @click.stop="proviewImg(tabTwo.saleDetails[indexSelf].salImage.imageUrl3)" />
-              <i class="el-icon-delete" @click.stop="tabTwo.saleDetails[indexSelf].salImage.imageUrl3=''" />
-            </div>
-            <i v-else class="el-icon-plus avatar-uploader-icon" />
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="图纸4">
-          <el-upload
-            class="avatar-uploader"
-            :action="actionURL"
-            :show-file-list="false"
-            :auto-upload="false"
-            :on-change="handleAvatarSuccess4"
-          >
-            <img
-              v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl4"
-              :src="tabTwo.saleDetails[indexSelf].salImage.imageUrl4"
-              class="avatar"
-            >
-            <div v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl4" class="magnify">
-              <i class="el-icon-search" @click.stop="proviewImg(tabTwo.saleDetails[indexSelf].salImage.imageUrl4)" />
-              <i class="el-icon-delete" @click.stop="tabTwo.saleDetails[indexSelf].salImage.imageUrl4=''" />
-            </div>
-            <i v-else class="el-icon-plus avatar-uploader-icon" />
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="图纸5">
-          <el-upload
-            class="avatar-uploader"
-            :action="actionURL"
-            :show-file-list="false"
-            :auto-upload="false"
-            :on-change="handleAvatarSuccess5"
-          >
-            <img
-              v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl5"
-              :src="tabTwo.saleDetails[indexSelf].salImage.imageUrl5"
-              class="avatar"
-            >
-            <div v-if="tabTwo.saleDetails[indexSelf].salImage.imageUrl5" class="magnify">
-              <i class="el-icon-search" @click.stop="proviewImg(tabTwo.saleDetails[indexSelf].salImage.imageUrl5)" />
-              <i class="el-icon-delete" @click.stop="tabTwo.saleDetails[indexSelf].salImage.imageUrl5=''" />
-            </div>
-            <i v-else class="el-icon-plus avatar-uploader-icon" />
-          </el-upload>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="isdrawinglDialog = false">确 定</el-button>
-      </span>
-    </el-dialog>
+    <upload-img v-if="isUploadImg" :msg="salImg" @upload="drawing" />
     <!--图纸预览-->
     <el-dialog
       title="预览"
@@ -282,15 +151,16 @@
 <script>
 import jcTable from '@/components/Table'
 import jumpMateriel from '@/components/JumpMateriel'
-import mixinsImg from '@/views/market/marketManage/createMarkerOrder/components/mixinsImg'
 import material from '@/views/market/marketManage/createMarkerOrder/components/material'
+import uploadImg from '@/views/market/marketManage/createMarkerOrder/components/uploadImg'
 
 export default {
   components: {
     jcTable,
-    material
+    material,
+    uploadImg
   },
-  mixins: [jumpMateriel, mixinsImg],
+  mixins: [jumpMateriel],
   props: {
     msg: {
       type: Number,
@@ -299,14 +169,14 @@ export default {
   },
   data() {
     return {
+      imgVisible: false, // 预览图片src
+      priview: '', // 预览图片
+      salImg: {},
       fid: '', // 客户ID
       material: '', // 父传子
       isMateria: false, // 物料弹窗
-      actionURL: '', // 图片上传地址
       indexSelf: 0, // 图片下标
-      imgVisible: false, // 预览图片src
-      priview: '', // 预览图片
-      isdrawinglDialog: false, // 图纸弹窗
+      isUploadImg: false, // 图纸弹窗
       activeName: 'first', // 标签tabs名
       tableHeader: [],
       cellStyle: { padding: '10 10' },
@@ -360,6 +230,7 @@ export default {
             fdescripTion: '',
             funitId: '',
             fqty: '',
+            fprice: '',
             fisFree: false,
             ftaxRate: '',
             fdeliveryDate: '',
@@ -369,7 +240,7 @@ export default {
               imageUrl2: '', // 图片
               imageUrl3: '', // 图片
               imageUrl4: '', // 图片
-              imageUrl5: ''
+              imageUrl5: '' // 图片
             }
           }
         )
@@ -419,19 +290,21 @@ export default {
     check(value) {
       this.$emit('visible', this.tabTwo)
     }, // 打开上传图片弹窗
-    drawingl(index) {
-      this.indexSelf = index
-      this.isdrawinglDialog = true
-    },
-    // 关闭上传图片弹窗，并向父组件传值
-    handleClose() {
-      this.isdrawinglDialog = false
-      this.$emit('visible', this.tabTwo)
+    drawingl(scope) {
+      this.salImg = scope.row.salImage
+      this.indexSelf = scope.$index
+      this.isUploadImg = true
     },
     // 预览图片
     proviewImg(img) {
       this.imgVisible = true
       this.priview = img
+    },
+    // 获取图片
+    drawing(ev) {
+      this.isUploadImg = false
+      this.tabTwo.saleDetails[this.indexSelf].salImage = ev
+      this.$emit('visible', this.tabTwo)
     }
   }
 }
@@ -477,68 +350,6 @@ export default {
     .input-width {
       width: 200px;
       margin-right: 10px;
-    }
-  }
-
-  .el-form {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .avatar-uploader .el-upload {
-    height: 78px;
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 78px;
-    height: 78px;
-    line-height: 78px;
-    text-align: center;
-    border: 1px dashed #aaa;
-    border-radius: 6px;
-  }
-
-  .avatar {
-    width: 78px;
-    height: 78px;
-    display: block;
-    border-radius: 6px;
-  }
-
-  .avatar-uploader {
-    transition: all 1s;
-  }
-
-  .avatar-uploader:hover .magnify {
-    display: block;
-  }
-
-  .magnify {
-    display: none;
-    height: 78px;
-    background-color: rgba(0, 0, 0, .4);
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    line-height: 78px;
-    border-radius: 6px;
-
-    i {
-      font-size: 18px;
-      color: #fff;
-      padding: 0 5px;
     }
   }
 }

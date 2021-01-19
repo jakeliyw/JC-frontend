@@ -43,7 +43,7 @@
           serial
           :cell-style="cellStyle"
           :table-header="sonTableHeader"
-          table-height="calc(100vh - 480px)"
+          table-height="calc(100vh - 600px)"
         >
           <el-table-column label="物料编码" prop="FNUMBER" align="center" width="200px">
             <template slot-scope="scope">

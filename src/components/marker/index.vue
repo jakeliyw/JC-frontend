@@ -4,6 +4,7 @@
     <jc-table
       :table-header="logTableHeader"
       :table-data="otherLogTableData"
+      :table-height="otherHeight"
       :cell-style="cellStyle"
     />
     <slot name="slotPagination" />
@@ -34,6 +35,10 @@ export default {
       default: function() {
         return []
       }
+    },
+    otherHeight: {
+      type: [String, Number],
+      default: ''
     }
   },
   data() {

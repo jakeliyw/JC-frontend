@@ -5,6 +5,7 @@
       :table-header="logTableHeader"
       :table-data="otherLogTableData"
       :cell-style="cellStyle"
+      table-height="calc(100vh - 500px)"
     />
     <slot name="slotPagination" />
   </div>

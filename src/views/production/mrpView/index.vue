@@ -1,5 +1,6 @@
 <template>
   <div class="content">
+    <jc-title />
     <el-form :model="orderNumber" label-width="90px">
       <el-form-item label="销售订单号">
         <el-input v-model.trim="Sonum" size="mini" @keyup.enter.native="gainData()" @blur="gainData()" />
@@ -23,11 +24,10 @@
     <jc-table
       :table-data="tableData"
       :table-header="tableHeader"
-      table-height="500px"
       :cell-style="cellStyle"
       @selectionChange="selectData"
     >
-      <el-table-column type="selection" :selectable="selectable" width="60px" align="center" />
+      <el-table-column type="selection" width="60px" align="center" />
       <template v-slot:btnState="col">
         <el-select v-model="col.scope.row.sclx" placeholder="请选择" size="mini" :disabled="col.scope.row.zt==='已转'" @change="editLx(col.scope)">
           <el-option label="委外" value="委外" />
@@ -92,13 +92,14 @@
 </template>
 <script>
 import jcTable from '@/components/Table'
+import jcTitle from '@/components/Title'
 import jcPopup from '@/views/basic/createMateriel/components/Popup'
 import {
   MrpInfo,
   InsertMO,
   Show_SALOrder
 } from '@/api/mrpView'
-import stork from '@/views/MRPview/components/stork/index'
+import stork from '@/views/purchasing/procurement/components/stork/index'
 import jcPagination from '@/components/Pagination'
 import { queryTBdStock } from '@/api/purchaseManagement/createPurchasePrice'
 
@@ -107,6 +108,7 @@ export default {
   components: {
     jcTable,
     stork,
+    jcTitle,
     jcPopup,
     jcPagination
   },
@@ -129,7 +131,7 @@ export default {
         { label: '订单类型', prop: 'ddlx', align: 'center' },
         { label: '生产单号', prop: 'ssdh', align: 'center', minWidth: '140px' },
         { label: '型号', prop: 'itemXH', align: 'center' },
-        { label: '物料编号', prop: 'itemCode', align: 'center', minWidth: '210px' },
+        { label: '物料编号', prop: 'itemCode', align: 'center', minWidth: '160px' },
         { label: '物料描述', prop: 'itemName', align: 'center', minWidth: '260px' },
         { label: '生产类型', type: 'state', prop: 'sclx', align: 'center', minWidth: '100px' },
         { label: '生产部门', type: 'btn', prop: 'scbm', align: 'center', minWidth: '150px' },
@@ -184,11 +186,19 @@ export default {
       this.insetData.Sonum = this.Sonum
       const DATA = { sonum: this.Sonum }
       // 获取表头数据
-      const { data: RES } = await Show_SALOrder(DATA)
-      this.orderNumber.customer = RES.fname
-      this.orderNumber.fpaezText1 = RES.f_PAEZ_TEXT1
-      this.orderNumber.fpaezCombo = RES.f_PAEZ_COMBO
-      this.orderNumber.fdeliveryDate = RES.f_JC_Duedocdate
+      const RES = await Show_SALOrder(DATA)
+      if (RES.code === 0) {
+        this.orderNumber.customer = RES.data.fname
+        this.orderNumber.fpaezText1 = RES.data.f_PAEZ_TEXT1
+        this.orderNumber.fpaezCombo = RES.data.f_PAEZ_COMBO
+        this.orderNumber.fdeliveryDate = RES.data.f_JC_Duedocdate
+        if (this.orderNumber.customer) {
+          this.MrpInfo()
+        }
+      } else {
+        this.orderNumber = {}
+        this.tableData = []
+      }
     },
     // 获取表格数据
     async MrpInfo(ev) {
@@ -221,18 +231,24 @@ export default {
     async InsertMO() {
       this.insetData.insert_MoLists = []
       this.val.map(res => {
-        this.insetData.insert_MoLists.push({
-          DDLX: res.ddlx,
-          Qutntity: res.qty,
-          Rprice: res.rprice,
-          StockID: res.ckid,
-          StockName: res.ck,
-          SCBMID: res.scbmno,
-          SCBM: res.scbm,
-          DueDocdate: res.pjjq,
-          ItemCode: res.itemCode
-        })
+        if (res.zt === '未转') {
+          this.insetData.insert_MoLists.push({
+            DDLX: res.ddlx,
+            Qutntity: res.qty,
+            Rprice: res.rprice,
+            StockID: res.ckid,
+            StockName: res.ck,
+            SCBMID: res.scbmno,
+            SCBM: res.scbm,
+            DueDocdate: res.pjjq,
+            ItemCode: res.itemCode
+          })
+        }
       })
+      if (this.insetData.insert_MoLists.length === 0) {
+        this.$message.error('没有可转订单')
+        return
+      }
       const DATA = this.insetData
       for (const item of this.insetData.insert_MoLists) {
         if (!item.SCBM || !item.StockID) {
@@ -243,6 +259,7 @@ export default {
       await InsertMO(DATA).then(res => {
         if (res.code === 0) {
           this.$message.success('下发成功')
+          this.val = []
           this.MrpInfo(res.data)
         } else {
           this.$message.error(res.message)
@@ -252,14 +269,6 @@ export default {
     // 多选时触发的事件
     selectData(val) {
       this.val = val
-    },
-    // 状态已转禁止选择
-    selectable(row, index) {
-      if (row.zt === '已转') {
-        return false
-      } else {
-        return true
-      }
     },
     // 选择生产部门（弹窗）
     storkCli(ev, en) {

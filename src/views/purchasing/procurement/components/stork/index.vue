@@ -75,10 +75,12 @@ export default {
     async queryTBdCustomerList() {
       if (this.msg === '生产订单') {
         this.ddlx = 'SCDD'
-      } else {
+      } else if (this.msg === '委外订单') {
         this.ddlx = 'WWDD'
+      } else if (this.msg === '采购订单') {
+        this.ddlx = 'CGDD'
       }
-      const DATA = { ddlx: this.ddlx }
+      const DATA = { ddlx: this.ddlx, bm: this.stork.fname }
       const { data: RES } = await Show_StockInfo(DATA)
       this.storklDialogData = RES
       this.stork.total = RES.total

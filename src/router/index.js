@@ -219,6 +219,167 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/market',
+    component: Layout,
+    redirect: '/createMarkerOrder',
+    name: 'Market',
+    meta: {
+      title: '销售管理',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: '/marketManage',
+        redirect: '/createMarkerOrder',
+        component: () => import('@/views/market/marketManage/index'),
+        name: 'MarketManage',
+        meta: {
+          title: '销售订单'
+        },
+        children: [
+          {
+            path: '/createMarkerOrder',
+            name: 'CreateMarkerOrder',
+            component: () => import('@/views/market/marketManage/createMarkerOrder/index'),
+            meta: { title: '新增销售订单' },
+            menu: 'createMarkerOrder'
+          },
+          {
+            path: '/marketParticulars/:id',
+            name: 'MarketParticulars',
+            component: () => import('@/views/market/marketManage/marketParticulars/index'),
+            meta: { title: '销售订单详情' },
+            menu: 'marketParticulars',
+            hidden: true
+          },
+          {
+            path: '/marketRevising/:id',
+            name: 'marketRevising',
+            component: () => import('@/views/market/marketManage/marketRevising/index'),
+            meta: { title: '修改订单' },
+            hidden: true,
+            menu: 'marketRevising'
+          },
+          {
+            path: '/marketUntreated',
+            name: 'MarketUntreated',
+            component: () => import('@/views/market/marketManage/marketUntreated/index'),
+            meta: { title: '未处理订单' },
+            menu: 'marketUntreated'
+          },
+          {
+            path: '/marketAudit',
+            name: 'MarketAudit',
+            component: () => import('@/views/market/marketManage/marketAudit/index'),
+            meta: { title: '审核中订单' },
+            menu: 'marketAudit'
+          },
+          {
+            path: '/marketNoPass',
+            name: 'MarketNoPass',
+            component: () => import('@/views/market/marketManage/marketNoPass/index'),
+            meta: { title: '审核未通过订单' },
+            menu: 'marketNoPass'
+          },
+          {
+            path: '/marketOrder',
+            name: 'MarketOrder',
+            component: () => import('@/views/market/marketManage/marketOrder/index'),
+            meta: { title: '销售订单列表' },
+            menu: 'marketOrder'
+          }
+        ]
+      },
+      {
+        path: '/salesPrice',
+        name: 'SalesPrice',
+        redirect: '/createMarketPrice',
+        component: () => import('@/views/market/salesPrice/index'),
+        meta: {
+          title: '销售价目'
+        },
+        children: [
+          {
+            path: '/createMarketPrice',
+            name: 'CreateMarketPrice',
+            component: () => import('@/views/market/salesPrice/createMarketPrice/index'),
+            meta: { title: '新增销售价目表' },
+            menu: 'createMarketPrice'
+          },
+          {
+            path: '/marketDetail/:id',
+            name: 'marketDetail',
+            component: () => import('@/views/market/salesPrice/marketDetail/index'),
+            meta: { title: '销售价目明细' },
+            hidden: true,
+            menu: 'marketDetail'
+          },
+          {
+            path: '/markedEdit/:id',
+            name: 'MarkedEdit',
+            component: () => import('@/views/market/salesPrice/markedEdit/index'),
+            meta: { title: '修改价目' },
+            hidden: true,
+            menu: 'markedEdit'
+          },
+          {
+            path: '/markedUntreated',
+            name: 'MarkedUntreated',
+            component: () => import('@/views/market/salesPrice/markedUntreated/index'),
+            meta: { title: '未处理价目' },
+            menu: 'markedUntreated'
+          },
+          {
+            path: '/markedAudit',
+            name: 'MarkedAudit',
+            component: () => import('@/views/market/salesPrice/markedAudit/index'),
+            meta: { title: '审核中价目' },
+            menu: 'markedAudit'
+          },
+          {
+            path: '/markedNoPass',
+            name: 'MarkedNoPass',
+            component: () => import('@/views/market/salesPrice/markedNoPass/index'),
+            meta: { title: '审核未通过价目' },
+            menu: 'markedNoPass'
+          },
+          {
+            path: '/marketPriceList',
+            name: 'MarketPriceList',
+            component: () => import('@/views/market/salesPrice/marketPriceList/index'),
+            meta: { title: '销售价目表' },
+            menu: 'marketPriceList'
+          }
+        ]
+      },
+      {
+        path: '/customer',
+        redirect: '/createCustomer',
+        component: () => import('@/views/market/customer/index'),
+        name: 'Customer',
+        meta: {
+          title: '客户管理'
+        },
+        children: [
+          {
+            path: '/createCustomer',
+            name: 'CreateCustomer',
+            component: () => import('@/views/market/customer/createCustomer/index'),
+            meta: { title: '新增客户' },
+            menu: 'createCustomer'
+          },
+          {
+            path: '/customerList',
+            name: 'CustomerList',
+            component: () => import('@/views/market/customer/customerList/index'),
+            meta: { title: '客户列表' },
+            menu: 'createCustomer'
+          }
+        ]
+      }
+    ]
+  },
+  {
     path: '/purchasing ',
     component: Layout,
     name: 'Purchasing ',
@@ -349,143 +510,13 @@ export const asyncRouterMap = [
             menu: 'purchasePriceList'
           }
         ]
-      }
-    ]
-  },
-  {
-    path: '/market',
-    component: Layout,
-    redirect: '/createMarkerOrder',
-    name: 'Market',
-    meta: {
-      title: '销售管理',
-      icon: 'nested'
-    },
-    children: [
-      {
-        path: '/marketManage',
-        redirect: '/createMarkerOrder',
-        component: () => import('@/views/market/marketManage/index'),
-        name: 'MarketManage',
-        meta: {
-          title: '销售订单',
-          noCache: false
-        },
-        children: [
-          {
-            path: '/createMarkerOrder',
-            name: 'CreateMarkerOrder',
-            component: () => import('@/views/market/marketManage/createMarkerOrder/index'),
-            meta: { title: '新增销售订单' },
-            menu: 'createMarkerOrder'
-          },
-          {
-            path: '/marketParticulars/:id',
-            name: 'MarketParticulars',
-            component: () => import('@/views/market/marketManage/marketParticulars/index'),
-            meta: { title: '销售订单详情' },
-            menu: 'marketParticulars',
-            hidden: true
-          },
-          {
-            path: '/marketRevising/:id',
-            name: 'marketRevising',
-            component: () => import('@/views/market/marketManage/marketRevising/index'),
-            meta: { title: '修改订单' },
-            hidden: true,
-            menu: 'marketRevising'
-          },
-          {
-            path: '/marketUntreated',
-            name: 'MarketUntreated',
-            component: () => import('@/views/market/marketManage/marketUntreated/index'),
-            meta: { title: '未处理订单' },
-            menu: 'marketUntreated'
-          },
-          {
-            path: '/marketAudit',
-            name: 'MarketAudit',
-            component: () => import('@/views/market/marketManage/marketAudit/index'),
-            meta: { title: '审核中订单' },
-            menu: 'marketAudit'
-          },
-          {
-            path: '/marketNoPass',
-            name: 'MarketNoPass',
-            component: () => import('@/views/market/marketManage/marketNoPass/index'),
-            meta: { title: '审核未通过订单' },
-            menu: 'marketNoPass'
-          },
-          {
-            path: '/marketOrder',
-            name: 'MarketOrder',
-            component: () => import('@/views/market/marketManage/marketOrder/index'),
-            meta: { title: '销售订单列表' },
-            menu: 'marketOrder'
-          }
-        ]
       },
       {
-        path: '/salesPrice',
-        name: 'SalesPrice',
-        redirect: '/createMarketPrice',
-        component: () => import('@/views/market/salesPrice/index'),
-        meta: {
-          title: '销售价目'
-        },
-        children: [
-          {
-            path: '/createMarketPrice',
-            name: 'CreateMarketPrice',
-            component: () => import('@/views/market/salesPrice/createMarketPrice/index'),
-            meta: { title: '新增销售价目表' },
-            menu: 'createMarketPrice'
-          },
-          {
-            path: '/marketDetail/:id',
-            name: 'marketDetail',
-            component: () => import('@/views/market/salesPrice/marketDetail/index'),
-            meta: { title: '销售价目明细' },
-            hidden: true,
-            menu: 'marketDetail'
-          },
-          {
-            path: '/markedEdit/:id',
-            name: 'MarkedEdit',
-            component: () => import('@/views/market/salesPrice/markedEdit/index'),
-            meta: { title: '修改价目' },
-            hidden: true,
-            menu: 'markedEdit'
-          },
-          {
-            path: '/markedUntreated',
-            name: 'MarkedUntreated',
-            component: () => import('@/views/market/salesPrice/markedUntreated/index'),
-            meta: { title: '未处理价目' },
-            menu: 'markedUntreated'
-          },
-          {
-            path: '/markedAudit',
-            name: 'MarkedAudit',
-            component: () => import('@/views/market/salesPrice/markedAudit/index'),
-            meta: { title: '审核中价目' },
-            menu: 'markedAudit'
-          },
-          {
-            path: '/markedNoPass',
-            name: 'MarkedNoPass',
-            component: () => import('@/views/market/salesPrice/markedNoPass/index'),
-            meta: { title: '审核未通过价目' },
-            menu: 'markedNoPass'
-          },
-          {
-            path: '/marketPriceList',
-            name: 'MarketPriceList',
-            component: () => import('@/views/market/salesPrice/marketPriceList/index'),
-            meta: { title: '销售价目表' },
-            menu: 'marketPriceList'
-          }
-        ]
+        path: '/procurement',
+        name: 'Procurement',
+        component: () => import('@/views/purchasing/procurement/index'),
+        meta: { title: '采购PMC', noCache: false },
+        menu: 'procurement'
       }
     ]
   },
@@ -529,19 +560,19 @@ export const asyncRouterMap = [
     ]
   },
   {
-    path: '/MRPview',
+    path: '/production',
     component: Layout,
-    name: 'MRPview',
+    name: 'Production',
     meta: {
-      title: 'MRP转单界面',
+      title: '生产管理',
       icon: 'nested'
     },
     children: [
       {
-        path: '/mrpView',
-        name: 'MrpView',
-        component: () => import('@/views/MRPview/index'),
-        meta: { title: 'MRP转单界面', noCache: false },
+        path: '/mrpView ',
+        name: 'MrpView ',
+        component: () => import('@/views/production/mrpView/index'),
+        meta: { title: 'MRP转单界面' },
         menu: 'mrpView'
       }
     ]

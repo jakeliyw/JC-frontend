@@ -14,7 +14,7 @@
           <el-table
             :data="tableData"
             :cell-style="cellStyle"
-            height="550"
+            height="65vh"
             loading
           >
             <el-table-column prop="largeName" label="大类" align="center" class-name="valignTop">
@@ -191,6 +191,9 @@ export default {
       }
     .el-table--border td{
       border-right: 1px solid #888;
+    }
+    .gutter{
+      display: none;
     }
     .el-table--border th{
       border-bottom: 1px solid #888;

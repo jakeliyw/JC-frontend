@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export function queryFailBomList(data) {
   return request({
     url: '/tEngBom/queryFailBomList',
-    method: 'put',
+    method: 'post',
     data
   })
 }

@@ -261,6 +261,6 @@ export default {
   cursor: pointer;
 }
 .el-table ::v-deep .el-table__body-wrapper{
-  height: 30vw;
+  height: 25vw;
 }
 </style>
