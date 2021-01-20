@@ -88,3 +88,11 @@ export function insertAttributeType(data) {
     data
   })
 }
+// 修改物料属性明细
+export function updateAttributeType(data) {
+  return request({
+    url: '/tJxAttributetype/updateAttributeType',
+    method: 'post',
+    data
+  })
+}
