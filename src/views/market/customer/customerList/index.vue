@@ -19,8 +19,7 @@
         :table-data="tableData"
         :table-header="tableHeader"
         :cell-style="cellStyle"
-      >
-      </jc-table>
+      />
     </div>
     <!--    分页器-->
     <div class="footer">

@@ -760,6 +760,7 @@ export default {
     // 获取表单
     async handleForm() {
       const { data: RES } = await queryMaterialDetail({ fnumber: this.$route.query.FNUMBER })
+      console.log(RES)
       this.FISPURCHASE = RES.FISPURCHASE
       this.FISSALE = RES.FISSALE
       this.FISINVENTORY = RES.FISINVENTORY
