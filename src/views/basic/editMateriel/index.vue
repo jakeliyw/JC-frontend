@@ -88,7 +88,7 @@
               default-first-option
             >
               <el-option
-                v-for="list of item.handrail"
+                v-for="list in item.handrail"
                 :key="list.value"
                 :label="list.label"
                 :value="list.value"
@@ -533,6 +533,7 @@ export default {
         MediumCode: this.toMaterialValue.MediumCode,
         SmallCode: `${codeNumber.toString()}`
       }
+      console.log(DATA, '物料确定')
       const { data: RES, FDESCRIPTION } = await queryMaterialAttribute(DATA)
       this.FDESCRIPTION = FDESCRIPTION
       this.basicValue.FDESCRIPTION = FDESCRIPTION
@@ -547,7 +548,6 @@ export default {
     },
     // 保存物料
     async preservation() {
-      const ITEM = this.organization.FCREATEORG.selectItems.find(item => item)
       const codeNumber = this.SmallCode()
       const FATTRIBTTE = this.materielProperty.map(item => {
         const VALUE = item.handrail.find(obj => {
@@ -561,8 +561,6 @@ export default {
       }
       const SmallCode = `${codeNumber.toString()}`
       const DATA = {
-        FCREATEORGID: ITEM.value,
-        FUSEORGID: ITEM.value,
         LargeCode: this.oneMaterialValue.LargeCode,
         MediumCode: this.toMaterialValue.MediumCode,
         FMATERIALID: this.$route.query.FMATERIALID,
@@ -597,8 +595,7 @@ export default {
         FNETWEIGHT: this.weightValue.FNETWEIGHT,
         FATTRIBTTE: JSON.stringify(FATTRIBTTE)
       }
-      console.log(DATA, 'DATA')
-      Object.assign(DATA, this.information, SmallCode)
+      Object.assign(DATA, this.information)
       for (const key in DATA) {
         if (DATA[key] === '' || DATA[key] === undefined) {
           this.$message.warning('内容输入不完整，请重新输入！')
@@ -621,6 +618,7 @@ export default {
       DATA.FREMARKS = this.basicValue.FREMARKS
       // 图片可以为空
       DATA.FIMG = this.imageUrl
+      DATA.smallCode = SmallCode
       const { code, message } = await updateMaterialDetail(DATA)
       if (code !== 0) {
         this.$message.error(message)
@@ -760,6 +758,7 @@ export default {
     // 获取表单
     async handleForm() {
       const { data: RES } = await queryMaterialDetail({ fnumber: this.$route.query.FNUMBER })
+      console.log(RES)
       this.FISPURCHASE = RES.FISPURCHASE
       this.FISSALE = RES.FISSALE
       this.FISINVENTORY = RES.FISINVENTORY

@@ -374,6 +374,14 @@ export const asyncRouterMap = [
             component: () => import('@/views/market/customer/customerList/index'),
             meta: { title: '客户列表' },
             menu: 'createCustomer'
+          },
+          {
+            path: '/detailCustomer/:id',
+            name: 'DetailCustomer',
+            component: () => import('@/views/market/customer/detailCustomer/index'),
+            meta: { title: '查询客户' },
+            menu: 'detailCustomer',
+            hidden: true
           }
         ]
       }

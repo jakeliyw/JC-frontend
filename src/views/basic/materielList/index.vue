@@ -193,11 +193,11 @@ export default {
 
 <style scoped lang="scss">
 @media screen and (max-width: 1920px) and (min-width: 1366px)  {
-    .right-mainPage{
-      width: 70vw;
-      margin-left: 10px;
-    }
+  .right-mainPage{
+    width: 70vw;
+    margin-left: 10px;
   }
+}
 @media screen and (min-width: 2560px) {
   .right-mainPage{
     width: 80vw;

@@ -97,11 +97,11 @@
         <el-table-column prop="mediumName" label="中类名称" align="center" />
         <el-table-column prop="number" label="小类编码" align="center" />
         <el-table-column prop="name" label="小类名称" align="center" />
-        <el-table-column label="操作" align="center">
-          <template slot-scope="">
-            <el-button type="danger" size="mini">删除</el-button>
-          </template>
-        </el-table-column>
+<!--        <el-table-column label="操作" align="center">-->
+<!--          <template slot-scope="">-->
+<!--            <el-button type="danger" size="mini">删除</el-button>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
       </jc-table>
     </el-dialog>
     <!--    属性列表弹框-->
@@ -121,8 +121,9 @@
         <el-table-column prop="attributeName" label="属性名称" align="center" />
         <el-table-column prop="name" label="物料属性明细名称" align="center" />
         <el-table-column label="操作" align="center">
-          <template slot-scope="">
-            <el-button type="danger" size="mini">删除</el-button>
+          <template slot-scope="scope">
+            <el-button type="warning" size="mini" @click="increased(4,scope.row)">修改</el-button>
+<!--            <el-button type="danger" size="mini">删除</el-button>-->
           </template>
         </el-table-column>
       </jc-table>
@@ -131,7 +132,7 @@
     <jc-class v-if="newClass" :msg="title" :msg2="laCode" @newly="increas" />
     <!--新增中小类属性弹框-->
     <el-dialog
-      title="新增"
+      :title="diaTitle"
       :visible.sync="newInTheClass"
       :close-on-click-modal="false"
       width="50%"
@@ -205,7 +206,8 @@ import {
   insertMediumType,
   insertSerialType,
   deleteMediumType,
-  insertAttributeType
+  insertAttributeType,
+  updateAttributeType
 } from '@/api/encodingRules/categories'
 
 export default {
@@ -220,6 +222,7 @@ export default {
   mixins: [tagMixin],
   data() {
     return {
+      diaTitle: '新增', //  新增中小类属性弹框名称
       title: '', // 新增大类弹窗名称
       laCode: '', // 大类编码(修改)
       newInTheClass: false, // 新增中类弹框
@@ -241,7 +244,8 @@ export default {
       tableData: [], // 大类数据
       inTheData: [], // 中类数据
       smallData: [], // 小类数据
-      attributeData: [] // 属性数据
+      attributeData: [], // 属性数据
+      AttributeTypeID: '' // 修改属性ID
     }
   },
   mounted() {
@@ -267,13 +271,20 @@ export default {
       }
     },
     // 新增中类、小类、属性
-    increased(num) {
+    increased(num, ev) {
       this.newInTheClass = true
       this.newClassID = num
       this.newMediumName = '' // 清空名称数据
       this.serial = [] // 清空小类数据
       if (num === 2) {
         this.inTheClass()
+      }
+      if (num === 4) { // 修改属性名称
+        this.diaTitle = '修改'
+        this.newMediumName = ev.name
+        this.AttributeTypeID = ev.id
+      } else {
+        this.diaTitle = '新增'
       }
     },
     // 新增中类、小类、属性
@@ -311,6 +322,19 @@ export default {
       } else if (this.newClassID === 3) { // 新增属性
         const DATA = { attributeType: this.newAttributeType, name: this.newMediumName }
         const { code, message } = await insertAttributeType(DATA)
+        if (code === 0) {
+          this.$message({
+            message: message,
+            type: 'success'
+          })
+          this.newInTheClass = false
+          this.newMediumName = ''
+          this.attribute(this.newAttributeType)
+          return
+        }
+      } else if (this.newClassID === 4) { // 修改属性名称
+        const DATA = { id: this.AttributeTypeID, name: this.newMediumName }
+        const { code, message } = await updateAttributeType(DATA)
         if (code === 0) {
           this.$message({
             message: message,

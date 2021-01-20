@@ -20,6 +20,9 @@
         :table-header="tableHeader"
         :cell-style="cellStyle"
       >
+        <template v-slot:btnSlot="clo">
+          <el-button type="danger" size="mini" @click="detailCustomer(clo.scope.row.fcustId)">查询客户</el-button>
+        </template>
       </jc-table>
     </div>
     <!--    分页器-->
@@ -59,7 +62,8 @@ export default {
         { label: '组织名称', prop: 'fuseorg', align: 'center' },
         { label: '客户编码', prop: 'fnumber', align: 'center' },
         { label: '客户名称', prop: 'fname', align: 'center' },
-        { label: '客户分组', prop: 'fcustGroup', align: 'center', minWidth: '200px' }
+        { label: '客户分组', prop: 'fcustGroup', align: 'center', minWidth: '200px' },
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
       ],
       // 表格数据
       tableData: []
@@ -80,6 +84,9 @@ export default {
     handleQueryUntreated() {
       this.pageNum = 1
       this.handleGetUntreated()
+    },
+    detailCustomer(fcustId) {
+      this.$router.push({ path: `/detailCustomer/${fcustId}` })
     }
   }
 }

@@ -85,7 +85,7 @@
           </el-table-column>
           <el-table-column label="单价" prop="FPRICE" align="center" width="200px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.FPRICE" :precision="4" :step="0.0001" :min="0.0000" size="mini" />
+              <el-input-number v-model="scope.row.FPRICE" :precision="4" :step="0.0001" :min="0" size="mini" />
             </template>
           </el-table-column>
           <el-table-column label="金额" prop="money" align="center" width="150px">

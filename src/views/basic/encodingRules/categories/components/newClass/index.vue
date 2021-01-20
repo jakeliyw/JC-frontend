@@ -15,7 +15,7 @@
           <el-input v-model="formLabelAlign.largeName" :disabled="msg2===''? false : true" />
         </el-form-item>
         <!--新增-->
-        <el-form-item label="中类集合" v-if="!msg2">
+        <el-form-item v-if="!msg2" label="中类集合">
           <el-tag
             v-for="tag in formLabelAlign.mediumName"
             :key="tag"
@@ -36,28 +36,28 @@
           />
           <el-button v-else class="button-new-tag" size="small" @click="showInput(0)">新增中类</el-button>
         </el-form-item>
-        <el-form-item label="小类集合" v-if="!msg2">
-        <el-tag
-          v-for="tag in formLabelAlign.typeArray"
-          :key="tag"
-          closable
-          :disable-transitions="false"
-          @close="handleClose(tag,1)"
-        >
-          {{ tag }}
-        </el-tag>
-        <el-input
-          v-if="inputVisible1"
-          ref="saveTagInput1"
-          v-model="inputValue1"
-          class="input-new-tag"
-          size="small"
-          @keyup.enter.native="handleInputConfirm(1)"
-          @blur="handleInputConfirm(1)"
-        />
-        <el-button v-else-if="!inputVisible1 && xiaolei" class="button-new-tag" size="small" @click="showInput(1)">新增小类</el-button>
-      </el-form-item>
-        <el-form-item label="属性集合" v-if="!msg2">
+        <el-form-item v-if="!msg2" label="小类集合">
+          <el-tag
+            v-for="tag in formLabelAlign.typeArray"
+            :key="tag"
+            closable
+            :disable-transitions="false"
+            @close="handleClose(tag,1)"
+          >
+            {{ tag }}
+          </el-tag>
+          <el-input
+            v-if="inputVisible1"
+            ref="saveTagInput1"
+            v-model="inputValue1"
+            class="input-new-tag"
+            size="small"
+            @keyup.enter.native="handleInputConfirm(1)"
+            @blur="handleInputConfirm(1)"
+          />
+          <el-button v-else-if="!inputVisible1 && xiaolei" class="button-new-tag" size="small" @click="showInput(1)">新增小类</el-button>
+        </el-form-item>
+        <el-form-item v-if="!msg2" label="属性集合">
           <el-tag
             v-for="tag in formLabelAlign.attributeArray"
             :key="tag"
@@ -79,7 +79,7 @@
           <el-button v-else class="button-new-tag" size="small" @click="showInput(2)">新增属性</el-button>
         </el-form-item>
         <!--修改-->
-        <el-form-item label="中类集合" v-if="msg2">
+        <el-form-item v-if="msg2" label="中类集合">
           <el-tag
             v-for="tag in formLabelAlign.mediumName"
             :key="tag"
@@ -107,7 +107,7 @@
           />
           <el-button v-else class="button-new-tag" size="small" @click="showInput(0)">新增中类</el-button>
         </el-form-item>
-        <el-form-item label="小类集合" v-if="msg2">
+        <el-form-item v-if="msg2" label="小类集合">
           <el-tag
             v-for="tag in formLabelAlign.typeArray"
             :key="tag"
@@ -116,7 +116,7 @@
             {{ tag }}
           </el-tag>
         </el-form-item>
-        <el-form-item label="属性集合" v-if="msg2">
+        <el-form-item v-if="msg2" label="属性集合">
           <el-tag
             v-for="tag in formLabelAlign.attributeArray"
             :key="tag"
