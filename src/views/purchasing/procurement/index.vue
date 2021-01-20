@@ -294,6 +294,7 @@ export default {
           return false
         }
       }
+      // 下发转单
       await InsertPO(DATA).then(res => {
         if (res.data.result) {
           this.$message.success('转单成功')
@@ -376,7 +377,7 @@ export default {
     countHjr(ev) {
       this.tableData[ev].hje = (this.tableData[ev].rprice * this.tableData[ev].cgQty).toFixed(2)
     }
-    // 已转 禁止选择
+    // 已转订单 禁止选择
     // selectable(row, index) {
     //   if (row.zt === '未转') {
     //     return true

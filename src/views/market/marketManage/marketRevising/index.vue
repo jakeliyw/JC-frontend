@@ -126,8 +126,6 @@
         </jc-marker>
       </el-tab-pane>
     </el-tabs>
-    <!--客户列表-->
-    <client v-if="clientVisiblit" @client="clientData" />
     <!--交货方式列表-->
     <deliver v-if="deliveVisiblit" @delive="deliveData" />
     <!--销售员列表-->
@@ -152,7 +150,6 @@ import jumpMateriel from '@/components/JumpMateriel'
 import jcPagination from '@/components/Pagination'
 import jcMarker from '@/components/marker'
 import tab from '@/views/market/marketManage/marketRevising/components/tab'
-import client from '@/views/market/marketManage/createMarkerOrder/components/client'
 import deliver from '@/views/market/marketManage/createMarkerOrder/components/deliver'
 import market from '@/views/market/marketManage/createMarkerOrder/components/market'
 import currency from '@/views/market/marketManage/createMarkerOrder/components/currency'
@@ -165,7 +162,6 @@ export default {
     tab,
     jcPagination,
     jcMarker,
-    client,
     deliver,
     market,
     currency,
@@ -278,16 +274,6 @@ export default {
     async handleGetPurchase() {
       const { data: RES } = await queryOrgList()
       this.teamList = RES
-    },
-    // 获取客户数据(子传父)
-    clientData(item) {
-      if (item.fcustId) {
-        this.prodValue.fcustId = item.fcustId
-        this.prodValue.customer = item.fname
-        this.clientVisiblit = item.isclientlDialog
-      } else {
-        this.clientVisiblit = item.isclientlDialog
-      }
     },
     // 获取交货方式数据(子传父)
     deliveData(item) {

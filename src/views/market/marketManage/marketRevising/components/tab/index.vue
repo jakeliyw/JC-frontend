@@ -128,56 +128,7 @@
       </el-tab-pane>
     </el-tabs>
     <!--    物料弹窗-->
-    <el-dialog
-      title="物料列表"
-      model
-      :visible.sync="isMaterielDialog"
-      :close-on-click-modal="false"
-      width="60%"
-    >
-      <div class="materiel-form">
-        <span class="materiel-code">物料编码</span>
-        <el-input
-          v-model.trim="FNUMBER"
-          class="input-width"
-          size="mini"
-          placeholder="请输入物料编码"
-          @keyup.enter.native="handleMaterielSearch"
-        />
-        <span class="materiel-code">物料描述</span>
-        <el-input
-          v-model.trim="FDESCRIPTION"
-          class="input-width"
-          size="mini"
-          placeholder="请输入物料描述"
-          @keyup.enter.native="handleMaterielSearch"
-        />
-        <span class="materiel-code">物料规格</span>
-        <el-input
-          v-model.trim="FSPECIFICATION"
-          class="input-width"
-          size="mini"
-          placeholder="请输入规格"
-          @keyup.enter.native="handleMaterielSearch"
-        />
-        <el-button size="mini" type="primary" @click="handleMaterielSearch">搜索</el-button>
-      </div>
-      <jc-table
-        :table-data="materielDialogData"
-        :table-header="materielDialogHeader"
-        table-height="53vh"
-        serial
-        :cell-style="cellStyle"
-        @clickRow="materielSelectRow"
-      />
-      <jc-pagination
-        v-show="materielPagination.total > 0"
-        :total="materielPagination.total"
-        :page.sync="materielPagination.pageNum"
-        :limit.sync="materielPagination.pageSize"
-        @pagination="handleGetMateriel"
-      />
-    </el-dialog>
+    <material v-if="isMateria" :msg="material" :msg1="fid" @material="materialData" />
     <!--    上传图纸-->
     <upload-img v-if="isUploadImg" :msg="salImg" @upload="drawing" />
     <!--图纸预览-->
@@ -195,36 +146,37 @@
 </template>
 
 <script>
-import { querySalMaterialList } from '@/api/marketManage/marketOrder'
 import jcTable from '@/components/Table'
-import jcPagination from '@/components/Pagination'
 import jumpMateriel from '@/components/JumpMateriel'
+import material from '@/views/market/marketManage/createMarkerOrder/components/material'
 import uploadImg from '@/views/market/marketManage/createMarkerOrder/components/uploadImg'
 
 export default {
   components: {
     jcTable,
-    jcPagination,
-    uploadImg
+    uploadImg,
+    material
   },
   mixins: [jumpMateriel],
   props: {
-    msg: {
+    msg: { // 明细信息
       type: Array,
       required: true
     },
-    msg1: {
+    msg1: { // 收款计划
       type: Array,
       required: true
     },
-    msg2: {
+    msg2: { // 表单数据
       type: Object,
       required: true
     }
   },
   data() {
     return {
-      isUploadImg: false,
+      fid: '', // 价目ID
+      isMateria: false, // 物料弹窗组件
+      isUploadImg: false, // 上传图片组件
       salImg: {},
       indexSelf: 0, // 图片下标
       imgVisible: false, // 预览图片
@@ -235,26 +187,8 @@ export default {
       isMaterielDialog: false,
       cellStyle: { padding: '10 10' },
       // 点击行的序号
-      tableIndex: 0,
+      material: 0,
       rateIndex: '', // 行序号(第几行)
-      // 物料弹窗分页
-      materielPagination: {
-        total: 0, // 总条目
-        pageNum: 1, // 当前页
-        pageSize: 10 // 每页显示多少条数据
-      },
-      FNUMBER: '', // 弹窗编码
-      FDESCRIPTION: '', // 弹窗描述
-      FSPECIFICATION: '', // 弹窗规格型号
-      materielDialogData: [],
-      materielDialogHeader: [
-        { label: '物料编码', prop: 'fnumber', align: 'center', minWidth: '140px' },
-        { label: '物料规格', prop: 'fspecificaTion', align: 'center', minWidth: '120px' },
-        { label: '型号', prop: 'fmodel', align: 'center' },
-        { label: '描述', prop: 'fdescripTion', align: 'left', minWidth: '180px' },
-        { label: '单价', prop: 'fprice', align: 'center' },
-        { label: '创建时间', prop: 'fcreateDate', align: 'center' }
-      ],
       tabTwo: {
         // 明细信息
         saleDetails: [{
@@ -276,26 +210,34 @@ export default {
     msg() {
       this.tabTwo.saleDetails = this.msg
       this.tabTwo.planDetails = this.msg1
+      this.fid = this.msg2.fpriceListId
     }
   },
   methods: {
     // 物料弹窗选中
-    async materielSelectRow(item) {
-      this.tabTwo.saleDetails[this.tableIndex].fmaterialId = item.fmaterialId
-      this.tabTwo.saleDetails[this.tableIndex].fnumber = item.fnumber
-      this.tabTwo.saleDetails[this.tableIndex].fdescripTion = item.fdescripTion
-      this.tabTwo.saleDetails[this.tableIndex].funitId = item.funitId
-      this.tabTwo.saleDetails[this.tableIndex].funit = item.funitName
-      this.tabTwo.saleDetails[this.tableIndex].fmodel = item.fmodel
-      this.tabTwo.saleDetails[this.tableIndex].fdownprice = item.fdownPrice
-      this.isMaterielDialog = false
-      this.$emit('visible', this.tabTwo)
+    materialData(item) {
+      if (item.fmaterialId) {
+        this.tabTwo.saleDetails[this.material].fmaterialId = item.fmaterialId
+        this.tabTwo.saleDetails[this.material].fnumber = item.fnumber
+        this.tabTwo.saleDetails[this.material].fdescripTion = item.fdescripTion
+        this.tabTwo.saleDetails[this.material].funitId = item.funitId
+        this.tabTwo.saleDetails[this.material].funit = item.funitName
+        this.tabTwo.saleDetails[this.material].fmodel = item.fmodel
+        this.tabTwo.saleDetails[this.material].fdownprice = item.fdownPrice
+        this.isMateria = false
+      } else {
+        this.isMateria = false
+      }
     },
     // 打开物料编码
     async handleGetMateriel(row, index) {
-      if (index) {
-        this.tableIndex = index
+      if (!this.fid) {
+        this.$message.error('请先选择客户')
+        return false
       }
+      this.isMateria = true
+      this.material = index
+      // 新增一行
       if (index === this.tabTwo.saleDetails.length - 1) {
         this.tabTwo.saleDetails.push(
           {
@@ -313,28 +255,11 @@ export default {
               imageUrl2: '', // 图片
               imageUrl3: '', // 图片
               imageUrl4: '', // 图片
-              imageUrl5: ''
+              imageUrl5: '' // 图片
             }
           }
         )
       }
-      const DATA = {
-        pageNum: this.materielPagination.pageNum,
-        pageSize: this.materielPagination.pageSize,
-        fnumber: this.FNUMBER,
-        fdescription: this.FDESCRIPTION,
-        fspecification: this.FSPECIFICATION,
-        fid: this.msg2.fpriceListId
-      }
-      const { data: RES } = await querySalMaterialList(DATA)
-      this.materielDialogData = RES.array
-      this.materielPagination.total = RES.total
-      this.isMaterielDialog = true
-    },
-    // 搜索
-    handleMaterielSearch() {
-      this.materielPagination.pageNum = 1
-      this.handleGetMateriel()
     },
     // 监听是否勾选赠品
     handleCheckedCitiesChange(val, index) {

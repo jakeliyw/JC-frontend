@@ -162,7 +162,7 @@ export default {
   },
   mixins: [jumpMateriel],
   props: {
-    msg: {
+    msg: { // 价目表ID
       type: Number,
       default: 2
     }
@@ -248,14 +248,18 @@ export default {
     },
     // 物料数据
     materialData(item) {
-      this.tabTwo.saleDetails[this.material].fmaterialId = item.fmaterialId
-      this.tabTwo.saleDetails[this.material].fmaterialIdName = item.fnumber
-      this.tabTwo.saleDetails[this.material].fdescripTion = item.fdescripTion
-      this.tabTwo.saleDetails[this.material].funitId = item.funitId
-      this.tabTwo.saleDetails[this.material].funitName = item.funitName
-      this.tabTwo.saleDetails[this.material].fmodel = item.fmodel
-      this.tabTwo.saleDetails[this.material].fdownPrice = item.fdownPrice
-      this.isMateria = item.isMaterialDialog
+      if (item.fmaterialId) {
+        this.tabTwo.saleDetails[this.material].fmaterialId = item.fmaterialId
+        this.tabTwo.saleDetails[this.material].fmaterialIdName = item.fnumber
+        this.tabTwo.saleDetails[this.material].fdescripTion = item.fdescripTion
+        this.tabTwo.saleDetails[this.material].funitId = item.funitId
+        this.tabTwo.saleDetails[this.material].funitName = item.funitName
+        this.tabTwo.saleDetails[this.material].fmodel = item.fmodel
+        this.tabTwo.saleDetails[this.material].fdownPrice = item.fdownPrice
+        this.isMateria = item.isMaterialDialog
+      } else {
+        this.isMateria = item.isMaterialDialog
+      }
     },
     // 监听是否勾选赠品
     handleCheckedCitiesChange(val, index) {

@@ -64,10 +64,10 @@ export default {
     jcPagination
   },
   props: {
-    msg: {
+    msg: { // 下标
       type: Number,
       default: 2
-    }, msg1: {
+    }, msg1: { // 价目ID
       type: Number,
       default: 0
     }

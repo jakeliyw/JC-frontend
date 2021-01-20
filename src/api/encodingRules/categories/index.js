@@ -16,6 +16,14 @@ export function queryTwoMaterialNumbert(params) {
     params
   })
 }
+// 删除中类
+export function deleteMediumType(data) {
+  return request({
+    url: '/tJxMediumitemtype/deleteMediumType',
+    method: 'post',
+    data
+  })
+}
 // 获取小类组合列表数据
 export function querySerialTypeList(data) {
   return request({
@@ -38,6 +46,22 @@ export function insertLarge(data) {
     url: '/tJxLargeitemtype/insertLarge',
     method: 'post',
     data
+  })
+}
+// 修改编码规则
+export function updateCodingRules(data) {
+  return request({
+    url: '/tJxLargeitemtype/updateCodingRules',
+    method: 'put',
+    data
+  })
+}
+// 修改大类获取数据
+export function queryCodingRules(params) {
+  return request({
+    url: '/tJxLargeitemtype/queryCodingRules',
+    method: 'get',
+    params
   })
 }
 // 新增中类
