@@ -62,3 +62,40 @@ export function querySettletype(data) {
     data
   })
 }
+
+// 查询税率(公共)
+export function queryTBdTaxrate(data) {
+  return request({
+    url: '/tBdTaxrate/queryTBdTaxrate',
+    method: 'post',
+    data
+  })
+}
+
+// 查询结算币别 - 分页(公共)
+export function queryTBdCurrency(data) {
+  return request({
+    url: '/tBdCurrency/queryTBdCurrency',
+    method: 'post',
+    data
+  })
+}
+
+// 查询销售订单收款条件-分页(公共)
+export function querytReccondition(data) {
+  return request({
+    url: '/tBdReccondition/querytReccondition',
+    method: 'post',
+    data
+  })
+}
+
+// 新增客户
+export function insertCustomer(data) {
+  return request({
+    url: '/tBdCustomer/insertCustomer',
+    method: 'post',
+    data
+  })
+}
+

@@ -142,7 +142,9 @@ export default {
       this.$refs.table.clearSelection()
       if (selection.length > 0 && selection[0] === this.tableData[0]) {
         this.tableData.map(item => {
-          this.$refs.table.toggleRowSelection(item)
+          if (item.zt === '未转') {
+            this.$refs.table.toggleRowSelection(item)
+          }
         })
       }
       this.handleGetSelection()

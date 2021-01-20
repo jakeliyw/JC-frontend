@@ -29,13 +29,26 @@
     >
       <el-table-column type="selection" width="60px" align="center" />
       <template v-slot:btnState="col">
-        <el-select v-model="col.scope.row.sclx" placeholder="请选择" size="mini" :disabled="col.scope.row.zt==='已转'" @change="editLx(col.scope)">
+        <el-select
+          v-model="col.scope.row.sclx"
+          placeholder="请选择"
+          size="mini"
+          :disabled="col.scope.row.zt==='已转'"
+          @change="editLx(col.scope)"
+        >
           <el-option label="委外" value="委外" />
           <el-option label="自制" value="自制" />
         </el-select>
       </template>
       <template v-slot:btnSlot="col">
-        <el-input v-model="col.scope.row.scbm" placeholder="请选择生产部门" size="mini" :disabled="col.scope.row.zt==='已转'">
+        <el-input
+          v-model="col.scope.row.scbm"
+          placeholder="请选择生产部门"
+          size="mini"
+          :disabled="col.scope.row.zt==='已转'"
+          oncopy="return false"
+          onpaste="return false"
+        >
           <i
             slot="suffix"
             class="el-input__icon el-icon-search"
@@ -44,7 +57,14 @@
         </el-input>
       </template>
       <template v-slot:tagSlot="col">
-        <el-input v-model="col.scope.row.ck" placeholder="请选择仓库" size="mini" :disabled="col.scope.row.zt==='已转'">
+        <el-input
+          v-model="col.scope.row.ck"
+          placeholder="请选择仓库"
+          size="mini"
+          :disabled="col.scope.row.zt==='已转'"
+          oncopy="return false"
+          onpaste="return false"
+        >
           <i
             slot="suffix"
             class="el-input__icon el-icon-search"

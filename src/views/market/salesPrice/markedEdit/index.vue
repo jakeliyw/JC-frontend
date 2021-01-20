@@ -104,7 +104,6 @@
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
-          otherHeight="500px"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >

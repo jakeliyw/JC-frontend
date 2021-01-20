@@ -11,6 +11,22 @@
           size="mini"
           @keyup.enter.native="handleQueryUnderReview"
         />
+        <span class="parentItemNo">物料规格</span>
+        <el-input
+          v-model="fspecificaTion"
+          class="input-content"
+          placeholder="请输入物料规格"
+          size="mini"
+          @keyup.enter.native="handleQueryUnderReview"
+        />
+        <span class="parentItemNo">型号</span>
+        <el-input
+          v-model="fmodel"
+          class="input-content"
+          placeholder="请输入型号"
+          size="mini"
+          @keyup.enter.native="handleQueryUnderReview"
+        />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUnderReview">搜索</el-button>
       </div>
     </div>
@@ -19,6 +35,7 @@
         :table-data="tableData"
         :table-header="tableHeader"
       >
+        <el-table-column label="型号" prop="FMODEL" align="center" />
         <el-table-column
           label="物料编码"
           align="center"
@@ -69,6 +86,8 @@ export default {
   data() {
     return {
       FNUMBER: '', // 产品描述
+      fmodel: '', // 型号
+      fspecificaTion: '', // 物料规格
       total: 0, // 总条目
       pageNum: 0, // 当前页
       size: 10, // 每页显示多少条数据
@@ -95,7 +114,13 @@ export default {
     },
     // 获取列表数据
     async handleGetMaterielList() {
-      const DATA = { pageNum: this.pageNum, pageSize: this.size, FNUMBER: this.FNUMBER }
+      const DATA = {
+        pageNum: this.pageNum,
+        pageSize: this.size,
+        FNUMBER: this.FNUMBER,
+        fspecificaTion: this.fspecificaTion,
+        fmodel: this.fmodel
+      }
       const { data: res, total } = await queryReviewMaterialList(DATA)
       this.tableData = res
       this.total = total

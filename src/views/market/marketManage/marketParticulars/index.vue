@@ -1,6 +1,6 @@
 <template>
   <div class="Particules">
-    <jc-title/>
+    <jc-title />
     <el-tabs type="border-card" @tab-click="handleOther">
       <el-tab-pane label="订单详情">
         <div class="header-card">

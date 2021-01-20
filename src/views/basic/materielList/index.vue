@@ -3,11 +3,27 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <span class="parentItemNo">物料编号</span>
+        <span class="parentItemNo">物料编码</span>
         <el-input
           v-model="pagination.fnumber"
           class="input-content"
           placeholder="请输入物料编码"
+          size="mini"
+          @keyup.enter.native="searchMaterialList"
+        />
+        <span class="parentItemNo">型号</span>
+        <el-input
+          v-model="pagination.fmodel"
+          class="input-content"
+          placeholder="请输入型号"
+          size="mini"
+          @keyup.enter.native="searchMaterialList"
+        />
+        <span class="parentItemNo">物料规格</span>
+        <el-input
+          v-model="pagination.fspecificaTion"
+          class="input-content"
+          placeholder="请输入型号"
           size="mini"
           @keyup.enter.native="searchMaterialList"
         />
@@ -86,6 +102,8 @@ export default {
       cellStyle: { padding: '10 10' }, // 行高
       pagination: {
         fnumber: '', // 物料编号
+        fmodel: '', // 型号
+        fspecificaTion: '', // 物料规格
         pageNum: 1, // 当前页
         pageSize: 10 // 每页显示多少条数据
       },

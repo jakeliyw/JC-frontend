@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <jc-title />
-    <el-tabs v-model="activeName" type="border-card"  @tab-click="handleOther">
+    <el-tabs v-model="activeName" type="border-card" @tab-click="handleOther">
       <el-tab-pane label="调价" name="modifyPrice" class="layout">
         <div class="header">
           <el-button size="mini" @click="refresh">刷新</el-button>

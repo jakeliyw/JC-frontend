@@ -27,7 +27,7 @@
       :cell-style="cellStyle"
       @selectionChange="selectData"
     >
-      <el-table-column type="selection" width="60px" align="center" :selectable="selectable" />
+      <el-table-column type="selection" width="60px" align="center" />
       <!--采购单价-->
       <template v-slot:btnState="col">
         <el-input-number
@@ -44,6 +44,8 @@
           v-model="col.scope.row.fsuppliername"
           placeholder="请选择供应商"
           size="mini"
+          oncopy="return false"
+          onpaste="return false"
         >
           <i
             slot="suffix"
@@ -54,7 +56,14 @@
       </template>
       <!--仓库-->
       <template v-slot:tagSlot="col">
-        <el-input v-model="col.scope.row.ck" placeholder="请选择仓库" size="mini" :disabled="col.scope.row.zt==='已转'">
+        <el-input
+          v-model="col.scope.row.ck"
+          placeholder="请选择仓库"
+          size="mini"
+          :disabled="col.scope.row.zt==='已转'"
+          oncopy="return false"
+          onpaste="return false"
+        >
           <i
             slot="suffix"
             class="el-input__icon el-icon-search"
@@ -374,9 +383,6 @@ export default {
     //   } else {
     //     return false
     //   }
-    // },
-    // selectAll(selection) {
-    //   console.log(selection)
     // }
   }
 }
