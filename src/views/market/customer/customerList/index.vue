@@ -21,7 +21,8 @@
         :cell-style="cellStyle"
       >
         <template v-slot:btnSlot="clo">
-          <el-button type="danger" size="mini" @click="detailCustomer(clo.scope.row.fcustId)">查询客户</el-button>
+          <el-button type="danger" size="mini" @click="editCustomerList(clo.scope.row.fcustId)">反审核</el-button>
+          <el-button type="primary" size="mini" @click="detailCustomer(clo.scope.row.fcustId)">查询客户</el-button>
         </template>
       </jc-table>
       />
@@ -43,10 +44,12 @@
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
-import { queryCustomerList } from '@/api/marketManage/customer'
+import { queryCustomerList } from '@/api/marketManage/customer/customerList'
+import { againReviewCustomer } from '@/api/marketManage/customer/refuseCustomer'
 
 export default {
   name: 'CustomerList',
+  inject: ['reload'],
   components: {
     jcTable,
     jcPagination,
@@ -86,8 +89,19 @@ export default {
       this.pageNum = 1
       this.handleGetUntreated()
     },
+    // 查询客户
     detailCustomer(fcustId) {
       this.$router.push({ path: `/detailCustomer/${fcustId}` })
+    },
+    // 反审核
+    async editCustomerList(fcustId) {
+      const { message, code } = await againReviewCustomer({ fcustId })
+      if (code !== 0) {
+        return
+      }
+      this.$message.success(message)
+      this.$router.push({ name: 'UntreatedCustomer' })
+      this.reload()
     }
   }
 }

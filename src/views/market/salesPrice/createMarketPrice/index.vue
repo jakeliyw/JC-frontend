@@ -376,9 +376,12 @@ export default {
     inputNum(index) {
       this.tableIndex = index
       if (this.prodValue.priceDetails[this.tableIndex].fmaterialId) {
-        this.querySalPriceMaterial()
+        const fBase = (this.prodValue.priceDetails[this.tableIndex].fpriceBase) / 100 // 系数
+        const fPrice = this.prodValue.priceDetails[this.tableIndex].deliveryPrice // 出厂价
+        this.prodValue.priceDetails[this.tableIndex].fdownPrice = (fPrice * (1 + fBase)).toFixed(4) // 基准价
       }
     },
+
     // 获取客户数据(子传父)
     clientData(item) {
       if (item.fcustId) {

@@ -1,19 +1,24 @@
 <template>
   <div class="search" :class="{active: !caret}">
-    <div class="hang" v-for="(item, index) in searData" :key="index">
-      <el-select v-model="item.value" placeholder="请选择" size="mini">
+    <div v-for="(item, index) in searData" :key="index" class="hang" v-if="index<conceal">
+      <el-select v-model="item.english" placeholder="请选择" size="mini">
         <el-option
-          v-for="item in options"
-          :key="item.english"
-          :label="item.display"
-          :value="item.english"
+          v-for="iten in options"
+          :key="iten.english"
+          :label="iten.display"
+          :value="iten.english"
         />
       </el-select>
-      <el-input v-model="item.value" size="mini" />
+      <el-input v-model="searData[index].val" size="mini" />
+      <i v-if="index>0" class="el-icon-remove-outline" @click="delSear(index)"></i>
+    </div>
+    <div v-show="!caret" class="newSear" @click="newSearch">
+      <i class="el-icon-circle-plus-outline" />
+      新增条件
     </div>
     <div class="posit">
-      <i v-show="caret" class="el-icon-caret-bottom" @click="searShow()" />
-      <i v-show="!caret" class="el-icon-caret-top" @click="noShow()" />
+      <i v-show="caret" class="el-icon-arrow-down" @click="searShow()" />
+      <i v-show="!caret" class="el-icon-arrow-up" @click="noShow()" />
     </div>
   </div>
 </template>
@@ -31,19 +36,29 @@ export default {
   },
   data() {
     return {
+      conceal: 1, // 最多显示几条数据
       caret: true,
       searData: [{}] // 搜索下拉框数据
     }
   },
   methods: {
+    // 下拉
     searShow() {
       this.caret = false
+      this.conceal = 5
       this.searData.push({}, {})
-      this.$refs
     },
+    // 收回
     noShow() {
       this.caret = true
-      this.searData = this.searData.splice(0, 1)
+      this.conceal = 1
+    },
+    // 新增条件
+    newSearch() {
+      this.searData.push({})
+    },
+    delSear(index) {
+      this.searData.splice(index, 1)
     }
   }
 }
@@ -58,10 +73,15 @@ export default {
   padding-top: 5px;
   position: absolute;
   top: 0px;
-  width: 380px;
+  width: 395px;
   background: #fff;
   z-index: 111;
-
+.el-icon-remove-outline{
+  cursor: pointer;
+  color: #1e9fff;
+  margin-left: 5px;
+  padding-top: 5px;
+}
   .hang{
    margin-bottom: 10px;
   }
@@ -71,11 +91,18 @@ export default {
   }
   .posit{
     position: absolute;
-    top: 5px;
+    top: 10px;
     right: -20px;
     i{
+      color: #1f2d3d;
       font-size: 20px;
     }
+  }
+  .newSear{
+    cursor: pointer;
+    font-size: 12px;
+    color: #409EFF;
+    margin-bottom: 10px;
   }
 }
 

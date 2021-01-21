@@ -10,7 +10,7 @@
         <el-form ref="customerRef" :model="customerForm" label-width="100px" size="mini" :rules="customerRules">
           <el-row :gutter="30" type="flex" justify="start" class="elRow">
             <el-col :span="6">
-              <el-form-item label="使用组织" prop="fcreateOrgId">
+              <el-form-item label="使用组织" prop="fuseOrgId">
                 <el-select v-model="customerForm.fuseOrgId" placeholder="请选择组织" class="input-width">
                   <el-option
                     v-for="option in customerForm.teamList"
@@ -311,7 +311,7 @@ import {
   queryTBdCurrency,
   querytReccondition,
   insertCustomer
-} from '@/api/marketManage/customer'
+} from '@/api/marketManage/customer/createCustomer'
 
 export default {
   name: 'CreatePurchasePrice',

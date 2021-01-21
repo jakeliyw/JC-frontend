@@ -198,7 +198,7 @@ export const asyncRouterMap = [
         path: '/reportForm/:id',
         name: 'ReportForm',
         component: () => import('@/views/engineering/reportForm'),
-        meta: { title: '报表详情' },
+        meta: { title: '查询报表' },
         hidden: true,
         menu: 'reportForm'
       },
@@ -248,7 +248,7 @@ export const asyncRouterMap = [
             path: '/marketParticulars/:id',
             name: 'MarketParticulars',
             component: () => import('@/views/market/marketManage/marketParticulars/index'),
-            meta: { title: '销售订单详情' },
+            meta: { title: '查询销售订单' },
             menu: 'marketParticulars',
             hidden: true
           },
@@ -369,19 +369,48 @@ export const asyncRouterMap = [
             menu: 'createCustomer'
           },
           {
-            path: '/customerList',
-            name: 'CustomerList',
-            component: () => import('@/views/market/customer/customerList/index'),
-            meta: { title: '客户列表' },
-            menu: 'createCustomer'
-          },
-          {
             path: '/detailCustomer/:id',
             name: 'DetailCustomer',
             component: () => import('@/views/market/customer/detailCustomer/index'),
             meta: { title: '查询客户' },
             menu: 'detailCustomer',
             hidden: true
+          },
+          {
+            path: '/editCustomer/:id',
+            name: 'EditCustomer',
+            component: () => import('@/views/market/customer/editCustomer/index'),
+            meta: { title: '修改客户' },
+            menu: 'editCustomer',
+            hidden: true
+          },
+          {
+            path: '/untreatedCustomer',
+            name: 'UntreatedCustomer',
+            component: () => import('@/views/market/customer/untreatedCustomer/index'),
+            meta: { title: '未处理客户' },
+            menu: 'untreatedCustomer'
+          },
+          {
+            path: '/underReviewCustomer',
+            name: 'UnderReviewCustomer',
+            component: () => import('@/views/market/customer/underReviewCustomer/index'),
+            meta: { title: '审核中客户' },
+            menu: 'underReviewCustomer'
+          },
+          {
+            path: '/refuseCustomer',
+            name: 'RefuseCustomer',
+            component: () => import('@/views/market/customer/refuseCustomer/index'),
+            meta: { title: '审核未通过客户' },
+            menu: 'refuseCustomer'
+          },
+          {
+            path: '/customerList',
+            name: 'CustomerList',
+            component: () => import('@/views/market/customer/customerList/index'),
+            meta: { title: '客户列表' },
+            menu: 'createCustomer'
           }
         ]
       }
@@ -423,7 +452,7 @@ export const asyncRouterMap = [
             path: '/detailModifyPrice/:id',
             name: 'DetailModifyPrice',
             component: () => import('@/views/purchasing/modifyPrice/detailModifyPrice'),
-            meta: { title: '详情调价' },
+            meta: { title: '查询调价' },
             menu: 'detailModifyPrice',
             hidden: true
           },
@@ -485,7 +514,7 @@ export const asyncRouterMap = [
             path: '/detailPurchasePrice/:id',
             name: 'DetailPurchasePrice',
             component: () => import('@/views/purchasing/purchase/detailPurchasePrice'),
-            meta: { title: '详情价目' },
+            meta: { title: '查询价目' },
             hidden: true,
             menu: 'detailPurchasePrice'
           },

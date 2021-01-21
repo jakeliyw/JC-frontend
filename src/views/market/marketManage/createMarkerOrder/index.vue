@@ -125,6 +125,11 @@
           <el-form-item label="是否含税">
             <el-checkbox v-model="prodValue.fisIncludedTax" />
           </el-form-item>
+          <el-form-item label="订单类型">
+            <el-button class="btnType" type="primary" size="mini" @click="prodValue.saler = !prodValue.saler">切换</el-button>
+            <el-tag v-if="prodValue.saler" type="success">正常订单</el-tag>
+            <el-tag v-if="!prodValue.saler" type="danger">特批订单</el-tag>
+          </el-form-item>
         </el-form>
         <tab :msg="prodValue.fpriceListId" @visible="prodOrder" />
       </el-tab-pane>
@@ -145,6 +150,28 @@
           </div>
         </jc-marker>
       </el-tab-pane>
+      <el-tab-pane label="审批图片" class="disRow">
+        <div class="positRe">
+          <el-upload
+            class="avatar-uploader"
+            :action="actionURL"
+            :show-file-list="false"
+            :auto-upload="false"
+            :on-change="examine"
+          >
+            <img
+              v-if="prodValue.fapprovalImage"
+              :src="prodValue.fapprovalImage"
+              class="avatar"
+            >
+            <div v-if="prodValue.fapprovalImage" class="magnify">
+              <i class="el-icon-search" @click.stop="proviewImg(prodValue.fapprovalImage)" />
+              <i class="el-icon-delete" @click.stop="prodValue.fapprovalImage=''" />
+            </div>
+            <i v-else class="el-icon-plus avatar-uploader-icon"><span>点击上传</span></i>
+          </el-upload>
+        </div>
+      </el-tab-pane>
     </el-tabs>
     <!--客户列表-->
     <client v-if="clientVisiblit" @client="clientData" />
@@ -158,6 +185,17 @@
     <gathering v-if="gatheringVisiblit" @gathering="gatheringData" />
     <!--价目列表-->
     <priceList v-if="priceListVisiblit" @priceList="priceListData" />
+    <!--图纸预览-->
+    <el-dialog
+      title="预览"
+      model
+      :visible.sync="imgVisible"
+      append-to-body
+      top="10vh"
+      width="60%"
+    >
+      <img :src="priview">
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -182,6 +220,7 @@ import gathering from '@/views/market/marketManage/createMarkerOrder/components/
 import jcTitle from '@/components/Title'
 import priceList from '@/views/market/marketManage/createMarkerOrder/components/priceListPagination'
 import jcPagination from '@/components/Pagination'
+import mixinsImg from '@/views/market/marketManage/createMarkerOrder/components/mixinsImg'
 
 export default {
   name: 'CreateMarkerOrder',
@@ -197,10 +236,13 @@ export default {
     priceList,
     jcTitle
   },
-  mixins: [jumpMateriel],
+  mixins: [jumpMateriel, mixinsImg],
   inject: ['reload'],
   data() {
     return {
+      priview: '', // 预览图片
+      imgVisible: false, // 预览图片
+      actionURL: '',
       fid: '', // 价目ID
       clientVisiblit: false, // 客户列表弹窗
       deliveVisiblit: false, // 交货方式弹窗
@@ -214,6 +256,9 @@ export default {
       billtypes: [], // 单据类型
       teamList: [], // 组织
       prodValue: { // 表单数据
+        saler: true,
+        fsalType: 0, // 订单类型(正常、特批)
+        fapprovalImage: '', // 审批图片
         fdeliveryDate: '', // 要货时间
         fbillTypeId: '', // 单据类型
         fsaleOrgId: '', // 销售组织
@@ -279,6 +324,11 @@ export default {
   methods: {
     // 保存
     subMarker() {
+      if (this.prodValue.saler) {
+        this.prodValue.fsalType = 0
+      } else {
+        this.prodValue.fsalType = 1
+      }
       this.loading = true
       this.$refs.purchaseRef.validate(valid => {
         if (!valid) {
@@ -296,10 +346,18 @@ export default {
             this.loading = false
             return false
           }
-          if (item.fprice < item.fdownPrice) {
-            this.$message.error('销售单价不能小于基准价')
-            this.loading = false
-            return false
+          if (this.prodValue.fsalType === 0) {
+            if (item.fprice < item.fdownPrice) {
+              this.$message.error('销售单价不能小于基准价')
+              this.loading = false
+              return false
+            }
+          } else {
+            if (item.fprice < item.deliveryPrice) {
+              this.$message.error('销售单价不能小于出厂价')
+              this.loading = false
+              return false
+            }
           }
         }
         for (const item of this.prodValue.planDetails) {
@@ -310,6 +368,7 @@ export default {
           }
         }
         const DATA = this.prodValue
+
         insertSalOrder(DATA).then(res => {
           this.prodValue.fbillNo = res.data
           this.loading = false
@@ -468,47 +527,108 @@ export default {
       this.otherUrlObject = RES.operator
       this.total = RES.total
       this.otherLogTableData = RES.array
+    },
+    // 预览图片
+    proviewImg(img) {
+      this.imgVisible = true
+      this.priview = img
     }
   }
 }
 </script>
+<style lang="scss">
+.el-form-item__error{
+  top: 33px;
+}
+</style>
 <style scoped lang="scss">
 .content {
   @include listBom;
+  .el-tabs{
+    .disRow{
+      height: 68vh;
+      .positRe{
+        position: relative;
+        margin-left: 100px;
+        margin-top: 20px;
+        .avatar-uploader .el-upload {
+          height: 300px;
+          border: 1px dashed #d9d9d9;
+          border-radius: 6px;
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+        }
 
-  .el-form {
-    display: flex;
-    flex-wrap: wrap;
+        .avatar-uploader .el-upload:hover {
+          border-color: #409EFF;
+        }
 
-    .el-form-item {
-      width: 263px;
-      margin-bottom: 5px;
+        .avatar-uploader-icon {
+          font-size: 18px;
+          color: #8c939d;
+          width: 230px;
+          height: 300px;
+          line-height: 300px;
+          text-align: center;
+          border: 1px solid #aaa;
+          border-radius: 6px;
+          background: #eee;
+          span {
+            color: #409EFF;
+          }
+        }
+
+        .avatar {
+          width: 230px;
+          height: 300px;
+          display: block;
+          border-radius: 6px;
+        }
+
+        .avatar-uploader {
+          width: 230px;
+          height: 100%;
+          transition: all 1s;
+        }
+
+        .avatar-uploader:hover .magnify {
+          display: block;
+        }
+
+        .magnify {
+          display: none;
+          height: 300px;
+          width: 230px;
+          background-color: rgba(0, 0, 0, .4);
+          position: absolute;
+          top: 0;
+          line-height: 300px;
+          border-radius: 6px;
+
+          i {
+            font-size: 24px;
+            color: #fff;
+            padding: 0 15px;
+          }
+        }
+      }
+    }
+    .el-form {
+      display: flex;
+      flex-wrap: wrap;
+
+      .el-form-item {
+        width: 263px;
+        margin-bottom: 5px;
+        .btnType{
+          margin-right: 20px;
+        }
+      }
     }
   }
 }
-
 .el-input__icon {
   cursor: pointer;
-}
-
-.materiel-form {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  margin-bottom: 20px;
-
-  .materiel-code {
-    margin-right: 5px;
-    font-weight: bold;
-    font-size: 14px;
-    min-width: 65px;
-    color: #606266;
-    line-height: 40px;
-  }
-
-  .input-width {
-    width: 200px;
-    margin-right: 10px;
-  }
 }
 </style>
