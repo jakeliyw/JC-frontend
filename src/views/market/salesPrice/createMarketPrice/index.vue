@@ -332,7 +332,7 @@ export default {
     },
     // 打开物料编码
     async handleGetMateriel(row, index) {
-      if (index) {
+      if (index || index === 0) {
         this.tableIndex = index
       }
       if (index === this.prodValue.priceDetails.length - 1) {

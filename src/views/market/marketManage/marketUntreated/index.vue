@@ -11,6 +11,7 @@
           size="mini"
           @keyup.enter.native="handleQueryUntreated"
         />
+<!--        <search :options="selectData" />-->
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
       </div>
     </div>
@@ -77,17 +78,21 @@ import {
   reviewSalorder,
   notReviewSalorder
 } from '@/api/marketManage/marketOrder'
-
+import search from '@/components/Search/index'
+import selectData from '@/components/Search/mixin'
 export default {
   name: 'MarketUntreated',
   inject: ['reload'],
+  mixins: [selectData],
   components: {
     jcTable,
     jcTitle,
-    jcPagination
+    jcPagination,
+    search
   },
   data() {
     return {
+      selectData: [], // 搜索下拉框数据
       fbillNo: '', // 销售订单号
       total: 0, // 总条目
       currentPage: 1, // 当前页
@@ -141,5 +146,16 @@ export default {
 <style lang="scss" scoped>
 .content {
   @include listBom;
+  .header{
+    position:relative;
+    .header-name{
+      width: 100%;
+    }
+  //.btn{
+  //  transform: translateY(16%);
+  //  margin-left: 410px!important;
+  //  z-index: 999;
+  //}
+  }
 }
 </style>

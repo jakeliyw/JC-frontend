@@ -19,15 +19,12 @@
         :table-data="tableData"
         :table-header="tableHeader"
         :cell-style="cellStyle"
-<<<<<<< HEAD
       >
         <template v-slot:btnSlot="clo">
           <el-button type="danger" size="mini" @click="detailCustomer(clo.scope.row.fcustId)">查询客户</el-button>
         </template>
       </jc-table>
-=======
       />
->>>>>>> aca60aac63bb1b5b3423bfa5c9635ef14411ec9f
     </div>
     <!--    分页器-->
     <div class="footer">

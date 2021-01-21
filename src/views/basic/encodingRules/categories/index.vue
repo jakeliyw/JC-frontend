@@ -97,11 +97,11 @@
         <el-table-column prop="mediumName" label="中类名称" align="center" />
         <el-table-column prop="number" label="小类编码" align="center" />
         <el-table-column prop="name" label="小类名称" align="center" />
-<!--        <el-table-column label="操作" align="center">-->
-<!--          <template slot-scope="">-->
-<!--            <el-button type="danger" size="mini">删除</el-button>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
+        <!--        <el-table-column label="操作" align="center">-->
+        <!--          <template slot-scope="">-->
+        <!--            <el-button type="danger" size="mini">删除</el-button>-->
+        <!--          </template>-->
+        <!--        </el-table-column>-->
       </jc-table>
     </el-dialog>
     <!--    属性列表弹框-->
@@ -123,7 +123,7 @@
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="warning" size="mini" @click="increased(4,scope.row)">修改</el-button>
-<!--            <el-button type="danger" size="mini">删除</el-button>-->
+            <!--            <el-button type="danger" size="mini">删除</el-button>-->
           </template>
         </el-table-column>
       </jc-table>

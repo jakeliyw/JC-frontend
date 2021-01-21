@@ -7,7 +7,7 @@
           <el-button size="mini" disabled>刷新</el-button>
           <el-button size="mini" type="primary" disabled>保存客户</el-button>
         </div>
-        <jc-form :option-value="optionValue" :options="options"/>
+        <jc-form :option-value="optionValue" :options="options" />
       </el-tab-pane>
     </el-tabs>
   </div>

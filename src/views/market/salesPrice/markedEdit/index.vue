@@ -52,10 +52,10 @@
           <jc-table
             :table-data="tableData"
             :table-header="tableHeader"
-            table-height="500px"
+            table-height="55vh"
             :cell-style="cellStyle"
           >
-            <el-table-column label="物料编码" prop="fmaterialId" align="center" min-width="200px">
+            <el-table-column label="物料编码" prop="fmaterialId" align="center" min-width="135px">
               <template slot-scope="scope">
                 <el-input v-model.trim="scope.row.fmaterialIdName" placeholder="请选择物料编码" size="mini">
                   <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fmaterialIdName)" />
@@ -241,10 +241,6 @@ export default {
         iten.fmaterialIdName = iten.fnumber
       }
       this.tableData = RES.detail
-      this.tableData.forEach((item, index) => {
-        this.tableIndex = index
-        this.querySalPriceMaterial()
-      })
       this.organizationValue = RES
       // 表格添加一空行
       this.tableData.push(
@@ -254,7 +250,7 @@ export default {
     // 保存
     subMarker() {
       for (const item of this.tableData) {
-        if (item.fmaterialId === '') {
+        if (!item.fmaterialIdName) {
           this.$message.error('表格不能为空或删除空行')
           return false
         }
@@ -282,7 +278,7 @@ export default {
     },
     // 打开物料编码
     async handleGetMateriel(row, index) {
-      if (index) {
+      if (index || index === 0) {
         this.tableIndex = index
       }
       if (index === this.tableData.length - 1) {
@@ -345,9 +341,6 @@ export default {
 <style lang="scss" scoped>
 .content {
   @include listBom;
-  .el-tabs{
-    height: calc( 100vh - 230px );
-  }
   .el-form{
     display: flex;
     flex-wrap: wrap;
