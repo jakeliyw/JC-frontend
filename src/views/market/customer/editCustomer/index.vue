@@ -441,9 +441,6 @@ export default {
         default: [
           { required: true, message: '请选择默认税率', trigger: 'blur' }
         ],
-        customerType: [
-          { required: true, message: '请选择客户类别', trigger: 'blur' }
-        ],
         finvoiceType: [
           { required: true, message: '请选择发票类型', trigger: 'change' }
         ],
@@ -480,7 +477,7 @@ export default {
           customerName: fname,
           fiscreditcheck
         } = this.customerForm
-        const RES = { ftaxType, finvoiceType, fcustTypeId, fname, fiscreditcheck, fcustid: FCUSTID }
+        const RES = { ftaxType, finvoiceType, fcustTypeId, fname, fiscreditcheck, fcustId: FCUSTID }
         Object.assign(this.result, { ...RES })
         if (Object.values(this.result).includes(null)) {
           this.$message.warning('内容不完整,请重新填写')
@@ -496,9 +493,7 @@ export default {
             this.$message.success(res.message)
             this.reload()
           }
-        }).catch(error => {
-          console.log(error)
-        })
+        }).catch(error => error)
       })
     },
     // 国家选中
@@ -540,6 +535,7 @@ export default {
     // 获取客户类别
     async getCustomerType() {
       const { data: RES } = await queryFcustType()
+      console.log(RES)
       this.customerForm.customerType = RES.map(item => {
         return { label: item.fdataValue, value: item.fentryId }
       })
@@ -662,23 +658,20 @@ export default {
     },
     async getForm() {
       const { data: RES } = await queryCustomerDetails({ fcustId: this.$route.params.id })
-      this.customerForm = {
-        country: RES.fcountryName,
-        customerName: RES.fname,
-        customerType: RES.fcustType,
-        customerGrouping: RES.fgroupName,
-        currency: RES.fcurrency,
-        settlementMode: RES.fsettleType,
-        condition: RES.freccondiTion,
-        ftaxType: RES.ftaxType,
-        finvoiceType: RES.finvoiceType,
-        default: RES.ftaxRateName,
-        fcustTypeId: RES.fcustTypeId,
-        fiscreditcheck: RES.fiscreditcheck,
-        fsettleTypeId: RES.fsettleTypeId,
-        freccondiTionId: RES.freccondiTionId,
-        fuseOrgId: RES.fuseOrg
-      }
+      this.customerForm.country = RES.fcountryName
+      this.customerForm.customerName = RES.fname
+      this.customerForm.customerGrouping = RES.fgroupName
+      this.customerForm.currency = RES.fcurrency
+      this.customerForm.settlementMode = RES.fsettleType
+      this.customerForm.condition = RES.freccondiTion
+      this.customerForm.ftaxType = RES.ftaxType
+      this.customerForm.finvoiceType = RES.finvoiceType
+      this.customerForm.default = RES.ftaxRateName
+      this.customerForm.fiscreditcheck = RES.fiscreditcheck
+      this.customerForm.fsettleTypeId = RES.fsettleTypeId
+      this.customerForm.freccondiTionId = RES.freccondiTionId
+      this.customerForm.fuseOrgId = RES.fuseOrg
+      this.customerForm.fcustTypeId = RES.fcustTypeId
       this.result = {
         fcountry: RES.fcountry,
         fgroup: RES.fgroup,
