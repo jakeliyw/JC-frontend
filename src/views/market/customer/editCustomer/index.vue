@@ -5,20 +5,13 @@
       <el-tab-pane label="客户" name="customer" class="layout">
         <div class="header">
           <el-button size="mini">刷新</el-button>
-          <el-button size="mini" type="primary" @click="preservation">保存客户</el-button>
+          <el-button size="mini" type="primary" @click="preservation">确定更新</el-button>
         </div>
         <el-form ref="customerRef" :model="customerForm" label-width="100px" size="mini" :rules="customerRules">
           <el-row :gutter="30" type="flex" justify="start" class="elRow">
             <el-col :span="6">
               <el-form-item label="使用组织" prop="fuseOrgId">
-                <el-select v-model="customerForm.fuseOrgId" placeholder="请选择组织" class="input-width">
-                  <el-option
-                    v-for="option in customerForm.teamList"
-                    :key="option.value"
-                    :label="option.label"
-                    :value="option.value"
-                  />
-                </el-select>
+                <el-input v-model="customerForm.fuseOrgId" class="input-width" disabled />
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -299,7 +292,6 @@ import jcTitle from '@/components/Title'
 import jcPopup from '@/views/basic/createMateriel/components/Popup'
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
-import { queryTOrgOrganizationsL } from '@/api/engineering/createBom'
 import {
   queryFcustType,
   queryFcountryList,
@@ -309,9 +301,10 @@ import {
   querySettletype,
   queryTBdTaxrate,
   queryTBdCurrency,
-  querytReccondition,
-  insertCustomer
+  querytReccondition
 } from '@/api/marketManage/customer/createCustomer'
+import { updateCustomer } from '@/api/marketManage/customer/refuseCustomer'
+import { queryCustomerDetails } from '@/api/marketManage/customer/detailCustomer'
 
 export default {
   name: 'CreatePurchasePrice',
@@ -405,8 +398,7 @@ export default {
       },
       // 表单值
       customerForm: {
-        teamList: [], // 组织
-        fuseOrgId: 1,
+        fuseOrgId: 1, // 组织id
         customerName: '', // 客户名称
         classification: [], // 税分类
         fiscreditcheck: true, // 启用信用管理
@@ -425,10 +417,10 @@ export default {
         default: '' // 默认税率
       },
       result: {
-        fcountry: null,
-        fgroup: null,
-        ftaxRate: null,
-        ftradingCurrId: null
+        fcountry: null, // 国家id
+        fgroup: null, // 客户分组id
+        ftaxRate: null, // 默认税率id
+        ftradingCurrId: null // 结算币别id
       }, // 提交值
       customerRules: {
         customerName: [
@@ -468,10 +460,10 @@ export default {
     }
   },
   mounted() {
-    this.handleGetPurchase()
     this.getCustomerType()
     this.getClassification()
     this.getInvoice()
+    this.getForm()
   },
   methods: {
     // 保存
@@ -480,8 +472,15 @@ export default {
         if (!valid) {
           return
         }
-        const { fuseOrgId, ftaxType, finvoiceType, fcustTypeId, customerName: fname, fiscreditcheck } = this.customerForm
-        const RES = { fuseOrgId, ftaxType, finvoiceType, fcustTypeId, fname, fiscreditcheck }
+        const FCUSTID = this.$route.params.id
+        const {
+          ftaxType,
+          finvoiceType,
+          fcustTypeId,
+          customerName: fname,
+          fiscreditcheck
+        } = this.customerForm
+        const RES = { ftaxType, finvoiceType, fcustTypeId, fname, fiscreditcheck, fcustid: FCUSTID }
         Object.assign(this.result, { ...RES })
         if (Object.values(this.result).includes(null)) {
           this.$message.warning('内容不完整,请重新填写')
@@ -492,12 +491,14 @@ export default {
           fsettleTypeId: this.customerForm.fsettleTypeId,
           freccondiTionId: this.customerForm.freccondiTionId
         }
-        insertCustomer(DATA).then(res => {
+        updateCustomer(DATA).then(res => {
           if (res.code === 0) {
             this.$message.success(res.message)
             this.reload()
           }
-        }).catch(error => error)
+        }).catch(error => {
+          console.log(error)
+        })
       })
     },
     // 国家选中
@@ -535,13 +536,6 @@ export default {
       this.customerForm.condition = item.fname
       this.customerForm.freccondiTionId = item.frecConditionId
       this.openCollection = false
-    },
-    // 获取组织
-    async handleGetPurchase() {
-      const { data: RES } = await queryTOrgOrganizationsL()
-      this.customerForm.teamList = RES.map(item => {
-        return { label: item.FNAME, value: item.FPKID }
-      })
     },
     // 获取客户类别
     async getCustomerType() {
@@ -665,6 +659,32 @@ export default {
     filterNode(value, data) {
       if (!value) return true
       return data.label.indexOf(value) !== -1
+    },
+    async getForm() {
+      const { data: RES } = await queryCustomerDetails({ fcustId: this.$route.params.id })
+      this.customerForm = {
+        country: RES.fcountryName,
+        customerName: RES.fname,
+        customerType: RES.fcustType,
+        customerGrouping: RES.fgroupName,
+        currency: RES.fcurrency,
+        settlementMode: RES.fsettleType,
+        condition: RES.freccondiTion,
+        ftaxType: RES.ftaxType,
+        finvoiceType: RES.finvoiceType,
+        default: RES.ftaxRateName,
+        fcustTypeId: RES.fcustTypeId,
+        fiscreditcheck: RES.fiscreditcheck,
+        fsettleTypeId: RES.fsettleTypeId,
+        freccondiTionId: RES.freccondiTionId,
+        fuseOrgId: RES.fuseOrg
+      }
+      this.result = {
+        fcountry: RES.fcountry,
+        fgroup: RES.fgroup,
+        ftaxRate: RES.ftaxRate,
+        ftradingCurrId: RES.ftradingCurrId
+      }
     }
   }
 }

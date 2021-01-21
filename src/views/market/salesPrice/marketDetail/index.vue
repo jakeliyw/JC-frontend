@@ -101,7 +101,7 @@ export default {
       this.tableData = RES.detail
       this.tableData.forEach((item, index) => {
         this.tableIndex = index
-        this.querySalPriceMaterial()
+        // this.querySalPriceMaterial()
       })
       RES.limitName = '客户'
       this.organizationValue = RES

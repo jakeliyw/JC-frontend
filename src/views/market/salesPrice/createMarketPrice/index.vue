@@ -332,7 +332,7 @@ export default {
     },
     // 打开物料编码
     async handleGetMateriel(row, index) {
-      if (index) {
+      if (index || index === 0) {
         this.tableIndex = index
       }
       if (index === this.prodValue.priceDetails.length - 1) {
@@ -376,9 +376,11 @@ export default {
     inputNum(index) {
       this.tableIndex = index
       if (this.prodValue.priceDetails[this.tableIndex].fmaterialId) {
+        this.materialId = this.prodValue.priceDetails[this.tableIndex].fmaterialId
         this.querySalPriceMaterial()
       }
     },
+
     // 获取客户数据(子传父)
     clientData(item) {
       if (item.fcustId) {
