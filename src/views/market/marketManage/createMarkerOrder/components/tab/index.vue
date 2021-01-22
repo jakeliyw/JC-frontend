@@ -256,6 +256,7 @@ export default {
         this.tabTwo.saleDetails[this.material].funitName = item.funitName
         this.tabTwo.saleDetails[this.material].fmodel = item.fmodel
         this.tabTwo.saleDetails[this.material].fdownPrice = item.fdownPrice
+        this.tabTwo.saleDetails[this.material].deliveryPrice = item.deliveryPrice
         this.isMateria = item.isMaterialDialog
       } else {
         this.isMateria = item.isMaterialDialog

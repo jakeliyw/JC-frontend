@@ -18,13 +18,6 @@ export default {
       // 基准价
       this.tableData[this.tableIndex].fdownPrice = (RES.deliveryPrice * (1 + fpriceBase)).toFixed(4)
     },
-    // 监听销售系数
-    inputNum(index) {
-      this.tableIndex = index
-      if (this.prodValue.priceDetails[this.tableIndex].fmaterialId) {
-        this.querySalPriceMaterial()
-      }
-    },
     // 获取其它
     async handleOther() {
       const id = this.$route.params.id

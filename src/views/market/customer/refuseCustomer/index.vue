@@ -101,7 +101,7 @@ export default {
     editPurchase(fcustId) {
       this.$router.push({ path: `/editCustomer/${fcustId}` })
     },
-    // 重审采购
+    // 重审
     async Retrial(fcustId) {
       const { message, code } = await againReviewCustomer({ fcustId })
       if (code !== 0) {

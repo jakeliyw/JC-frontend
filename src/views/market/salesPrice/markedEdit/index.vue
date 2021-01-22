@@ -170,11 +170,11 @@ import {
 import {
   queryMaterialList
 } from '@/api/marketManage/marketOrder'
-import jumpMateriel from '@/components/JumpMateriel'
+import jumpMateriel from '@/components/JumpMateriel' // 物料详情
 import jcMarker from '@/components/marker'
 import client from '@/views/market/marketManage/createMarkerOrder/components/client'
 import currency from '@/views/market/marketManage/createMarkerOrder/components/currency'
-import salPrice from '@/views/market/salesPrice/createMarketPrice/components/mixin'
+import salPrice from '@/views/market/salesPrice/createMarketPrice/components/mixin' // 其他
 
 export default {
   components: {
@@ -332,7 +332,9 @@ export default {
     inputNum(index) {
       this.tableIndex = index
       if (this.tableData[this.tableIndex].fmaterialId) {
-        this.querySalPriceMaterial()
+        const tBase = (this.tableData[this.tableIndex].fpriceBase) / 100
+        const tPrice = this.tableData[this.tableIndex].deliveryPrice
+        this.tableData[this.tableIndex].fdownPrice = (tPrice * (1 + tBase)).toFixed(4) // 基准价
       }
     }
   }

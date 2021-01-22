@@ -11,7 +11,7 @@
           size="mini"
           @keyup.enter.native="handleQueryUntreated"
         />
-<!--        <search :options="selectData" />-->
+        <!--                <search :options="selectData" @seek="collect" />-->
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
       </div>
     </div>
@@ -83,13 +83,13 @@ import selectData from '@/components/Search/mixin'
 export default {
   name: 'MarketUntreated',
   inject: ['reload'],
-  mixins: [selectData],
   components: {
     jcTable,
     jcTitle,
     jcPagination,
     search
   },
+  mixins: [selectData],
   data() {
     return {
       selectData: [], // 搜索下拉框数据
@@ -99,13 +99,19 @@ export default {
       size: 10, // 每页显示多少条数据
       tableHeader: [],
       // 表格数据
-      tableData: []
+      tableData: [],
+      searCollData: {}
     }
   },
   mounted() {
     this.handleGetUntreated()
   },
   methods: {
+    collect(ev) {
+      // for (const item of ev) {
+      // this.searCollData = Object.assign(item)
+      // }
+    },
     // 获取列表数据
     async handleGetUntreated() {
       const DATA = { pageNum: this.currentPage, pageSize: this.size, fbillNo: this.fbillNo }

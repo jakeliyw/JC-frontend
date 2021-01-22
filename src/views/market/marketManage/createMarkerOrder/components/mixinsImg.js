@@ -45,6 +45,16 @@ export default {
       this.getBase64(file.raw).then(res => {
         this.prodValue.imageUrl5 = res
       })
+    }, examine(file, fileListe) {
+      this.getBase64(file.raw).then(res => {
+        this.prodValue.fapprovalImage = res
+      })
+    },
+    // 修改上传图片
+    modifyExamine(file, fileListe) {
+      this.getBase64(file.raw).then(res => {
+        this.prodValue.fapprovalImage = res
+      })
     }
   }
 }

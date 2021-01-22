@@ -13,7 +13,7 @@ import router from './router'
 import moment from 'moment'
 import '@/icons' // icon
 import '@/permission' // permission control
-import { hasPermission } from '@/utils/hasPermission'
+import { hasPermission, buttonList } from '@/utils/hasPermission'
 
 /**
  * If you don't want to use mock-server
@@ -34,6 +34,7 @@ import { hasPermission } from '@/utils/hasPermission'
 // 如果想要中文版 element-ui，按如下方式声明
 
 Vue.use(ElementUI)
+Vue.prototype.button = buttonList
 Vue.prototype.hasPerm = hasPermission
 Vue.prototype.backstageApi = process.env.VUE_APP_BASE_API
 Vue.prototype.$moment = moment

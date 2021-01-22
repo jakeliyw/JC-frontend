@@ -105,6 +105,11 @@
           <el-form-item label="是否含税">
             <el-checkbox v-model="prodValue.fisIncludedTax" />
           </el-form-item>
+          <el-form-item v-if="button('salOrder:type')" label="订单类型">
+            <el-button class="btnType" type="primary" size="mini" @click="prodValue.saler = !prodValue.saler">切换</el-button>
+            <el-tag v-if="prodValue.saler" type="success">正常订单</el-tag>
+            <el-tag v-if="!prodValue.saler" type="danger">特批订单</el-tag>
+          </el-form-item>
         </el-form>
         <tab :msg="saleDetails" :msg1="planDetails" :msg2="prodValue" @visible="handlechange" />
       </el-tab-pane>
@@ -125,6 +130,28 @@
           </div>
         </jc-marker>
       </el-tab-pane>
+      <el-tab-pane label="审批图片" class="disRow">
+        <div class="positRe">
+          <el-upload
+            class="avatar-uploader"
+            :action="actionURL"
+            :show-file-list="false"
+            :auto-upload="false"
+            :on-change="modifyExamine"
+          >
+            <img
+              v-if="prodValue.fapprovalImage"
+              :src="prodValue.fapprovalImage"
+              class="avatar"
+            >
+            <div v-if="prodValue.fapprovalImage" class="magnify">
+              <i class="el-icon-search" @click.stop="proviewImg(prodValue.fapprovalImage)" />
+              <i class="el-icon-delete" @click.stop="prodValue.fapprovalImage=''" />
+            </div>
+            <i v-else class="el-icon-plus avatar-uploader-icon"><span>点击上传</span></i>
+          </el-upload>
+        </div>
+      </el-tab-pane>
     </el-tabs>
     <!--交货方式列表-->
     <deliver v-if="deliveVisiblit" @delive="deliveData" />
@@ -134,6 +161,17 @@
     <currency v-if="currencyVisiblit" @currency="currencyData" />
     <!--收款条件列表-->
     <gathering v-if="gatheringVisiblit" @gathering="gatheringData" />
+    <!--图纸预览-->
+    <el-dialog
+      title="预览"
+      model
+      :visible.sync="imgVisible"
+      append-to-body
+      top="10vh"
+      width="60%"
+    >
+      <img :src="priview">
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -155,6 +193,7 @@ import market from '@/views/market/marketManage/createMarkerOrder/components/mar
 import currency from '@/views/market/marketManage/createMarkerOrder/components/currency'
 import gathering from '@/views/market/marketManage/createMarkerOrder/components/gathering'
 import jcTitle from '@/components/Title'
+import mixinsImg from '@/views/market/marketManage/createMarkerOrder/components/mixinsImg'
 
 export default {
   name: 'CreateMarkerOrder',
@@ -168,10 +207,13 @@ export default {
     gathering,
     jcTitle
   },
-  mixins: [jumpMateriel],
+  mixins: [jumpMateriel, mixinsImg],
   inject: ['reload'],
   data() {
     return {
+      priview: '', // 预览图片
+      imgVisible: false, // 预览图片
+      actionURL: '',
       clientVisiblit: false, // 客户列表弹窗
       deliveVisiblit: false, // 交货方式弹窗
       marketVisiblit: false, // 销售员弹窗
@@ -186,6 +228,7 @@ export default {
       teamList: [], // 组织
       cellStyle: { padding: '10 10' },
       prodValue: { flocalCurrId: '' }, // 表单数据
+      fapprovalImage: '',
       saleDetails: [], // 明细数据
       planDetails: [], // 明细数据
       otherUrlObject: {}, // 其它审核人
@@ -205,10 +248,10 @@ export default {
       const id = this.$route.params.id
       const DATA = { fid: id }
       const { data: RES } = await queryTSalOrderNtry(DATA)
-      if (RES.fcloseStatus === 'A') {
-        RES.fcloseStatus = '正常'
+      if (RES.fsalType === 0) {
+        RES.saler = true
       } else {
-        RES.fcloseStatus = '已关闭'
+        RES.saler = false
       }
       this.prodValue = RES
       this.saleDetails = RES.saleDetails
@@ -238,6 +281,11 @@ export default {
     },
     // 保存
     subMarker() {
+      if (this.prodValue.saler) {
+        this.prodValue.fsalType = 0
+      } else {
+        this.prodValue.fsalType = 1
+      }
       const DATA = this.prodValue
       this.prodValue.planDetails = this.planDetails
       this.prodValue.saleDetails = this.saleDetails
@@ -247,10 +295,18 @@ export default {
           this.$message.error('表格不能为空或删除空行')
           return false
         }
-        if (item.fprice < item.fdownprice) {
-          this.$message.error('销售单价不能小于基准价')
-          this.loading = false
-          return false
+        if (this.prodValue.fsalType === 0) {
+          if (item.fprice < item.fdownPrice) {
+            this.$message.error('销售单价不能小于基准价')
+            this.loading = false
+            return false
+          }
+        } else {
+          if (item.fprice < item.deliveryPrice) {
+            this.$message.error('销售单价不能小于出厂价')
+            this.loading = false
+            return false
+          }
         }
       }
       updateSalOrder(DATA).then(res => {
@@ -349,6 +405,11 @@ export default {
       this.otherUrlObject = RES.operator
       this.total = RES.total
       this.otherLogTableData = RES.array
+    },
+    // 预览图片
+    proviewImg(img) {
+      this.imgVisible = true
+      this.priview = img
     }
   }
 }
@@ -356,14 +417,91 @@ export default {
 <style scoped lang="scss">
 .content {
   @include listBom;
+  .el-tabs {
+    .disRow {
+      height: 68vh;
 
-  .el-form {
-    display: flex;
-    flex-wrap: wrap;
+      .positRe {
+        position: relative;
+        margin-left: 100px;
+        margin-top: 20px;
 
-    .el-form-item {
-      max-width: 263px;
-      margin-bottom: 5px;
+        .avatar-uploader .el-upload {
+          height: 300px;
+          border: 1px dashed #d9d9d9;
+          border-radius: 6px;
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .avatar-uploader .el-upload:hover {
+          border-color: #409EFF;
+        }
+
+        .avatar-uploader-icon {
+          font-size: 18px;
+          color: #8c939d;
+          width: 230px;
+          height: 300px;
+          line-height: 300px;
+          text-align: center;
+          border: 1px solid #aaa;
+          border-radius: 6px;
+          background: #eee;
+
+          span {
+            color: #409EFF;
+          }
+        }
+
+        .avatar {
+          width: 230px;
+          height: 300px;
+          display: block;
+          border-radius: 6px;
+        }
+
+        .avatar-uploader {
+          width: 230px;
+          height: 100%;
+          transition: all 1s;
+        }
+
+        .avatar-uploader:hover .magnify {
+          display: block;
+        }
+
+        .magnify {
+          display: none;
+          height: 300px;
+          width: 230px;
+          background-color: rgba(0, 0, 0, .4);
+          position: absolute;
+          top: 0;
+          line-height: 300px;
+          border-radius: 6px;
+
+          i {
+            font-size: 24px;
+            color: #fff;
+            padding: 0 15px;
+          }
+        }
+      }
+    }
+
+    .el-form {
+      display: flex;
+      flex-wrap: wrap;
+
+      .el-form-item {
+        max-width: 263px;
+        margin-bottom: 5px;
+        .btnType{
+          margin-right: 20px;
+        }
+      }
     }
   }
 }
@@ -372,24 +510,4 @@ export default {
   cursor: pointer;
 }
 
-.materiel-form {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  margin-bottom: 20px;
-
-  .materiel-code {
-    margin-right: 5px;
-    font-weight: bold;
-    font-size: 14px;
-    color: #606266;
-    line-height: 40px;
-    min-width: 65px;
-  }
-
-  .input-width {
-    width: 200px;
-    margin-right: 10px;
-  }
-}
 </style>

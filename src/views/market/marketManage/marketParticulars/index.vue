@@ -99,6 +99,28 @@
           </div>
         </jc-marker>
       </el-tab-pane>
+      <el-tab-pane label="审批图片" class="disRow">
+        <div class="positRe">
+          <el-upload
+            class="avatar-uploader"
+            :action="actionURL"
+            :show-file-list="false"
+            :auto-upload="false"
+            :on-change="examine"
+            disabled
+          >
+            <img
+              v-if="organizationValue.fapprovalImage"
+              :src="organizationValue.fapprovalImage"
+              class="avatar"
+            >
+            <div v-if="organizationValue.fapprovalImage" class="magnify">
+              <i class="el-icon-search" @click.stop="proviewImg(organizationValue.fapprovalImage)" />
+            </div>
+            <i v-else class="el-icon-plus avatar-uploader-icon"><span>点击上传</span></i>
+          </el-upload>
+        </div>
+      </el-tab-pane>
     </el-tabs>
     <el-dialog title="预览" model :visible.sync="imgVisible" append-to-body top="10vh">
       <img :src="priview" style="max-height: 600px;max-width: 100%">
@@ -117,6 +139,7 @@ import jcMarker from '@/components/marker'
 import jcPagination from '@/components/Pagination'
 import jumpMateriel from '@/components/JumpMateriel'
 import jcTitle from '@/components/Title'
+import mixinsImg from '@/views/market/marketManage/createMarkerOrder/components/mixinsImg'
 
 export default {
   components: {
@@ -126,9 +149,10 @@ export default {
     jcPagination,
     jcTitle
   },
-  mixins: [jumpMateriel],
+  mixins: [jumpMateriel, mixinsImg],
   data() {
     return {
+      actionURL: '',
       priview: '',
       imgVisible: false,
       // 表头
@@ -163,13 +187,18 @@ export default {
       } else {
         RES.fcloseStatus = '已关闭'
       }
+      if (RES.fsalType === '0') {
+        RES.fsalType = '正常订单'
+      } else {
+        RES.fsalType = '特批订单'
+      }
       this.organizationValue = RES
       this.organization = {
         fcreateDate: {
           label: '订单时间',
           disabled: 'disabled'
         }, fbillType: {
-          label: '订单类型',
+          label: '单据类型',
           disabled: 'disabled'
         }, fsaleOrg: {
           label: '销售组织',
@@ -230,8 +259,10 @@ export default {
           label: '是否含税',
           type: 'checkbox',
           disabled: 'disabled'
+        }, fsalType: {
+          label: '订单类型',
+          disabled: 'disabled'
         }
-
       }
     },
     // 预览图片
@@ -275,34 +306,111 @@ export default {
 <style lang="scss" scoped>
 .Particules {
   @include listBom;
-}
-.inTheBtn{
-  transform: translateY(-15px);
-}
-.tag-mar {
-  margin-right: 3px;
-  margin-bottom: 3px;
-}
 
-.tag-mar:hover {
-  cursor: pointer;
-}
+  .el-tabs {
+    .disRow {
+      height: 68vh;
 
-.el-tag + .el-tag {
-  margin-left: 10px;
-}
+      .positRe {
+        position: relative;
+        margin-left: 100px;
+        margin-top: 20px;
 
-.button-new-tag {
-  margin-left: 10px;
-  height: 32px;
-  line-height: 30px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
+        .avatar-uploader .el-upload {
+          height: 300px;
+          border: 1px dashed #d9d9d9;
+          border-radius: 6px;
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+        }
 
-.input-new-tag {
-  width: 90px;
-  margin-left: 10px;
-  vertical-align: bottom;
+        .avatar-uploader .el-upload:hover {
+          border-color: #409EFF;
+        }
+
+        .avatar-uploader-icon {
+          font-size: 18px;
+          color: #8c939d;
+          width: 230px;
+          height: 300px;
+          line-height: 300px;
+          text-align: center;
+          border: 1px solid #aaa;
+          border-radius: 6px;
+          background: #eee;
+
+          span {
+            color: #409EFF;
+          }
+        }
+
+        .avatar {
+          width: 230px;
+          height: 300px;
+          display: block;
+          border-radius: 6px;
+        }
+
+        .avatar-uploader {
+          width: 230px;
+          height: 100%;
+          transition: all 1s;
+        }
+
+        .avatar-uploader:hover .magnify {
+          display: block;
+        }
+
+        .magnify {
+          display: none;
+          height: 300px;
+          width: 230px;
+          background-color: rgba(0, 0, 0, .4);
+          position: absolute;
+          top: 0;
+          line-height: 300px;
+          border-radius: 6px;
+
+          i {
+            font-size: 24px;
+            color: #fff;
+            padding: 0 15px;
+          }
+        }
+      }
+    }
+  }
+
+  .inTheBtn {
+    transform: translateY(-15px);
+  }
+
+  .tag-mar {
+    margin-right: 3px;
+    margin-bottom: 3px;
+  }
+
+  .tag-mar:hover {
+    cursor: pointer;
+  }
+
+  .el-tag + .el-tag {
+    margin-left: 10px;
+  }
+
+  .button-new-tag {
+    margin-left: 10px;
+    height: 32px;
+    line-height: 30px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .input-new-tag {
+    width: 90px;
+    margin-left: 10px;
+    vertical-align: bottom;
+  }
 }
 </style>

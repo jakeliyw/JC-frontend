@@ -12,7 +12,7 @@
         <span class="text-margin">使用组织</span>
         <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled />
         <div class="summation">物料成本:
-          <span class="color-text">{{ FMATERIALCOST.toFixed(4) }}元</span>
+          <span class="color-text">{{ Math.round((FMATERIALCOST + Number.EPSILON) *100) / 100 }}元</span>
         </div>
       </div>
     </el-card>

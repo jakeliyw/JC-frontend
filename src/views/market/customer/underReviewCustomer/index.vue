@@ -7,7 +7,7 @@
         <el-input
           v-model="fname"
           class="input-content"
-          placeholder="请输入物料编号"
+          placeholder="请输入客户名称"
           size="mini"
           @keyup.enter.native="handleQueryUnderReview"
         />
@@ -91,7 +91,7 @@ export default {
       this.pageNum = 1
       this.handleGetData()
     },
-    // 详情价目
+    // 详情
     detailCustomer(fcustId) {
       this.$router.push({ path: `/detailCustomer/${fcustId}` })
     }

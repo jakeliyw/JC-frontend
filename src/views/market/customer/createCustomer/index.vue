@@ -105,7 +105,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="含税" prop="fiscreditcheck">
+              <el-form-item label="启用信用管理" prop="fiscreditcheck">
                 <el-checkbox v-model="customerForm.fiscreditcheck" disabled />
               </el-form-item>
             </el-col>

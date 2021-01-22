@@ -99,10 +99,6 @@ export default {
       const DATA = { fid: id }
       const { data: RES } = await querySalPriceNtry(DATA)
       this.tableData = RES.detail
-      this.tableData.forEach((item, index) => {
-        this.tableIndex = index
-        // this.querySalPriceMaterial()
-      })
       RES.limitName = '客户'
       this.organizationValue = RES
       this.organization = {

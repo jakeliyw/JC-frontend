@@ -20,7 +20,7 @@
         <span class="text-margin">使用组织</span>
         <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled />
         <div class="summation">物料成本:
-          <span class="color-text">{{ materialScience }}元</span>
+          <span class="color-text">{{ Math.round((materialScience + Number.EPSILON) *100) / 100 }}元</span>
         </div>
       </div>
     </el-card>
@@ -421,6 +421,7 @@ export default {
     // 选中子项弹窗表格行
     async sonSelectRow(item) {
       const { data: RES } = await queryMaterialSon({ fmateriAalId: item.FMATERIALID })
+      this.sonTableData[this.tableIndex].FDOSAGE = RES.FDOSAGE
       this.sonTableData[this.tableIndex].FMATERIALID = RES.FMATERIALID
       this.sonTableData[this.tableIndex].FNUMBER = RES.FNUMBER
       this.sonTableData[this.tableIndex].FDESCRIPTION = RES.FDESCRIPTION

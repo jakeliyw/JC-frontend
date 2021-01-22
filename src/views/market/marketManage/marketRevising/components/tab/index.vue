@@ -59,7 +59,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column label="税率" prop="fentryTaxRate" min-width="140px" align="center">
+          <el-table-column label="税率(%)" prop="fentryTaxRate" min-width="140px" align="center">
             <template slot-scope="scope">
               <el-input-number
                 v-model="scope.row.ftaxRate"
@@ -224,6 +224,7 @@ export default {
         this.tabTwo.saleDetails[this.material].funit = item.funitName
         this.tabTwo.saleDetails[this.material].fmodel = item.fmodel
         this.tabTwo.saleDetails[this.material].fdownprice = item.fdownPrice
+        this.tabTwo.saleDetails[this.material].deliveryPrice = item.deliveryPrice
         this.isMateria = false
       } else {
         this.isMateria = false
