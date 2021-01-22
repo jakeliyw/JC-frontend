@@ -1,24 +1,26 @@
 <template>
   <div class="search" :class="{active: !caret}">
-    <div v-for="(item, index) in searData" :key="index" class="hang" v-if="index<conceal">
-      <el-select v-model="item.english" placeholder="请选择" size="mini" filterable @change="gatherData()">
-        <el-option
-          v-for="iten in options"
-          :key="iten.english"
-          :label="iten.display"
-          :value="iten.english"
-        />
-      </el-select>
-      <el-input v-model.trim="searData[index].val" size="mini" @blur="gatherData()" />
-      <i v-if="index>0" class="el-icon-remove-outline" @click="delSear(index)"></i>
+    <div v-for="(item, index) in searData" :key="index" class="hang">
+      <span v-if="index<conceal">
+        <el-select v-model="item.english" placeholder="请选择" size="mini" filterable @change="gatherData()">
+          <el-option
+            v-for="iten in options"
+            :key="iten.english"
+            :label="iten.display"
+            :value="iten.english"
+          />
+        </el-select>
+        <el-input v-model.trim="searData[index].val" size="mini" @blur="gatherData()" />
+        <i v-if="index>0" class="el-icon-remove-outline" @click="delSear(index)" />
+      </span>
     </div>
     <div v-show="!caret" class="newSear" @click="newSearch">
       <i class="el-icon-circle-plus-outline" />
       新增条件
     </div>
     <div class="posit">
-      <i v-show="caret" class="el-icon-arrow-down" @click="searShow()" />
-      <i v-show="!caret" class="el-icon-arrow-up" @click="noShow()" />
+      <i v-show="caret" class="el-icon-d-arrow-left" @click="searShow()" />
+      <i v-show="!caret" class="el-icon-d-arrow-right" @click="noShow()" />
     </div>
   </div>
 </template>
@@ -39,15 +41,17 @@ export default {
       conceal: 1, // 最多显示几条数据
       caret: true,
       searData: [{}], // 搜索下拉框数据
-      hunt: [] // 搜索下拉框数据(向父传值)
+      hunt: {} // 搜索下拉框数据(向父传值)
     }
   },
   methods: {
     // 下拉
     searShow() {
+      if (this.searData.length < 2) {
+        this.searData.push({})
+      }
       this.caret = false
       this.conceal = 15
-      this.searData.push({}, {})
     },
     // 收回
     noShow() {
@@ -65,13 +69,10 @@ export default {
     },
     // 向父组件传值
     gatherData() {
-      this.hunt = []
+      this.hunt = {}
       this.searData.forEach(item => {
         if (item.english && item.val) {
-          const Obj = {}
-          this.$set(Obj, item.english, item.val)
-          console.log(Object.assign(Obj))
-          this.hunt.push(Obj)
+          this.$set(this.hunt, item.english, item.val)
           this.$emit('seek', this.hunt)
         }
       })
@@ -110,9 +111,18 @@ export default {
     top: 10px;
     right: 10px;
     i{
-      color: #1f2d3d;
-      font-size: 20px;
+      font-size: 14px;
+      color: #737577;
     }
+    .el-icon-d-arrow-left{
+      transform: rotate(90deg);
+    }
+    .el-icon-d-arrow-right{
+      transform: rotate(90deg);
+    }
+  }
+  .posit:hover{
+    box-shadow: 0 0 1px #aaa;
   }
   .newSear{
     cursor: pointer;

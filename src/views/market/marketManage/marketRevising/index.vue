@@ -262,12 +262,11 @@ export default {
           fmaterialId: '',
           fdescripTion: '',
           funitId: '',
-          fqty: '',
+          fqty: 1,
           fprice: '',
           fisFree: false,
           ftaxRate: '',
           fdownPrice: '',
-          fdeliveryDate: '',
           salImage: {
             imageUrl: '', // 图片
             imageUrl1: '', // 图片
@@ -420,7 +419,6 @@ export default {
   .el-tabs {
     .disRow {
       height: 68vh;
-
       .positRe {
         position: relative;
         margin-left: 100px;
@@ -490,13 +488,12 @@ export default {
         }
       }
     }
-
     .el-form {
       display: flex;
       flex-wrap: wrap;
 
       .el-form-item {
-        max-width: 263px;
+        width: 263px;
         margin-bottom: 5px;
         .btnType{
           margin-right: 20px;

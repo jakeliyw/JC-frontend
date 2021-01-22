@@ -11,7 +11,7 @@
           size="mini"
           @keyup.enter.native="handleQueryUntreated"
         />
-        <!--                <search :options="selectData" @seek="collect" />-->
+        <!--        <search :options="selectData" @seek="collect" />-->
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
       </div>
     </div>
@@ -78,7 +78,7 @@ import {
   reviewSalorder,
   notReviewSalorder
 } from '@/api/marketManage/marketOrder'
-import search from '@/components/Search/index'
+// import search from '@/components/Search/index'
 import selectData from '@/components/Search/mixin'
 export default {
   name: 'MarketUntreated',
@@ -86,8 +86,8 @@ export default {
   components: {
     jcTable,
     jcTitle,
-    jcPagination,
-    search
+    jcPagination
+    // search
   },
   mixins: [selectData],
   data() {
@@ -108,9 +108,8 @@ export default {
   },
   methods: {
     collect(ev) {
-      // for (const item of ev) {
-      // this.searCollData = Object.assign(item)
-      // }
+      this.searCollData = ev
+      console.log(ev)
     },
     // 获取列表数据
     async handleGetUntreated() {
@@ -158,7 +157,7 @@ export default {
       width: 100%;
     }
   //.btn{
-  //  transform: translateY(16%);
+  //  transform: translateY(18%);
   //  margin-left: 410px!important;
   //  z-index: 999;
   //}

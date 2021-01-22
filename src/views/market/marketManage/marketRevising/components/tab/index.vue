@@ -25,7 +25,8 @@
           <el-table-column
             label="物料描述"
             prop="fdescripTion"
-            min-width="200px"
+            align="center"
+            min-width="300px"
             :show-overflow-tooltip="true"
           />
           <el-table-column label="型号" prop="fmodel" align="center" min-width="100px" />
@@ -49,7 +50,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column label="销售基准价" prop="fdownprice" align="center" min-width="100px" />
+          <el-table-column label="销售基准价" prop="fdownPrice" align="center" min-width="100px" />
           <el-table-column label="是否赠品" prop="fisFree" align="center">
             <template slot-scope="scope">
               <el-checkbox
@@ -223,7 +224,7 @@ export default {
         this.tabTwo.saleDetails[this.material].funitId = item.funitId
         this.tabTwo.saleDetails[this.material].funit = item.funitName
         this.tabTwo.saleDetails[this.material].fmodel = item.fmodel
-        this.tabTwo.saleDetails[this.material].fdownprice = item.fdownPrice
+        this.tabTwo.saleDetails[this.material].fdownPrice = item.fdownPrice
         this.tabTwo.saleDetails[this.material].deliveryPrice = item.deliveryPrice
         this.isMateria = false
       } else {
@@ -245,7 +246,7 @@ export default {
             fmaterialId: '',
             fdescripTion: '',
             funitId: '',
-            fqty: '',
+            fqty: 1,
             fprice: '',
             fisFree: false,
             ftaxRate: '',
@@ -327,13 +328,15 @@ export default {
 }
 </style>
 <style scoped lang="scss">
-.el-table ::v-deep .cell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  img {
-    padding: 0 5px;
+// 图纸单元格居中
+.el-table ::v-deep td{
+  &:nth-last-child(2) .cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      padding: 0 5px;
+    }
   }
 }
 .tab {

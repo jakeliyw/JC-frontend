@@ -29,7 +29,7 @@
             label="物料描述"
             prop="fdescripTion"
             align="center"
-            min-width="200px"
+            min-width="300px"
             :show-overflow-tooltip="true"
           />
           <el-table-column label="物料型号" prop="fmodel" align="center" min-width="100px" />
@@ -186,7 +186,7 @@ export default {
             fmaterialId: '',
             fdescripTion: '',
             funitId: '',
-            fqty: '',
+            fqty: 1,
             fisFree: false,
             ftaxRate: '',
             fdeliveryDate: '',
@@ -328,13 +328,15 @@ export default {
 </style>
 <style scoped lang="scss">
 .tab {
-  .el-table ::v-deep .cell {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    img {
-      padding: 0 5px;
+  // 图纸单元格居中
+  .el-table ::v-deep td{
+    &:nth-last-child(2) .cell {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        padding: 0 5px;
+      }
     }
   }
   .materiel-form {

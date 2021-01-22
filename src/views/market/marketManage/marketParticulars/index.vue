@@ -27,7 +27,7 @@
               <el-table-column prop="funit" label="基本单位" min-width="80px" align="center" />
               <el-table-column prop="fqty" label="产品数量" align="center" />
               <el-table-column prop="fprice" label="产品单价" align="center" />
-              <el-table-column prop="fdownprice" label="基准价" align="center" />
+              <el-table-column prop="fdownPrice" label="基准价" align="center" />
               <el-table-column prop="totalPrice" label="总价" align="center" />
               <el-table-column prop="fsettleCurr" label="币别" align="center" />
               <el-table-column prop="fvolume" label="产品体积" align="center" />
@@ -303,14 +303,23 @@ export default {
   }
 }
 </style>
+<style lang="scss">
+.el-dialog__body {
+  overflow: auto;
+  img{
+    max-width: 1000px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+</style>
 <style lang="scss" scoped>
 .Particules {
   @include listBom;
-
   .el-tabs {
     .disRow {
       height: 68vh;
-
       .positRe {
         position: relative;
         margin-left: 100px;
