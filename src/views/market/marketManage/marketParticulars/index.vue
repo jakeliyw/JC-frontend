@@ -198,7 +198,7 @@ export default {
           label: '订单时间',
           disabled: 'disabled'
         }, fbillType: {
-          label: '订单类型',
+          label: '单据类型',
           disabled: 'disabled'
         }, fsaleOrg: {
           label: '销售组织',

@@ -1,7 +1,7 @@
 <template>
   <div class="search" :class="{active: !caret}">
     <div v-for="(item, index) in searData" :key="index" class="hang" v-if="index<conceal">
-      <el-select v-model="item.english" placeholder="请选择" size="mini">
+      <el-select v-model="item.english" placeholder="请选择" size="mini" filterable @change="gatherData()">
         <el-option
           v-for="iten in options"
           :key="iten.english"
@@ -9,7 +9,7 @@
           :value="iten.english"
         />
       </el-select>
-      <el-input v-model="searData[index].val" size="mini" />
+      <el-input v-model.trim="searData[index].val" size="mini" @blur="gatherData()" />
       <i v-if="index>0" class="el-icon-remove-outline" @click="delSear(index)"></i>
     </div>
     <div v-show="!caret" class="newSear" @click="newSearch">
@@ -38,14 +38,15 @@ export default {
     return {
       conceal: 1, // 最多显示几条数据
       caret: true,
-      searData: [{}] // 搜索下拉框数据
+      searData: [{}], // 搜索下拉框数据
+      hunt: [] // 搜索下拉框数据(向父传值)
     }
   },
   methods: {
     // 下拉
     searShow() {
       this.caret = false
-      this.conceal = 5
+      this.conceal = 15
       this.searData.push({}, {})
     },
     // 收回
@@ -57,8 +58,23 @@ export default {
     newSearch() {
       this.searData.push({})
     },
+    // 删除条件
     delSear(index) {
       this.searData.splice(index, 1)
+      this.gatherData()
+    },
+    // 向父组件传值
+    gatherData() {
+      this.hunt = []
+      this.searData.forEach(item => {
+        if (item.english && item.val) {
+          const Obj = {}
+          this.$set(Obj, item.english, item.val)
+          console.log(Object.assign(Obj))
+          this.hunt.push(Obj)
+          this.$emit('seek', this.hunt)
+        }
+      })
     }
   }
 }
@@ -92,7 +108,7 @@ export default {
   .posit{
     position: absolute;
     top: 10px;
-    right: -20px;
+    right: 10px;
     i{
       color: #1f2d3d;
       font-size: 20px;

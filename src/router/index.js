@@ -552,7 +552,7 @@ export const asyncRouterMap = [
         path: '/procurement',
         name: 'Procurement',
         component: () => import('@/views/purchasing/procurement/index'),
-        meta: { title: '采购PMC', noCache: false },
+        meta: { title: '采购拆单', noCache: false },
         menu: 'procurement'
       }
     ]
@@ -609,7 +609,7 @@ export const asyncRouterMap = [
         path: '/mrpView ',
         name: 'MrpView ',
         component: () => import('@/views/production/mrpView/index'),
-        meta: { title: 'MRP转单界面' },
+        meta: { title: '生产拆单' },
         menu: 'mrpView'
       }
     ]
