@@ -36,7 +36,7 @@
                   <el-checkbox v-model="scope.row.fisFree" disabled />
                 </template>
               </el-table-column>
-              <el-table-column prop="ftaxRate" label="税率" align="center" />
+              <el-table-column prop="ftaxRate" label="税率(%)" align="center" />
               <el-table-column prop="fdeliveryDate" label="图纸" min-width="230px" align="center">
                 <template slot-scope="scope">
                   <img v-for="(item, index) in scope.row.salImage" :key="index" :src="item" style="max-height: 28px;padding: 0 3px" @click="proviewImg(item)">

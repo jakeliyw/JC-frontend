@@ -3,14 +3,7 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <span class="parentItemNo">角色名称</span>
-        <el-input
-          v-model.trim="fname"
-          class="input-content"
-          placeholder="请输入角色名称"
-          size="mini"
-          @keyup.enter.native="getRoleList"
-        />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" />
         <el-button size="mini" type="primary" class="btn" @click="getRoleList">搜索</el-button>
         <el-button size="mini" type="primary" class="btn" @click="insertTJQ">新增</el-button>
       </div>
@@ -81,16 +74,21 @@ import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
 import { queryTJxQueryList, querySecUser, insertTJxQuery, updayeTJxQuery } from '@/api/userAdmin/jurisdictionList'
+import search from '@/components/Search/index'
+import searData from '@/components/Search/mixin'
 export default {
   name: 'JuisdictionList',
   components: {
     jcTable,
     jcPagination,
-    jcTitle
+    jcTitle,
+    search
   },
+  mixins: [searData],
   data() {
     return {
-      fname: '',
+      ftype: 8,
+      fbillNo: 'fname',
       total: 0, // 总条目
       pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
@@ -165,7 +163,7 @@ export default {
     },
     // 审核权限列表
     async getRoleList() {
-      const DATA = { pageNum: this.pageNum, pageSize: this.size, fname: this.fname }
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, ...this.searCollData }
       const { data: res } = await queryTJxQueryList(DATA)
       this.tableData = res.array
       this.total = res.total
@@ -213,6 +211,17 @@ export default {
 <style scoped lang="scss">
 .content {
   @include listBom;
+  .header{
+    position:relative;
+    .header-name{
+      width: 100%;
+    }
+    .btn{
+      transform: translateY(18%);
+      margin-left: 410px!important;
+      z-index: 999;
+    }
+  }
   .el-form-item {
     max-width: 70%;
     margin-bottom: 15px;

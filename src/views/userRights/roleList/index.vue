@@ -3,14 +3,7 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <span class="parentItemNo">角色名称</span>
-        <el-input
-          v-model="NAME"
-          class="input-content"
-          placeholder="请输入角色"
-          size="mini"
-          @keyup.enter.native="getRoleList"
-        />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" />
         <el-button size="mini" type="primary" class="btn" @click="getRoleList">搜索</el-button>
       </div>
     </div>
@@ -39,16 +32,21 @@ import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
 import { queryTJxRoleList } from '@/api/userAdmin/roleList'
 import { userDisable } from '@/components/ToMxamineState'
+import search from '@/components/Search/index'
+import searData from '@/components/Search/mixin'
 export default {
   name: 'Index',
   components: {
     jcTable,
     jcPagination,
-    jcTitle
+    jcTitle,
+    search
   },
+  mixins: [searData],
   data() {
     return {
-      NAME: '',
+      ftype: 8,
+      fbillNo: 'fname',
       total: 0, // 总条目
       pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
@@ -72,7 +70,7 @@ export default {
       console.log('禁用成功')
     },
     async getRoleList() {
-      const DATA = { pageNum: this.pageNum, pageSize: this.size, NAME: this.NAME }
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, ...this.searCollData }
       const { data: res, total } = await queryTJxRoleList(DATA)
       this.tableData = res.map(item => {
         return userDisable(item)
@@ -86,5 +84,16 @@ export default {
 <style scoped lang="scss">
 .content {
   @include listBom;
+  .header{
+    position:relative;
+    .header-name{
+      width: 100%;
+    }
+    .btn{
+      transform: translateY(18%);
+      margin-left: 410px!important;
+      z-index: 999;
+    }
+  }
 }
 </style>

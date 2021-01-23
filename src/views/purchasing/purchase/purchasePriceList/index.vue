@@ -3,24 +3,9 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <span class="parentItemNo">物料编码</span>
-        <el-input
-          v-model="getPriceList.fnumber"
-          class="input-content"
-          placeholder="请输入物料编号"
-          size="mini"
-          @keyup.enter.native="handleQueryUntreated"
-        />
-        <span class="parentItemNo">供应商名称</span>
-        <el-input
-          v-model="getPriceList.fsupplier"
-          class="input-content"
-          placeholder="请输入供应商名称"
-          size="mini"
-          @keyup.enter.native="handleQueryUntreated"
-        />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
-        <el-button type="primary" class="btn" size="mini" @click="addPurchase">新增价目</el-button>
+        <el-button type="primary" size="mini" @click="addPurchase">新增价目</el-button>
       </div>
     </div>
     <div class="table-content">
@@ -65,23 +50,26 @@ import jcTable from '@/components/Table/index'
 import jcPagination from '@/components/Pagination/index'
 import jcTitle from '@/components/Title'
 import { queryTPurPriceList, updateAgainReview } from '@/api/purchaseManagement/purchasePrice'
-
+import search from '@/components/Search/index'
+import searData from '@/components/Search/mixin'
 export default {
   name: 'PurchasePriceList',
   inject: ['reload'],
   components: {
     jcTable,
     jcPagination,
-    jcTitle
+    jcTitle,
+    search
   },
+  mixins: [searData],
   data() {
     return {
+      ftype: 4,
+      fbillNo: 'fname',
       total: 0, // 总条目
       getPriceList: {
         pageNum: 1, // 当前页
-        pageSize: 10, // 每页显示多少条数据
-        fnumber: '', // 物料编码
-        fsupplier: '' // 供应商名称
+        pageSize: 10 // 每页显示多少条数据
       },
       cellStyle: { padding: '10, 10' },
       tableHeader: [
@@ -110,7 +98,7 @@ export default {
     },
     // 获取列表数据
     async handleGetPurchaseList() {
-      const { data: RES } = await queryTPurPriceList({ ...this.getPriceList })
+      const { data: RES } = await queryTPurPriceList({ ...this.getPriceList, ...this.searCollData })
       this.tableData = RES.array
       this.total = RES.total
     },
@@ -147,5 +135,16 @@ export default {
 <style lang="scss" scoped>
 .content {
   @include listBom;
+  .header{
+    position:relative;
+    .header-name{
+      width: 100%;
+    }
+    .btn{
+      transform: translateY(18%);
+      margin-left: 410px!important;
+      z-index: 999;
+    }
+  }
 }
 </style>

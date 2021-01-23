@@ -3,30 +3,7 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <span class="parentItemNo">物料编号</span>
-        <el-input
-          v-model="FNUMBER"
-          class="input-content"
-          placeholder="请输入物料编号"
-          size="mini"
-          @keyup.enter.native="handleQueryUntreated"
-        />
-        <span class="parentItemNo">物料规格</span>
-        <el-input
-          v-model="FSPECIFICATION"
-          class="input-content"
-          placeholder="请输入物料规格"
-          size="mini"
-          @keyup.enter.native="handleQueryUntreated"
-        />
-        <span class="parentItemNo">型号</span>
-        <el-input
-          v-model="FMODEL"
-          class="input-content"
-          placeholder="请输入型号"
-          size="mini"
-          @keyup.enter.native="handleQueryUntreated"
-        />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
       </div>
     </div>
@@ -82,20 +59,22 @@ import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
 import { queryUntreatedBomList, updateReview, updateNotReview } from '@/api/engineering/untreatedBom'
 import { queryFtypeInfo } from '@/api/engineering/deitalBom'
-
+import search from '@/components/Search'
+import searData from '@/components/Search/mixin'
 export default {
   name: 'UntreatedBom',
   inject: ['reload'],
   components: {
     jcTable,
     jcPagination,
-    jcTitle
+    jcTitle,
+    search
   },
+  mixins: [searData],
   data() {
     return {
-      FNUMBER: '', // 产品描述
-      FMODEL: '', // 型号
-      FSPECIFICATION: '', // 物料规格
+      ftype: 0,
+      fbillNo: 'fnumber', // 编码
       total: 0, // 总条目
       pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
@@ -126,9 +105,7 @@ export default {
       const DATA = {
         pageNum: this.pageNum,
         pageSize: this.size,
-        FNUMBER: this.FNUMBER,
-        FMODEL: this.FMODEL,
-        FSPECIFICATION: this.FSPECIFICATION
+        ...this.searCollData
       }
       const { data: RES, total } = await queryUntreatedBomList(DATA)
       this.tableData = RES
@@ -176,5 +153,16 @@ export default {
 <style lang="scss" scoped>
 .content {
   @include listBom;
+  .header{
+    position:relative;
+    .header-name{
+      width: 100%;
+    }
+    .btn{
+      transform: translateY(18%);
+      margin-left: 410px!important;
+      z-index: 999;
+    }
+  }
 }
 </style>

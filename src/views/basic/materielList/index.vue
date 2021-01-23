@@ -3,32 +3,9 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <span class="parentItemNo">物料编码</span>
-        <el-input
-          v-model="pagination.fnumber"
-          class="input-content"
-          placeholder="请输入物料编码"
-          size="mini"
-          @keyup.enter.native="searchMaterialList"
-        />
-        <span class="parentItemNo">型号</span>
-        <el-input
-          v-model="pagination.fmodel"
-          class="input-content"
-          placeholder="请输入型号"
-          size="mini"
-          @keyup.enter.native="searchMaterialList"
-        />
-        <span class="parentItemNo">物料规格</span>
-        <el-input
-          v-model="pagination.fspecificaTion"
-          class="input-content"
-          placeholder="请输入型号"
-          size="mini"
-          @keyup.enter.native="searchMaterialList"
-        />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" />
         <el-button type="primary" size="mini" class="btn" @click="searchMaterialList">搜索</el-button>
-        <el-button type="primary" size="mini" class="btn" @click="addMateril">新增物料</el-button>
+        <el-button type="primary" size="mini" @click="addMateril">新增物料</el-button>
       </div>
     </div>
     <div class="mainPage">
@@ -88,22 +65,25 @@ import jcTitle from '@/components/Title'
 import { queryTJxLargeitemtypeGroup, queryTBdMaterialList } from '@/api/basicManagement/materielList'
 import { toMxAmina, Disable } from '@/components/ToMxamineState'
 import { updateMaterialNotReview } from '@/api/basicManagement/untreatedMaterie'
+import search from '@/components/Search'
+import searData from '@/components/Search/mixin'
 export default {
   name: 'MaterielList',
   components: {
     jcTable,
     jcPagination,
-    jcTitle
+    jcTitle,
+    search
   },
+  mixins: [searData],
   data() {
     return {
+      ftype: 0,
+      fbillNo: 'fnumber', // 产品描述
       materialGroupL: [], // tree组数据
       currentNodeKey: '',
       cellStyle: { padding: '10 10' }, // 行高
       pagination: {
-        fnumber: '', // 物料编号
-        fmodel: '', // 型号
-        fspecificaTion: '', // 物料规格
         pageNum: 1, // 当前页
         pageSize: 10 // 每页显示多少条数据
       },
@@ -156,6 +136,7 @@ export default {
     async getMaterialList() {
       const DATA = {
         ...this.pagination,
+        ...this.searCollData,
         fnumberGroup: this.currentNodeKey
       }
       const { data: RES, total } = await queryTBdMaterialList(DATA)
@@ -219,5 +200,16 @@ export default {
 }
 .content {
   @include listBom;
+  .header{
+    position:relative;
+    .header-name{
+      width: 100%;
+    }
+    .btn{
+      transform: translateY(18%);
+      margin-left: 410px!important;
+      z-index: 999;
+    }
+  }
 }
 </style>

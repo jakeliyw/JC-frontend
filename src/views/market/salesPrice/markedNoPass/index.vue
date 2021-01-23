@@ -3,14 +3,7 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <span class="parentItemNo">价目名称</span>
-        <el-input
-          v-model.trim="fname"
-          class="input-content"
-          placeholder="请输入销售订单号"
-          size="mini"
-          @keyup.enter.native="handleQueryUntreated"
-        />
+        <search :options="selectData" :msg="fname" @seek="collect" />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
       </div>
     </div>
@@ -72,18 +65,22 @@ import {
   queryFailPriceList,
   againReviewPrice
 } from '@/api/marketManage/marketPriceList'
-
+import search from '@/components/Search'
+import searData from '@/components/Search/mixin'
 export default {
   name: 'MarkedNoPass',
   inject: ['reload'],
   components: {
     jcTable,
     jcPagination,
-    jcTitle
+    jcTitle,
+    search
   },
+  mixins: [searData],
   data() {
     return {
-      fname: '', // 销售订单号
+      ftype: 7,
+      fname: 'fname', // 价目名称
       total: 0, // 总条目
       currentPage: 1, // 当前页
       size: 10, // 每页显示多少条数据
@@ -99,7 +96,7 @@ export default {
   methods: {
     // 获取列表数据
     async handleGetUntreated() {
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, fname: this.fname }
+      const DATA = { pageNum: this.currentPage, pageSize: this.size, ...this.searCollData }
       const { data: RES } = await queryFailPriceList(DATA)
       this.tableData = RES.array
       this.total = RES.total
@@ -132,5 +129,16 @@ export default {
 <style lang="scss" scoped>
 .content {
   @include listBom;
+  .header{
+    position:relative;
+    .header-name{
+      width: 100%;
+    }
+    .btn{
+      transform: translateY(18%);
+      margin-left: 410px!important;
+      z-index: 999;
+    }
+  }
 }
 </style>

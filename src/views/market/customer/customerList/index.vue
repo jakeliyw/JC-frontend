@@ -3,14 +3,7 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <span class="parentItemNo">客户名称</span>
-        <el-input
-          v-model="fname"
-          class="input-content"
-          placeholder="请输入客户名称"
-          size="mini"
-          @keyup.enter.native="handleQueryUntreated"
-        />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
       </div>
     </div>
@@ -46,18 +39,22 @@ import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
 import { queryCustomerList } from '@/api/marketManage/customer/customerList'
 import { againReviewCustomer } from '@/api/marketManage/customer/refuseCustomer'
-
+import search from '@/components/Search'
+import searData from '@/components/Search/mixin'
 export default {
   name: 'CustomerList',
   inject: ['reload'],
   components: {
     jcTable,
     jcPagination,
-    jcTitle
+    jcTitle,
+    search
   },
+  mixins: [searData],
   data() {
     return {
-      fname: '', // 产品描述
+      ftype: 6,
+      fbillNo: 'fname',
       total: 0, // 总条目
       pageNum: 1, // 当前页
       cellStyle: { padding: '10 10' }, // 行高
@@ -79,7 +76,7 @@ export default {
   methods: {
     // 获取列表数据
     async handleGetUntreated() {
-      const DATA = { pageNum: this.pageNum, pageSize: this.size, fname: this.fname }
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, ...this.searCollData }
       const { data: RES } = await queryCustomerList(DATA)
       this.tableData = RES.array
       this.total = RES.total
@@ -109,5 +106,16 @@ export default {
 <style lang="scss" scoped>
 .content {
   @include listBom;
+  .header{
+    position:relative;
+    .header-name{
+      width: 100%;
+    }
+    .btn{
+      transform: translateY(18%);
+      margin-left: 410px!important;
+      z-index: 999;
+    }
+  }
 }
 </style>
