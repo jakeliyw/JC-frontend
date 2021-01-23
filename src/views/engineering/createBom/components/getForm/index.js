@@ -15,44 +15,20 @@ export default {
     handleSetForm() {
       // 其它
       this.otherOptions = {
-        fcreator: {
-          label: '创建人',
-          disabled: 'disabled'
-        },
-        fcreateDate: {
-          label: '创建时间',
-          disabled: 'disabled'
-        },
         fcheck1: {
           label: '研发审核人',
           disabled: 'disabled'
         },
         fcheck2: {
-          label: '打样审核人',
-          disabled: 'disabled'
-        },
-        fcheck3: {
           label: '工程审核人',
           disabled: 'disabled'
         },
+        fcheck3: {
+          label: '成本审核人',
+          disabled: 'disabled'
+        },
         fcheck4: {
-          label: '成本审核人',
-          disabled: 'disabled'
-        },
-        fcheck5: {
-          label: '成本审核人',
-          disabled: 'disabled'
-        },
-        fcheck6: {
-          label: '工厂审核人',
-          disabled: 'disabled'
-        },
-        fcheck7: {
-          label: '信息化审核人',
-          disabled: 'disabled'
-        },
-        fcheck8: {
-          label: '总裁审核人',
+          label: '信息部审核人',
           disabled: 'disabled'
         },
         fcheckDate1: {
@@ -60,31 +36,23 @@ export default {
           disabled: 'disabled'
         },
         fcheckDate2: {
-          label: '打样审核时间',
-          disabled: 'disabled'
-        },
-        fcheckDate3: {
           label: '工程审核时间',
           disabled: 'disabled'
         },
+        fcheckDate3: {
+          label: '成本审核时间',
+          disabled: 'disabled'
+        },
         fcheckDate4: {
-          label: '成本审核时间',
+          label: '信息部审核时间',
           disabled: 'disabled'
         },
-        fcheckDate5: {
-          label: '成本审核时间',
+        fcreateDate: {
+          label: '创建时间',
           disabled: 'disabled'
         },
-        fcheckDate6: {
-          label: '工厂审核时间',
-          disabled: 'disabled'
-        },
-        fcheckDate7: {
-          label: '信息化审核时间',
-          disabled: 'disabled'
-        },
-        fcheckDate8: {
-          label: '总裁审核时间',
+        fcreator: {
+          label: '创建人',
           disabled: 'disabled'
         }
       }

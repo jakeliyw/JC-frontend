@@ -273,7 +273,8 @@ export default {
       serial: 1, // 序列号
       FID: '', // 父类物料ID
       FMATERIALCOST: '', // 物料成本
-      FMATERIALID: 0 // 父项物料ID
+      FMATERIALID: 0, // 父项物料ID
+      fnumber: '' // 父类编码
     }
   },
   computed: {
@@ -342,6 +343,7 @@ export default {
     // 获取页面数据
     async getQueryBomchildList() {
       const { data: RES } = await queryBomchildList({ fnumber: this.$route.params.FNUMBER })
+      this.fnumber = RES.FNUMBER
       this.FMATERIALID = RES.FMATERIALID
       this.FID = RES.FID
       this.FMATERIALCOST = RES.FMATERIALCOST
@@ -420,7 +422,7 @@ export default {
     },
     // 选中子项弹窗表格行
     async sonSelectRow(item) {
-      const { data: RES } = await queryMaterialSon({ fmateriAalId: item.FMATERIALID })
+      const { data: RES } = await queryMaterialSon({ fmateriAalId: item.FMATERIALID, fnumber: this.fnumber })
       this.sonTableData[this.tableIndex].FDOSAGE = RES.FDOSAGE
       this.sonTableData[this.tableIndex].FMATERIALID = RES.FMATERIALID
       this.sonTableData[this.tableIndex].FNUMBER = RES.FNUMBER
