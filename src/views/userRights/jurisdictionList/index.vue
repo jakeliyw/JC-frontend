@@ -62,10 +62,10 @@
           <el-input v-model.trim="form.fdepict" size="mini" />
         </el-form-item>
         <el-form-item label="审核人字段" prop="fvaluef">
-          <el-input v-model.trim="form.fvaluef" size="mini" />
+          <el-input v-model.trim="form.fvaluee" size="mini" />
         </el-form-item>
         <el-form-item label="审核时间字段" prop="fvaluee">
-          <el-input v-model.trim="form.fvaluee" size="mini" />
+          <el-input v-model.trim="form.fvaluef" size="mini" />
         </el-form-item>
         <el-form-item>
           <el-button @click="insertTJQVisible = false">取 消</el-button>

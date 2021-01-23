@@ -3,11 +3,11 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <span class="parentItemNo">大类名称</span>
+        <span class="parentItemNo">一类名称</span>
         <el-input
           v-model.trim="largeName"
           class="input-content"
-          placeholder="请输入大类名称"
+          placeholder="请输入一类名称"
           size="mini"
           @keyup.enter.native="handleQuerySonClass"
         />
@@ -21,14 +21,14 @@
         :table-header="tableHeader"
         :cell-style="cellStyle"
       >
-        <el-table-column prop="largeCode" label="大类编码" align="center" width="100px" />
-        <el-table-column prop="largeName" label="大类名称" min-width="80" align="center" />
-        <el-table-column prop="mediumName" label="中类集合" min-width="80" align="center">
+        <el-table-column prop="largeCode" label="一类编码" align="center" width="100px" />
+        <el-table-column prop="largeName" label="一类名称" min-width="80" align="center" />
+        <el-table-column prop="mediumName" label="二类名称" min-width="80" align="center">
           <template slot-scope="scope">
             <el-link type="primary" @click="inTheClass(scope.row.largeCode)">{{ scope.row.mediumName }}</el-link>
           </template>
         </el-table-column>
-        <el-table-column prop="typeArray" label="小类集合" min-width="120px" align="center">
+        <el-table-column prop="typeArray" label="三类集合" min-width="120px" align="center">
           <template slot-scope="scope">
             <el-tag
               v-for="(ite,id) in scope.row.typeArray"
@@ -59,7 +59,7 @@
     </div>
     <!--    中类列表弹框-->
     <el-dialog
-      title="中类集合"
+      title="二类名称"
       :visible.sync="dialogVisible"
       width="50%"
       :close-on-click-modal="false"
@@ -71,8 +71,8 @@
         :cell-style="cellStyle"
         table-height="53vh"
       >
-        <el-table-column prop="mediumCode" label="中类编码" align="center" />
-        <el-table-column prop="mediumName" label="中类名称" align="center" />
+        <el-table-column prop="mediumCode" label="二类编码" align="center" />
+        <el-table-column prop="mediumName" label="二类名称" align="center" />
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="danger" size="mini" @click="delCenter(scope.row.mediumCode)">删除</el-button>
@@ -82,7 +82,7 @@
     </el-dialog>
     <!--    小类列表弹框-->
     <el-dialog
-      title="小类集合"
+      title="三类集合"
       :visible.sync="dialogVisibleSmall"
       width="50%"
       :close-on-click-modal="false"
@@ -94,9 +94,9 @@
         :cell-style="cellStyle"
         table-height="53vh"
       >
-        <el-table-column prop="mediumName" label="中类名称" align="center" />
-        <el-table-column prop="number" label="小类编码" align="center" />
-        <el-table-column prop="name" label="小类名称" align="center" />
+        <el-table-column prop="mediumName" label="二类名称" align="center" />
+        <el-table-column prop="number" label="三类编码" align="center" />
+        <el-table-column prop="name" label="三类名称" align="center" />
         <!--        <el-table-column label="操作" align="center">-->
         <!--          <template slot-scope="">-->
         <!--            <el-button type="danger" size="mini">删除</el-button>-->
@@ -139,7 +139,7 @@
       append-to-body
     >
       <el-form label-width="100px">
-        <el-form-item v-if="newClassID===2" label="中类">
+        <el-form-item v-if="newClassID===2" label="二类">
           <el-select v-model="newMediumName" placeholder="请选择">
             <el-option
               v-for="item in inTheData"
@@ -168,7 +168,7 @@
             @keyup.enter.native="handleInputConfirm(4)"
             @blur="handleInputConfirm(4)"
           />
-          <el-button v-else class="button-new-tag" size="small" @click="showInput(4)">新增小类</el-button>
+          <el-button v-else class="button-new-tag" size="small" @click="showInput(4)">新增三类</el-button>
         </el-form-item>
         <el-form-item v-if="newClassID!==2" label="名称">
           <el-input v-model="newMediumName" placeholder="请输入" />

@@ -39,9 +39,7 @@
           <el-table-column v-if="false" label="子物料ID" prop="FMATERIALID" align="center" />
           <el-table-column label="物料编码" prop="FNUMBER" align="center" width="200px">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.FNUMBER" placeholder="请选择物料编码" disabled size="mini" class="input-width">
-                <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.FNUMBER)" />
-              </el-input>
+              <span @click="sonJumpMateriel(scope.row.FNUMBER)" class="fnumber">{{scope.row.FNUMBER}}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -58,17 +56,17 @@
           />
           <el-table-column label="发料方式" prop="FISSUENAME" align="center" width="150px">
             <template slot-scope="scope">
-              <el-select v-model="scope.row.FISSUENAME" placeholder="请选择" disabled size="mini" class="input-width" />
+              <span>{{scope.row.FISSUENAME}}</span>
             </template>
           </el-table-column>
           <el-table-column label="用量" prop="FDOSAGE" align="center" width="200px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.FDOSAGE" :precision="4" :step="0.0001" :min="0.0000" disabled size="mini" class="input-width" />
+              <span>{{scope.row.FDOSAGE}}</span>
             </template>
           </el-table-column>
           <el-table-column label="单价" prop="FPRICE" align="center" width="200px">
             <template slot-scope="scope">
-              <el-input-number v-model="scope.row.FPRICE" :precision="4" :step="0.0001" :min="0.0000" disabled size="mini" class="input-width" />
+              <span>{{scope.row.FPRICE}}</span>
             </template>
           </el-table-column>
           <el-table-column label="金额" prop="money" align="center" width="150px">
@@ -78,20 +76,12 @@
           </el-table-column>
           <el-table-column label="子项类型" prop="FMATERIALNAME" align="center" width="150px">
             <template slot-scope="scope">
-              <el-select :value="scope.row.FMATERIALNAME" placeholder="请选择" disabled size="mini" class="input-width" />
+              <span>{{scope.row.FMATERIALNAME}}</span>
             </template>
           </el-table-column>
           <el-table-column label="生效时间" prop="date" width="200px" align="center">
             <template slot-scope="scope">
-              <el-date-picker
-                v-model="scope.row.FCREATEDATE"
-                type="date"
-                size="mini"
-                style="width: 150px"
-                placeholder="选择日期"
-                disabled
-                class="input-width"
-              />
+              <span>{{scope.row.FCREATEDATE}}</span>
             </template>
           </el-table-column>
           <template v-slot:btnSlot="clo">
@@ -213,31 +203,15 @@ export default {
           disabled: 'disabled'
         },
         fcheck2: {
-          label: '打样审核人',
-          disabled: 'disabled'
-        },
-        fcheck3: {
           label: '工程审核人',
           disabled: 'disabled'
         },
+        fcheck3: {
+          label: '成本审核人',
+          disabled: 'disabled'
+        },
         fcheck4: {
-          label: '成本审核人',
-          disabled: 'disabled'
-        },
-        fcheck5: {
-          label: '成本审核人',
-          disabled: 'disabled'
-        },
-        fcheck6: {
-          label: '工厂审核人',
-          disabled: 'disabled'
-        },
-        fcheck7: {
-          label: '信息化审核人',
-          disabled: 'disabled'
-        },
-        fcheck8: {
-          label: '总裁审核人',
+          label: '信息部审核人',
           disabled: 'disabled'
         },
         fcheckDate1: {
@@ -245,31 +219,15 @@ export default {
           disabled: 'disabled'
         },
         fcheckDate2: {
-          label: '打样审核时间',
-          disabled: 'disabled'
-        },
-        fcheckDate3: {
           label: '工程审核时间',
           disabled: 'disabled'
         },
+        fcheckDate3: {
+          label: '成本审核时间',
+          disabled: 'disabled'
+        },
         fcheckDate4: {
-          label: '成本审核时间',
-          disabled: 'disabled'
-        },
-        fcheckDate5: {
-          label: '成本审核时间',
-          disabled: 'disabled'
-        },
-        fcheckDate6: {
-          label: '工厂审核时间',
-          disabled: 'disabled'
-        },
-        fcheckDate7: {
-          label: '信息化审核时间',
-          disabled: 'disabled'
-        },
-        fcheckDate8: {
-          label: '总裁审核时间',
+          label: '信息部审核时间',
           disabled: 'disabled'
         },
         fcreateDate: {
@@ -365,5 +323,12 @@ export default {
 <style scoped lang="scss">
 .content {
   @include bomCreate;
+}
+.fnumber{
+  &:hover{
+    color: #409eff;
+    text-decoration:underline;
+    cursor:pointer;
+  }
 }
 </style>

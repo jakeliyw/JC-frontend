@@ -326,6 +326,7 @@ export default {
       // 点击行的序号
       tableIndex: 0,
       serial: 1, // 序列号
+      fnumber: '', // 父类编码
       FMATERIALCOST: 0, // 物料成本
       FMATERIALID: 0 // 父项物料ID
     }
@@ -489,6 +490,7 @@ export default {
     // 选中父项弹窗表格行
     async parentSelectRow(item) {
       this.FMATERIALID = item.FMATERIALID
+      this.fnumber = item.FNUMBER
       const { data: RES } = await queryMaterialfather({ fmateriAalId: this.FMATERIALID })
       this.prodValue = RES
       this.disabled = false
@@ -501,7 +503,7 @@ export default {
     },
     // 选中子项弹窗表格行
     async sonSelectRow(item) {
-      const { data: RES } = await queryMaterialSon({ fmateriAalId: item.FMATERIALID })
+      const { data: RES } = await queryMaterialSon({ fmateriAalId: item.FMATERIALID, fnumber: this.fnumber })
       this.sonTableData[this.tableIndex].FDOSAGE = RES.FDOSAGE
       this.sonTableData[this.tableIndex].FMATERIALID = RES.FMATERIALID
       this.sonTableData[this.tableIndex].FNUMBER = RES.FNUMBER

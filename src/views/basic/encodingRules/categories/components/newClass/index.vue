@@ -8,14 +8,14 @@
       :before-close="diaClose"
     >
       <el-form label-width="100px" :model="formLabelAlign">
-        <el-form-item label="大类编码">
+        <el-form-item label="一类编码">
           <el-input v-model="formLabelAlign.largeCode" :disabled="msg2===''? false : true" />
         </el-form-item>
-        <el-form-item label="大类名称">
+        <el-form-item label="一类名称">
           <el-input v-model="formLabelAlign.largeName" :disabled="msg2===''? false : true" />
         </el-form-item>
         <!--新增-->
-        <el-form-item v-if="!msg2" label="中类集合">
+        <el-form-item v-if="!msg2" label="二类名称">
           <el-tag
             v-for="tag in formLabelAlign.mediumName"
             :key="tag"
@@ -34,9 +34,9 @@
             @keyup.enter.native="handleInputConfirm(0)"
             @blur="handleInputConfirm(0)"
           />
-          <el-button v-else class="button-new-tag" size="small" @click="showInput(0)">新增中类</el-button>
+          <el-button v-else class="button-new-tag" size="small" @click="showInput(0)">新增二类</el-button>
         </el-form-item>
-        <el-form-item v-if="!msg2" label="小类集合">
+        <el-form-item v-if="!msg2" label="三类集合">
           <el-tag
             v-for="tag in formLabelAlign.typeArray"
             :key="tag"
@@ -55,7 +55,7 @@
             @keyup.enter.native="handleInputConfirm(1)"
             @blur="handleInputConfirm(1)"
           />
-          <el-button v-else-if="!inputVisible1 && xiaolei" class="button-new-tag" size="small" @click="showInput(1)">新增小类</el-button>
+          <el-button v-else-if="!inputVisible1 && xiaolei" class="button-new-tag" size="small" @click="showInput(1)">新增三类</el-button>
         </el-form-item>
         <el-form-item v-if="!msg2" label="属性集合">
           <el-tag
