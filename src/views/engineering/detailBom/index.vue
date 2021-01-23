@@ -39,7 +39,7 @@
           <el-table-column v-if="false" label="子物料ID" prop="FMATERIALID" align="center" />
           <el-table-column label="物料编码" prop="FNUMBER" align="center" width="200px">
             <template slot-scope="scope">
-              <span @click="sonJumpMateriel(scope.row.FNUMBER)" class="fnumber">{{scope.row.FNUMBER}}</span>
+              <span class="fnumber" @click="sonJumpMateriel(scope.row.FNUMBER)">{{ scope.row.FNUMBER }}</span>
             </template>
           </el-table-column>
           <el-table-column
@@ -56,17 +56,17 @@
           />
           <el-table-column label="发料方式" prop="FISSUENAME" align="center" width="150px">
             <template slot-scope="scope">
-              <span>{{scope.row.FISSUENAME}}</span>
+              <span>{{ scope.row.FISSUENAME }}</span>
             </template>
           </el-table-column>
           <el-table-column label="用量" prop="FDOSAGE" align="center" width="200px">
             <template slot-scope="scope">
-              <span>{{scope.row.FDOSAGE}}</span>
+              <span>{{ scope.row.FDOSAGE }}</span>
             </template>
           </el-table-column>
           <el-table-column label="单价" prop="FPRICE" align="center" width="200px">
             <template slot-scope="scope">
-              <span>{{scope.row.FPRICE}}</span>
+              <span>{{ scope.row.FPRICE }}</span>
             </template>
           </el-table-column>
           <el-table-column label="金额" prop="money" align="center" width="150px">
@@ -76,12 +76,12 @@
           </el-table-column>
           <el-table-column label="子项类型" prop="FMATERIALNAME" align="center" width="150px">
             <template slot-scope="scope">
-              <span>{{scope.row.FMATERIALNAME}}</span>
+              <span>{{ scope.row.FMATERIALNAME }}</span>
             </template>
           </el-table-column>
           <el-table-column label="生效时间" prop="date" width="200px" align="center">
             <template slot-scope="scope">
-              <span>{{scope.row.FCREATEDATE}}</span>
+              <span>{{ scope.row.FCREATEDATE }}</span>
             </template>
           </el-table-column>
           <template v-slot:btnSlot="clo">
