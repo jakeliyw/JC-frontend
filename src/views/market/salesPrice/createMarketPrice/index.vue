@@ -142,31 +142,8 @@
       width="60%"
     >
       <div class="materiel-form">
-        <span class="materiel-code">物料编码</span>
-        <el-input
-          v-model.trim="FNUMBER"
-          class="input-width"
-          size="mini"
-          placeholder="请输入物料编码"
-          @keyup.enter.native="handleMaterielSearch"
-        />
-        <span class="materiel-code">物料描述</span>
-        <el-input
-          v-model.trim="FDESCRIPTION"
-          class="input-width"
-          size="mini"
-          placeholder="请输入物料描述"
-          @keyup.enter.native="handleMaterielSearch"
-        />
-        <span class="materiel-code">物料规格</span>
-        <el-input
-          v-model.trim="FSPECIFICATION"
-          class="input-width"
-          size="mini"
-          placeholder="请输入规格"
-          @keyup.enter.native="handleMaterielSearch"
-        />
-        <el-button size="mini" type="primary" @click="handleMaterielSearch">搜索</el-button>
+        <search :options="selectData" :msg="fbillNo" @seek="collect" />
+        <el-button size="mini" type="primary" class="btn" @click="handleMaterielSearch">搜索</el-button>
       </div>
       <jc-table
         :table-data="materielDialogData"
@@ -205,6 +182,8 @@ import {
   querySalOrderLog
 } from '@/api/marketManage/marketOrder'
 import jcMarker from '@/components/marker'
+import search from '@/components/Search'
+import searData from '@/components/Search/mixin'
 export default {
   name: 'CreateMarketPrice',
   components: {
@@ -213,12 +192,15 @@ export default {
     jcTitle,
     jcMarker,
     client,
-    currency
+    currency,
+    search
   },
-  mixins: [jumpMateriel],
+  mixins: [jumpMateriel, searData],
   inject: ['reload'],
   data() {
     return {
+      ftype: 0,
+      fbillNo: 'fnumber', // 编码
       clientVisiblit: false, // 客户弹窗
       disabled: false, // 税率是否禁用
       isMaterielDialog: false, // 物料弹窗
@@ -343,9 +325,7 @@ export default {
       const DATA = {
         pageNum: this.materielPagination.pageNum,
         pageSize: this.materielPagination.pageSize,
-        fnumber: this.FNUMBER,
-        fdescription: this.FDESCRIPTION,
-        fspecification: this.FSPECIFICATION
+        ...this.searCollData
       }
       const { data: RES } = await queryMaterialList(DATA)
       this.materielDialogData = RES.array
@@ -447,7 +427,15 @@ export default {
 .el-input__icon {
   cursor: pointer;
 }
-
+.materiel-form{
+  position:relative;
+  width: 100%;
+  .btn{
+    transform: translateY(18%);
+    margin-left: 410px!important;
+    z-index: 999;
+  }
+}
 .materiel-form {
   display: flex;
   align-items: center;
