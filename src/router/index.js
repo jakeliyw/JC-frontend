@@ -531,15 +531,20 @@ export const asyncRouterMap = [
         ]
       },
       {
-        path: '/procurement',
-        name: 'Procurement',
+        path: '/maintenance',
+        name: 'Maintenance',
         component: () => import('@/views/purchasing/procurement/index'),
         meta: { title: '采购拆单', noCache: false },
         menu: 'procurement'
       },
       {
+<<<<<<< HEAD
         path: '/Maintenance',
         name: 'Maintenance',
+=======
+        path: '/procurement',
+        name: 'Procurement',
+>>>>>>> b248737e3057d622cf67e46e4869cea210446bd6
         component: () => import('@/views/purchasing/maintenance/index'),
         meta: { title: '采购价格维护', noCache: false },
         menu: 'maintenance'

@@ -168,30 +168,7 @@ export default {
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <span class="parentItemNo">物料编号</span>
-        <el-input
-          v-model="FNUMBER"
-          class="input-content"
-          placeholder="请输入物料编号"
-          size="mini"
-          @keyup.enter.native="handleQueryUnderReview"
-        />
-        <span class="parentItemNo">物料规格</span>
-        <el-input
-          v-model="FSPECIFICATION"
-          class="input-content"
-          placeholder="请输入物料规格"
-          size="mini"
-          @keyup.enter.native="handleQueryUnderReview"
-        />
-        <span class="parentItemNo">型号</span>
-        <el-input
-          v-model="FMODEL"
-          class="input-content"
-          placeholder="请输入型号"
-          size="mini"
-          @keyup.enter.native="handleQueryUnderReview"
-        />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleQueryUnderReview" />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUnderReview">搜索</el-button>
       </div>
     </div>
@@ -203,6 +180,7 @@ export default {
         <el-table-column
           label="物料编码"
           align="center"
+          min-width="180px"
         >
           <template slot-scope="scope">
             <span class="jumpMateriel" @click="jumpMateriel(scope.row.FNUMBER)">{{ scope.row.FNUMBER }}</span>
@@ -213,7 +191,7 @@ export default {
             <el-step title="研发部门" />
             <el-step title="工程部" />
             <el-step title="成本经理" />
-            <el-step title="信息化部门" />
+            <el-step title="信息部门" />
           </el-steps>
         </template>
         <template v-slot:btnSlot="clo">
@@ -242,30 +220,32 @@ import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
 import { queryReviewBomList } from '@/api/engineering/underReviewBom'
 import { queryFtypeInfo } from '@/api/engineering/deitalBom'
-
+import search from '@/components/Search'
+import searData from '@/components/Search/mixin'
 export default {
   name: 'UnderReviewBom',
   components: {
     jcTable,
     jcPagination,
-    jcTitle
+    jcTitle,
+    search
   },
+  mixins: [searData],
   data() {
     return {
-      FNUMBER: '', // 产品描述
-      FMODEL: '', // 型号
-      FSPECIFICATION: '', // 物料规格
+      ftype: 0,
+      fbillNo: 'fnumber', // 编码
       total: 0, // 总条目
       pageNum: 0, // 当前页
       size: 10, // 每页显示多少条数据
       // 表头
       tableHeader: [
-        { label: '物料描述', prop: 'FDESCRIPTION', minWidth: '400px', align: 'center' },
-        { label: '物料规格', prop: 'FSPECIFICATION', minWidth: '200px', align: 'center' },
         { label: '型号', prop: 'FMODEL', minWidth: '100px', align: 'center' },
-        { label: '仓库', prop: 'FSTOCK', align: 'center' },
-        { label: '生效时间', prop: 'FCREATEDATE', align: 'center' },
-        { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', minWidth: '200px' },
+        { label: '物料描述', prop: 'FDESCRIPTION', minWidth: '400px', align: 'center' },
+        { label: '物料规格', prop: 'FSPECIFICATION', minWidth: '150px', align: 'center' },
+        { label: '仓库', prop: 'FSTOCK', align: 'center', minWidth: '110px' },
+        { label: '创建时间', prop: 'FCREATEDATE', align: 'center', minWidth: '110px' },
+        { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', minWidth: '230px' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '120px', align: 'center' }
       ],
       // 表格数据
@@ -285,13 +265,11 @@ export default {
       const DATA = {
         pageNum: this.pageNum,
         pageSize: this.size,
-        FNUMBER: this.FNUMBER,
-        FMODEL: this.FMODEL,
-        FSPECIFICATION: this.FSPECIFICATION
+        ...this.searCollData
       }
-      const { data: res, total } = await queryReviewBomList(DATA)
-      this.tableData = res
-      this.total = total
+      const { data: res } = await queryReviewBomList(DATA)
+      this.tableData = res.array
+      this.total = res.total
     },
     // 搜索
     handleQueryUnderReview() {
@@ -312,7 +290,6 @@ export default {
     // 审批
     approval() {
       this.$router.push({ name: 'underReviewBom' })
-      console.log('审批成功')
     },
     // 审批不通过
     approvalRejection() {
@@ -324,6 +301,17 @@ export default {
 <style lang="scss" scoped>
 .content {
   @include listBom;
+  .header{
+    position:relative;
+    .header-name{
+      width: 100%;
+    }
+    .btn{
+      transform: translateY(18%);
+      margin-left: 410px!important;
+      z-index: 999;
+    }
+  }
 }
 </style>
 =======

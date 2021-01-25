@@ -167,32 +167,9 @@ export default {
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <span class="parentItemNo">物料编号</span>
-        <el-input
-          v-model="FNUMBER"
-          class="input-content"
-          placeholder="请输入物料编号"
-          size="mini"
-          @keyup.enter.native="handleQueryRefuse"
-        />
-        <span class="parentItemNo">物料规格</span>
-        <el-input
-          v-model="FSPECIFICATION"
-          class="input-content"
-          placeholder="请输入物料规格"
-          size="mini"
-          @keyup.enter.native="handleQueryRefuse"
-        />
-        <span class="parentItemNo">型号</span>
-        <el-input
-          v-model="FMODEL"
-          class="input-content"
-          placeholder="请输入型号"
-          size="mini"
-          @keyup.enter.native="handleQueryRefuse"
-        />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleQueryRefuse" />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryRefuse">搜索</el-button>
-        <el-button type="primary" size="mini" class="btn" @click="addBom">新增bom</el-button>
+        <el-button type="primary" size="mini" @click="addBom">新增bom</el-button>
       </div>
     </div>
     <div class="table-content">
@@ -204,6 +181,7 @@ export default {
           label="物料编码"
           align="center"
           prop="c"
+          min-width="180px"
         >
           <template slot-scope="scope">
             <span class="jumpMateriel" @click="jumpMateriel(scope.row.FNUMBER)">{{ scope.row.FNUMBER }}</span>
@@ -214,7 +192,7 @@ export default {
             <el-step title="研发部门" />
             <el-step title="工程部" />
             <el-step title="成本经理" />
-            <el-step title="信息化部门" />
+            <el-step title="信息部门" />
           </el-steps>
         </template>
         <template v-slot:btnSlot="clo">
@@ -242,30 +220,33 @@ import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
 import { queryFailBomList, updateAgainReview } from '@/api/engineering/refuseBom'
+import search from '@/components/Search'
+import searData from '@/components/Search/mixin'
 export default {
   name: 'RefuseBom',
   inject: ['reload'],
   components: {
     jcTable,
     jcPagination,
-    jcTitle
+    jcTitle,
+    search
   },
+  mixins: [searData],
   data() {
     return {
-      FNUMBER: '', // 产品描述
-      FMODEL: '', // 型号
-      FSPECIFICATION: '', // 物料规格
+      ftype: 0,
+      fbillNo: 'fnumber', // 编码
       total: 0, // 总条目
       pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
       // 表头
       tableHeader: [
-        { label: '物料描述', prop: 'FDESCRIPTION', minWidth: '400px', align: 'center' },
-        { label: '物料规格', prop: 'FSPECIFICATION', minWidth: '200px', align: 'center' },
         { label: '型号', prop: 'FMODEL', minWidth: '100px', align: 'center' },
-        { label: '仓库', prop: 'FSTOCK', align: 'center' },
-        { label: '生效时间', prop: 'FCREATEDATE', align: 'center' },
-        { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', minWidth: '200px' },
+        { label: '物料描述', prop: 'FDESCRIPTION', minWidth: '400px', align: 'center' },
+        { label: '物料规格', prop: 'FSPECIFICATION', minWidth: '150px', align: 'center' },
+        { label: '仓库', prop: 'FSTOCK', align: 'center', minWidth: '110px' },
+        { label: '创建时间', prop: 'FCREATEDATE', align: 'center', minWidth: '110px' },
+        { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', minWidth: '250px' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
       ],
       // 表格数据
@@ -285,13 +266,11 @@ export default {
       const DATA = {
         pageNum: this.pageNum,
         pageSize: this.size,
-        FNUMBER: this.FNUMBER,
-        FMODEL: this.FMODEL,
-        FSPECIFICATION: this.FSPECIFICATION
+        ...this.searCollData
       }
-      const { data: RES, total } = await queryFailBomList(DATA)
-      this.tableData = RES
-      this.total = total
+      const { data: RES } = await queryFailBomList(DATA)
+      this.tableData = RES.array
+      this.total = RES.total
     },
     // 搜索
     handleQueryRefuse() {
@@ -322,6 +301,17 @@ export default {
 <style lang="scss" scoped>
 .content {
   @include listBom;
+  .header{
+    position:relative;
+    .header-name{
+      width: 100%;
+    }
+    .btn{
+      transform: translateY(18%);
+      margin-left: 410px!important;
+      z-index: 999;
+    }
+  }
 }
 </style>
 =======
