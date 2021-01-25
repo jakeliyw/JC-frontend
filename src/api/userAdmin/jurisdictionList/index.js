@@ -24,6 +24,14 @@ export function updayeTJxQuery(data) {
     data
   })
 }
+// 删除审核权限
+export function deleteTJxQuery(params) {
+  return request({
+    url: '/tJxQuery/deleteTJxQuery',
+    method: 'DELETE',
+    params
+  })
+}
 // 查询用户列表
 export function querySecUser(params) {
   return request({

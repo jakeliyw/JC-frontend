@@ -56,3 +56,11 @@ export function InsertPO(data) {
     data
   })
 }
+// 采购价格维护
+export function queryPurPricePrice(data) {
+  return request({
+    url: '/tPurPricelist/queryPurPricePrice',
+    method: 'post',
+    data
+  })
+}

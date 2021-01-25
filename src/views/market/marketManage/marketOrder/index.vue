@@ -3,14 +3,7 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <span class="parentItemNo">销售订单号</span>
-        <el-input
-          v-model.trim="fbillNo"
-          class="input-content"
-          size="mini"
-          placeholder="请输入销售订单号"
-          @keyup.enter.native="handleQuerySonClass"
-        />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleQuerySonClass" />
         <el-button type="primary" class="btn" size="mini" @click="handleQuerySonClass">搜索</el-button>
       </div>
     </div>
@@ -23,7 +16,7 @@
       >
         <el-table-column v-if="false" prop="fid" label="销售订单ID" min-width="80" align="center" />
         <el-table-column prop="fcreateDate" label="销售订单时间" min-width="150" align="center" />
-        <el-table-column prop="fbillType" label="订单类型" min-width="120" align="center" />
+        <el-table-column prop="fbillType" label="单据类型" min-width="120" align="center" />
         <el-table-column prop="fbillNo" label="销售订单号" min-width="100" align="center">
           <template slot-scope="scope">
             <el-link type="primary" @click="particulars(scope.row.fid)">{{ scope.row.fbillNo }}</el-link>
@@ -55,7 +48,7 @@
         :total="total"
         :page.sync="currentPage"
         :limit.sync="size"
-        @pagination="getSonClass"
+        @pagination="handleGetUntreated"
       />
     </div>
   </div>
@@ -68,16 +61,21 @@ import jcTitle from '@/components/Title'
 import {
   queryTSalOrderList
 } from '@/api/marketManage/marketOrder'
+import search from '@/components/Search'
+import searData from '@/components/Search/mixin'
 
 export default {
   components: {
     jcTable,
     jcPagination,
-    jcTitle
+    jcTitle,
+    search
   },
+  mixins: [searData],
   data() {
     return {
-      fbillNo: '', // 销售订单号
+      ftype: 6,
+      fbillNo: 'fbillNo', // 销售订单号
       total: 0, // 总条目
       currentPage: 1, // 当前页
       size: 10, // 每页显示多少条数据
@@ -88,12 +86,12 @@ export default {
     }
   },
   mounted() {
-    this.getSonClass()
+    this.handleGetUntreated()
   },
   methods: {
     // 获取订单列表数据
-    async getSonClass() {
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, fbillNo: this.fbillNo }
+    async handleGetUntreated() {
+      const DATA = { pageNum: this.currentPage, pageSize: this.size, ...this.searCollData }
       const { data: RES, data: total } = await queryTSalOrderList(DATA)
       this.tableData = RES.array
       this.total = total.total
@@ -101,7 +99,7 @@ export default {
     // 搜索
     handleQuerySonClass() {
       this.pageNum = 1
-      this.getSonClass()
+      this.handleGetUntreated()
     },
     // 订单详情
     particulars(id) {
@@ -113,6 +111,17 @@ export default {
 <style lang="scss" scoped>
 .content {
   @include listBom;
+  .header{
+    position:relative;
+    .header-name{
+      width: 100%;
+    }
+    .btn{
+      transform: translateY(18%);
+      margin-left: 410px!important;
+      z-index: 999;
+    }
+  }
 }
 .inTheBtn{
   transform: translateY(-15px);

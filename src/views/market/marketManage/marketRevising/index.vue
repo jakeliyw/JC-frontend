@@ -105,7 +105,7 @@
           <el-form-item label="是否含税">
             <el-checkbox v-model="prodValue.fisIncludedTax" />
           </el-form-item>
-          <el-form-item v-if="button('salOrder:type')" label="订单类型">
+          <el-form-item v-if="button('salOrder:type')" label="单据类型">
             <el-button class="btnType" type="primary" size="mini" @click="prodValue.saler = !prodValue.saler">切换</el-button>
             <el-tag v-if="prodValue.saler" type="success">正常订单</el-tag>
             <el-tag v-if="!prodValue.saler" type="danger">特批订单</el-tag>

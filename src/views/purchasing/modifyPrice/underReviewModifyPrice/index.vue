@@ -3,14 +3,7 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <span class="parentItemNo">调价名称</span>
-        <el-input
-          v-model="fname"
-          class="input-content"
-          placeholder="请输入调价名称"
-          size="mini"
-          @keyup.enter.native="handleQueryUnderReview"
-        />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleQueryUnderReview" />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUnderReview">搜索</el-button>
       </div>
     </div>
@@ -48,17 +41,21 @@ import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
 import { queryReviewPurPatList } from '@/api/modifyPriceManagement/underReviewModifyPrice'
-
+import search from '@/components/Search/index'
+import searData from '@/components/Search/mixin'
 export default {
   name: 'UnderReviewModifyPrice',
   components: {
     jcTable,
     jcPagination,
-    jcTitle
+    jcTitle,
+    search
   },
+  mixins: [searData],
   data() {
     return {
-      fname: '', // 产品描述
+      ftype: 5,
+      fbillNo: 'fname',
       total: 0, // 总条目
       pageNum: 0, // 当前页
       size: 10, // 每页显示多少条数据
@@ -83,7 +80,7 @@ export default {
   methods: {
     // 获取列表数据
     async handleGetData() {
-      const DATA = { pageNum: this.pageNum, pageSize: this.size, fname: this.fname }
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, ...this.searCollData }
       const { data: RES } = await queryReviewPurPatList(DATA)
       this.tableData = RES.array
       this.total = RES.total
@@ -103,5 +100,16 @@ export default {
 <style lang="scss" scoped>
 .content {
   @include listBom;
+  .header{
+    position:relative;
+    .header-name{
+      width: 100%;
+    }
+    .btn{
+      transform: translateY(18%);
+      margin-left: 410px!important;
+      z-index: 999;
+    }
+  }
 }
 </style>

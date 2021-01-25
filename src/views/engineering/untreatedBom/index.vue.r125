@@ -3,16 +3,14 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleQueryBomList" />
-        <el-button type="primary" class="btn" size="mini" @click="handleQueryBomList">搜索</el-button>
-        <el-button type="primary" size="mini" @click="addBom">新增bom</el-button>
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleQueryUntreated" />
+        <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
       </div>
     </div>
     <div class="table-content">
       <jc-table
         :table-data="tableData"
         :table-header="tableHeader"
-        :cell-style="cellStyle"
       >
         <el-table-column
           label="物料编码"
@@ -24,14 +22,20 @@
           </template>
         </el-table-column>
         <template v-slot:btnState="clo">
-          <el-tag>{{ clo.scope.row.FDOCUMENTSTATUS }}</el-tag>
+          <el-steps :active="clo.scope.row.FSTATUS" align-center class="font-style" finish-status="success" process-status="finish">
+            <el-step title="研发部门" />
+            <el-step title="工程部" />
+            <el-step title="成本经理" />
+            <el-step title="信息部门" />
+          </el-steps>
         </template>
         <template v-slot:btnSlot="clo">
-          <el-button size="mini" type="warning" @click="queryReportForm(clo.scope.row.FNUMBER)">查看报表</el-button>
-          <el-button type="danger" size="mini" @click="Retrial(clo.scope.row.FID)">反审核</el-button>
+          <el-button type="success" size="mini" @click="approval(clo.scope.row.FID)">通过</el-button>
+          <el-button type="danger" size="mini" @click="approvalRejection(clo.scope.row.FID)">不通过</el-button>
           <el-button type="primary" size="mini" @click="getIntoBom(clo.scope.row.FNUMBER)">进入bom</el-button>
         </template>
       </jc-table>
+
     </div>
     <!--    分页器-->
     <div class="footer">
@@ -50,14 +54,12 @@
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
-import { queryBomList } from '@/api/engineering/bomList'
-import { toMxAmina } from '@/components/ToMxamineState'
+import { queryUntreatedBomList, updateReview, updateNotReview } from '@/api/engineering/untreatedBom'
 import { queryFtypeInfo } from '@/api/engineering/deitalBom'
-import { updateAgainReview } from '@/api/engineering/refuseBom'
 import search from '@/components/Search'
 import searData from '@/components/Search/mixin'
 export default {
-  name: 'ListBom',
+  name: 'UntreatedBom',
   inject: ['reload'],
   components: {
     jcTable,
@@ -73,15 +75,14 @@ export default {
       total: 0, // 总条目
       pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
-      cellStyle: { padding: '10 10' }, // 行高
-      // 表头
       tableHeader: [
         { label: '型号', prop: 'FMODEL', minWidth: '100px', align: 'center' },
         { label: '物料描述', prop: 'FDESCRIPTION', minWidth: '400px', align: 'center' },
-        { label: '物料规格', prop: 'FSPECIFICATION', minWidth: '120px', align: 'center' },
-        { label: '仓库', prop: 'FSTOCK', align: 'center' },
+        { label: '物料规格', prop: 'FSPECIFICATION', minWidth: '150px', align: 'center' },
+        { label: '仓库', prop: 'FSTOCK', align: 'center', minWidth: '110px' },
         { label: '创建时间', prop: 'FCREATEDATE', align: 'center', minWidth: '110px' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '300px', align: 'center' }
+        { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', minWidth: '230px' },
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '250px', align: 'center' }
       ],
       // 表格数据
       tableData: []
@@ -102,34 +103,14 @@ export default {
         pageSize: this.size,
         ...this.searCollData
       }
-      const { data: RES } = await queryBomList(DATA)
-      this.tableData = RES.array.map(item => {
-        return toMxAmina(item)
-      })
+      const { data: RES } = await queryUntreatedBomList(DATA)
+      this.tableData = RES.array
       this.total = RES.total
     },
     // 搜索
-    handleQueryBomList() {
+    handleQueryUntreated() {
       this.pageNum = 1
       this.handleGetBomList()
-    },
-    // 跳转新建bom
-    addBom() {
-      this.$router.push({ name: 'CreateBom' })
-    },
-    // 查看报表
-    queryReportForm(FNUMBER) {
-      this.$router.push({ path: `/reportForm/${FNUMBER}` })
-    },
-    // 反审核
-    async Retrial(FID) {
-      const { message, code } = await updateAgainReview({ fid: FID })
-      if (code !== 0) {
-        return
-      }
-      this.$message.success(message)
-      this.$router.push({ name: 'UntreatedBom' })
-      this.reload()
     },
     // 进入bom
     async getIntoBom(FNUMBER) {
@@ -141,6 +122,26 @@ export default {
         this.$router.push({ path: `/detailMateriel/${fMaterialId}` })
         this.$message.success('进入物料清单')
       }
+    },
+    // 审批
+    async approval(FID) {
+      const { message, code } = await updateReview({ fid: FID })
+      if (code !== 0) {
+        return
+      }
+      this.$message.success(message)
+      this.$router.push({ name: 'UnderReviewBom' })
+      this.reload()
+    },
+    // 审批不通过
+    async approvalRejection(FID) {
+      const { message, code } = await updateNotReview({ fid: FID })
+      if (code !== 0) {
+        return
+      }
+      this.$message.success(message)
+      this.$router.push({ name: 'RefuseBom' })
+      this.reload()
     }
   }
 }

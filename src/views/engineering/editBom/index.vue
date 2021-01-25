@@ -201,6 +201,7 @@ import {
 import { queryBomchildList, upDateBom } from '@/api/engineering/editBom'
 import { queryFtypeInfo, queryBomLog } from '@/api/engineering/deitalBom'
 import { Disable, toMxAmina } from '@/components/ToMxamineState'
+import { GMTToStr } from '@/utils'
 
 export default {
   name: 'EditBom',
@@ -435,7 +436,7 @@ export default {
     async preservation() {
       const fTreeEntity = this.sonTableData.map(item => {
         const { FMATERIALID, FMATERIALTYPE, FDOSAGE, FISSUETYPE, FPRICE } = item
-        item.FCREATEDATE = this.$moment(item.FCREATEDATE).format('YYYY-MM-DD HH:mm:ss')
+        item.FCREATEDATE = GMTToStr(item.FCREATEDATE)
         return { FMATERIALID, FMATERIALTYPE, FDOSAGE, FISSUETYPE, FPRICE }
       })
       const DATA = {

@@ -3,14 +3,7 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <span class="parentItemNo">菜单名称</span>
-        <el-input
-          v-model="SUBJECTION"
-          class="input-content"
-          placeholder="请输入菜单"
-          size="mini"
-          @keyup.enter.native="getMenuList"
-        />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="getMenuList" />
         <el-button size="mini" type="primary" class="btn" @click="getMenuList">搜索</el-button>
       </div>
     </div>
@@ -39,17 +32,21 @@ import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
 import { queryTJxMenuList } from '@/api/userAdmin/menuList'
 import { userDisable } from '@/components/ToMxamineState'
-
+import search from '@/components/Search/index'
+import searData from '@/components/Search/mixin'
 export default {
   name: 'Index',
   components: {
     jcTable,
     jcPagination,
-    jcTitle
+    jcTitle,
+    search
   },
+  mixins: [searData],
   data() {
     return {
-      SUBJECTION: '',
+      ftype: 8,
+      fbillNo: 'fname',
       total: 0, // 总条目
       pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
@@ -73,7 +70,7 @@ export default {
   },
   methods: {
     async getMenuList() {
-      const DATA = { pageNum: this.pageNum, pageSize: this.size, SUBJECTION: this.SUBJECTION }
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, ...this.searCollData }
       const { data: res, total } = await queryTJxMenuList(DATA)
       this.tableData = res.map(item => {
         return userDisable(item)
@@ -87,5 +84,16 @@ export default {
 <style scoped lang="scss">
 .content {
   @include listBom;
+  .header{
+    position:relative;
+    .header-name{
+      width: 100%;
+    }
+    .btn{
+      transform: translateY(18%);
+      margin-left: 410px!important;
+      z-index: 999;
+    }
+  }
 }
 </style>

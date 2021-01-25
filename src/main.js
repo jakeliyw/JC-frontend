@@ -10,7 +10,6 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
-import moment from 'moment'
 import '@/icons' // icon
 import '@/permission' // permission control
 import { hasPermission, buttonList } from '@/utils/hasPermission'
@@ -37,7 +36,6 @@ Vue.use(ElementUI)
 Vue.prototype.button = buttonList
 Vue.prototype.hasPerm = hasPermission
 Vue.prototype.backstageApi = process.env.VUE_APP_BASE_API
-Vue.prototype.$moment = moment
 Vue.config.productionTip = false
 
 new Vue({

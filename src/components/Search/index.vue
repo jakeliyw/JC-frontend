@@ -2,15 +2,15 @@
   <div class="search" :class="{active: !caret}">
     <div v-for="(item, index) in searData" :key="index" class="hang">
       <span v-if="index<conceal">
-        <el-select v-model="item.english" placeholder="请选择" size="mini" filterable @change="gatherData()">
+        <el-select v-model="item.fenglish" placeholder="请选择" size="mini" filterable @change="gatherData()">
           <el-option
             v-for="iten in options"
-            :key="iten.english"
-            :label="iten.display"
-            :value="iten.english"
+            :key="iten.fenglish"
+            :label="iten.fdisplay"
+            :value="iten.fenglish"
           />
         </el-select>
-        <el-input v-model.trim="searData[index].val" size="mini" @blur="gatherData()" />
+        <el-input v-model.trim="item.val" size="mini" @keyup.enter.native="handleSearch" @blur="gatherData()" />
         <i v-if="index>0" class="el-icon-remove-outline" @click="delSear(index)" />
       </span>
     </div>
@@ -34,14 +34,27 @@ export default {
       default: function() {
         return []
       }
+    },
+    msg: {
+      type: String,
+      default: ''
+    },
+    msg2: {
+      type: String,
+      default: ''
     }
   },
   data() {
     return {
       conceal: 1, // 最多显示几条数据
       caret: true,
-      searData: [{}], // 搜索下拉框数据
+      searData: [{ fenglish: this.msg, val: '' }], // 搜索下拉框数据
       hunt: {} // 搜索下拉框数据(向父传值)
+    }
+  },
+  watch: {
+    msg2() {
+      this.noShow()
     }
   },
   methods: {
@@ -71,11 +84,14 @@ export default {
     gatherData() {
       this.hunt = {}
       this.searData.forEach(item => {
-        if (item.english && item.val) {
-          this.$set(this.hunt, item.english, item.val)
-          this.$emit('seek', this.hunt)
-        }
+        this.$set(this.hunt, item.fenglish, item.val)
+        this.$emit('seek', this.hunt)
       })
+    },
+    handleSearch() {
+      this.gatherData() // 获取搜索数据
+      this.noShow() // 收回
+      this.$emit('hand', '')
     }
   }
 }

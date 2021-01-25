@@ -23,6 +23,11 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
+  // 将预加载关闭，使得打包更快
+  chainWebpack: config => {
+    config.plugins.delete('prefetch')
+    config.plugins.delete('preload')
+  },
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'scss',
@@ -137,4 +142,3 @@ module.exports = {
       )
   }
 }
-

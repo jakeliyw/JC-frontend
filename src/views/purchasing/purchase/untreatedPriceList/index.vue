@@ -3,14 +3,7 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <span class="parentItemNo">供应商名称</span>
-        <el-input
-          v-model="fsupplier"
-          class="input-content"
-          placeholder="请输入价目表名称"
-          size="mini"
-          @keyup.enter.native="handleQueryUntreated"
-        />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleQueryUntreated" />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
       </div>
     </div>
@@ -50,18 +43,22 @@ import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
 import { queryUntreatePurPriceList, reviewPurPrice, updateNotReview } from '@/api/purchaseManagement/untreatedPriceList'
-
+import search from '@/components/Search/index'
+import searData from '@/components/Search/mixin'
 export default {
   name: 'UntreatedBom',
   inject: ['reload'],
   components: {
     jcTable,
     jcPagination,
-    jcTitle
+    jcTitle,
+    search
   },
+  mixins: [searData],
   data() {
     return {
-      fsupplier: '', // 产品描述
+      ftype: 4,
+      fbillNo: 'fname',
       total: 0, // 总条目
       pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
@@ -85,7 +82,7 @@ export default {
   methods: {
     // 获取列表数据
     async handleGetUntreated() {
-      const DATA = { pageNum: this.pageNum, pageSize: this.size, fsupplier: this.fsupplier }
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, ...this.searCollData }
       const { data: RES } = await queryUntreatePurPriceList(DATA)
       this.tableData = RES.array
       this.total = RES.total
@@ -125,5 +122,16 @@ export default {
 <style lang="scss" scoped>
 .content {
   @include listBom;
+  .header{
+    position:relative;
+    .header-name{
+      width: 100%;
+    }
+    .btn{
+      transform: translateY(18%);
+      margin-left: 410px!important;
+      z-index: 999;
+    }
+  }
 }
 </style>

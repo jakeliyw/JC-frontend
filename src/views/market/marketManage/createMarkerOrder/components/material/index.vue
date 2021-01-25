@@ -9,31 +9,8 @@
       width="60%"
     >
       <div class="materiel-form">
-        <span class="materiel-code">物料编码</span>
-        <el-input
-          v-model.trim="FNUMBER"
-          class="input-width"
-          size="mini"
-          placeholder="请输入物料编码"
-          @keyup.enter.native="handleMaterielSearch"
-        />
-        <span class="materiel-code">物料描述</span>
-        <el-input
-          v-model.trim="FDESCRIPTION"
-          class="input-width"
-          size="mini"
-          placeholder="请输入物料描述"
-          @keyup.enter.native="handleMaterielSearch"
-        />
-        <span class="materiel-code">物料规格</span>
-        <el-input
-          v-model.trim="FSPECIFICATION"
-          class="input-width"
-          size="mini"
-          placeholder="请输入规格"
-          @keyup.enter.native="handleMaterielSearch"
-        />
-        <el-button size="mini" type="primary" @click="handleMaterielSearch">搜索</el-button>
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleMaterielSearch" />
+        <el-button size="mini" type="primary" class="btn" @click="handleMaterielSearch">搜索</el-button>
       </div>
       <jc-table
         :table-data="materielDialogData"
@@ -58,11 +35,15 @@ import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import { querySalMaterialList } from '@/api/marketManage/marketOrder'
 
+import searData from '@/components/Search/mixin'
+import search from '@/components/Search'
 export default {
   components: {
     jcTable,
-    jcPagination
+    jcPagination,
+    search
   },
+  mixins: [searData],
   props: {
     msg: { // 下标
       type: Number,
@@ -74,6 +55,8 @@ export default {
   },
   data() {
     return {
+      ftype: 0,
+      fbillNo: 'fnumber', // 编码
       isMaterialDialog: true,
       // 点击行的序号
       tableIndex: 0,
@@ -84,15 +67,12 @@ export default {
         pageNum: 1, // 当前页
         pageSize: 10 // 每页显示多少条数据
       },
-      FNUMBER: '', // 弹窗编码
-      FDESCRIPTION: '', // 弹窗描述
-      FSPECIFICATION: '', // 弹窗规格型号
       materielDialogData: [],
       materielDialogHeader: [
         { label: '物料编码', prop: 'fnumber', align: 'center', minWidth: '140px' },
         { label: '物料规格', prop: 'fspecificaTion', align: 'center', minWidth: '120px' },
         { label: '型号', prop: 'fmodel', align: 'center' },
-        { label: '描述', prop: 'fdescripTion', align: 'left', minWidth: '180px' },
+        { label: '描述', prop: 'fdescripTion', align: 'center', minWidth: '180px' },
         { label: '创建时间', prop: 'fcreateDate', align: 'center' }
       ],
       cellStyle: { padding: '10 10' },
@@ -119,9 +99,7 @@ export default {
       const DATA = {
         pageNum: this.materielPagination.pageNum,
         pageSize: this.materielPagination.pageSize,
-        fnumber: this.FNUMBER,
-        fdescription: this.FDESCRIPTION,
-        fspecification: this.FSPECIFICATION,
+        ...this.searCollData,
         fid: this.msg1
       }
       // 发起请求
@@ -146,6 +124,15 @@ export default {
 <style scoped lang="scss">
 .content {
   @include listBom;
+  .materiel-form{
+    position:relative;
+      width: 100%;
+    .btn{
+      transform: translateY(18%);
+      margin-left: 410px!important;
+      z-index: 999;
+    }
+  }
 }
 .materiel-form {
   display: flex;

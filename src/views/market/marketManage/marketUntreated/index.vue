@@ -3,15 +3,7 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <span class="parentItemNo">销售订单号</span>
-        <el-input
-          v-model.trim="fbillNo"
-          class="input-content"
-          placeholder="请输入销售订单号"
-          size="mini"
-          @keyup.enter.native="handleQueryUntreated"
-        />
-        <!--        <search :options="selectData" @seek="collect" />-->
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleQueryUntreated" />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
       </div>
     </div>
@@ -21,7 +13,7 @@
         :table-header="tableHeader"
       >
         <el-table-column prop="fcreateDate" label="订单时间" align="center" min-width="155px" />
-        <el-table-column prop="fbillType" label="订单类型" align="center" min-width="110px" />
+        <el-table-column prop="fbillType" label="单据类型" align="center" min-width="110px" />
         <el-table-column prop="fbillNo" label="订单号" align="center" min-width="110px" :show-overflow-tooltip="true">
           <template slot-scope="scope">
             <el-link type="primary" @click="detailPurchase(scope.row.fid)">{{ scope.row.fbillNo }}</el-link>
@@ -78,42 +70,37 @@ import {
   reviewSalorder,
   notReviewSalorder
 } from '@/api/marketManage/marketOrder'
-// import search from '@/components/Search/index'
-import selectData from '@/components/Search/mixin'
+import search from '@/components/Search/index'
+import searData from '@/components/Search/mixin'
 export default {
   name: 'MarketUntreated',
   inject: ['reload'],
   components: {
     jcTable,
     jcTitle,
-    jcPagination
-    // search
+    jcPagination,
+    search
   },
-  mixins: [selectData],
+  mixins: [searData],
   data() {
     return {
-      selectData: [], // 搜索下拉框数据
-      fbillNo: '', // 销售订单号
+      ftype: 6,
+      fbillNo: 'fbillNo', // 销售订单号
       total: 0, // 总条目
       currentPage: 1, // 当前页
       size: 10, // 每页显示多少条数据
       tableHeader: [],
       // 表格数据
-      tableData: [],
-      searCollData: {}
+      tableData: []
     }
   },
   mounted() {
     this.handleGetUntreated()
   },
   methods: {
-    collect(ev) {
-      this.searCollData = ev
-      console.log(ev)
-    },
     // 获取列表数据
     async handleGetUntreated() {
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, fbillNo: this.fbillNo }
+      const DATA = { pageNum: this.currentPage, pageSize: this.size, ...this.searCollData }
       const { data: RES } = await queryUntreateSalorderList(DATA)
       this.tableData = RES.array
       this.total = RES.total
@@ -156,11 +143,11 @@ export default {
     .header-name{
       width: 100%;
     }
-  //.btn{
-  //  transform: translateY(18%);
-  //  margin-left: 410px!important;
-  //  z-index: 999;
-  //}
+    .btn{
+      transform: translateY(18%);
+      margin-left: 410px!important;
+      z-index: 999;
+    }
   }
 }
 </style>

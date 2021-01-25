@@ -220,6 +220,7 @@ import jcForm from '@/components/Form'
 import jumpMateriel from '@/components/JumpMateriel'
 import jcTitle from '@/components/Title'
 import getForm from './components/getForm'
+import { GMTToStr } from '@/utils'
 import {
   queryBomFaterList,
   queryMaterialfather,
@@ -516,7 +517,7 @@ export default {
     async preservation() {
       const fTreeEntity = this.sonTableData.map(item => {
         const { FCREATEDATE, FDOSAGETYPE, FISSUETYPE, FMATERIALID, FMATERIALTYPE, FSEQ, FDOSAGE, FPRICE } = item
-        item.FCREATEDATE = this.$moment(item.FCREATEDATE).format('YYYY-MM-DD HH:mm:ss')
+        item.FCREATEDATE = GMTToStr(item.FCREATEDATE)
         return { FCREATEDATE, FDOSAGETYPE, FISSUETYPE, FMATERIALID, FMATERIALTYPE, FSEQ, FDOSAGE, FPRICE }
       })
       const DATA = {

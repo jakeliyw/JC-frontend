@@ -154,7 +154,7 @@
 </template>
 <script>
 import { insertLarge, queryCodingRules, updateCodingRules } from '@/api/encodingRules/categories'
-import tagMixin from '@/views/basic/encodingRules/categories/components/newClass/mixin'
+import tagMixin from '@/views/encodingRules/categories/components/newClass/mixin'
 
 export default {
   mixins: [tagMixin],

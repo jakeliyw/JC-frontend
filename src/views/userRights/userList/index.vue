@@ -3,14 +3,7 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <span class="parentItemNo">用户名称</span>
-        <el-input
-          v-model.trim="fname"
-          class="input-content"
-          placeholder="请输入用户"
-          size="mini"
-          @keyup.enter.native="getUserList"
-        />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="getUserList" />
         <el-button size="mini" type="primary" class="btn" @click="getUserList">搜索</el-button>
       </div>
     </div>
@@ -68,18 +61,22 @@ import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
 import { queryTEngBomList, updateUserDisable, queryRoleList, distributionRole } from '@/api/userAdmin/userList'
 import { userDisable } from '@/components/ToMxamineState'
-
+import search from '@/components/Search/index'
+import searData from '@/components/Search/mixin'
 export default {
   name: 'Index',
   components: {
     jcTable,
     jcPagination,
-    jcTitle
+    jcTitle,
+    search
   },
+  mixins: [searData],
   data() {
     return {
+      ftype: 8,
+      fbillNo: 'fname',
       dialogFormVisible: false, // 分配角色弹窗
-      fname: '',
       total: 0, // 总条目
       pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
@@ -116,7 +113,7 @@ export default {
     },
     // 用户列表
     async getUserList() {
-      const DATA = { pageNum: this.pageNum, pageSize: this.size, fname: this.fname }
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, ...this.searCollData }
       const { data: res } = await queryTEngBomList(DATA)
       this.tableData = res.array.map(item => {
         return userDisable(item)
@@ -158,5 +155,16 @@ export default {
 <style scoped lang="scss">
 .content {
   @include listBom;
+  .header{
+    position:relative;
+    .header-name{
+      width: 100%;
+    }
+    .btn{
+      transform: translateY(18%);
+      margin-left: 410px!important;
+      z-index: 999;
+    }
+  }
 }
 </style>

@@ -196,8 +196,8 @@
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
-import jcClass from '@/views/basic/encodingRules/categories/components/newClass/index'
-import tagMixin from '@/views/basic/encodingRules/categories/components/newClass/mixin'
+import jcClass from '@/views/encodingRules/categories/components/newClass/index'
+import tagMixin from '@/views/encodingRules/categories/components/newClass/mixin'
 import {
   queryLargeTypeList,
   queryTwoMaterialNumbert,
