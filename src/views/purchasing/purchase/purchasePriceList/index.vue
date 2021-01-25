@@ -3,7 +3,7 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <search :options="selectData" :msg="fbillNo" @seek="collect" />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleQueryUntreated" />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
         <el-button type="primary" size="mini" @click="addPurchase">新增价目</el-button>
       </div>
@@ -14,7 +14,7 @@
         :table-header="tableHeader"
         :cell-style="cellStyle"
       >
-        <el-table-column label="价目名称" prop="price" align="center" show-overflow-tooltip />
+        <el-table-column label="价目名称" prop="fname" align="center" show-overflow-tooltip />
         <el-table-column label="供应商名称" prop="fsupplier" align="center" show-overflow-tooltip min-width="150px" />
         <el-table-column
           label="物料编码"
@@ -76,10 +76,10 @@ export default {
         { label: '物料描述', prop: 'fdescripTion', minWidth: '400px', align: 'center' },
         { label: '单价', prop: 'fprice', align: 'center' },
         { label: '计价单位', prop: 'funit', align: 'center' },
-        { label: '含税单价', prop: 'ftaxprice', align: 'center' },
+        { label: '含税单价', prop: 'ftaxPrice', align: 'center' },
         { label: '币别', prop: 'fcurrency', align: 'center' },
-        { label: '税率', prop: 'ftaxrate', align: 'center' },
-        { label: '含税', prop: 'fisincludedtax', align: 'center' },
+        { label: '税率', prop: 'ftaxRate', align: 'center' },
+        { label: '含税', prop: 'fisIncludedTax', align: 'center' },
         { label: '失效日期', prop: 'feffectiveDate', align: 'center' },
         { label: '生效日期', prop: 'fexpiryDate', align: 'center' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }

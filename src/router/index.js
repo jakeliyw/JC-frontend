@@ -113,31 +113,6 @@ export const asyncRouterMap = [
         component: () => import('@/views/basic/materielList'),
         meta: { title: '物料列表', noCache: false },
         menu: 'materielList'
-      },
-      {
-        path: '/encodingRules',
-        component: () => import('@/views/basic/encodingRules'),
-        name: 'EncodingRules',
-        redirect: '/categories',
-        meta: {
-          title: '编码规则'
-        },
-        children: [
-          {
-            path: '/categories',
-            name: 'Categories',
-            component: () => import('@/views/basic/encodingRules/categories'),
-            meta: { title: '编码配置' },
-            menu: 'categories'
-          },
-          {
-            path: '/codeComparative',
-            name: 'CodeComparative',
-            component: () => import('@/views/basic/encodingRules/codeComparative'),
-            meta: { title: '编码规则' },
-            menu: 'codeComparative'
-          }
-        ]
       }
     ]
   },
@@ -549,11 +524,18 @@ export const asyncRouterMap = [
         ]
       },
       {
-        path: '/procurement',
-        name: 'Procurement',
+        path: '/maintenance',
+        name: 'Maintenance',
         component: () => import('@/views/purchasing/procurement/index'),
         meta: { title: '采购拆单', noCache: false },
         menu: 'procurement'
+      },
+      {
+        path: '/procurement',
+        name: 'Procurement',
+        component: () => import('@/views/purchasing/maintenance/index'),
+        meta: { title: '采购价格维护', noCache: false },
+        menu: 'maintenance'
       }
     ]
   },
@@ -593,6 +575,30 @@ export const asyncRouterMap = [
         component: () => import('@/views/userRights/jurisdictionList/index'),
         meta: { title: '审核权限列表' },
         menu: 'juisdictionList'
+      }
+    ]
+  },
+  {
+    path: '/encodingRules',
+    component: Layout,
+    name: 'EncodingRules',
+    meta: {
+      title: '编码规则', icon: 'nested'
+    },
+    children: [
+      {
+        path: '/categories',
+        name: 'Categories',
+        component: () => import('@/views/encodingRules/categories'),
+        meta: { title: '编码配置' },
+        menu: 'categories'
+      },
+      {
+        path: '/codeComparative',
+        name: 'CodeComparative',
+        component: () => import('@/views/encodingRules/codeComparative'),
+        meta: { title: '编码规则' },
+        menu: 'codeComparative'
       }
     ]
   },

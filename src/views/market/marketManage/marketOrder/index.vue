@@ -3,7 +3,7 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <search :options="selectData" :msg="fbillNo" @seek="collect" />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleQuerySonClass" />
         <el-button type="primary" class="btn" size="mini" @click="handleQuerySonClass">搜索</el-button>
       </div>
     </div>
@@ -48,7 +48,7 @@
         :total="total"
         :page.sync="currentPage"
         :limit.sync="size"
-        @pagination="getSonClass"
+        @pagination="handleGetUntreated"
       />
     </div>
   </div>
@@ -86,11 +86,11 @@ export default {
     }
   },
   mounted() {
-    this.getSonClass()
+    this.handleGetUntreated()
   },
   methods: {
     // 获取订单列表数据
-    async getSonClass() {
+    async handleGetUntreated() {
       const DATA = { pageNum: this.currentPage, pageSize: this.size, ...this.searCollData }
       const { data: RES, data: total } = await queryTSalOrderList(DATA)
       this.tableData = RES.array
@@ -99,7 +99,7 @@ export default {
     // 搜索
     handleQuerySonClass() {
       this.pageNum = 1
-      this.getSonClass()
+      this.handleGetUntreated()
     },
     // 订单详情
     particulars(id) {

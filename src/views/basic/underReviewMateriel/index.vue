@@ -3,7 +3,7 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <search :options="selectData" :msg="fbillNo" @seek="collect" />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleQueryUnderReview" />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUnderReview">搜索</el-button>
       </div>
     </div>
@@ -12,24 +12,34 @@
         :table-data="tableData"
         :table-header="tableHeader"
       >
-        <el-table-column label="型号" prop="FMODEL" align="center" />
         <el-table-column
           label="物料编码"
           align="center"
+          min-width="180px"
         >
           <template slot-scope="scope">
-            <span class="jumpMateriel" @click="jumpMateriel(scope.row.FNUMBER)">{{ scope.row.FNUMBER }}</span>
+            <span class="jumpMateriel" @click="jumpMateriel(scope.row.fnumber)">{{ scope.row.fnumber }}</span>
           </template>
         </el-table-column>
+        <el-table-column label="型号" prop="fmodel" align="center" />
+        <!--审核状态-->
+        <template v-slot:btnStates="clo">
+          <el-tag>{{ clo.scope.row.fdocumentStatus }}</el-tag>
+        </template>
+        <!--禁用状态-->
+        <template v-slot:tagSlot="clo">
+          <el-tag v-if="clo.scope.row.fforbidStatus==='否'">{{ clo.scope.row.fforbidStatus }}</el-tag>
+          <el-tag v-else type="danger">{{ clo.scope.row.fforbidStatus }}</el-tag>
+        </template>
         <template v-slot:btnState="clo">
-          <el-steps :active="clo.scope.row.FSTATUS" align-center class="font-style" finish-status="success" process-status="finish">
+          <el-steps :active="clo.scope.row.fstatus" align-center class="font-style" finish-status="success" process-status="finish">
             <el-step title="研发部审核" />
           </el-steps>
         </template>
         <template v-slot:btnSlot="clo">
           <el-button v-show="false" type="success" size="mini" @click="approval">通过</el-button>
           <el-button v-show="false" type="danger" size="mini" @click="approvalRejection">不通过</el-button>
-          <el-button type="primary" size="mini" @click="detailMateriel(clo.scope.row.FNUMBER)">查询物料</el-button>
+          <el-button type="primary" size="mini" @click="detailMateriel(clo.scope.row.fnumber)">查询物料</el-button>
         </template>
       </jc-table>
 
@@ -54,6 +64,7 @@ import jcTitle from '@/components/Title'
 import { queryReviewMaterialList } from '@/api/basicManagement/underReviewMateriel'
 import search from '@/components/Search'
 import searData from '@/components/Search/mixin'
+import { Disable, toMxAmina } from '@/components/ToMxamineState'
 export default {
   name: 'UnderReviewMateriel',
   components: {
@@ -72,11 +83,13 @@ export default {
       size: 10, // 每页显示多少条数据
       // 表头
       tableHeader: [
-        { label: '物料描述', prop: 'FDESCRIPTION', minWidth: '400px', align: 'center' },
-        { label: '物料规格', prop: 'FSPECIFICATION', align: 'center' },
-        { label: '单位', prop: 'FUNIT', align: 'center' },
-        { label: '生效时间', prop: 'FCREATEDATE', align: 'center' },
-        { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', minWidth: '300px' },
+        { label: '物料描述', prop: 'fdescripTion', minWidth: '300px', align: 'center' },
+        { label: '物料规格', prop: 'fspecificaTion', align: 'center', minWidth: '120px' },
+        { label: '单位', prop: 'funit', align: 'center' },
+        { label: '创建时间', prop: 'fcreateDate', align: 'center', minWidth: '110px' },
+        { label: '状态流程', type: 'state', align: 'center', minWidth: '100px' },
+        { label: '禁用状态', type: 'tag', align: 'center' },
+        { label: '审核状态', type: 'states', align: 'center' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '120px', align: 'center' }
       ],
       // 表格数据
@@ -98,9 +111,11 @@ export default {
         pageSize: this.size,
         ...this.searCollData
       }
-      const { data: res, total } = await queryReviewMaterialList(DATA)
-      this.tableData = res
-      this.total = total
+      const { data: res } = await queryReviewMaterialList(DATA)
+      this.tableData = res.array.map(item => {
+        return (toMxAmina(item), Disable(item))
+      })
+      this.total = res.total
     },
     // 分页查询
     handleQueryUnderReview() {
@@ -114,7 +129,6 @@ export default {
     // 审批
     approval() {
       this.$router.push({ name: 'underReviewBom' })
-      console.log('审批成功')
     },
     // 审批不通过
     approvalRejection() {

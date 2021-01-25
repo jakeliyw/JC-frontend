@@ -3,7 +3,7 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <search :options="selectData" :msg="fbillNo" @seek="collect" />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleQueryRefuse" />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryRefuse">搜索</el-button>
         <el-button type="primary" size="mini" @click="addBom">新增bom</el-button>
       </div>
@@ -17,6 +17,7 @@
           label="物料编码"
           align="center"
           prop="c"
+          min-width="180px"
         >
           <template slot-scope="scope">
             <span class="jumpMateriel" @click="jumpMateriel(scope.row.FNUMBER)">{{ scope.row.FNUMBER }}</span>
@@ -27,7 +28,7 @@
             <el-step title="研发部门" />
             <el-step title="工程部" />
             <el-step title="成本经理" />
-            <el-step title="信息化部门" />
+            <el-step title="信息部门" />
           </el-steps>
         </template>
         <template v-slot:btnSlot="clo">
@@ -76,12 +77,12 @@ export default {
       size: 10, // 每页显示多少条数据
       // 表头
       tableHeader: [
-        { label: '物料描述', prop: 'FDESCRIPTION', minWidth: '400px', align: 'center' },
-        { label: '物料规格', prop: 'FSPECIFICATION', minWidth: '200px', align: 'center' },
         { label: '型号', prop: 'FMODEL', minWidth: '100px', align: 'center' },
-        { label: '仓库', prop: 'FSTOCK', align: 'center' },
-        { label: '生效时间', prop: 'FCREATEDATE', align: 'center' },
-        { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', minWidth: '200px' },
+        { label: '物料描述', prop: 'FDESCRIPTION', minWidth: '400px', align: 'center' },
+        { label: '物料规格', prop: 'FSPECIFICATION', minWidth: '150px', align: 'center' },
+        { label: '仓库', prop: 'FSTOCK', align: 'center', minWidth: '110px' },
+        { label: '创建时间', prop: 'FCREATEDATE', align: 'center', minWidth: '110px' },
+        { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', minWidth: '250px' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
       ],
       // 表格数据
@@ -103,9 +104,9 @@ export default {
         pageSize: this.size,
         ...this.searCollData
       }
-      const { data: RES, total } = await queryFailBomList(DATA)
-      this.tableData = RES
-      this.total = total
+      const { data: RES } = await queryFailBomList(DATA)
+      this.tableData = RES.array
+      this.total = RES.total
     },
     // 搜索
     handleQueryRefuse() {

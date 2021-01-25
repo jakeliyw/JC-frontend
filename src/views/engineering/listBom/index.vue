@@ -3,7 +3,7 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <search :options="selectData" :msg="fbillNo" @seek="collect" />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleQueryBomList" />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryBomList">搜索</el-button>
         <el-button type="primary" size="mini" @click="addBom">新增bom</el-button>
       </div>
@@ -17,6 +17,7 @@
         <el-table-column
           label="物料编码"
           align="center"
+          min-width="180px"
         >
           <template slot-scope="scope">
             <span class="jumpMateriel" @click="jumpMateriel(scope.row.FNUMBER)">{{ scope.row.FNUMBER }}</span>
@@ -75,11 +76,11 @@ export default {
       cellStyle: { padding: '10 10' }, // 行高
       // 表头
       tableHeader: [
+        { label: '型号', prop: 'FMODEL', minWidth: '100px', align: 'center' },
         { label: '物料描述', prop: 'FDESCRIPTION', minWidth: '400px', align: 'center' },
-        { label: '物料规格', prop: 'FSPECIFICATION', minWidth: '100px', align: 'center' },
-        { label: '型号', prop: 'FMODEL', minWidth: '200px', align: 'center' },
+        { label: '物料规格', prop: 'FSPECIFICATION', minWidth: '120px', align: 'center' },
         { label: '仓库', prop: 'FSTOCK', align: 'center' },
-        { label: '生效时间', prop: 'FAPPROVEDATE', align: 'center' },
+        { label: '创建时间', prop: 'FCREATEDATE', align: 'center', minWidth: '110px' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '300px', align: 'center' }
       ],
       // 表格数据
@@ -101,11 +102,11 @@ export default {
         pageSize: this.size,
         ...this.searCollData
       }
-      const { data: RES, total } = await queryBomList(DATA)
-      this.tableData = RES.map(item => {
+      const { data: RES } = await queryBomList(DATA)
+      this.tableData = RES.array.map(item => {
         return toMxAmina(item)
       })
-      this.total = total
+      this.total = RES.total
     },
     // 搜索
     handleQueryBomList() {

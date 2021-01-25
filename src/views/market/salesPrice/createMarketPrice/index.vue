@@ -142,7 +142,7 @@
       width="60%"
     >
       <div class="materiel-form">
-        <search :options="selectData" :msg="fbillNo" @seek="collect" />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleMaterielSearch" />
         <el-button size="mini" type="primary" class="btn" @click="handleMaterielSearch">搜索</el-button>
       </div>
       <jc-table

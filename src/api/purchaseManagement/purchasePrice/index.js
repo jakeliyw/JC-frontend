@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询采购价目列表-分页
 export function queryTPurPriceList(data) {
   return request({
-    url: '/tPurPricelistentry/queryTPurPriceList',
+    url: '/tPurPricelist/queryTPurPriceList',
     method: 'post',
     data
   })

@@ -10,7 +10,7 @@
             :value="iten.fenglish"
           />
         </el-select>
-        <el-input v-model.trim="item.val" size="mini" @blur="gatherData()" />
+        <el-input v-model.trim="item.val" size="mini" @keyup.enter.native="handleSearch" @blur="gatherData()" />
         <i v-if="index>0" class="el-icon-remove-outline" @click="delSear(index)" />
       </span>
     </div>
@@ -38,6 +38,10 @@ export default {
     msg: {
       type: String,
       default: ''
+    },
+    msg2: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -46,6 +50,11 @@ export default {
       caret: true,
       searData: [{ fenglish: this.msg, val: '' }], // 搜索下拉框数据
       hunt: {} // 搜索下拉框数据(向父传值)
+    }
+  },
+  watch: {
+    msg2() {
+      this.noShow()
     }
   },
   methods: {
@@ -75,11 +84,14 @@ export default {
     gatherData() {
       this.hunt = {}
       this.searData.forEach(item => {
-        if (item.fenglish && item.val) {
-          this.$set(this.hunt, item.fenglish, item.val)
-          this.$emit('seek', this.hunt)
-        }
+        this.$set(this.hunt, item.fenglish, item.val)
+        this.$emit('seek', this.hunt)
       })
+    },
+    handleSearch() {
+      this.gatherData() // 获取搜索数据
+      this.noShow() // 收回
+      this.$emit('hand', '')
     }
   }
 }

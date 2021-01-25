@@ -3,7 +3,7 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <search :options="selectData" :msg="fbillNo" @seek="collect" />
+        <search :options="selectData" :msg="fbillNo" :msg2="padlocktr" @seek="collect" @hand="handleQueryUntreated" />
         <el-button type="primary" class="btn" size="mini" @click="handleQueryUntreated">搜索</el-button>
       </div>
     </div>
@@ -106,6 +106,7 @@ export default {
     },
     // 搜索
     handleQueryUntreated() {
+      this.padlocktr = '1'
       this.pageNum = 1
       this.handleGetUntreated()
     },

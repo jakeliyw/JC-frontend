@@ -3,7 +3,7 @@ import { queryCriteria } from '@/api/search'
 export default {
   data() {
     return {
-      padlock: true,
+      padlocktr: '',
       searCollData: {}, // 搜索数据
       selectData: [] // 搜索下拉框数据
     }

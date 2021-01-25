@@ -44,6 +44,8 @@
         </span>
         <!--        state-->
         <slot v-else-if="col.type === 'state'" name="btnState" :scope="scope" />
+        <!--        states-->
+        <slot v-else-if="col.type === 'states'" name="btnStates" :scope="scope" />
         <!--        button-->
         <slot v-else-if="col.type === 'btn'" name="btnSlot" :scope="scope" />
         <!--        tag-->

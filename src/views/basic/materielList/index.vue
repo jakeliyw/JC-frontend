@@ -3,7 +3,7 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <search :options="selectData" :msg="fbillNo" @seek="collect" />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="searchMaterialList" />
         <el-button type="primary" size="mini" class="btn" @click="searchMaterialList">搜索</el-button>
         <el-button type="primary" size="mini" @click="addMateril">新增物料</el-button>
       </div>
@@ -26,22 +26,28 @@
           :table-data="materialTableData"
           :cell-style="cellStyle"
         >
-          <el-table-column label="型号" prop="FMODEL" align="center" />
           <el-table-column
             label="物料编码"
             align="center"
-            min-width="200px"
+            min-width="180px"
           >
             <template slot-scope="scope">
-              <span class="jumpMateriel" @click="jumpMateriel(scope.row.FNUMBER)">{{ scope.row.FNUMBER }}</span>
+              <span class="jumpMateriel" @click="jumpMateriel(scope.row.fnumber)">{{ scope.row.fnumber }}</span>
             </template>
           </el-table-column>
+          <el-table-column label="型号" prop="fmodel" align="center" />
+          <!--审核状态-->
           <template v-slot:btnState="clo">
-            <el-tag>{{ clo.scope.row.FDOCUMENTSTATUS }}</el-tag>
+            <el-tag>{{ clo.scope.row.fdocumentStatus }}</el-tag>
+          </template>
+          <!--禁用状态-->
+          <template v-slot:tagSlot="clo">
+            <el-tag v-if="clo.scope.row.fforbidStatus==='否'">{{ clo.scope.row.fforbidStatus }}</el-tag>
+            <el-tag v-else type="danger">{{ clo.scope.row.fforbidStatus }}</el-tag>
           </template>
           <template v-slot:btnSlot="clo">
-            <el-button type="primary" size="mini" @click="detailMateriel(clo.scope.row.FNUMBER)">查询物料</el-button>
-            <el-button type="danger" size="mini" @click="Retrial(clo.scope.row.FMATERIALID)">反审核</el-button>
+            <el-button type="primary" size="mini" @click="detailMateriel(clo.scope.row.fnumber)">查询物料</el-button>
+            <el-button type="danger" size="mini" @click="Retrial(clo.scope.row.fmaterialId)">反审核</el-button>
           </template>
         </jc-table>
         <div class="footer">
@@ -82,19 +88,19 @@ export default {
       fbillNo: 'fnumber', // 产品描述
       materialGroupL: [], // tree组数据
       currentNodeKey: '',
-      cellStyle: { padding: '10 10' }, // 行高
+      cellStyle: { padding: '5 10' }, // 行高
       pagination: {
         pageNum: 1, // 当前页
         pageSize: 10 // 每页显示多少条数据
       },
       total: 0, // 总条目
       materialTableHeader: [
-        { label: '使用组织', prop: 'FUSEORG', align: 'center', minWidth: '200px' },
-        { label: '物料描述', prop: 'FDESCRIPTION', align: 'center', minWidth: '400px' },
-        { label: '物料规格', prop: 'FSPECIFICATION', align: 'center', minWidth: '200px' },
-        { label: '禁用状态', prop: 'FFORBIDSTATUS', align: 'center' },
-        { label: '生效时间', prop: 'FCREATEDATE', align: 'center' },
-        { label: '审核状态', type: 'state', prop: 'FDOCUMENTSTATUS', align: 'center' },
+        { label: '物料描述', prop: 'fdescripTion', align: 'center', minWidth: '400px' },
+        { label: '物料规格', prop: 'fspecificaTion', align: 'center', minWidth: '120px' },
+        { label: '单位', prop: 'funit', align: 'center' },
+        { label: '创建时间', prop: 'fcreateDate', align: 'center', minWidth: '110px' },
+        { label: '禁用状态', type: 'tag', align: 'center' },
+        { label: '审核状态', type: 'state', align: 'center' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
       ], // 表头数据
       materialTableData: [], // 表格数据
@@ -136,14 +142,13 @@ export default {
     async getMaterialList() {
       const DATA = {
         ...this.pagination,
-        ...this.searCollData,
-        fnumberGroup: this.currentNodeKey
+        ...this.searCollData
       }
-      const { data: RES, total } = await queryTBdMaterialList(DATA)
-      this.materialTableData = RES.map(item => {
+      const { data: RES } = await queryTBdMaterialList(DATA)
+      this.materialTableData = RES.array.map(item => {
         return (toMxAmina(item), Disable(item))
       })
-      this.total = total
+      this.total = RES.total
     },
     // 获取树型控件数据
     async getMaterialGroupL() {
@@ -173,7 +178,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@media screen and (max-width: 1920px) and (min-width: 1366px)  {
+@media screen and (max-width: 1920px) {
   .right-mainPage{
     width: 70vw;
     margin-left: 10px;

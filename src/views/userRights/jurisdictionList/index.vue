@@ -3,7 +3,7 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <search :options="selectData" :msg="fbillNo" @seek="collect" />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="getRoleList" />
         <el-button size="mini" type="primary" class="btn" @click="getRoleList">搜索</el-button>
         <el-button size="mini" type="primary" @click="insertTJQ">新增</el-button>
       </div>
