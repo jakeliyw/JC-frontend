@@ -10,24 +10,24 @@
             :cell-style="cellStyle"
             table-height="calc(100vh - 330px)"
           >
-            <el-table-column prop="" label="物料编码" align="center" min-width="180px" />
-            <el-table-column prop="" label="物料描述" align="center" min-width="300px" />
-            <el-table-column prop="" label="旧物料编码" align="center" min-width="100px" />
-            <el-table-column prop="" label="型号" align="center" />
-            <el-table-column prop="" label="供应商" align="center" />
-            <el-table-column prop="" label="规格" align="center" />
-            <el-table-column prop="" label="厚度" align="center" />
-            <el-table-column prop="" label="价格有效期" align="center" min-width="100px" />
+            <el-table-column prop="fnumber" label="物料编码" align="center" min-width="180px" />
+            <el-table-column prop="fdescripTion" label="物料描述" align="center" min-width="500px" />
+            <el-table-column prop="foldnumber" label="旧物料编码" align="center" min-width="100px" />
+            <el-table-column prop="fmodel" label="型号" align="center" min-width="100px" />
+            <el-table-column prop="fname" label="供应商" align="center" min-width="150px" />
+            <el-table-column prop="fspecificaTion" label="规格" align="center" min-width="120px" />
+            <el-table-column prop="fthickness" label="厚度" align="center" />
+            <el-table-column prop="fcreateDate" label="价格有效期" align="center" min-width="110px" />
             <el-table-column label="价格" align="center">
-              <el-table-column prop="" label="净价" align="center" />
-              <el-table-column prop="" label="税率" align="center" />
-              <el-table-column prop="" label="含税价" align="center" />
+              <el-table-column prop="fprice" label="净价" align="center" />
+              <el-table-column prop="ftaxRate" label="税率" align="center" />
+              <el-table-column prop="ftaxPrice" label="含税价" align="center" />
             </el-table-column>
-            <el-table-column prop="" label="计价单位" align="center" />
-            <el-table-column prop="" label="付款方式(结算方式)" align="center" min-width="100px" />
-            <el-table-column prop="" label="最小起订量" align="center" min-width="100px" />
-            <el-table-column prop="" label="采购周期" align="center" />
-            <el-table-column prop="" label="账期(付款条件)" align="center" min-width="100px" />
+            <el-table-column prop="unitName" label="计价单位" align="center" />
+            <el-table-column prop="fsettleType" label="付款方式" align="center" min-width="100px" />
+            <el-table-column prop="Stirng" label="最小起订量" align="center" min-width="100px" />
+            <el-table-column prop="Stirng" label="采购周期" align="center" />
+            <el-table-column prop="Stirng" label="账期" align="center" min-width="100px" />
           </jc-table>
           <jcPagination
             v-show="total > 0"
@@ -43,7 +43,8 @@
 </template>
 
 <script>
-import { queryLargeContrast, queryLargeList } from '@/api/encodingRules/codeComparative'
+import { queryLargeList } from '@/api/encodingRules/codeComparative'
+import { queryPurPricePrice } from '@/api/mrpView'
 import jcTitle from '@/components/Title'
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
@@ -61,7 +62,7 @@ export default {
       page: 1,
       size: 10,
       activeName: '50', // 第一个选项卡
-      LargeCode: '', // 选择的大类名称
+      largeCode: '', // 选择的大类名称
       oneMaterielData: [], // tabs标签
       tableData: [], // 列表数据
       tableHeader: [],
@@ -72,7 +73,7 @@ export default {
     // 监听切换选项卡
     activeName(val) {
       this.tableData = []
-      this.LargeCode = val
+      this.largeCode = val
       this.getRoleList()
     }
   },
@@ -82,9 +83,10 @@ export default {
   methods: {
     // 查询编码对照表数据
     async getRoleList() {
-      const DATA = { largeCode: this.LargeCode, pageNum: this.page, pageSize: this.size }
-      const { data: RES } = await queryLargeContrast(DATA)
-      console.log(RES.a)
+      const DATA = { largeCode: this.largeCode, pageNum: this.page, pageSize: this.size }
+      const { data: RES } = await queryPurPricePrice(DATA)
+      this.tableData = RES.array
+      this.total = RES.total
     },
     // 查询大类列表
     async queryLargeList() {
@@ -92,7 +94,8 @@ export default {
       for (const item of RES) {
         if (item.largeName.indexOf('成品-') !== -1) {
           this.oneMaterielData.push(item)
-          this.LargeCode = this.oneMaterielData[0].largeCode
+          // 赋值
+          this.largeCode = this.oneMaterielData[0].largeCode
         }
       }
       for (const item of RES) {
@@ -128,6 +131,9 @@ export default {
   padding: 0 10px;
   height: 30px;
   line-height: 30px;
+}
+ .el-table th{
+  padding: 5px 0;
 }
 </style>
 <style scoped lang="scss">
