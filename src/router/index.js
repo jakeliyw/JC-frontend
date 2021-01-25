@@ -170,12 +170,12 @@ export const asyncRouterMap = [
         menu: 'refuseBom'
       },
       {
-        path: '/saleReport/:id',
+        path: '/reportForm/:id',
         name: 'ReportForm',
         component: () => import('@/views/engineering/reportForm'),
         meta: { title: '查询报表', noCache: false },
         hidden: true,
-        menu: 'saleReport'
+        menu: 'reportForm'
       },
       {
         path: '/listBom',
@@ -265,7 +265,7 @@ export const asyncRouterMap = [
           },
           {
             path: '/saleReport',
-            name: 'ReportForm',
+            name: 'SaleReport',
             component: () => import('@/views/market/marketManage/saleReport/index'),
             meta: { title: '销售报表' },
             menu: 'saleReport'
