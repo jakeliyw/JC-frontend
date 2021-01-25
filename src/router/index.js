@@ -170,12 +170,12 @@ export const asyncRouterMap = [
         menu: 'refuseBom'
       },
       {
-        path: '/reportForm/:id',
+        path: '/saleReport/:id',
         name: 'ReportForm',
         component: () => import('@/views/engineering/reportForm'),
         meta: { title: '查询报表', noCache: false },
         hidden: true,
-        menu: 'reportForm'
+        menu: 'saleReport'
       },
       {
         path: '/listBom',
@@ -264,11 +264,11 @@ export const asyncRouterMap = [
             menu: 'marketOrder'
           },
           {
-            path: '/reportForm',
+            path: '/saleReport',
             name: 'ReportForm',
-            component: () => import('@/views/market/marketManage/reportForm/index'),
+            component: () => import('@/views/market/marketManage/saleReport/index'),
             meta: { title: '销售报表' },
-            menu: 'reportForm'
+            menu: 'saleReport'
           }
         ]
       },
@@ -531,20 +531,15 @@ export const asyncRouterMap = [
         ]
       },
       {
-        path: '/maintenance',
-        name: 'Maintenance',
+        path: '/procurement',
+        name: 'procurement',
         component: () => import('@/views/purchasing/procurement/index'),
         meta: { title: '采购拆单', noCache: false },
         menu: 'procurement'
       },
       {
-<<<<<<< HEAD
-        path: '/Maintenance',
+        path: '/maintenance',
         name: 'Maintenance',
-=======
-        path: '/procurement',
-        name: 'Procurement',
->>>>>>> b248737e3057d622cf67e46e4869cea210446bd6
         component: () => import('@/views/purchasing/maintenance/index'),
         meta: { title: '采购价格维护', noCache: false },
         menu: 'maintenance'
