@@ -57,6 +57,9 @@
       <el-tab-pane label="信息" name="information">
         <jc-information
           :information="information"
+          :company="company"
+          :detail-disabled="true"
+          :detail-show="false"
         />
       </el-tab-pane>
       <el-tab-pane label="其它" name="log">
@@ -128,7 +131,8 @@ export default {
         { label: 'IP地址', prop: 'fip', align: 'center' },
         { label: '行为', prop: 'fdescribe', align: 'center' }
       ],
-      information: {}
+      information: {},
+      company: {} // 单位
     }
   },
   mounted() {
@@ -137,6 +141,8 @@ export default {
   methods: {
     handleControl() {
       queryMaterialDetail({ fnumber: this.$route.params.id }).then(RES => {
+        console.log(RES.data.material)
+        this.company.label = RES.data.material.FBASEUNITID
         this.property = RES.data.property
         this.imageUrl = RES.data.material.FIMG
         this.fmaterialId = RES.data.material.FMATERIALID
@@ -144,7 +150,7 @@ export default {
           fdefaultvendor: RES.data.material.fsupplier,
           fpobillTypeName: RES.data.material.fbillType,
           fquotaType: RES.data.material.fquotaType,
-          fstockName: RES.data.material.fstockId,
+          fstockName: RES.data.material.fstock,
           fminStock: RES.data.material.fminStock,
           fsafeStock: RES.data.material.fsafeStock,
           fmaxStock: RES.data.material.fmaxStock,

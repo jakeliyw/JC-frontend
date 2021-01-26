@@ -12,19 +12,19 @@
       </el-col>
       <el-col :span="6">
         <span class="large">供应商</span>
-        <el-input v-model="information.fdefaultvendor" placeholder="请选择供应商" size="mini" class="input-width">
-          <i slot="suffix" class="el-input__icon el-icon-search" @click="handleSupplier" />
+        <el-input v-model="information.fdefaultvendor" placeholder="请选择供应商" size="mini" class="input-width" :disabled="detailDisabled">
+          <i v-show="detailShow" slot="suffix" class="el-input__icon el-icon-search" @click="handleSupplier" />
         </el-input>
       </el-col>
       <el-col :span="6">
         <span class="large">采购类型</span>
-        <el-input v-model="information.fpobillTypeName" placeholder="请选择采购类型" size="mini" class="input-width">
-          <i slot="suffix" class="el-input__icon el-icon-search" @click="handlePurchaseType" />
+        <el-input v-model="information.fpobillTypeName" placeholder="请选择采购类型" size="mini" class="input-width" :disabled="detailDisabled">
+          <i v-show="detailShow" slot="suffix" class="el-input__icon el-icon-search" @click="handlePurchaseType" />
         </el-input>
       </el-col>
       <el-col :span="6">
         <span class="large">配额方式</span>
-        <el-select v-model="information.fquotaType" placeholder="请选择配额方式" size="mini" class="input-width" @change="handleFquotaType">
+        <el-select v-model="information.fquotaType" placeholder="请选择配额方式" size="mini" class="input-width" :disabled="detailDisabled" @change="handleFquotaType">
           <el-option
             v-for="item in quotaMethod"
             :key="item.value"
@@ -46,25 +46,25 @@
       </el-col>
       <el-col :span="6">
         <span class="large warehouse">仓库</span>
-        <el-input v-model="information.fstockName" placeholder="请选择仓库" size="mini" class="input-width">
-          <i slot="suffix" class="el-input__icon el-icon-search" @click="handleWarehouse" />
+        <el-input v-model="information.fstockName" placeholder="请选择仓库" size="mini" class="input-width" :disabled="detailDisabled">
+          <i v-show="detailShow" slot="suffix" class="el-input__icon el-icon-search" @click="handleWarehouse" />
         </el-input>
       </el-col>
       <el-col :span="6">
         <span class="large">仓位</span>
-        <el-input v-model="information.position" placeholder="请输入仓位" size="mini" class="input-width" @change="handlePosition" />
+        <el-input v-model="information.position" placeholder="请输入仓位" size="mini" class="input-width" :disabled="detailDisabled" @change="handlePosition" />
       </el-col>
       <el-col :span="6">
         <span class="large">最小库存</span>
-        <el-input v-model="information.fminStock" placeholder="请输入最小库存" size="mini" class="input-width" type="number" @change="handleFminStock" />
+        <el-input v-model="information.fminStock" placeholder="请输入最小库存" size="mini" class="input-width" type="number" :disabled="detailDisabled" @change="handleFminStock" />
       </el-col>
       <el-col :span="6">
         <span class="large">安全库存</span>
-        <el-input v-model="information.fsafeStock" placeholder="请输入安全库存" size="mini" class="input-width" type="number" @click="handleFsafeStock" />
+        <el-input v-model="information.fsafeStock" placeholder="请输入安全库存" size="mini" class="input-width" type="number" :disabled="detailDisabled" @click="handleFsafeStock" />
       </el-col>
       <el-col :span="6">
         <span class="large">最大库存</span>
-        <el-input v-model="information.fmaxStock" placeholder="请输入最大库存" size="mini" class="input-width" type="number" @click="handleFmaxStock" />
+        <el-input v-model="information.fmaxStock" placeholder="请输入最大库存" size="mini" class="input-width" type="number" :disabled="detailDisabled" @click="handleFmaxStock" />
       </el-col>
     </el-row>
     <!--  供应商弹窗-->
@@ -191,6 +191,14 @@ export default {
       default: () => {
         return {}
       }
+    },
+    detailDisabled: {
+      type: Boolean,
+      default: false
+    },
+    detailShow: {
+      type: Boolean,
+      default: true
     }
   },
   data() {

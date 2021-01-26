@@ -14,7 +14,7 @@
           <el-table
             :data="tableData"
             :cell-style="cellStyle"
-            height="65vh"
+            height="calc(100vh - 320px)"
             loading
           >
             <el-table-column prop="largeName" label="大类" align="center" class-name="valignTop">
@@ -181,14 +181,14 @@ export default {
 <style lang="scss">
 .codeTable {
   .el-tabs__nav{
-    white-space: initial
+    white-space: pre-line;
   }
   .table-content{
-      .el-table .valignTop {
-        vertical-align: top;
-        padding: 0;
-        border-color: #888;
-      }
+    .el-table .valignTop {
+      vertical-align: top;
+      padding: 0;
+      border-color: #888;
+    }
     .el-table--border td{
       border-right: 1px solid #888;
     }
@@ -236,6 +236,9 @@ export default {
     padding: 0 10px;
     height: 30px;
     line-height: 30px;
+  }
+  .el-table ::v-deep .el-table__body-wrapper{
+    height: calc(100vh - 393px) !important;
   }
   .table-content{
     margin-top: 0;

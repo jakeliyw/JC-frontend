@@ -262,13 +262,6 @@ export const asyncRouterMap = [
             component: () => import('@/views/market/marketManage/marketOrder/index'),
             meta: { title: '销售订单列表' },
             menu: 'marketOrder'
-          },
-          {
-            path: '/saleReport',
-            name: 'SaleReport',
-            component: () => import('@/views/market/marketManage/saleReport/index'),
-            meta: { title: '销售报表' },
-            menu: 'saleReport'
           }
         ]
       },
@@ -395,6 +388,13 @@ export const asyncRouterMap = [
             menu: 'createCustomer'
           }
         ]
+      },
+      {
+        path: '/saleReport',
+        name: 'SaleReport',
+        component: () => import('@/views/market/saleReport/index'),
+        meta: { title: '销售报表' },
+        menu: 'saleReport'
       }
     ]
   },

@@ -142,7 +142,8 @@ export default {
     async getMaterialList() {
       const DATA = {
         ...this.pagination,
-        ...this.searCollData
+        ...this.searCollData,
+        fnumberGroup: this.currentNodeKey
       }
       const { data: RES } = await queryTBdMaterialList(DATA)
       this.materialTableData = RES.array.map(item => {

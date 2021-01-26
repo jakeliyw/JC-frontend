@@ -126,6 +126,7 @@
                 v-model="scope.row.feffectiveDate"
                 size="mini"
                 type="date"
+                value-format="yyyy-MM-dd"
                 style="width: 150px"
                 placeholder="选择日期"
               />
@@ -250,6 +251,7 @@ export default {
         pageNum: 1, // 当前页
         pageSize: 10 // 每页显示多少条数据
       },
+      ftaxRate: 0, // 税率
       openMaterialDialog: false, // 物料弹窗
       FNUMBER: '', // 弹窗编码
       FDESCRIPTION: '', // 弹窗描述
@@ -295,6 +297,7 @@ export default {
     },
     async getPriceList() {
       const { data: RES } = await detailPriceList({ fid: this.$route.params.id })
+      this.ftaxRate = RES.ftaxRate
       RES.fisIncludedTax = JSON.parse(RES.fisIncludedTax)
       this.purchaseForm = RES
       this.tableData = RES.detail
@@ -309,7 +312,6 @@ export default {
         }
       }
       const DETAILS = this.tableData.map(item => {
-        item.feffectiveDate = this.$moment(item.feffectiveDate).format('YYYY-MM-DD HH:mm:ss')
         return {
           fmaterialId: item.fmaterialId,
           fprice: item.fprice,
@@ -369,7 +371,7 @@ export default {
             fupPrice: 0, // 价格上限
             fdownPrice: 0, // 价格下限
             feffectiveDate: '', // 生效时间
-            ftaxRate: 0, // 税率
+            ftaxRate: this.ftaxRate, // 税率
             fdescripTion: '' // 描述
           }
         )
