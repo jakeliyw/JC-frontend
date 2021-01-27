@@ -133,8 +133,8 @@ export default {
       this.$router.push({
         name: 'EditMateriel',
         query: {
-          FNUMBER: row.fnumber,
-          FMATERIALID: row.fmaterialId
+          fnumber: row.fnumber,
+          fmaterialId: row.fmaterialId
         }
       })
     },

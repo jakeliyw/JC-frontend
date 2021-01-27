@@ -9,25 +9,25 @@
         <jc-form :option-value="organizationValue" :options="organization" />
         <jc-form :option-value="oneMaterial" :options="oneMaterial">
           <el-select
-            v-model="oneMaterialValue.LargeCode"
+            v-model="oneMaterialValue.largeCode"
             size="mini"
             placeholder="请选择一类物料"
             filterable
             default-first-option
             style="width: 200px"
-            @change="selectLargeName"
+            @change="selectlargeName"
           >
             <el-option
               v-for="item in oneMaterielData"
-              :key="item.LargeCode"
-              :label="item.LargeName"
-              :value="item.LargeCode"
+              :key="item.largeCode"
+              :label="item.largeName"
+              :value="item.largeCode"
             />
           </el-select>
         </jc-form>
         <jc-form :option-value="toMaterialValue" :options="toMaterial">
           <el-select
-            v-model="toMaterialValue.MediumCode"
+            v-model="toMaterialValue.mediumCode"
             size="mini"
             placeholder="请选择二类物料"
             filterable
@@ -36,9 +36,9 @@
           >
             <el-option
               v-for="item of toMaterielData"
-              :key="item.MediumCode"
-              :label="item.MediumName"
-              :value="item.MediumCode"
+              :key="item.mediumCode"
+              :label="item.mediumName"
+              :value="item.mediumCode"
               @click.native="openMaterialDialog"
             />
           </el-select>
@@ -63,7 +63,7 @@
           </div>
           <div class="basics">
             <jc-form :option-value="basicValue" :options="basic">
-              <el-select v-model="basicValue.FBASEUNITID" placeholder="请选择基本单位" size="small" @change="handleCompany">
+              <el-select v-model="basicValue.fbaseUnitId" placeholder="请选择基本单位" size="small" @change="handleCompany">
                 <el-option
                   v-for="item in basicUnit"
                   :key="item.value"
@@ -76,19 +76,18 @@
         </div>
         <span class="title-background">明细信息</span>
         <div class="control">
-          <el-checkbox label="允许资产" :disabled="assetsDisabled" :value="FISASSET" @change="assets" />
-          <el-checkbox label="允许库存" :disabled="checkoutDisabled" :value="FISINVENTORY" @change="stock" />
-          <el-checkbox label="允许生产" :disabled="checkoutDisabled" :value="FISPRODUCE" @change="production" />
-          <el-checkbox v-model="FISPURCHASE" label="允许采购" />
-          <el-checkbox label="允许销售" :disabled="checkoutDisabled" :value="FISSALE" @change="sale" />
-          <el-checkbox label="允许委外" :disabled="checkoutDisabled" :value="FISSUBCONTRACT" @change="outsourcing" />
+          <el-checkbox label="允许资产" :disabled="assetsDisabled" :value="fisasset" @change="assets" />
+          <el-checkbox label="允许库存" :disabled="checkoutDisabled" :value="fisinventory" @change="stock" />
+          <el-checkbox label="允许生产" :disabled="checkoutDisabled" :value="fisproduce" @change="production" />
+          <el-checkbox v-model="fispurchase" label="允许采购" />
+          <el-checkbox label="允许销售" :disabled="checkoutDisabled" :value="fissale" @change="sale" />
+          <el-checkbox label="允许委外" :disabled="checkoutDisabled" :value="fissubcontract" @change="outsourcing" />
         </div>
         <div class="materielAttribute">
           <div v-for="(item, index) of materielProperty" :key="index" class="materielContent">
             <h4 class="dialog-span">{{ item.attribute }}</h4>
             <el-select
               v-model="item.value"
-              class="span-title"
               size="mini"
               placeholder="请选择物料属性"
               filterable
@@ -105,13 +104,13 @@
         </div>
         <el-divider class="weight" />
         <jc-form :option-value="weightValue" :options="weight">
-          <el-input v-model="weightValue.FNAME" size="mini" class="finance-input" placeholder="请选择重量单位">
+          <el-input v-model="weightValue.fname" size="mini" class="finance-input" placeholder="请选择重量单位">
             <i slot="suffix" class="el-input__icon el-icon-search" @click="handleFweightList" />
           </el-input>
         </jc-form>
         <el-divider class="dimensional" />
         <jc-form :option-value="dimensionalValue" :options="dimensional">
-          <el-input v-model="dimensionalValue.FNAME" size="mini" class="finance-input" placeholder="请选择尺寸单位">
+          <el-input v-model="dimensionalValue.fname" size="mini" class="finance-input" placeholder="请选择尺寸单位">
             <i slot="suffix" class="el-input__icon el-icon-search" @click="handleFvolumeList" />
           </el-input>
         </jc-form>
@@ -125,7 +124,7 @@
     </el-tabs>
     <!--    重量弹窗-->
     <jc-popup
-      v-model="weightPagination.FNAME"
+      v-model="weightPagination.fname"
       :dialog-title="dialogTitle"
       :open-dialog="openWeightDialog"
       :popup-title="popupTitle"
@@ -156,7 +155,7 @@
     </jc-popup>
     <!--    尺寸弹窗-->
     <jc-popup
-      v-model="sizePagination.FNAME"
+      v-model="sizePagination.fname"
       :dialog-title="dialogTitle"
       :open-dialog="openSizeDialog"
       :popup-title="popupTitle"
@@ -198,32 +197,32 @@
         <div class="large-class">
           <h4 class="dialog-span">一类物料</h4>
           <el-select
-            v-model="oneMaterialValue.LargeCode"
+            v-model="oneMaterialValue.largeCode"
             class="span-title"
             size="mini"
             disabled
           >
             <el-option
               v-for="item of oneMaterielData"
-              :key="item.LargeCode"
-              :label="item.LargeName"
-              :value="item.LargeCode"
+              :key="item.largeCode"
+              :label="item.largeName"
+              :value="item.largeCode"
             />
           </el-select>
         </div>
         <div class="large-class">
           <h4 class="dialog-span">二类物料</h4>
           <el-select
-            v-model="toMaterialValue.MediumCode"
+            v-model="toMaterialValue.mediumCode"
             size="mini"
             disabled
             style="width: 200px"
           >
             <el-option
               v-for="item of toMaterielData"
-              :key="item.MediumCode"
-              :label="item.MediumName"
-              :value="item.MediumCode"
+              :key="item.mediumCode"
+              :label="item.mediumName"
+              :value="item.mediumCode"
             />
           </el-select>
         </div>
@@ -318,14 +317,14 @@ export default {
       openWeightDialog: false, // 重量弹窗
       openSizeDialog: false, // 尺寸弹窗
       openMaterial: false, // 物料弹窗
-      FDESCRIPTION: '', // 描述后端返回值
+      fdescripTion: '', // 描述后端返回值
       isMaterial: false, // 物料属性显示与隐藏
-      FISASSET: false, // 资产默认不打勾
-      FISINVENTORY: true, // 库存默认不打勾
-      FISPRODUCE: true, // 生产默认不打勾
-      FISPURCHASE: true, // 采购默认不打勾
-      FISSALE: true, // 销售默认不打勾
-      FISSUBCONTRACT: true, // 允许委外
+      fisasset: false, // 资产默认不打勾
+      fisinventory: true, // 库存默认不打勾
+      fisproduce: true, // 生产默认不打勾
+      fispurchase: true, // 采购默认不打勾
+      fissale: true, // 销售默认不打勾
+      fissubcontract: true, // 允许委外
       assetsDisabled: true, // 资产禁用
       checkoutDisabled: false, // 单选框禁用
       useOrganization: '', // 使用组织
@@ -340,12 +339,12 @@ export default {
       toMaterielData: [], // 二类物料
       threeMaterielData: [], // 三类物料
       weightPagination: {
-        FNAME: '', // 单位名称
+        fname: '', // 单位名称
         pageNum: 1, // 当前页
         pageSize: 10 // 每页显示多少条数据
       },
       sizePagination: {
-        FNAME: '', // 单位名称
+        fname: '', // 单位名称
         pageNum: 1, // 当前页
         pageSize: 10 // 每页显示多少条数据
       },
@@ -357,17 +356,17 @@ export default {
       sizeTableData: [], // 尺寸单位
       basicUnit: [], // 基本单位
       tableHeader: [
-        { label: '基本单位编码', prop: 'FNUMBER', align: 'center' },
-        { label: '基本单位名称', prop: 'FNAME', align: 'center ' },
-        { label: '基准计量单位', prop: 'FISBASEUNIT', align: 'center' },
-        { label: '数据状态', prop: 'FDOCUMENTSTATUS', align: 'center' }
+        { label: '基本单位编码', prop: 'fnumber', align: 'center' },
+        { label: '基本单位名称', prop: 'fname', align: 'center ' },
+        { label: '基准计量单位', prop: 'fisbaseUnit', align: 'center' },
+        { label: '数据状态', prop: 'fdocumentStatus', align: 'center' }
       ],
       contrastHeader: [
-        { label: '组织', prop: 'FUSEORG', align: 'center' },
-        { label: '物料编码', prop: 'FNUMBER', align: 'center' },
-        { label: '描述', prop: 'FDESCRIPTION', align: 'center' },
-        { label: '型号', prop: 'FMODEL', align: 'center' },
-        { label: '物料属性', prop: 'FSPECIFICATION', align: 'center' }
+        { label: '组织', prop: 'fuseorg', align: 'center' },
+        { label: '物料编码', prop: 'fnumber', align: 'center' },
+        { label: '描述', prop: 'fdescripTion', align: 'center' },
+        { label: '型号', prop: 'fmodel', align: 'center' },
+        { label: '物料属性', prop: 'fspecification', align: 'center' }
       ],
       contrastDataTable: [], // 三类物料
       materielProperty: [], // 颜色属性
@@ -403,9 +402,9 @@ export default {
   watch: {
     dimensionalValue: {
       handler(val) {
-        const { FLENGTH, FWIDTH, FHEIGHT } = val
+        const { flength, fwidth, fheight } = val
         const SIZE = ''
-        this.basicValue.FDESCRIPTION = SIZE.concat(`${this.FDESCRIPTION}*${FLENGTH}`, `*${FWIDTH}`, `*${FHEIGHT}`)
+        this.basicValue.fdescripTion = SIZE.concat(`${this.fdescripTion}*${flength}`, `*${fwidth}`, `*${fheight}`)
       },
       deep: true
     }
@@ -419,56 +418,56 @@ export default {
   methods: {
     // 允许资产
     assets() {
-      this.FISASSET = !this.FISASSET
-      if (this.FISASSET) {
-        this.FISPURCHASE = true
-        this.FISINVENTORY = false
-        this.FISPRODUCE = false
-        this.FISSALE = false
-        this.FISSUBCONTRACT = false
+      this.fisasset = !this.fisasset
+      if (this.fisasset) {
+        this.fispurchase = true
+        this.fisinventory = false
+        this.fisproduce = false
+        this.fissale = false
+        this.fissubcontract = false
         this.checkoutDisabled = true
-      } else if (!this.FISASSET) {
-        this.FISPURCHASE = false
-        this.FISINVENTORY = false
-        this.FISPRODUCE = false
-        this.FISSALE = false
-        this.FISSUBCONTRACT = false
+      } else if (!this.fisasset) {
+        this.fispurchase = false
+        this.fisinventory = false
+        this.fisproduce = false
+        this.fissale = false
+        this.fissubcontract = false
         this.checkoutDisabled = false
       }
     },
     // 允许库存
     stock() {
-      this.FISINVENTORY = !this.FISINVENTORY
-      if (this.FISINVENTORY) {
+      this.fisinventory = !this.fisinventory
+      if (this.fisinventory) {
         this.assetsDisabled = true
-      } else if (!this.FISSUBCONTRACT && !this.FISSALE && !this.FISPRODUCE && !this.FISINVENTORY) {
+      } else if (!this.fissubcontract && !this.fissale && !this.fisproduce && !this.fisinventory) {
         this.assetsDisabled = false
       }
     },
     // 允许生产
     production() {
-      this.FISPRODUCE = !this.FISPRODUCE
-      if (this.FISPRODUCE) {
+      this.fisproduce = !this.fisproduce
+      if (this.fisproduce) {
         this.assetsDisabled = true
-      } else if (!this.FISSUBCONTRACT && !this.FISSALE && !this.FISPRODUCE && !this.FISINVENTORY) {
+      } else if (!this.fissubcontract && !this.fissale && !this.fisproduce && !this.fisinventory) {
         this.assetsDisabled = false
       }
     },
     // 允许销售
     sale() {
-      this.FISSALE = !this.FISSALE
-      if (this.FISSALE) {
+      this.fissale = !this.fissale
+      if (this.fissale) {
         this.assetsDisabled = true
-      } else if (!this.FISSUBCONTRACT && !this.FISSALE && !this.FISPRODUCE && !this.FISINVENTORY) {
+      } else if (!this.fissubcontract && !this.fissale && !this.fisproduce && !this.fisinventory) {
         this.assetsDisabled = false
       }
     },
     // 允许委外
     outsourcing() {
-      this.FISSUBCONTRACT = !this.FISSUBCONTRACT
-      if (this.FISSUBCONTRACT) {
+      this.fissubcontract = !this.fissubcontract
+      if (this.fissubcontract) {
         this.assetsDisabled = true
-      } else if (!this.FISSUBCONTRACT && !this.FISSALE && !this.FISPRODUCE && !this.FISINVENTORY) {
+      } else if (!this.fissubcontract && !this.fissale && !this.fisproduce && !this.fisinventory) {
         this.assetsDisabled = false
       }
     },
@@ -478,11 +477,11 @@ export default {
       this.oneMaterielData = RES
     },
     // 选中一类物料
-    async selectLargeName(LargeCode) {
-      const { data: RES } = await queryTwoMaterialNumber({ LargeCode: this.oneMaterialValue.LargeCode })
+    async selectlargeName(largeCode) {
+      const { data: RES } = await queryTwoMaterialNumber({ largeCode: this.oneMaterialValue.largeCode })
       this.toMaterielData = RES
-      if (LargeCode <= 10) {
-        this.basicValue.FMODEL = '无'
+      if (largeCode <= 10) {
+        this.basicValue.fmodel = '无'
       }
     },
     // 生成流水号
@@ -504,9 +503,9 @@ export default {
       }
       const DATA = {
         ...this.contrastPagination,
-        LargeCode: this.oneMaterialValue.LargeCode,
-        MediumCode: this.toMaterialValue.MediumCode,
-        SmallCode: `${codeNumber.toString()}`
+        largeCode: this.oneMaterialValue.largeCode,
+        mediumCode: this.toMaterialValue.mediumCode,
+        smallCode: `${codeNumber.toString()}`
       }
       const { data } = await queryCoodingNumber(DATA)
       this.contrastDataTable = data.contrast
@@ -522,15 +521,15 @@ export default {
         return
       }
       const DATA = {
-        LargeCode: this.oneMaterialValue.LargeCode,
-        MediumCode: this.toMaterialValue.MediumCode,
-        SmallCode: `${codeNumber.toString()}`
+        largeCode: this.oneMaterialValue.largeCode,
+        mediumCode: this.toMaterialValue.mediumCode,
+        smallCode: `${codeNumber.toString()}`
       }
-      const { data: RES, FDESCRIPTION } = await queryMaterialAttribute(DATA)
-      this.FDESCRIPTION = FDESCRIPTION
-      this.basicValue.FDESCRIPTION = FDESCRIPTION
+      const { data: RES, fdescripTion } = await queryMaterialAttribute(DATA)
+      this.fdescripTion = fdescripTion
+      this.basicValue.fdescripTion = fdescripTion
       this.materielProperty = RES
-      this.basicValue.FNUMBER = this.materialCode
+      this.basicValue.fnumber = this.materialCode
       this.isMaterial = true
       this.openMaterial = false
     },
@@ -542,7 +541,7 @@ export default {
     async preservation() {
       const ITEM = this.organization.FCREATEORG.selectItems.find(item => item)
       const codeNumber = this.SmallCode()
-      const FATTRIBTTE = this.materielProperty.map(item => {
+      const fattribtte = this.materielProperty.map(item => {
         const VALUE = item.handrail.find(obj => {
           return item.value === obj.value
         })
@@ -551,38 +550,38 @@ export default {
       if (codeNumber === undefined) {
         return
       }
-      if (FATTRIBTTE.includes(undefined)) {
+      if (fattribtte.includes(undefined)) {
         this.$message.warning('物料属性必须选择')
         return
       }
-      const SmallCode = `${codeNumber.toString()}`
+      const smallCode = `${codeNumber.toString()}`
       const DATA = {
-        FCREATEORGID: ITEM.value,
-        FUSEORGID: ITEM.value,
-        LargeCode: this.oneMaterialValue.LargeCode,
-        MediumCode: this.toMaterialValue.MediumCode,
-        SmallCode,
+        fcreateOrgId: ITEM.value,
+        fuseOrgId: ITEM.value,
+        largeCode: this.oneMaterialValue.largeCode,
+        mediumCode: this.toMaterialValue.mediumCode,
+        smallCode,
         // 允许采购
-        FISPURCHASE: this.FISPURCHASE,
+        fispurchase: this.fispurchase,
         // 允许销售
-        FISSALE: this.FISSALE,
+        fissale: this.fissale,
         // 允许库存
-        FISINVENTORY: this.FISINVENTORY,
+        fisinventory: this.fisinventory,
         // 允许生产
-        FISPRODUCE: this.FISPRODUCE,
+        fisproduce: this.fisproduce,
         // 允许委外
-        FISSUBCONTRACT: this.FISSUBCONTRACT,
+        fissubcontract: this.fissubcontract,
         // 允许资产
-        FISASSET: this.FISASSET,
-        FNUMBER: this.basicValue.FNUMBER,
-        FBASEUNITID: this.basicValue.FBASEUNITID,
-        FOLDNUMBER: this.basicValue.FOLDNUMBER,
-        FBARCODE: this.basicValue.FBARCODE,
-        FERPCLSID: this.basicValue.FERPCLSID,
-        FPROTECT: this.basicValue.FPROTECT,
-        FMODEL: this.basicValue.FMODEL,
-        FDESCRIPTION: this.basicValue.FDESCRIPTION,
-        FATTRIBTTE: JSON.stringify(FATTRIBTTE)
+        fisasset: this.fisasset,
+        fnumber: this.basicValue.fnumber,
+        fbaseUnitId: this.basicValue.fbaseUnitId,
+        foldnumber: this.basicValue.foldnumber,
+        fbarCode: this.basicValue.fbarCode,
+        ferpclsId: this.basicValue.ferpclsId,
+        fprotect: this.basicValue.fprotect,
+        fmodel: this.basicValue.fmodel,
+        fdescripTion: this.basicValue.fdescripTion,
+        fattribtte: JSON.stringify(fattribtte)
       }
       Object.assign(DATA, this.dimensionalValue, this.weightValue, this.information)
       for (const key in DATA) {
@@ -591,12 +590,12 @@ export default {
           return
         }
       }
-      const RES = [this.FISASSET, this.FISINVENTORY, this.FISPRODUCE, this.FISPURCHASE, this.FISSALE,
-        this.FISSUBCONTRACT].includes(false)
+      const RES = [this.fisasset, this.fisinventory, this.fisproduce, this.fispurchase, this.fissale,
+        this.fissubcontract].includes(false)
       if (RES === false) {
         this.$message.warning('控制信息必选一项！')
         return
-      } else if (this.weightValue.FNETWEIGHT > this.weightValue.FGROSSWEIGHT) {
+      } else if (this.weightValue.fnetWeight > this.weightValue.fgrossWeight) {
         this.$message.warning('净重不能大于毛重')
         return
       } else if (!this.information.fstockId) {
@@ -604,9 +603,9 @@ export default {
         return
       }
       // 图片可以为空
-      DATA.FIMG = this.imageUrl
+      DATA.fimg = this.imageUrl
       // 物料备注可以为空
-      DATA.FREMARKS = this.basicValue.FREMARKS
+      DATA.fremarks = this.basicValue.fremarks
       const { code, message } = await insertMaterialDetail(DATA)
       if (code !== 0) {
         this.$message.error(message)
@@ -618,8 +617,8 @@ export default {
     // 三类物料
     async openMaterialDialog() {
       const { data: RES } = await queryThreeMaterialNumber({
-        LargeCode: this.oneMaterialValue.LargeCode,
-        MediumCode: this.toMaterialValue.MediumCode,
+        largeCode: this.oneMaterialValue.largeCode,
+        mediumCode: this.toMaterialValue.mediumCode,
         ...this.contrastPagination
       })
       this.threeMaterielData = RES.subclass
@@ -636,8 +635,8 @@ export default {
     },
     // 清空表单
     emptyForm() {
-      this.weightPagination.FNAME = ''
-      this.sizePagination.FNAME = ''
+      this.weightPagination.fname = ''
+      this.sizePagination.fname = ''
     },
     // 重量搜索
     searchWeight() {
@@ -661,7 +660,7 @@ export default {
     async getBasicUnit() {
       const { data: RES } = await queryUnitList()
       return RES.map(item => {
-        return { label: item.FNAME, value: item.FBASEUNITID }
+        return { label: item.fname, value: item.fbaseUnitId }
       })
     },
     // 获取重量单位
@@ -669,8 +668,8 @@ export default {
       const RES = await this.dialogData('重量单位', { ...this.weightPagination }, queryFweightList)
       this.weightTableData = RES.data
       return {
-        FNAME: RES.data[0].FNAME,
-        FWEIGHTUNITID: RES.data[0].FWEIGHTUNITID
+        fname: RES.data[0].fname,
+        fweightUnitId: RES.data[0].fweightUnitId
       }
     },
     // 重量单位
@@ -680,8 +679,8 @@ export default {
     },
     // 重量单位选中
     weightSelect(row) {
-      this.weightValue.FWEIGHTUNITID = row.FWEIGHTUNITID
-      this.weightValue.FNAME = row.FNAME
+      this.weightValue.fweightUnitId = row.fweightUnitId
+      this.weightValue.fname = row.fname
       this.openWeightDialog = false
     },
     // 获取尺寸单位
@@ -689,8 +688,8 @@ export default {
       const RES = await this.dialogData('尺寸单位', { ...this.sizePagination }, queryFvolumeList)
       this.sizeTableData = RES.data
       return {
-        FNAME: RES.data[0].FNAME,
-        FVOLUMEUNITID: RES.data[0].FVOLUMEUNITID
+        fname: RES.data[0].fname,
+        fvolumeUnitId: RES.data[0].fvolumeUnitId
       }
     },
     // 尺寸单位
@@ -700,23 +699,23 @@ export default {
     },
     // 尺寸单位选中
     sizeSelect(row) {
-      this.dimensionalValue.FVOLUMEUNITID = row.FVOLUMEUNITID
-      this.dimensionalValue.FNAME = row.FNAME
+      this.dimensionalValue.fvolumeUnitId = row.fvolumeUnitId
+      this.dimensionalValue.fname = row.fname
       this.openSizeDialog = false
     },
     // 获取组织
     async getOrganization() {
       const { data: RES } = await queryTOrgOrganizationsL()
       return RES.map(item => {
-        this.useOrganization = item.FNAME
-        return { label: item.FNAME, value: item.FPKID }
+        this.useOrganization = item.fname
+        return { label: item.fname, value: item.fpkId }
       })
     },
     // 获取物料类型
     async getMaterielType() {
       const { data: RES } = await queryMaterialAttributes()
       return RES.map(item => {
-        return { label: item.FCAPTION, value: item.FERPCLSID }
+        return { label: item.fcapTion, value: item.ferpclsId }
       })
     },
     // 基本单位选中
@@ -733,11 +732,11 @@ export default {
       const organizationRes = await this.getOrganization()
       this.basicUnit = await this.getBasicUnit()
       const materielType = await this.getMaterielType()
-      const { FNAME, FWEIGHTUNITID } = await this.getWeightData()
-      const { FNAME: FNAMENAME, FVOLUMEUNITID } = await this.getVolumeList()
+      const { fname, fweightUnitId } = await this.getWeightData()
+      const { fname: fnameNAME, fvolumeUnitId } = await this.getVolumeList()
       this.organizationValue = {
         FCREATEORG: 1,
-        FUSEORG: this.useOrganization
+        fuseorg: this.useOrganization
       }
       this.organization = {
         FCREATEORG: {
@@ -749,7 +748,7 @@ export default {
             { required: true }
           ]
         },
-        FUSEORG: {
+        fuseorg: {
           label: '使用组织',
           span: 12,
           disabled: 'disabled',
@@ -759,10 +758,10 @@ export default {
         }
       }
       this.oneMaterialValue = {
-        LargeCode: ''
+        largeCode: ''
       }
       this.oneMaterial = {
-        LargeCode: {
+        largeCode: {
           label: '一类物料',
           type: 'slot',
           rules: [
@@ -771,10 +770,10 @@ export default {
         }
       }
       this.toMaterialValue = {
-        MediumCode: ''
+        mediumCode: ''
       }
       this.toMaterial = {
-        MediumCode: {
+        mediumCode: {
           label: '二类物料',
           type: 'slot',
           rules: [
@@ -783,44 +782,44 @@ export default {
         }
       }
       this.basicValue = {
-        FBASEUNITID: 10101,
-        FNUMBER: '',
-        FOLDNUMBER: '',
-        FBARCODE: '无',
-        FERPCLSID: '2',
-        FPROTECT: '无',
-        FMODEL: '',
-        FDESCRIPTION: '',
-        FREMARKS: ''
+        fbaseUnitId: 10101,
+        fnumber: '',
+        foldnumber: '',
+        fbarCode: '无',
+        ferpclsId: '2',
+        fprotect: '无',
+        fmodel: '',
+        fdescripTion: '',
+        fremarks: ''
       }
       this.basic = {
-        FMODEL: {
+        fmodel: {
           label: '型号',
           span: 8,
           rules: [
             { required: true, message: '型号不能为空', trigger: 'blur' }
           ]
         },
-        FNUMBER: {
+        fnumber: {
           label: '物料编码',
           span: 8,
           disabled: 'disabled'
         },
-        FOLDNUMBER: {
+        foldnumber: {
           label: '旧物料编码',
           span: 8,
           rules: [
             { required: true, message: '旧物料编码不能为空', trigger: 'blur' }
           ]
         },
-        FBARCODE: {
+        fbarCode: {
           label: '条码',
           span: 8,
           rules: [
             { required: true, message: '条码不能为空', trigger: 'blur' }
           ]
         },
-        FBASEUNITID: {
+        fbaseUnitId: {
           label: '基本单位',
           type: 'slot',
           span: 8,
@@ -828,14 +827,14 @@ export default {
             { required: true, message: '请选择基本单位', trigger: 'change' }
           ]
         },
-        FPROTECT: {
+        fprotect: {
           label: '环保等级',
           span: 8,
           rules: [
             { required: true, message: '请输入环保等级', trigger: 'blur' }
           ]
         },
-        FERPCLSID: {
+        ferpclsId: {
           label: '物料类型',
           span: 8,
           type: 'select',
@@ -844,11 +843,11 @@ export default {
             { required: true, message: '请选择物料类型', trigger: 'blur' }
           ]
         },
-        FREMARKS: {
+        fremarks: {
           label: '物料备注',
           span: 16
         },
-        FDESCRIPTION: {
+        fdescripTion: {
           label: '物料描述',
           disabled: 'disabled',
           isActive: 'isActive',
@@ -859,39 +858,39 @@ export default {
         }
       }
       this.weightValue = {
-        FNAME,
-        FWEIGHTUNITID, // ID值
-        FGROSSWEIGHT: '',
-        FNETWEIGHT: ''
+        fname,
+        fweightUnitId, // ID值
+        fgrossWeight: '',
+        fnetWeight: ''
       }
       this.weight = {
-        FNAME: {
+        fname: {
           label: '重量单位',
           type: 'slot',
           rules: [
             { required: true, message: '请选择重量单位', trigger: 'blur' }
           ]
         },
-        FGROSSWEIGHT: {
+        fgrossWeight: {
           label: '毛重',
           type: 'number'
         },
-        FNETWEIGHT: {
+        fnetWeight: {
           label: '净重',
           type: 'number'
         }
       }
       this.dimensionalValue = {
-        FNAME: FNAMENAME,
-        FVOLUMEUNITID,
-        FLENGTH: 0.0,
-        FWIDTH: 0.0,
-        FHEIGHT: 0.0,
-        FVOLUME: 0.0,
-        FTHICKNESS: 0.0
+        fname: fnameNAME,
+        fvolumeUnitId,
+        flength: 0.0,
+        fwidth: 0.0,
+        fheight: 0.0,
+        fvolume: 0.0,
+        fthickness: 0.0
       }
       this.dimensional = {
-        FNAME: {
+        fname: {
           label: '尺寸单位',
           type: 'slot',
           span: 8,
@@ -899,27 +898,27 @@ export default {
             { required: true, message: '请选择尺寸单位', trigger: 'blur' }
           ]
         },
-        FVOLUME: {
+        fvolume: {
           label: '直径',
           type: 'number',
           span: 8
         },
-        FTHICKNESS: {
+        fthickness: {
           label: '厚度',
           span: 8,
           type: 'number'
         },
-        FLENGTH: {
+        flength: {
           label: '长',
           span: 8,
           type: 'number'
         },
-        FWIDTH: {
+        fwidth: {
           label: '宽',
           span: 8,
           type: 'number'
         },
-        FHEIGHT: {
+        fheight: {
           label: '高',
           span: 8,
           type: 'number'

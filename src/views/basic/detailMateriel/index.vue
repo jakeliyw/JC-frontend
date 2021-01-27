@@ -39,7 +39,7 @@
         <jc-form :options="weight" :option-value="weightValue">
           <div slot="slotMateriel" class="basic-content">
             <span class="basic-span">重量单位</span>
-            <el-input v-model="FWEIGHTUNITID" size="mini" class="basic-input" disabled>
+            <el-input v-model="fweightUnitId" size="mini" class="basic-input" disabled>
               <i slot="suffix" class="el-input__icon el-icon-search" />
             </el-input>
           </div>
@@ -48,7 +48,7 @@
         <jc-form :option-value="dimensionalValue" :options="dimensional">
           <div slot="slotMateriel" class="basic-content">
             <span class="basic-span">尺寸单位</span>
-            <el-input v-model="FVOLUMEUNITID" size="mini" class="basic-input" disabled>
+            <el-input v-model="fvolumeunitId" size="mini" class="basic-input" disabled>
               <i slot="suffix" class="el-input__icon el-icon-search" />
             </el-input>
           </div>
@@ -106,8 +106,8 @@ export default {
       pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
       property: [], // 物料属性
-      FWEIGHTUNITID: '', // 重量单位
-      FVOLUMEUNITID: '', // 尺寸单位
+      fweightUnitId: '', // 重量单位
+      fvolumeunitId: '', // 尺寸单位
       fmaterialId: '', // id
       otherUrlObject: {}, // 其它审核人
       otherOptions: {}, // 其它审核人控件
@@ -141,11 +141,10 @@ export default {
   methods: {
     handleControl() {
       queryMaterialDetail({ fnumber: this.$route.params.id }).then(RES => {
-        console.log(RES.data.material)
-        this.company.label = RES.data.material.FBASEUNITID
+        this.company.label = RES.data.material.fbaseUnitId
         this.property = RES.data.property
-        this.imageUrl = RES.data.material.FIMG
-        this.fmaterialId = RES.data.material.FMATERIALID
+        this.imageUrl = RES.data.material.fimg
+        this.fmaterialId = RES.data.material.fmaterialId
         this.information = {
           fdefaultvendor: RES.data.material.fsupplier,
           fpobillTypeName: RES.data.material.fbillType,
@@ -157,31 +156,31 @@ export default {
           position: RES.data.material.fsafeStock
         }
         this.organizationValue = {
-          FCREATEORG: RES.data.material.FCREATEORGID,
-          FUSEORG: RES.data.material.FUSEORGID,
-          LargeCode: RES.data.subclass.largeName,
-          MediumCode: RES.data.subclass.mediumName
+          fcreateOrgId: RES.data.material.fcreateOrgId,
+          fuseOrg: RES.data.material.fcreateOrgId,
+          largeCode: RES.data.subclass.largeName,
+          mediumCode: RES.data.subclass.mediumName
         }
         this.organization = {
-          FCREATEORG: {
+          fcreateOrgId: {
             label: '创建组织',
             disabled: 'disabled',
             rules: [
               { required: true }
             ]
           },
-          FUSEORG: {
+          fuseOrg: {
             label: '使用组织',
             disabled: 'disabled',
             rules: [
               { required: true }
             ]
           },
-          LargeCode: {
+          largeCode: {
             label: '一类物料',
             disabled: 'disabled'
           },
-          MediumCode: {
+          mediumCode: {
             label: '二类物料',
             disabled: 'disabled',
             rules: [
@@ -191,47 +190,47 @@ export default {
         }
         this.basicValue = RES.data.material
         this.basic = {
-          FMODEL: {
+          fmodel: {
             label: '型号',
             span: 8,
             disabled: 'disabled'
           },
-          FNUMBER: {
+          fnumber: {
             label: '物料编码',
             span: 8,
             disabled: 'disabled'
           },
-          FOLDNUMBER: {
+          foldnumber: {
             label: '旧物料编码',
             span: 8,
             disabled: 'disabled'
           },
-          FBASEUNITID: {
+          fbaseUnitId: {
             label: '基本单位',
             span: 8,
             disabled: 'disabled'
           },
-          FSPECIFICATION: {
+          fspecificaTion: {
             label: '物料规格',
             span: 8,
             disabled: 'disabled'
           },
-          FBARCODE: {
+          fbarCode: {
             label: '条码',
             span: 8,
             disabled: 'disabled'
           },
-          FERPCLS: {
+          ferpcls: {
             label: '物料类型',
             span: 8,
             disabled: 'disabled'
           },
-          FREMARKS: {
+          fremarks: {
             label: '物料备注',
             disabled: 'disabled',
             span: 16
           },
-          FDESCRIPTION: {
+          fdescripTion: {
             label: '物料描述',
             disabled: 'disabled',
             span: 24,
@@ -240,45 +239,45 @@ export default {
           }
         }
         this.controlValue = {
-          FISASSET: JSON.parse(RES.data.material.FISASSET),
-          FISINVENTORY: JSON.parse(RES.data.material.FISINVENTORY),
-          FISPRODUCE: JSON.parse(RES.data.material.FISPRODUCE),
-          FISPURCHASE: JSON.parse(RES.data.material.FISPURCHASE),
-          FISSALE: JSON.parse(RES.data.material.FISSALE),
-          FISSUBCONTRACT: JSON.parse(RES.data.material.FISSUBCONTRACT)
+          fisasset: JSON.parse(RES.data.material.fisasset),
+          fisinventory: JSON.parse(RES.data.material.fisinventory),
+          fisproduce: JSON.parse(RES.data.material.fisproduce),
+          fispurchase: JSON.parse(RES.data.material.fispurchase),
+          fissale: JSON.parse(RES.data.material.fissale),
+          fissubcontract: JSON.parse(RES.data.material.fissubcontract)
         }
         this.control = {
-          FISASSET: {
+          fisasset: {
             label: '允许资产',
             type: 'checkbox',
             span: 2,
             disabled: 'disabled'
           },
-          FISINVENTORY: {
+          fisinventory: {
             label: '允许库存',
             type: 'checkbox',
             span: 2,
             disabled: 'disabled'
           },
-          FISPRODUCE: {
+          fisproduce: {
             label: '允许生产',
             type: 'checkbox',
             span: 2,
             disabled: 'disabled'
           },
-          FISPURCHASE: {
+          fispurchase: {
             label: '允许采购',
             type: 'checkbox',
             span: 2,
             disabled: 'disabled'
           },
-          FISSALE: {
+          fissale: {
             label: '允许销售',
             type: 'checkbox',
             span: 2,
             disabled: 'disabled'
           },
-          FISSUBCONTRACT: {
+          fissubcontract: {
             label: '允许委外',
             type: 'checkbox',
             span: 2,
@@ -287,42 +286,42 @@ export default {
         }
         this.weightValue = RES.data.material
         this.weight = {
-          FWEIGHTUNITID: {
+          fweightUnitId: {
             label: '重量单位',
             disabled: 'disabled'
           },
-          FGROSSWEIGHT: {
+          fgrossWeight: {
             label: '毛重',
             disabled: 'disabled'
           },
-          FNETWEIGHT: {
+          fnetWeight: {
             label: '净重',
             disabled: 'disabled'
           }
         }
         this.dimensionalValue = RES.data.material
         this.dimensional = {
-          FVOLUMEUNITID: {
+          fvolumeunitId: {
             label: '尺寸单位',
             disabled: 'disabled'
           },
-          FVOLUME: {
+          fvolume: {
             label: '直径',
             disabled: 'disabled'
           },
-          FTHICKNESS: {
+          fthickness: {
             label: '厚度',
             disabled: 'disabled'
           },
-          FLENGTH: {
+          flength: {
             label: '长',
             disabled: 'disabled'
           },
-          FWIDTH: {
+          fwidth: {
             label: '宽',
             disabled: 'disabled'
           },
-          FHEIGHT: {
+          fheight: {
             label: '高',
             disabled: 'disabled'
           }

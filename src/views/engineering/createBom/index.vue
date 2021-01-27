@@ -409,8 +409,8 @@ export default {
     async createOrganization() {
       const { data: RES } = await queryTOrgOrganizationsL()
       this.teamList = RES.map(item => {
-        item.label = item.FNAME
-        item.value = item.FPKID
+        item.label = item.fname
+        item.value = item.fpkId
         this.company = item.label
         return item
       })

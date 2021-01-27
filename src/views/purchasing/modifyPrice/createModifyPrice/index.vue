@@ -523,7 +523,7 @@ export default {
     async getForm() {
       const { data: RES } = await queryTOrgOrganizationsL()
       this.teamList = RES.map(item => {
-        return { label: item.FNAME, value: item.FPKID }
+        return { label: item.fname, value: item.fpkId }
       })
       this.optionValue = {
         fcreateOrgId: 1, // 组织
