@@ -200,7 +200,7 @@ import {
 } from '@/api/engineering/createBom'
 import { queryBomchildList, upDateBom } from '@/api/engineering/editBom'
 import { queryFtypeInfo, queryBomLog } from '@/api/engineering/deitalBom'
-import { Disable, toMxAmina } from '@/components/ToMxamineState'
+import { Forbid, toDocument } from '@/components/ToMxamineState'
 import { GMTToStr } from '@/utils'
 
 export default {
@@ -416,7 +416,7 @@ export default {
       const DATA = { pageNum: this.pageNum, pageSize: this.size, FNUMBER: this.FNUMBER }
       const { data: RES, total } = await queryBomSonList(DATA)
       this.sonDialogTableData = RES.map(item => {
-        return (toMxAmina(item), Disable(item))
+        return (toDocument(item), Forbid(item))
       })
       this.total = total
       this.parentTableVisible = true

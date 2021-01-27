@@ -29,6 +29,16 @@
             <el-step title="信息部门" />
           </el-steps>
         </template>
+        <!--审核状态-->
+        <template v-slot:btnStates="clo">
+          <el-tag v-if="clo.scope.row.FDOCUMENTSTATUS !== '重新审核'">{{ clo.scope.row.FDOCUMENTSTATUS }}</el-tag>
+          <el-tag v-else type="danger">{{ clo.scope.row.FDOCUMENTSTATUS }}</el-tag>
+        </template>
+        <!--禁用状态-->
+        <template v-slot:tagSlot="clo">
+          <el-tag v-if="clo.scope.row.FFORBIDSTATUS==='否'">{{ clo.scope.row.FFORBIDSTATUS }}</el-tag>
+          <el-tag v-else type="danger">{{ clo.scope.row.FFORBIDSTATUS }}</el-tag>
+        </template>
         <template v-slot:btnSlot="clo">
           <el-button v-show="false" type="success" size="mini" @click="approval">通过</el-button>
           <el-button v-show="false" type="danger" size="mini" @click="approvalRejection">不通过</el-button>
@@ -57,6 +67,7 @@ import { queryReviewBomList } from '@/api/engineering/underReviewBom'
 import { queryFtypeInfo } from '@/api/engineering/deitalBom'
 import search from '@/components/Search'
 import searData from '@/components/Search/mixin'
+import { Forbid, toDocument } from '@/components/ToMxamineState'
 export default {
   name: 'UnderReviewBom',
   components: {
@@ -81,6 +92,8 @@ export default {
         { label: '仓库', prop: 'FSTOCK', align: 'center', minWidth: '110px' },
         { label: '创建时间', prop: 'FCREATEDATE', align: 'center', minWidth: '110px' },
         { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', minWidth: '230px' },
+        { label: '禁用状态', type: 'tag', align: 'center' },
+        { label: '审核状态', type: 'states', align: 'center', minWidth: '100px' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '120px', align: 'center' }
       ],
       // 表格数据
@@ -103,7 +116,9 @@ export default {
         ...this.searCollData
       }
       const { data: res } = await queryReviewBomList(DATA)
-      this.tableData = res.array
+      this.tableData = res.array.map(item => {
+        return (toDocument(item), Forbid(item))
+      })
       this.total = res.total
     },
     // 搜索

@@ -24,7 +24,8 @@
         <el-table-column label="型号" prop="fmodel" align="center" />
         <!--审核状态-->
         <template v-slot:btnStates="clo">
-          <el-tag>{{ clo.scope.row.fdocumentStatus }}</el-tag>
+          <el-tag v-if="clo.scope.row.fdocumentStatus !== '重新审核'">{{ clo.scope.row.fdocumentStatus }}</el-tag>
+          <el-tag v-else type="danger">{{ clo.scope.row.fdocumentStatus }}</el-tag>
         </template>
         <!--禁用状态-->
         <template v-slot:tagSlot="clo">

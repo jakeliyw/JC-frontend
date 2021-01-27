@@ -31,6 +31,16 @@
             <el-step title="信息部门" />
           </el-steps>
         </template>
+        <!--审核状态-->
+        <template v-slot:btnStates="clo">
+          <el-tag v-if="clo.scope.row.FDOCUMENTSTATUS !== '重新审核'">{{ clo.scope.row.FDOCUMENTSTATUS }}</el-tag>
+          <el-tag v-else type="danger">{{ clo.scope.row.FDOCUMENTSTATUS }}</el-tag>
+        </template>
+        <!--禁用状态-->
+        <template v-slot:tagSlot="clo">
+          <el-tag v-if="clo.scope.row.FFORBIDSTATUS==='否'">{{ clo.scope.row.FFORBIDSTATUS }}</el-tag>
+          <el-tag v-else type="danger">{{ clo.scope.row.FFORBIDSTATUS }}</el-tag>
+        </template>
         <template v-slot:btnSlot="clo">
           <el-button type="danger" size="mini" @click="Retrial(clo.scope.row.FID)">重审bom</el-button>
           <el-button type="warning" size="mini" @click="editBom(clo.scope.row.FNUMBER)">修改bom</el-button>
@@ -58,6 +68,7 @@ import jcTitle from '@/components/Title'
 import { queryFailBomList, updateAgainReview } from '@/api/engineering/refuseBom'
 import search from '@/components/Search'
 import searData from '@/components/Search/mixin'
+import { Forbid, toDocument } from '@/components/ToMxamineState'
 export default {
   name: 'RefuseBom',
   inject: ['reload'],
@@ -83,6 +94,8 @@ export default {
         { label: '仓库', prop: 'FSTOCK', align: 'center', minWidth: '110px' },
         { label: '创建时间', prop: 'FCREATEDATE', align: 'center', minWidth: '110px' },
         { label: '状态流程', type: 'state', prop: 'FSTATUS', align: 'center', minWidth: '250px' },
+        { label: '禁用状态', type: 'tag', align: 'center' },
+        { label: '审核状态', type: 'states', align: 'center', minWidth: '100px' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
       ],
       // 表格数据
@@ -105,7 +118,9 @@ export default {
         ...this.searCollData
       }
       const { data: RES } = await queryFailBomList(DATA)
-      this.tableData = RES.array
+      this.tableData = RES.array.map(item => {
+        return (toDocument(item), Forbid(item))
+      })
       this.total = RES.total
     },
     // 搜索
