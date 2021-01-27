@@ -30,6 +30,12 @@
         </el-table-column>
         <el-table-column prop="fpriceObject" label="价目对象" min-width="80" align="center" />
         <el-table-column prop="fcreateDate" label="创建时间" min-width="80" align="center" :show-overflow-tooltip="true" />
+        <el-table-column label="审核状态" align="center" min-width="100px">
+          <template slot-scope="clo">
+            <el-tag v-if="clo.row.fdocumentStatus !== '重新审核'">{{ clo.row.fdocumentStatus }}</el-tag>
+            <el-tag v-else type="danger">{{ clo.row.fdocumentStatus }}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="attributeArray" label="操作" min-width="120" align="center" fixed="right">
           <template slot-scope="scope">
             <el-button type="primary" class="btn" size="mini" @click="particulars(scope.row.fid)">详情</el-button>
@@ -59,6 +65,7 @@ import {
 } from '@/api/marketManage/marketPriceList'
 import search from '@/components/Search'
 import searData from '@/components/Search/mixin'
+import { toMxAmina } from '@/components/ToMxamineState'
 export default {
   components: {
     jcTable,
@@ -88,7 +95,9 @@ export default {
     async handleGetUntreated() {
       const DATA = { pageNum: this.currentPage, pageSize: this.size, ...this.searCollData }
       const { data: RES, data: total } = await querySalPriceList(DATA)
-      this.tableData = RES.array
+      this.tableData = RES.array.map(item => {
+        return (toMxAmina(item))
+      })
       this.total = total.total
     },
     // 搜索

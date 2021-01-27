@@ -28,10 +28,16 @@
         <el-table-column prop="fsettleCurr" label="结算货币" min-width="80" align="center" />
         <el-table-column prop="fsaleDept" label="销售部门" min-width="80" align="center" />
         <el-table-column prop="fsaler" label="销售员" min-width="80" align="center" />
-        <el-table-column prop="fcloseStatus" label="关闭状态" min-width="80" align="center">
+        <el-table-column prop="fcloseStatus" label="禁用状态" min-width="80" align="center">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.fcloseStatus=='A'">正常</el-tag>
-            <el-tag v-else type="info">已关闭</el-tag>
+            <el-tag v-if="scope.row.fcloseStatus==='A'">否</el-tag>
+            <el-tag v-else type="danger">是</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="审核状态" align="center" min-width="100px">
+          <template slot-scope="clo">
+            <el-tag v-if="clo.row.fdocumentStatus !== '重新审核'">{{ clo.row.fdocumentStatus }}</el-tag>
+            <el-tag v-else type="danger">{{ clo.row.fdocumentStatus }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="attributeArray" label="操作" min-width="100px" align="center" fixed="right">
@@ -63,6 +69,7 @@ import {
 } from '@/api/marketManage/marketOrder'
 import search from '@/components/Search'
 import searData from '@/components/Search/mixin'
+import { toMxAmina } from '@/components/ToMxamineState'
 
 export default {
   components: {
@@ -93,7 +100,9 @@ export default {
     async handleGetUntreated() {
       const DATA = { pageNum: this.currentPage, pageSize: this.size, ...this.searCollData }
       const { data: RES, data: total } = await queryTSalOrderList(DATA)
-      this.tableData = RES.array
+      this.tableData = RES.array.map(item => {
+        return (toMxAmina(item))
+      })
       this.total = total.total
     },
     // 搜索

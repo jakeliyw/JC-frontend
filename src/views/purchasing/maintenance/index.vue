@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content mainten">
     <jc-title />
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane v-for="(item, index) of oneMaterielData" :key="index" :label="item.largeName" :name="item.largeCode">
@@ -10,24 +10,24 @@
             :cell-style="cellStyle"
             table-height="calc(100vh - 330px)"
           >
-            <el-table-column prop="fnumber" label="物料编码" align="center" min-width="180px" />
-            <el-table-column prop="fdescripTion" label="物料描述" align="center" min-width="500px" />
-            <el-table-column prop="foldnumber" label="旧物料编码" align="center" min-width="100px" />
-            <el-table-column prop="fmodel" label="型号" align="center" min-width="100px" />
-            <el-table-column prop="fname" label="供应商" align="center" min-width="150px" />
+            <el-table-column prop="fnumber" label="物料编码" align="center" min-width="120px" />
+            <el-table-column prop="fdescripTion" label="物料描述" align="center" min-width="400px" />
+            <el-table-column prop="foldnumber" label="旧物料编码" align="center" min-width="60px" />
+            <el-table-column prop="fmodel" label="型号" align="center" min-width="80px" />
+            <el-table-column prop="fname" label="供应商" align="center" min-width="140px" />
             <el-table-column prop="fspecificaTion" label="规格" align="center" min-width="120px" />
-            <el-table-column prop="fthickness" label="厚度" align="center" />
-            <el-table-column prop="fcreateDate" label="价格有效期" align="center" min-width="110px" />
+            <el-table-column prop="fthickness" label="厚度" align="center" min-width="60px" />
+            <el-table-column prop="fcreateDate" label="价格有效期" align="center" min-width="100px" />
             <el-table-column label="价格" align="center">
-              <el-table-column prop="fprice" label="净价" align="center" />
-              <el-table-column prop="ftaxRate" label="税率" align="center" />
-              <el-table-column prop="ftaxPrice" label="含税价" align="center" />
+              <el-table-column prop="fprice" label="净价" align="center" min-width="60px" />
+              <el-table-column prop="ftaxRate" label="税率" align="center" min-width="60px" />
+              <el-table-column prop="ftaxPrice" label="含税价" align="center" min-width="60px" />
             </el-table-column>
-            <el-table-column prop="unitName" label="计价单位" align="center" />
-            <el-table-column prop="fsettleType" label="付款方式" align="center" min-width="100px" />
-            <el-table-column prop="Stirng" label="最小起订量" align="center" min-width="100px" />
-            <el-table-column prop="Stirng" label="采购周期" align="center" />
-            <el-table-column prop="Stirng" label="账期" align="center" min-width="100px" />
+            <el-table-column prop="unitName" label="计价单位" align="center" min-width="50px" />
+            <el-table-column prop="fsettleType" label="付款方式" align="center" min-width="60px" />
+            <el-table-column prop="Stirng" label="最小起订量" align="center" min-width="60px" />
+            <el-table-column prop="Stirng" label="采购周期" align="center" min-width="60px" />
+            <el-table-column prop="Stirng" label="账期" align="center" min-width="60px" />
           </jc-table>
           <jcPagination
             v-show="total > 0"
@@ -124,16 +124,21 @@ export default {
 }
 </script>
 <style lang="scss">
-.el-tabs__nav{
-  white-space: initial
-}
-.el-tabs .el-tabs__item{
-  padding: 0 10px;
-  height: 30px;
-  line-height: 30px;
-}
- .el-table th{
-  padding: 5px 0;
+.mainten{
+  .el-tabs__nav{
+    white-space: pre-line;
+  }
+  .el-tabs .el-tabs__item{
+    padding: 0 10px;
+    height: 30px;
+    line-height: 30px;
+  }
+  .el-table {
+    border-color: #888;
+    th, td{
+      border-color: #888;
+    }
+  }
 }
 </style>
 <style scoped lang="scss">

@@ -262,13 +262,6 @@ export const asyncRouterMap = [
             component: () => import('@/views/market/marketManage/marketOrder/index'),
             meta: { title: '销售订单列表' },
             menu: 'marketOrder'
-          },
-          {
-            path: '/saleReport',
-            name: 'SaleReport',
-            component: () => import('@/views/market/marketManage/saleReport/index'),
-            meta: { title: '销售报表' },
-            menu: 'saleReport'
           }
         ]
       },
@@ -395,6 +388,13 @@ export const asyncRouterMap = [
             menu: 'createCustomer'
           }
         ]
+      },
+      {
+        path: '/saleReport',
+        name: 'SaleReport',
+        component: () => import('@/views/market/saleReport/index'),
+        meta: { title: '销售报表' },
+        menu: 'saleReport'
       }
     ]
   },
@@ -532,7 +532,7 @@ export const asyncRouterMap = [
       },
       {
         path: '/procurement',
-        name: 'procurement',
+        name: 'Procurement',
         component: () => import('@/views/purchasing/procurement/index'),
         meta: { title: '采购拆单', noCache: false },
         menu: 'procurement'
@@ -620,7 +620,7 @@ export const asyncRouterMap = [
     children: [
       {
         path: '/mrpView ',
-        name: 'MrpView ',
+        name: 'MrpView',
         component: () => import('@/views/production/mrpView/index'),
         meta: { title: '生产拆单' },
         menu: 'mrpView'

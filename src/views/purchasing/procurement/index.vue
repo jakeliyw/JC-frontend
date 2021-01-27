@@ -153,6 +153,7 @@ export default {
         { label: '型号', prop: 'itemXH', align: 'center' },
         { label: '物料编号', prop: 'itemCode', align: 'center', minWidth: '210px' },
         { label: '物料描述', prop: 'itemName', align: 'center', minWidth: '260px' },
+        { label: '尺寸', prop: 'cc', align: 'center', minWidth: '120px' },
         { label: '生产类型', prop: 'cglx', align: 'center', minWidth: '100px' },
         { label: '供应商', type: 'btn', prop: 'fsuppliername', align: 'center', minWidth: '150px' },
         { label: '仓库', type: 'tag', prop: 'ck', align: 'center', minWidth: '150px' },

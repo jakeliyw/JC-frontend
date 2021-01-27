@@ -200,7 +200,7 @@ import {
 } from '@/api/engineering/createBom'
 import { queryBomchildList, upDateBom } from '@/api/engineering/editBom'
 import { queryFtypeInfo, queryBomLog } from '@/api/engineering/deitalBom'
-import { Disable, toMxAmina } from '@/components/ToMxamineState'
+import { Forbid, toDocument } from '@/components/ToMxamineState'
 import { GMTToStr } from '@/utils'
 
 export default {
@@ -230,11 +230,11 @@ export default {
       sonDialogTableData: [],
       // 子项弹窗表格表头
       sonDialogHeaderTable: [
-        { label: '使用组织', prop: 'FUSEORG' },
-        { label: '编码', prop: 'FNUMBER' },
-        { label: '物料规格', prop: 'FSPECIFICATION' },
+        { label: '编码', prop: 'FNUMBER', align: 'center' },
+        { label: '物料规格', prop: 'FSPECIFICATION', align: 'center' },
         { label: '型号', prop: 'FMODEL', align: 'center' },
-        { label: '描述', prop: 'FDESCRIPTION', minWidth: '150px' },
+        { label: '描述', prop: 'FDESCRIPTION', minWidth: '150px', align: 'center' },
+        { label: '单价', prop: 'FPRICE', align: 'center' },
         { label: '创建时间', prop: 'FCREATEDATE', align: 'center' }
       ],
       // 其它表头
@@ -416,7 +416,7 @@ export default {
       const DATA = { pageNum: this.pageNum, pageSize: this.size, FNUMBER: this.FNUMBER }
       const { data: RES, total } = await queryBomSonList(DATA)
       this.sonDialogTableData = RES.map(item => {
-        return (toMxAmina(item), Disable(item))
+        return (toDocument(item), Forbid(item))
       })
       this.total = total
       this.parentTableVisible = true

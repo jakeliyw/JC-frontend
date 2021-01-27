@@ -38,7 +38,8 @@
           <el-table-column label="型号" prop="fmodel" align="center" />
           <!--审核状态-->
           <template v-slot:btnState="clo">
-            <el-tag>{{ clo.scope.row.fdocumentStatus }}</el-tag>
+            <el-tag v-if="clo.scope.row.fdocumentStatus !== '重新审核'">{{ clo.scope.row.fdocumentStatus }}</el-tag>
+            <el-tag v-else type="danger">{{ clo.scope.row.fdocumentStatus }}</el-tag>
           </template>
           <!--禁用状态-->
           <template v-slot:tagSlot="clo">
@@ -142,7 +143,8 @@ export default {
     async getMaterialList() {
       const DATA = {
         ...this.pagination,
-        ...this.searCollData
+        ...this.searCollData,
+        fnumberGroup: this.currentNodeKey
       }
       const { data: RES } = await queryTBdMaterialList(DATA)
       this.materialTableData = RES.array.map(item => {

@@ -36,6 +36,12 @@
             </el-steps>
           </template>
         </el-table-column>
+        <el-table-column label="审核状态" align="center" min-width="100px">
+          <template slot-scope="clo">
+            <el-tag v-if="clo.row.fdocumentStatus !== '重新审核'">{{ clo.row.fdocumentStatus }}</el-tag>
+            <el-tag v-else type="danger">{{ clo.row.fdocumentStatus }}</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column label="操作" min-width="80px" fixed="right" align="center">
           <template slot-scope="clo">
             <el-button type="primary" size="mini" @click="detailPurchase(clo.row.fid)">详情</el-button>
@@ -65,6 +71,7 @@ import {
 } from '@/api/marketManage/marketPriceList'
 import search from '@/components/Search'
 import searData from '@/components/Search/mixin'
+import { toMxAmina } from '@/components/ToMxamineState'
 export default {
   name: 'MarkedAudit',
   inject: ['reload'],
@@ -96,7 +103,9 @@ export default {
     async handleGetUntreated() {
       const DATA = { pageNum: this.currentPage, pageSize: this.size, ...this.searCollData }
       const { data: RES } = await queryReviewPriceList(DATA)
-      this.tableData = RES.array
+      this.tableData = RES.array.map(item => {
+        return (toMxAmina(item))
+      })
       this.total = RES.total
     },
     // 搜索

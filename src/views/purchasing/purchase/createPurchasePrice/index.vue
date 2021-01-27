@@ -148,6 +148,7 @@
                 size="mini"
                 type="date"
                 style="width: 150px"
+                value-format="yyyy-MM-dd"
                 placeholder="选择日期"
               />
             </template>
@@ -336,7 +337,7 @@ export default {
           fmaterialId: '', // 物料编码
           fprice: 0, // 单价
           ftaxPrice: 0, // 含税单价
-          fminNum: 0, // 最小起订量
+          fminNum: 1, // 最小起订量
           fupPrice: 0, // 价格上限
           fdownPrice: 0, // 价格下限
           feffectiveDate: '', // 生效时间
@@ -428,14 +429,15 @@ export default {
       ftaxPriceDisabled: true, // 含税单价禁用
       // 点击行的序号
       tableIndex: 0,
-      // 价目价目表头
+      selectTaxRate: '', // 供应商选中税率
+      // 价目表头
       purchaseForm: {
         teamList: [], // 组织
         fcreateOrgId: 1, // 组织值
         priceList: [], // 价目表对象
-        fpriceObject: '', // 价目表值
+        fpriceObject: 'A', // 价目表值
         priceTypeList: [], // 价格类型
-        fpriceType: '', // 价格类型值
+        fpriceType: '2', // 价格类型值
         fcurrencyId: '', // 币别id
         fpaezBase: '', // 供应商税率id
         fpaezBaseName: '', // 供应商税率
@@ -519,7 +521,6 @@ export default {
           }
         }
         const DETAILS = this.tableData.map(item => {
-          item.feffectiveDate = this.$moment(item.feffectiveDate).format('YYYY-MM-DD HH:mm:ss')
           return {
             fmaterialId: item.FMATERIALID,
             fprice: item.fprice,
@@ -581,6 +582,7 @@ export default {
       this.tableData.forEach(list => {
         list.ftaxRate = item.ftaxRate
       })
+      this.selectTaxRate = item.ftaxRate
       this.purchaseForm.fpaezBase = item.ftaxrateId
       this.purchaseForm.fpaezBaseName = item.fname
       this.openTaxRate = false
@@ -632,7 +634,7 @@ export default {
     async handleGetPurchase() {
       const { data: RES } = await queryTOrgOrganizationsL()
       this.purchaseForm.teamList = RES.map(item => {
-        return { label: item.FNAME, value: item.FPKID }
+        return { label: item.fname, value: item.fpkId }
       })
     },
     // 获取价目表
@@ -670,11 +672,11 @@ export default {
             fmaterialId: '', // 物料编码
             fprice: 0, // 单价
             ftaxPrice: 0, // 含税单价
-            fminNum: 0, // 最小起订量
+            fminNum: 1, // 最小起订量
             fupPrice: 0, // 价格上限
             fdownPrice: 0, // 价格下限
             feffectiveDate: '', // 生效时间
-            ftaxRate: 0, // 税率
+            ftaxRate: this.selectTaxRate, // 税率
             fdescripTion: '' // 描述
           }
         )

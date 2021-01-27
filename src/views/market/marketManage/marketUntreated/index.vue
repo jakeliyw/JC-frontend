@@ -33,10 +33,16 @@
             </el-steps>
           </template>
         </el-table-column>
-        <el-table-column label="关闭状态" align="center">
+        <el-table-column label="禁用状态" align="center">
           <template slot-scope="clo">
-            <el-tag v-if="clo.row.fcloseStatus==='A'">正常</el-tag>
-            <el-tag v-else>已关闭</el-tag>
+            <el-tag v-if="clo.row.fcloseStatus==='A'">否</el-tag>
+            <el-tag v-else type="danger">是</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="审核状态" align="center" min-width="100px">
+          <template slot-scope="clo">
+            <el-tag v-if="clo.row.fdocumentStatus !== '重新审核'">{{ clo.row.fdocumentStatus }}</el-tag>
+            <el-tag v-else type="danger">{{ clo.row.fdocumentStatus }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="操作" min-width="230px" fixed="right" align="center">
@@ -72,6 +78,7 @@ import {
 } from '@/api/marketManage/marketOrder'
 import search from '@/components/Search/index'
 import searData from '@/components/Search/mixin'
+import { toMxAmina } from '@/components/ToMxamineState'
 export default {
   name: 'MarketUntreated',
   inject: ['reload'],
@@ -102,7 +109,9 @@ export default {
     async handleGetUntreated() {
       const DATA = { pageNum: this.currentPage, pageSize: this.size, ...this.searCollData }
       const { data: RES } = await queryUntreateSalorderList(DATA)
-      this.tableData = RES.array
+      this.tableData = RES.array.map(item => {
+        return (toMxAmina(item))
+      })
       this.total = RES.total
     },
     // 搜索

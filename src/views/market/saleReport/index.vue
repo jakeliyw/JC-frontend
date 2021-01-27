@@ -12,8 +12,7 @@
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
-              >
-              </el-option>
+              />
             </el-select>
             <span class="parentItemNo">交货日期</span>
             <el-date-picker
@@ -45,7 +44,7 @@
 </template>
 
 <script>
-import jcTitle from '@/components/Title'
+import jcTitle from '@/components/Title/index'
 export default {
   name: 'Index',
   components: {

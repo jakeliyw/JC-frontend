@@ -17,6 +17,25 @@ export function toMxAmina(item) {
   }
   return item
 }
+export function toDocument(item) {
+  switch (item.FDOCUMENTSTATUS) {
+    case 'A':
+      item.FDOCUMENTSTATUS = '创建'
+      break
+    case 'B':
+      item.FDOCUMENTSTATUS = '审核中'
+      break
+    case 'C':
+      item.FDOCUMENTSTATUS = '已审核'
+      break
+    case 'D':
+      item.FDOCUMENTSTATUS = '重新审核'
+      break
+    default:
+      item.FDOCUMENTSTATUS = '创建'
+  }
+  return item
+}
 
 export function Disable(item) {
   switch (item.fforbidStatus) {
@@ -28,6 +47,19 @@ export function Disable(item) {
       break
     default:
       item.fforbidStatus = '否'
+  }
+  return item
+}
+export function Forbid(item) {
+  switch (item.FFORBIDSTATUS) {
+    case 'A':
+      item.FFORBIDSTATUS = '否'
+      break
+    case 'B':
+      item.FFORBIDSTATUS = '是'
+      break
+    default:
+      item.FFORBIDSTATUS = '否'
   }
   return item
 }

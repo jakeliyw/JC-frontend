@@ -24,6 +24,9 @@
             <span class="jumpMateriel" @click="jumpMateriel(scope.row.fnumber)">{{ scope.row.fnumber }}</span>
           </template>
         </el-table-column>
+        <template v-slot:btnState="clo">
+          <el-tag>{{clo.scope.row.fdocumentStatus}}</el-tag>
+        </template>
         <template v-slot:btnSlot="clo">
           <el-button type="danger" size="mini" @click="editPurchase(clo.scope.row.fid)">反审核</el-button>
           <el-button v-show="false" size="mini" type="danger" @click="deletePurchase(clo.scope.row.fid)">删除价目</el-button>
@@ -50,6 +53,7 @@ import jcTable from '@/components/Table/index'
 import jcPagination from '@/components/Pagination/index'
 import jcTitle from '@/components/Title'
 import { queryTPurPriceList, updateAgainReview } from '@/api/purchaseManagement/purchasePrice'
+import { toMxAmina } from '@/components/ToMxamineState'
 import search from '@/components/Search/index'
 import searData from '@/components/Search/mixin'
 export default {
@@ -73,15 +77,13 @@ export default {
       },
       cellStyle: { padding: '10, 10' },
       tableHeader: [
-        { label: '物料描述', prop: 'fdescripTion', minWidth: '400px', align: 'center' },
-        { label: '单价', prop: 'fprice', align: 'center' },
-        { label: '计价单位', prop: 'funit', align: 'center' },
-        { label: '含税单价', prop: 'ftaxPrice', align: 'center' },
+        { label: '价目编码', prop: 'fnumber', align: 'center' },
+        { label: '价目表名称', prop: 'fname', minWidth: '100px', align: 'center' },
+        { label: '供应商名称', prop: 'fsupplier', align: 'center', minWidth: '200px' },
+        { label: '是否含税', prop: 'fisIncludedTax', align: 'center' },
         { label: '币别', prop: 'fcurrency', align: 'center' },
-        { label: '税率', prop: 'ftaxRate', align: 'center' },
-        { label: '含税', prop: 'fisIncludedTax', align: 'center' },
-        { label: '失效日期', prop: 'feffectiveDate', align: 'center' },
-        { label: '生效日期', prop: 'fexpiryDate', align: 'center' },
+        { label: '生效时间', prop: 'fcreateDate', align: 'center' },
+        { label: '审核状态', type: 'state', prop: 'fdocumentStatus', align: 'center' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
       ],
       // 表格数据
@@ -99,7 +101,9 @@ export default {
     // 获取列表数据
     async handleGetPurchaseList() {
       const { data: RES } = await queryTPurPriceList({ ...this.getPriceList, ...this.searCollData })
-      this.tableData = RES.array
+      this.tableData = RES.array.map(item => {
+        return toMxAmina(item)
+      })
       this.total = RES.total
     },
     // 新增采购

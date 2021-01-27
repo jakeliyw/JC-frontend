@@ -467,7 +467,7 @@ export default {
       this.modifyPriceTable = RES.detail
       const { data: TEAMlIST } = await queryTOrgOrganizationsL()
       this.teamList = TEAMlIST.map(item => {
-        return { label: item.FNAME, value: item.FPKID }
+        return { label: item.fname, value: item.fpkId }
       })
       this.optionValue = {
         fcreateOrgId: 1, // 组织

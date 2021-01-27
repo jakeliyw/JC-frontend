@@ -26,6 +26,16 @@
         <template v-slot:btnState="clo">
           <el-tag>{{ clo.scope.row.FDOCUMENTSTATUS }}</el-tag>
         </template>
+        <!--审核状态-->
+        <template v-slot:btnStates="clo">
+          <el-tag v-if="clo.scope.row.FDOCUMENTSTATUS !== '重新审核'">{{ clo.scope.row.FDOCUMENTSTATUS }}</el-tag>
+          <el-tag v-else type="danger">{{ clo.scope.row.FDOCUMENTSTATUS }}</el-tag>
+        </template>
+        <!--禁用状态-->
+        <template v-slot:tagSlot="clo">
+          <el-tag v-if="clo.scope.row.FFORBIDSTATUS==='否'">{{ clo.scope.row.FFORBIDSTATUS }}</el-tag>
+          <el-tag v-else type="danger">{{ clo.scope.row.FFORBIDSTATUS }}</el-tag>
+        </template>
         <template v-slot:btnSlot="clo">
           <el-button size="mini" type="warning" @click="queryReportForm(clo.scope.row.FNUMBER)">查看报表</el-button>
           <el-button type="danger" size="mini" @click="Retrial(clo.scope.row.FID)">反审核</el-button>
@@ -51,7 +61,7 @@ import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
 import { queryBomList } from '@/api/engineering/bomList'
-import { toMxAmina } from '@/components/ToMxamineState'
+import { Forbid, toDocument } from '@/components/ToMxamineState'
 import { queryFtypeInfo } from '@/api/engineering/deitalBom'
 import { updateAgainReview } from '@/api/engineering/refuseBom'
 import search from '@/components/Search'
@@ -81,6 +91,8 @@ export default {
         { label: '物料规格', prop: 'FSPECIFICATION', minWidth: '120px', align: 'center' },
         { label: '仓库', prop: 'FSTOCK', align: 'center' },
         { label: '创建时间', prop: 'FCREATEDATE', align: 'center', minWidth: '110px' },
+        { label: '禁用状态', type: 'tag', align: 'center' },
+        { label: '审核状态', type: 'states', align: 'center', minWidth: '100px' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '300px', align: 'center' }
       ],
       // 表格数据
@@ -104,7 +116,7 @@ export default {
       }
       const { data: RES } = await queryBomList(DATA)
       this.tableData = RES.array.map(item => {
-        return toMxAmina(item)
+        return (toDocument(item), Forbid(item))
       })
       this.total = RES.total
     },
