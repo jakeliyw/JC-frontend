@@ -58,8 +58,8 @@
         <jc-information
           :information="information"
           :company="company"
-          :detail-disabled="true"
-          :detail-show="false"
+          :detailDisabled="true"
+          :detailShow="false"
         />
       </el-tab-pane>
       <el-tab-pane label="其它" name="log">
@@ -323,6 +323,10 @@ export default {
           },
           fheight: {
             label: '高',
+            disabled: 'disabled'
+          },
+          fopenLength: {
+            label: '展开长',
             disabled: 'disabled'
           }
         }
