@@ -590,6 +590,7 @@ export default {
         flength: this.dimensionalValue.flength,
         fwidth: this.dimensionalValue.fwidth,
         fheight: this.dimensionalValue.fheight,
+        fopenLength: this.dimensionalValue.fopenLength,
         fweightUnitName: this.weightValue.fweightUnitName,
         fgrossWeight: this.weightValue.fgrossWeight,
         fnetWeight: this.weightValue.fnetWeight,
@@ -619,11 +620,12 @@ export default {
       // 图片可以为空
       DATA.fimg = this.imageUrl
       DATA.smallCode = SmallCode
-      const { code, message } = await updateMaterialDetail(DATA)
+      const { code, message, data } = await updateMaterialDetail(DATA)
       if (code !== 0) {
         this.$message.error(message)
         return
       }
+      this.$route.query.fnumber = data
       this.$message.success(message)
       this.reload()
     },
@@ -948,6 +950,11 @@ export default {
         },
         fheight: {
           label: '高',
+          span: 8,
+          type: 'number'
+        },
+        fopenLength: {
+          label: '展开长',
           span: 8,
           type: 'number'
         }

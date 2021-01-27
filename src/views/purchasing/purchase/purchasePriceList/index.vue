@@ -25,7 +25,7 @@
           </template>
         </el-table-column>
         <template v-slot:btnState="clo">
-          <el-tag>{{clo.scope.row.fdocumentStatus}}</el-tag>
+          <el-tag>{{ clo.scope.row.fdocumentStatus }}</el-tag>
         </template>
         <template v-slot:btnSlot="clo">
           <el-button type="danger" size="mini" @click="editPurchase(clo.scope.row.fid)">反审核</el-button>

@@ -250,7 +250,8 @@ export default {
       inTheData: [], // 中类数据
       smallData: [], // 小类数据
       attributeData: [], // 属性数据
-      AttributeTypeID: '' // 修改属性ID
+      AttributeTypeID: '', // 修改属性ID
+      serialType: ''
     }
   },
   mounted() {
@@ -293,8 +294,10 @@ export default {
       }
       if (num === 5) { // 修改三类名称
         this.diaTitle = '修改'
+        console.log(ev)
         this.newMediumName = ev.mediumName
         this.inputValue4 = ev.name
+        this.serialType = ev.serialType
         this.AttributeTypeID = ev.id
       } else {
         this.diaTitle = '新增'
@@ -359,7 +362,7 @@ export default {
           return
         }
       } else if (this.newClassID === 5) { // 修改三类名称
-        const DATA = { id: this.AttributeTypeID, name: this.inputValue4 }
+        const DATA = { id: this.AttributeTypeID, name: this.inputValue4, serialType: this.serialType }
         const { code, message } = await updateSerialType(DATA)
         if (code === 0) {
           this.$message({

@@ -152,16 +152,11 @@
       <!--      条件区域-->
       <div class="dialogForm">
         <div class="bom-form">
-          <span class="materiel-code">物料编码</span>
-          <el-input v-model="FNUMBER" class="input-width" size="mini" placeholder="请输入物料编码" @keyup.enter.native="handleSearchSonTable" />
-          <span class="materiel-code">物料描述</span>
-          <el-input v-model="FDESCRIPTION" class="input-width" size="mini" placeholder="请输入物料描述" @keyup.enter.native="handleSearchSonTable" />
-          <span class="materiel-code">物料规格</span>
-          <el-input v-model="FSPECIFICATION" class="input-width" size="mini" placeholder="请输入规格" @keyup.enter.native="handleSearchSonTable" />
+          <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleSearchSonTable" />
           <el-button
             type="primary"
             size="mini"
-            class="search-dialog"
+            class="search-dialog btn"
             @click="handleSearchSonTable"
           >搜索</el-button>
         </div>
@@ -202,6 +197,8 @@ import { queryBomchildList, upDateBom } from '@/api/engineering/editBom'
 import { queryFtypeInfo, queryBomLog } from '@/api/engineering/deitalBom'
 import { Forbid, toDocument } from '@/components/ToMxamineState'
 import { GMTToStr } from '@/utils'
+import search from '@/components/Search'
+import searData from '@/components/Search/mixin'
 
 export default {
   name: 'EditBom',
@@ -209,12 +206,15 @@ export default {
     jcTable,
     jcPagination,
     jcForm,
-    jcTitle
+    jcTitle,
+    search
   },
-  mixins: [jumpMateriel, getForm],
+  mixins: [jumpMateriel, getForm, searData],
   inject: ['reload'],
   data() {
     return {
+      ftype: 0,
+      fbillNo: 'fnumber', // 编码
       total: 0, // 总条目
       pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
@@ -386,9 +386,7 @@ export default {
       const DATA = {
         pageNum: this.pageNum,
         pageSize: this.size,
-        fnumber: this.FNUMBER,
-        fdescription: this.FDESCRIPTION,
-        fspecification: this.FSPECIFICATION
+        ...this.searCollData
       }
       const { data: RES, total } = await queryBomSonList(DATA)
       this.sonDialogTableData = RES
@@ -516,5 +514,13 @@ export default {
 <style scoped lang="scss">
 .content {
   @include bomCreate;
+  .dialogForm{
+    position:relative;
+    .btn{
+      transform: translateY(18%);
+      margin-left: 410px!important;
+      z-index: 999;
+    }
+  }
 }
 </style>

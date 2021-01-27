@@ -58,8 +58,8 @@
         <jc-information
           :information="information"
           :company="company"
-          :detailDisabled="true"
-          :detailShow="false"
+          :detail-disabled="true"
+          :detail-show="false"
         />
       </el-tab-pane>
       <el-tab-pane label="其它" name="log">

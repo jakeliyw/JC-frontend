@@ -886,6 +886,7 @@ export default {
         flength: 0.0,
         fwidth: 0.0,
         fheight: 0.0,
+        fopenLength: 0.0,
         fvolume: 0.0,
         fthickness: 0.0
       }
@@ -920,6 +921,11 @@ export default {
         },
         fheight: {
           label: '高',
+          span: 8,
+          type: 'number'
+        },
+        fopenLength: {
+          label: '展开长',
           span: 8,
           type: 'number'
         }
