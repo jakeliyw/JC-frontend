@@ -16,8 +16,16 @@
       >
         <el-table-column label="价目名称" prop="fname" align="center" show-overflow-tooltip />
         <el-table-column label="供应商名称" prop="fsupplier" align="center" show-overflow-tooltip min-width="150px" />
+        <el-table-column
+          label="物料编码"
+          align="center"
+        >
+          <template slot-scope="scope">
+            <span class="jumpMateriel" @click="jumpMateriel(scope.row.fnumber)">{{ scope.row.fnumber }}</span>
+          </template>
+        </el-table-column>
         <template v-slot:btnState="clo">
-          <el-tag>{{clo.scope.row.fdocumentStatus}}</el-tag>
+          <el-tag>{{ clo.scope.row.fdocumentStatus }}</el-tag>
         </template>
         <template v-slot:btnSlot="clo">
           <el-button type="danger" size="mini" @click="editPurchase(clo.scope.row.fid)">反审核</el-button>

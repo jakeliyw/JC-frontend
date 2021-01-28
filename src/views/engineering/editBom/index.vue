@@ -199,8 +199,6 @@ import { Forbid, toDocument } from '@/components/ToMxamineState'
 import { GMTToStr } from '@/utils'
 import search from '@/components/Search'
 import searData from '@/components/Search/mixin'
-import Logo from '@/layout/components/Sidebar/Logo'
-
 export default {
   name: 'EditBom',
   components: {

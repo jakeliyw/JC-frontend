@@ -45,6 +45,10 @@ export default {
     msg: {
       type: String,
       default: ''
+    },
+    msg2: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -80,7 +84,7 @@ export default {
       } else if (this.msg === '采购订单') {
         this.ddlx = 'CGDD'
       }
-      const DATA = { ddlx: this.ddlx, bm: this.stork.fname }
+      const DATA = { ddlx: this.ddlx, bm: this.stork.fname, itemCode: this.msg2 }
       const { data: RES } = await Show_StockInfo(DATA)
       this.storklDialogData = RES
       this.stork.total = RES.total

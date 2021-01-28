@@ -14,21 +14,28 @@
         :cell-style="cellStyle"
         serial
       >
-        <el-table-column v-if="false" prop="fid" label="销售订单ID" min-width="80" align="center" />
-        <el-table-column prop="fcreateDate" label="销售订单时间" min-width="150" align="center" />
-        <el-table-column prop="fbillType" label="单据类型" min-width="120" align="center" />
-        <el-table-column prop="fbillNo" label="销售订单号" min-width="100" align="center">
+        <el-table-column v-if="false" prop="fid" label="销售订单ID" min-width="80px" align="center" />
+        <el-table-column prop="fcreateDate" label="销售订单时间" min-width="150px" align="center" />
+        <el-table-column prop="fbillType" label="单据类型" min-width="120px" align="center" />
+        <el-table-column prop="fbillNo" label="销售订单号" min-width="100px" align="center">
           <template slot-scope="scope">
             <el-link type="primary" @click="particulars(scope.row.fid)">{{ scope.row.fbillNo }}</el-link>
           </template>
         </el-table-column>
-        <el-table-column prop="fprimaryGroup" label="客户分组" min-width="80" align="center" />
-        <el-table-column prop="customer" label="客户" min-width="80" align="center" />
-        <el-table-column prop="fqty" label="订单产品数量" min-width="100" align="center" />
-        <el-table-column prop="fsettleCurr" label="结算货币" min-width="80" align="center" />
-        <el-table-column prop="fsaleDept" label="销售部门" min-width="80" align="center" />
-        <el-table-column prop="fsaler" label="销售员" min-width="80" align="center" />
-        <el-table-column prop="fcloseStatus" label="禁用状态" min-width="80" align="center">
+        <el-table-column prop="fpaezText" label="客户订单号" min-width="100px" align="center" />
+        <el-table-column
+          prop="fprimaryGroup"
+          label="客户分组"
+          min-width="80px"
+          align="center"
+          :show-overflow-tooltip="true"
+        />
+        <el-table-column prop="customer" label="客户" min-width="100px" align="center" :show-overflow-tooltip="true" />
+        <el-table-column prop="fqty" label="订单产品数量" min-width="100px" align="center" />
+        <el-table-column prop="fsettleCurr" label="结算货币" min-width="80px" align="center" />
+        <el-table-column prop="fsaleDept" label="销售部门" min-width="80px" align="center" />
+        <el-table-column prop="fsaler" label="销售员" min-width="80px" align="center" />
+        <el-table-column prop="fcloseStatus" label="禁用状态" min-width="80px" align="center">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.fcloseStatus==='A'">否</el-tag>
             <el-tag v-else type="danger">是</el-tag>
@@ -42,7 +49,7 @@
         </el-table-column>
         <el-table-column prop="attributeArray" label="操作" min-width="100px" align="center" fixed="right">
           <template slot-scope="scope">
-            <el-button type="primary" class="btn" size="mioni" @click="particulars(scope.row.fid)">详情</el-button>
+            <el-button type="primary" class="btn" size="mini" @click="particulars(scope.row.fid)">详情</el-button>
           </template>
         </el-table-column>
       </jc-table>
@@ -120,21 +127,26 @@ export default {
 <style lang="scss" scoped>
 .content {
   @include listBom;
-  .header{
-    position:relative;
-    .header-name{
+
+  .header {
+    position: relative;
+
+    .header-name {
       width: 100%;
     }
-    .btn{
+
+    .btn {
       transform: translateY(18%);
-      margin-left: 410px!important;
+      margin-left: 410px !important;
       z-index: 999;
     }
   }
 }
-.inTheBtn{
+
+.inTheBtn {
   transform: translateY(-15px);
 }
+
 .tag-mar {
   margin-right: 3px;
   margin-bottom: 3px;

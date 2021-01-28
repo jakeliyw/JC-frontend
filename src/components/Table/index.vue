@@ -23,7 +23,7 @@
       width="50"
     />
     <!--    id列-->
-    <el-table-column v-if="serial" type="index" label="序号" width="60" align="center" />
+    <el-table-column v-if="serial" type="index" :sortable="sortable" label="序号" width="80" align="center" />
     <slot />
     <el-table-column
       v-for="(col, index) of cpTableHeader"
@@ -33,8 +33,10 @@
       :label="col.label"
       :width="col.width"
       :align="col.align || colAlign"
+      :header-align="col.headerAlign"
       :min-width="col.minWidth || colMinWidth"
       :show-overflow-tooltip="tooltip"
+      :sortable="sortable"
     >
       <!--      操作-->
       <template slot-scope="scope">
@@ -50,6 +52,8 @@
         <slot v-else-if="col.type === 'btn'" name="btnSlot" :scope="scope" />
         <!--        tag-->
         <slot v-else-if="col.type === 'tag'" name="tagSlot" :scope="scope" />
+        <!--        tag-->
+        <slot v-else-if="col.type === 'bill'" name="billSlot" :scope="scope" />
       </template>
     </el-table-column>
   </el-table>
@@ -87,6 +91,10 @@ export default {
     tooltip: { // 单元格内容过长显示省略号
       type: Boolean,
       default: true
+    },
+    sortable: { // 单元格内容过长显示省略号
+      type: Boolean,
+      default: false
     },
     colMinWidth: { // 单元格最小宽度
       type: String,
@@ -160,6 +168,11 @@ export default {
       if (index % 2 === 0) {
         return 'warning-row'
       }
+    },
+    // 筛选
+    filterHandler(value, row, column) {
+      const property = column['property']
+      return row[property] === value
     }
   }
 }

@@ -5,7 +5,7 @@
       <el-tab-pane label="调价" name="modifyPrice" class="layout">
         <div class="header">
           <el-button size="mini" @click="refresh">刷新</el-button>
-          <el-button size="mini" type="primary" @click="preservation()">确定更新</el-button>
+          <el-button size="mini" type="primary" @click="preservation">确定更新</el-button>
         </div>
         <jc-form ref="zrf" :option-value="optionValue" :options="options">
           <el-input v-model="optionValue.fdataValue" class="input-width" size="mini" disabled>
@@ -287,7 +287,6 @@ export default {
   methods: {
     // 保存调价
     preservation() {
-      console.log('1')
       for (const RES of this.modifyPriceTable) {
         if (RES.fid === '' || RES.fmaterialId === '' || RES.fafterPrice === 0 || RES.fafterTaxPrice === 0) {
           this.$message.warning('表格不能为空,或表格值不能为0')
