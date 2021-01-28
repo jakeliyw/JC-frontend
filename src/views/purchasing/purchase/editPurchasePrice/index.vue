@@ -179,13 +179,8 @@
       @close="closeDialogForm"
     >
       <div class="materiel-form">
-        <span class="materiel-code">物料编码</span>
-        <el-input v-model="FNUMBER" class="input-width" size="mini" placeholder="请输入物料编码" @keyup.enter.native="getGetMateriel" />
-        <span class="materiel-code">物料描述</span>
-        <el-input v-model="FDESCRIPTION" class="input-width" size="mini" placeholder="请输入物料描述" @keyup.enter.native="getGetMateriel" />
-        <span class="materiel-code">物料规格</span>
-        <el-input v-model="FSPECIFICATION" class="input-width" size="mini" placeholder="请输入规格" @keyup.enter.native="getGetMateriel" />
-        <el-button size="mini" type="primary" @click="getGetMateriel">搜索</el-button>
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="getGetMateriel" />
+        <el-button size="mini" type="primary" class="btn" @click="getGetMateriel">搜索</el-button>
       </div>
       <jc-table
         :table-data="materielDialogData"
@@ -216,6 +211,8 @@ import {
 } from '@/api/purchaseManagement/createPurchasePrice'
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination/index'
+import search from '@/components/Search'
+import searData from '@/components/Search/mixin'
 
 export default {
   name: 'EditPurchasePrice',
@@ -223,12 +220,15 @@ export default {
     jcTable,
     jcPagination,
     jcTitle,
-    jcOther
+    jcOther,
+    search
   },
-  mixins: [jumpMateriel],
+  mixins: [jumpMateriel, searData],
   inject: ['reload'],
   data() {
     return {
+      ftype: 0,
+      fbillNo: 'fnumber', // 编码
       activeName: 'purchase', // 默认在采购
       tableData: [], // 采购价目表
       tableHeader: [
@@ -350,9 +350,7 @@ export default {
     async getGetMateriel() {
       const DATA = {
         ...this.materielPagination,
-        fnumber: this.FNUMBER,
-        fdescription: this.FDESCRIPTION,
-        fspecification: this.FSPECIFICATION
+        ...this.searCollData
       }
       const { data: RES, total } = await queryBomSonList(DATA)
       this.materielDialogData = RES
@@ -511,7 +509,13 @@ export default {
   align-items: center;
   flex-direction: row;
   margin-bottom: 20px;
+  position:relative;
 
+  .btn{
+    transform: translateY(18%);
+    margin-left: 410px!important;
+    z-index: 999;
+  }
   .materiel-code {
     font-weight: bold;
     font-size: 14px;

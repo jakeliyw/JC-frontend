@@ -266,6 +266,7 @@
         :table-header="contrastHeader"
         serial
         table-height="200px"
+        :cell-style="cellStyle"
       />
       <jc-pagination
         v-show="total > 0"
@@ -366,7 +367,6 @@ export default {
       weightTableData: [], // 重量单位数据
       sizeTableData: [], // 尺寸单位
       basicUnit: [], // 基本单位
-      fmaterialId: '', // 物料id
       tableHeader: [
         { label: '基本单位编码', prop: 'fnumber', align: 'center' },
         { label: '基本单位名称', prop: 'fname', align: 'center ' },
@@ -603,8 +603,11 @@ export default {
           return
         }
       }
-      const RES = [this.fisasset, this.fisinventory, this.fisproduce, this.fispurchase, this.fissale,
-        this.fissubcontract].includes(false)
+      const CHECKOUT = [this.fisasset, this.fisinventory, this.fisproduce, this.fispurchase, this.fissale,
+        this.fissubcontract]
+      const RES = CHECKOUT.every(item => {
+        return item === false
+      })
       if (RES === false) {
         this.$message.warning('控制信息必选一项！')
         return
@@ -625,8 +628,14 @@ export default {
         this.$message.error(message)
         return
       }
-      this.$route.query.fnumber = data
       this.$message.success(message)
+      this.$router.push({
+        name: 'EditMateriel',
+        query: {
+          fnumber: data,
+          fmaterialId: this.$route.query.fmaterialId
+        }
+      })
       this.reload()
     },
     // 三类物料
@@ -759,8 +768,7 @@ export default {
     },
     // 获取表单
     async handleForm() {
-      this.fmaterialId = this.$route.query.fnumber
-      const { data: RES } = await queryMaterialDetail({ fnumber: this.fmaterialId })
+      const { data: RES } = await queryMaterialDetail({ fnumber: this.$route.query.fnumber })
       this.fispurchase = RES.fispurchase
       this.fissale = RES.fissale
       this.fisinventory = RES.fisinventory
@@ -923,10 +931,15 @@ export default {
         fvolumeunitName: {
           label: '尺寸单位',
           type: 'slot',
-          span: 8,
+          span: 24,
           rules: [
             { required: true, message: '请选择尺寸单位', trigger: 'blur' }
           ]
+        },
+        fopenLength: {
+          label: '展开长',
+          span: 8,
+          type: 'number'
         },
         fvolume: {
           label: '直径',
@@ -950,11 +963,6 @@ export default {
         },
         fheight: {
           label: '高',
-          span: 8,
-          type: 'number'
-        },
-        fopenLength: {
-          label: '展开长',
           span: 8,
           type: 'number'
         }

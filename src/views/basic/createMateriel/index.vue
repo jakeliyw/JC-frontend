@@ -263,6 +263,7 @@
         :table-header="contrastHeader"
         serial
         table-height="200px"
+        :cell-style="cellStyle"
       />
       <jc-pagination
         v-show="total > 0"
@@ -550,10 +551,6 @@ export default {
       if (codeNumber === undefined) {
         return
       }
-      if (fattribtte.includes(undefined)) {
-        this.$message.warning('物料属性必须选择')
-        return
-      }
       const smallCode = `${codeNumber.toString()}`
       const DATA = {
         fcreateOrgId: ITEM.value,
@@ -584,22 +581,13 @@ export default {
         fattribtte: JSON.stringify(fattribtte)
       }
       Object.assign(DATA, this.dimensionalValue, this.weightValue, this.information)
-      for (const key in DATA) {
-        if (DATA[key] === '' || DATA[key] === undefined) {
-          this.$message.warning('内容输入不完整，请重新输入！')
-          return
-        }
-      }
-      const RES = [this.fisasset, this.fisinventory, this.fisproduce, this.fispurchase, this.fissale,
-        this.fissubcontract].includes(false)
-      if (RES === false) {
+      const CHECKOUT = [this.fisasset, this.fisinventory, this.fisproduce, this.fispurchase, this.fissale,
+        this.fissubcontract]
+      const RES = CHECKOUT.every(item => {
+        return item === false
+      })
+      if (RES === true) {
         this.$message.warning('控制信息必选一项！')
-        return
-      } else if (this.weightValue.fnetWeight > this.weightValue.fgrossWeight) {
-        this.$message.warning('净重不能大于毛重')
-        return
-      } else if (!this.information.fstockId) {
-        this.$message.warning('请切换到信息，选择仓库')
         return
       }
       // 图片可以为空
@@ -607,7 +595,7 @@ export default {
       // 物料备注可以为空
       DATA.fremarks = this.basicValue.fremarks
       const { code, message } = await insertMaterialDetail(DATA)
-      if (code !== 0) {
+      if (code === 1) {
         this.$message.error(message)
         return
       }
@@ -894,10 +882,15 @@ export default {
         fname: {
           label: '尺寸单位',
           type: 'slot',
-          span: 8,
+          span: 24,
           rules: [
             { required: true, message: '请选择尺寸单位', trigger: 'blur' }
           ]
+        },
+        fopenLength: {
+          label: '展开长',
+          span: 8,
+          type: 'number'
         },
         fvolume: {
           label: '直径',
@@ -921,11 +914,6 @@ export default {
         },
         fheight: {
           label: '高',
-          span: 8,
-          type: 'number'
-        },
-        fopenLength: {
-          label: '展开长',
           span: 8,
           type: 'number'
         }

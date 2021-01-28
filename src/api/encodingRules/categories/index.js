@@ -96,3 +96,11 @@ export function updateAttributeType(data) {
     data
   })
 }
+// 修改小类明细
+export function updateSerialType(data) {
+  return request({
+    url: '/tJxSerialtype/updateSerialType',
+    method: 'put',
+    data
+  })
+}

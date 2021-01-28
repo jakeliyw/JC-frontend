@@ -97,11 +97,11 @@
         <el-table-column prop="mediumName" label="二类名称" align="center" />
         <el-table-column prop="number" label="三类编码" align="center" />
         <el-table-column prop="name" label="三类名称" align="center" />
-        <!--        <el-table-column label="操作" align="center">-->
-        <!--          <template slot-scope="">-->
-        <!--            <el-button type="danger" size="mini">删除</el-button>-->
-        <!--          </template>-->
-        <!--        </el-table-column>-->
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button type="warning" size="mini" @click="increased(5,scope.row)">修改</el-button>
+          </template>
+        </el-table-column>
       </jc-table>
     </el-dialog>
     <!--    属性列表弹框-->
@@ -137,10 +137,11 @@
       :close-on-click-modal="false"
       width="50%"
       append-to-body
+      :before-close="handClose"
     >
       <el-form label-width="100px">
-        <el-form-item v-if="newClassID===2" label="二类">
-          <el-select v-model="newMediumName" placeholder="请选择">
+        <el-form-item v-if="newClassID===2||newClassID===5" label="二类">
+          <el-select v-model="newMediumName" placeholder="请选择" :disabled="newClassID===5">
             <el-option
               v-for="item in inTheData"
               :key="item.mediumCode"
@@ -170,12 +171,15 @@
           />
           <el-button v-else class="button-new-tag" size="small" @click="showInput(4)">新增三类</el-button>
         </el-form-item>
-        <el-form-item v-if="newClassID!==2" label="名称">
+        <el-form-item v-if="newClassID===5" label="名称">
+          <el-input v-model="inputValue4" placeholder="请输入" />
+        </el-form-item>
+        <el-form-item v-else-if="newClassID!==2" label="名称">
           <el-input v-model="newMediumName" placeholder="请输入" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmitMediumName">保存</el-button>
-          <el-button @click="newInTheClass=false">取消</el-button>
+          <el-button @click="handClose">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -207,7 +211,8 @@ import {
   insertSerialType,
   deleteMediumType,
   insertAttributeType,
-  updateAttributeType
+  updateAttributeType,
+  updateSerialType
 } from '@/api/encodingRules/categories'
 
 export default {
@@ -245,7 +250,8 @@ export default {
       inTheData: [], // 中类数据
       smallData: [], // 小类数据
       attributeData: [], // 属性数据
-      AttributeTypeID: '' // 修改属性ID
+      AttributeTypeID: '', // 修改属性ID
+      serialType: ''
     }
   },
   mounted() {
@@ -282,6 +288,16 @@ export default {
       if (num === 4) { // 修改属性名称
         this.diaTitle = '修改'
         this.newMediumName = ev.name
+        this.AttributeTypeID = ev.id
+      } else {
+        this.diaTitle = '新增'
+      }
+      if (num === 5) { // 修改三类名称
+        this.diaTitle = '修改'
+        console.log(ev)
+        this.newMediumName = ev.mediumName
+        this.inputValue4 = ev.name
+        this.serialType = ev.serialType
         this.AttributeTypeID = ev.id
       } else {
         this.diaTitle = '新增'
@@ -345,6 +361,20 @@ export default {
           this.attribute(this.newAttributeType)
           return
         }
+      } else if (this.newClassID === 5) { // 修改三类名称
+        const DATA = { id: this.AttributeTypeID, name: this.inputValue4, serialType: this.serialType }
+        const { code, message } = await updateSerialType(DATA)
+        if (code === 0) {
+          this.$message({
+            message: message,
+            type: 'success'
+          })
+          this.newInTheClass = false
+          this.serial = []
+          this.inputValue4 = ''
+          this.smallClass(this.newSerialType)
+          return
+        }
       }
     },
     // 获取大类列表数据
@@ -406,6 +436,11 @@ export default {
     handleQuerySonClass() {
       this.pageNum = 1
       this.getSonClass()
+    },
+    // 关闭前回调
+    handClose() {
+      this.newInTheClass = false
+      this.inputValue4 = ''
     }
   }
 }
@@ -423,6 +458,7 @@ export default {
 
 .el-tag + .el-tag {
   margin-left: 10px;
+  margin-bottom: 3px;
 }
 
 .button-new-tag {

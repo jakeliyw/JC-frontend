@@ -35,11 +35,7 @@ service.interceptors.response.use(
         name: 'login'
       })
     } else if (response.data.code === 1) {
-      return Message({
-        message: response.data.message,
-        type: 'error',
-        duration: 5 * 1000
-      })
+      return Promise.resolve(response.data)
     } else {
       return Message({
         message: response.data.message || '网络异常，请重新尝试',
