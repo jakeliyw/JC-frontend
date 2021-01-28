@@ -147,30 +147,20 @@
       <!--      条件区域-->
       <div class="dialogForm">
         <div v-if="isTable === 'parentTableData'" class="bom-form">
-          <span class="materiel-code">物料编码</span>
-          <el-input v-model="FNUMBER" class="input-width" size="mini" placeholder="请输入物料编码" @keyup.enter.native="queryParentSearch" />
-          <span class="materiel-code">物料描述</span>
-          <el-input v-model="FDESCRIPTION" class="input-width" size="mini" placeholder="请输入物料描述" @keyup.enter.native="queryParentSearch" />
-          <span class="materiel-code">物料规格</span>
-          <el-input v-model="FSPECIFICATION" class="input-width" size="mini" placeholder="请输入规格" @keyup.enter.native="queryParentSearch" />
+          <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="queryParentSearch" />
           <el-button
             type="primary"
             size="mini"
-            class="search-dialog"
+            class="search-dialog btn"
             @click="queryParentSearch"
           >搜索</el-button>
         </div>
         <div v-else class="bom-form">
-          <span class="materiel-code">物料编码</span>
-          <el-input v-model="FNUMBER" class="input-width" size="mini" placeholder="请输入物料编码" @keyup.enter.native="querySonSearch" />
-          <span class="materiel-code">物料描述</span>
-          <el-input v-model="FDESCRIPTION" class="input-width" size="mini" placeholder="请输入物料描述" @keyup.enter.native="querySonSearch" />
-          <span class="materiel-code">物料规格</span>
-          <el-input v-model="FSPECIFICATION" class="input-width" size="mini" placeholder="请输入规格" @keyup.enter.native="querySonSearch" />
+          <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="querySonSearch" />
           <el-button
             type="primary"
             size="mini"
-            class="search-dialog"
+            class="search-dialog btn"
             @click="querySonSearch"
           >
             搜索
@@ -233,6 +223,8 @@ import {
 } from '@/api/engineering/createBom'
 import { queryFtypeInfo } from '@/api/engineering/deitalBom'
 import { toMxAmina, Disable } from '@/components/ToMxamineState'
+import search from '@/components/Search'
+import searData from '@/components/Search/mixin'
 
 export default {
   name: 'CreateBom',
@@ -240,12 +232,15 @@ export default {
     jcTable,
     jcPagination,
     jcForm,
-    jcTitle
+    jcTitle,
+    search
   },
-  mixins: [jumpMateriel, getForm],
+  mixins: [jumpMateriel, getForm, searData],
   inject: ['reload'],
   data() {
     return {
+      ftype: 0,
+      fbillNo: 'fnumber', // 编码
       activeName: 'product', // 默认主产品 product Other
       isShow: true, // 控制日志显示隐藏
       iconIsShow: false, // icon显示隐藏
@@ -432,9 +427,7 @@ export default {
       const DATA = {
         pageNum: this.parentPagination.pageNum,
         pageSize: this.parentPagination.size,
-        fnumber: this.FNUMBER,
-        fdescription: this.FDESCRIPTION,
-        fspecification: this.FSPECIFICATION
+        ...this.searCollData
       }
       const { data: RES, total } = await queryBomFaterList(DATA)
       this.parentTableData = RES.map(item => {
@@ -448,9 +441,7 @@ export default {
       const DATA = {
         pageNum: this.sonPagination.pageNum,
         pageSize: this.sonPagination.size,
-        fnumber: this.FNUMBER,
-        fdescription: this.FDESCRIPTION,
-        fspecification: this.FSPECIFICATION
+        ...this.searCollData
       }
       const { data: RES, total } = await queryBomSonList(DATA)
       this.sonDialogTableData = RES
@@ -602,5 +593,13 @@ export default {
 <style scoped lang="scss">
 .content {
   @include bomCreate;
+  .bom-form{
+    position:relative;
+    .btn{
+      transform: translateY(18%);
+      margin-left: 410px!important;
+      z-index: 999;
+    }
+  }
 }
 </style>

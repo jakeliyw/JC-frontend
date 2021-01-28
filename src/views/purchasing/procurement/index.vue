@@ -18,7 +18,8 @@
         <el-input v-model="orderNumber.fdeliveryDate" disabled size="mini" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" size="mini" @click="MrpInfo()">运算</el-button>
+        <el-button type="primary" size="mini" @click="gainData()">运算</el-button>
+        <el-button type="primary" size="mini" @click="handleExport">导出Excel</el-button>
       </el-form-item>
     </el-form>
     <jc-table
@@ -50,7 +51,7 @@
           <i
             slot="suffix"
             class="el-input__icon el-icon-search"
-            @click="storkCli(col.scope.row.ddlx, col.scope.$index)"
+            @click="storkCli(col.scope.row, col.scope.$index)"
           />
         </el-input>
       </template>
@@ -76,7 +77,7 @@
       <el-button type="primary" @click="InsertMO()">确认下发</el-button>
     </div>
     <!--  生产部门-->
-    <stork v-if="storkVisiblit" :msg="ddlx" @stork="storkData" />
+    <stork v-if="storkVisiblit" :msg="ddlx" :msg2="itemCode" @stork="storkData" />
     <!--    仓库-->
     <jc-popup
       v-model="warehouseName"
@@ -122,6 +123,7 @@ import {
 import stork from '@/views/purchasing/procurement/components/stork/index'
 import jcPagination from '@/components/Pagination'
 import { queryTBdStock } from '@/api/purchaseManagement/createPurchasePrice'
+import { export_json_to_excel, formatJson } from '@/utils/Export2Excel'
 
 export default {
   name: 'Procurement',
@@ -135,6 +137,7 @@ export default {
   data() {
     return {
       ddlx: '', // 订单类型
+      itemCode: '',
       storkVisiblit: false, // 生产部门
       Sonum: '', // 销售订单号
       orderNumber: {
@@ -152,7 +155,7 @@ export default {
         { label: '采购单号', prop: 'cgdh', align: 'center', minWidth: '140px' },
         { label: '型号', prop: 'itemXH', align: 'center' },
         { label: '物料编号', prop: 'itemCode', align: 'center', minWidth: '210px' },
-        { label: '物料描述', prop: 'itemName', align: 'center', minWidth: '260px' },
+        { label: '物料描述', prop: 'itemName', align: 'left', minWidth: '260px', headerAlign: 'center' },
         { label: '尺寸', prop: 'cc', align: 'center', minWidth: '120px' },
         { label: '生产类型', prop: 'cglx', align: 'center', minWidth: '100px' },
         { label: '供应商', type: 'btn', prop: 'fsuppliername', align: 'center', minWidth: '150px' },
@@ -196,6 +199,22 @@ export default {
     }
   },
   methods: {
+    // 导出表格
+    handleExport() {
+      require.ensure([], () => {
+        const tHeader = ['状态', '订单类型', '采购单号', '型号', '物料编号', '物料描述', '尺寸', '生产类型', '供应商', '仓库名',
+          '库存', '计划采购数量量', '单位', '损耗率', '损耗数', '实际采购数量', '采购单价', '采购限价', '行金额', '配件交期', '包装方式']
+        const filterVal = ['zt', 'ddlx', 'cgdh', 'itemXH', 'itemCode', 'itemName', 'cc', 'cglx', 'fsuppliername', 'ck',
+          'kc', 'qty', 'dw', 'shl', 'shs', 'cgQty', 'rprice', 'sXprice', 'hje', 'pjjq', 'BZBOM']
+        if (this.val.length === 0) {
+          this.$message.warning('请选择导出数据')
+        } else {
+          const list = this.val
+          const data = formatJson(filterVal, list)
+          export_json_to_excel(tHeader, data, '采购拆单')
+        }
+      })
+    },
     // 获取表头数据
     async gainData(ev) {
       if (ev) {
@@ -312,7 +331,8 @@ export default {
     // 选择供应商（弹窗）
     storkCli(ev, en) {
       this.storkVisiblit = true
-      this.ddlx = ev
+      this.ddlx = ev.ddlx
+      this.itemCode = ev.itemCode
       this.indexSelf = en
     },
     // 接受子组件传值,获取供应商

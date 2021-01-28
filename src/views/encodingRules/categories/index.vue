@@ -294,7 +294,6 @@ export default {
       }
       if (num === 5) { // 修改三类名称
         this.diaTitle = '修改'
-        console.log(ev)
         this.newMediumName = ev.mediumName
         this.inputValue4 = ev.name
         this.serialType = ev.serialType

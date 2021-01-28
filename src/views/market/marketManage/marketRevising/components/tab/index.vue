@@ -83,7 +83,7 @@
               <el-button type="primary" size="mini" @click="drawingl(scope)">上传</el-button>
             </template>
           </el-table-column>
-          <el-table-column label="操作" prop="fqty" min-width="100px" align="center">
+          <el-table-column label="操作" prop="fqty" min-width="80px" align="center" fixed="right">
             <template slot-scope="scope">
               <el-button type="danger" size="mini" @click="delectSale(scope.$index)">删除</el-button>
             </template>
