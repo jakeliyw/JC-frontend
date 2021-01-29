@@ -3,8 +3,8 @@
     <jc-title />
     <div class="header">
       <div class="header-name">
-        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleQuerySonClass" />
-        <el-button type="primary" class="btn" size="mini" @click="handleQuerySonClass">搜索</el-button>
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleQuerySonClass()" />
+        <el-button type="primary" class="btn" size="mini" @click="handleQuerySonClass()">搜索</el-button>
       </div>
     </div>
     <div class="table-content">
@@ -14,44 +14,20 @@
         :cell-style="cellStyle"
         serial
       >
-        <el-table-column v-if="false" prop="fid" label="销售订单ID" min-width="80px" align="center" />
-        <el-table-column prop="fcreateDate" label="销售订单时间" min-width="150px" align="center" />
-        <el-table-column prop="fbillType" label="单据类型" min-width="120px" align="center" />
-        <el-table-column prop="fbillNo" label="销售订单号" min-width="100px" align="center">
-          <template slot-scope="scope">
-            <el-link type="primary" @click="particulars(scope.row.fid)">{{ scope.row.fbillNo }}</el-link>
-          </template>
-        </el-table-column>
-        <el-table-column prop="fpaezText" label="客户订单号" min-width="100px" align="center" />
-        <el-table-column
-          prop="fprimaryGroup"
-          label="客户分组"
-          min-width="80px"
-          align="center"
-          :show-overflow-tooltip="true"
-        />
-        <el-table-column prop="customer" label="客户" min-width="100px" align="center" :show-overflow-tooltip="true" />
-        <el-table-column prop="fqty" label="订单产品数量" min-width="100px" align="center" />
-        <el-table-column prop="fsettleCurr" label="结算货币" min-width="80px" align="center" />
-        <el-table-column prop="fsaleDept" label="销售部门" min-width="80px" align="center" />
-        <el-table-column prop="fsaler" label="销售员" min-width="80px" align="center" />
-        <el-table-column prop="fcloseStatus" label="禁用状态" min-width="80px" align="center">
-          <template slot-scope="scope">
-            <el-tag v-if="scope.row.fcloseStatus==='A'">否</el-tag>
-            <el-tag v-else type="danger">是</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="审核状态" align="center" min-width="100px">
-          <template slot-scope="clo">
-            <el-tag v-if="clo.row.fdocumentStatus !== '重新审核'">{{ clo.row.fdocumentStatus }}</el-tag>
-            <el-tag v-else type="danger">{{ clo.row.fdocumentStatus }}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column prop="attributeArray" label="操作" min-width="100px" align="center" fixed="right">
-          <template slot-scope="scope">
-            <el-button type="primary" class="btn" size="mini" @click="particulars(scope.row.fid)">详情</el-button>
-          </template>
-        </el-table-column>
+        <template v-slot:billSlot="clo">
+          <el-link type="primary" @click="detailPurchase(clo.scope.row.fid)">{{ clo.scope.row.fbillNo }}</el-link>
+        </template>
+        <template v-slot:tagSlot="clo">
+          <el-tag v-if="clo.scope.row.fcloseStatus==='A'">否</el-tag>
+          <el-tag v-else type="danger">是</el-tag>
+        </template>
+        <template v-slot:btnState="clo">
+          <el-tag v-if="clo.scope.row.fdocumentStatus !== '重新审核'">{{ clo.scope.row.fdocumentStatus }}</el-tag>
+          <el-tag v-else type="danger">{{ clo.scope.row.fdocumentStatus }}</el-tag>
+        </template>
+        <template v-slot:btnSlot="clo">
+          <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">详情</el-button>
+        </template>
       </jc-table>
     </div>
     <!--    分页器-->
@@ -96,7 +72,21 @@ export default {
       // 表头
       cellStyle: { padding: '10 10' }, // 行高
       tableData: [], // 销售数据
-      tableHeader: []
+      tableHeader: [
+        { label: '订单时间', prop: 'fcreateDate', align: 'center', minWidth: '155px' },
+        { label: '单据类型', prop: 'fbillType', align: 'center', minWidth: '110px' },
+        { label: '销售订单号', type: 'bill', align: 'center', minWidth: '110px' },
+        { label: '客户订单号', prop: 'fpaezText', align: 'center', minWidth: '110px' },
+        { label: '客户分组', prop: 'fprimaryGroup', align: 'center' },
+        { label: '客户', prop: 'customer', align: 'center' },
+        { label: '产品数量', prop: 'fqty', align: 'center' },
+        { label: '结算货币', prop: 'fsettleCurr', align: 'center' },
+        { label: '销售部门', prop: 'fsaleDept', align: 'center' },
+        { label: '销售员', prop: 'fsaler', align: 'center' },
+        { label: '禁用状态', type: 'tag', align: 'center' },
+        { label: '审核状态', type: 'state', align: 'center', minWidth: '100px' },
+        { label: '操作', type: 'btn', align: 'center', fixed: 'right', minWidth: '80px' }
+      ]
     }
   },
   mounted() {
@@ -118,7 +108,7 @@ export default {
       this.handleGetUntreated()
     },
     // 订单详情
-    particulars(id) {
+    detailPurchase(id) {
       this.$router.push({ path: `/marketParticulars/${id}` })
     }
   }

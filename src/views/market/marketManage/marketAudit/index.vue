@@ -86,7 +86,7 @@ export default {
         { label: '结算货币', prop: 'fsettleCurr', align: 'center' },
         { label: '销售部门', prop: 'fsaleDept', align: 'center' },
         { label: '销售员', prop: 'fsaler', align: 'center' },
-        { label: '状态流程', type: 'states', align: 'center',minWidth: '180px' },
+        { label: '状态流程', type: 'states', align: 'center', minWidth: '180px' },
         { label: '禁用状态', type: 'tag', align: 'center' },
         { label: '审核状态', type: 'state', align: 'center', minWidth: '100px' },
         { label: '操作', type: 'btn', align: 'center', fixed: 'right', minWidth: '80px' }

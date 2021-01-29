@@ -199,7 +199,6 @@ import { Forbid, toDocument } from '@/components/ToMxamineState'
 import { GMTToStr } from '@/utils'
 import search from '@/components/Search'
 import searData from '@/components/Search/mixin'
-
 export default {
   name: 'EditBom',
   components: {
@@ -427,7 +426,7 @@ export default {
       this.sonTableData[this.tableIndex].FNUMBER = RES.FNUMBER
       this.sonTableData[this.tableIndex].FDESCRIPTION = RES.FDESCRIPTION
       this.sonTableData[this.tableIndex].FSPECIFICATION = RES.FSPECIFICATION
-      this.sonTableData[this.tableIndex].FPRICE = RES.FMATERIALCOST
+      this.sonTableData[this.tableIndex].FPRICE = RES.FPRICE
       this.parentTableVisible = false
     },
     // 保存列表数据

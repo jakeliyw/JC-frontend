@@ -14,33 +14,19 @@
         :cell-style="cellStyle"
         serial
       >
-        <el-table-column v-if="false" prop="fid" label="销售价目ID" min-width="80" align="center" />
-        <el-table-column prop="fsaleOrg" label="销售组织" min-width="150" align="center" :show-overflow-tooltip="true" />
-        <el-table-column prop="fnumber" label="编码" min-width="120" align="center">
-          <template slot-scope="scope">
-            <el-link type="primary" @click="particulars(scope.row.fid)">{{ scope.row.fnumber }}</el-link>
-          </template>
-        </el-table-column>
-        <el-table-column prop="fname" label="销售价目名称" min-width="80" align="center" />
-        <el-table-column prop="fcurrency" label="币别" min-width="80" align="center" />
-        <el-table-column prop="fisIncludedTax" label="含税" min-width="100" align="center">
-          <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.fisIncludedTax" disabled />
-          </template>
-        </el-table-column>
-        <el-table-column prop="fpriceObject" label="价目对象" min-width="80" align="center" />
-        <el-table-column prop="fcreateDate" label="创建时间" min-width="80" align="center" :show-overflow-tooltip="true" />
-        <el-table-column label="审核状态" align="center" min-width="100px">
-          <template slot-scope="clo">
-            <el-tag v-if="clo.row.fdocumentStatus !== '重新审核'">{{ clo.row.fdocumentStatus }}</el-tag>
-            <el-tag v-else type="danger">{{ clo.row.fdocumentStatus }}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column prop="attributeArray" label="操作" min-width="120" align="center" fixed="right">
-          <template slot-scope="scope">
-            <el-button type="primary" class="btn" size="mini" @click="particulars(scope.row.fid)">详情</el-button>
-          </template>
-        </el-table-column>
+        <template v-slot:tagSlot="col">
+          <el-link type="primary" @click="particulars(col.scope.row.fid)">{{ col.scope.row.fnumber }}</el-link>
+        </template>
+        <template v-slot:billSlot="col">
+          <el-checkbox v-model="col.scope.row.fisIncludedTax" disabled />
+        </template>
+        <template v-slot:btnState="col">
+          <el-tag v-if="col.scope.row.fdocumentStatus !== '重新审核'">{{ col.scope.row.fdocumentStatus }}</el-tag>
+          <el-tag v-else type="danger">{{ col.scope.row.fdocumentStatus }}</el-tag>
+        </template>
+        <template v-slot:btnSlot="col">
+          <el-button type="primary" class="btn" size="mini" @click="particulars(col.scope.row.fid)">详情</el-button>
+        </template>
       </jc-table>
     </div>
     <!--    分页器-->
@@ -84,7 +70,17 @@ export default {
       // 表头
       cellStyle: { padding: '10 10' }, // 行高
       tableData: [], // 销售数据
-      tableHeader: []
+      tableHeader: [
+        { label: '销售组织', prop: 'fsaleOrg', align: 'center', minWidth: '130px' },
+        { label: '编码', type: 'tag', align: 'center', minWidth: '110px' },
+        { label: '价目名称', prop: 'fname', align: 'center' },
+        { label: '币别', prop: 'fcurrency', align: 'center' },
+        { label: '含税', type: 'bill', align: 'center' },
+        { label: '价目对象', prop: 'fpriceObject', align: 'center' },
+        { label: '创建时间', prop: 'fcreateDate', align: 'center', minWidth: '150px' },
+        { label: '审核状态', type: 'state', align: 'center', minWidth: '110px' },
+        { label: '操作', type: 'btn', fixed: 'right', align: 'center', minWidth: '80px' }
+      ]
     }
   },
   mounted() {

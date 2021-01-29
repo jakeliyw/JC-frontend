@@ -29,7 +29,7 @@
       :cell-style="cellStyle"
       @selectionChange="selectData"
     >
-      <el-table-column type="selection" width="60px" align="center" />
+      <el-table-column type="selection" width="60px" sortable="true" align="center" />
       <template v-slot:btnState="col">
         <el-select
           v-model="col.scope.row.sclx"

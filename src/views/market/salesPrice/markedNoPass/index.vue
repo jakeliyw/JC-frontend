@@ -13,41 +13,26 @@
         :table-header="tableHeader"
         :cell-style="cellStyle"
       >
-        <el-table-column prop="fsaleOrg" label="销售组织" align="center" min-width="130px" :show-overflow-tooltip="true" />
-        <el-table-column prop="fnumber" label="编码" align="center" min-width="110px">
-          <template slot-scope="scope">
-            <el-link type="primary" @click="particulars(scope.row.fid)">{{ scope.row.fnumber }}</el-link>
-          </template>
-        </el-table-column>
-        <el-table-column prop="fname" label="价目名称" align="center" />
-        <el-table-column prop="fcurrency" label="币别" align="center" />
-        <el-table-column prop="fisIncludedTax" label="含税" align="center">
-          <template slot-scope="scope">
-            <el-checkbox v-model="scope.row.fisIncludedTax" disabled />
-          </template>
-        </el-table-column>
-        <el-table-column prop="fpriceObject" label="价目对象" align="center" />
-        <el-table-column prop="fcreateDate" label="创建时间" align="center" min-width="155px" />
-        <el-table-column label="状态流程" min-width="180px" align="center">
-          <template slot-scope="clo">
-            <el-steps :active="clo.row.fstatus" align-center class="font-style" finish-status="success" process-status="error">
-              <el-step title="销售主管" />
-              <el-step title="财务" />
-            </el-steps>
-          </template>
-        </el-table-column>
-        <el-table-column label="审核状态" align="center" min-width="100px">
-          <template slot-scope="clo">
-            <el-tag v-if="clo.row.fdocumentStatus !== '重新审核'">{{ clo.row.fdocumentStatus }}</el-tag>
-            <el-tag v-else type="danger">{{ clo.row.fdocumentStatus }}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" min-width="200px" fixed="right" align="center">
-          <template slot-scope="clo">
-            <el-button type="danger" size="mini" @click="review(clo.row.fid)">重新审核</el-button>
-            <el-button type="warning" size="mini" @click="detailPurchase(clo.row.fid)">修改价目</el-button>
-          </template>
-        </el-table-column>
+        <template v-slot:tagSlot="col">
+          <el-link type="primary" @click="particulars(col.scope.row.fid)">{{ col.scope.row.fnumber }}</el-link>
+        </template>
+        <template v-slot:billSlot="col">
+          <el-checkbox v-model="col.scope.row.fisIncludedTax" disabled />
+        </template>
+        <template v-slot:btnStates="col">
+          <el-steps :active="col.scope.row.fstatus" align-center class="font-style" finish-status="success" process-status="finish">
+            <el-step title="销售主管" />
+            <el-step title="财务" />
+          </el-steps>
+        </template>
+        <template v-slot:btnState="col">
+          <el-tag v-if="col.scope.row.fdocumentStatus !== '重新审核'">{{ col.scope.row.fdocumentStatus }}</el-tag>
+          <el-tag v-else type="danger">{{ col.scope.row.fdocumentStatus }}</el-tag>
+        </template>
+        <template v-slot:btnSlot="col">
+          <el-button type="danger" size="mini" @click="review(col.scope.row.fid)">重新审核</el-button>
+          <el-button type="warning" size="mini" @click="detailPurchase(col.scope.row.fid)">修改价目</el-button>
+        </template>
       </jc-table>
     </div>
     <!--    分页器-->
@@ -93,7 +78,18 @@ export default {
       size: 10, // 每页显示多少条数据
       // 表格数据
       tableData: [],
-      tableHeader: [],
+      tableHeader: [
+        { label: '销售组织', prop: 'fsaleOrg', align: 'center', minWidth: '130px' },
+        { label: '编码', type: 'tag', align: 'center', minWidth: '110px' },
+        { label: '价目名称', prop: 'fname', align: 'center' },
+        { label: '币别', prop: 'fcurrency', align: 'center' },
+        { label: '含税', type: 'bill', align: 'center' },
+        { label: '价目对象', prop: 'fpriceObject', align: 'center' },
+        { label: '创建时间', prop: 'fcreateDate', align: 'center', minWidth: '150px' },
+        { label: '状态流程', type: 'states', align: 'center', minWidth: '180px' },
+        { label: '审核状态', type: 'state', align: 'center', minWidth: '110px' },
+        { label: '操作', type: 'btn', fixed: 'right', align: 'center', minWidth: '200px' }
+      ],
       cellStyle: { padding: '10 10' }
     }
   },
