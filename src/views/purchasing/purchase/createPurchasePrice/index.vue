@@ -446,7 +446,7 @@ export default {
         fcurrencyFname: '', // 币别名称
         code: '', // 编码
         fname: '', // 名称
-        fisIncludedTax: false, // 含税
+        fisIncludedTax: true, // 含税
         fdescripTion: '' // 描述
       },
       purchaseRules: {

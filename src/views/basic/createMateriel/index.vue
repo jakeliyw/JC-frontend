@@ -586,6 +586,7 @@ export default {
       const RES = CHECKOUT.every(item => {
         return item === false
       })
+      console.log(RES)
       if (RES === true) {
         this.$message.warning('控制信息必选一项！')
         return
