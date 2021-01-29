@@ -141,6 +141,10 @@ export default {
   methods: {
     handleControl() {
       queryMaterialDetail({ fnumber: this.$route.params.id }).then(RES => {
+        if (RES.code === 1) {
+          this.$message.error(RES.message)
+          return
+        }
         this.company.label = RES.data.material.fbaseUnitId
         this.property = RES.data.property
         this.imageUrl = RES.data.material.fimg

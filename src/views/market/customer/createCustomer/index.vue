@@ -540,7 +540,7 @@ export default {
     async handleGetPurchase() {
       const { data: RES } = await queryTOrgOrganizationsL()
       this.customerForm.teamList = RES.map(item => {
-        return { label: item.FNAME, value: item.FPKID }
+        return { label: item.fname, value: item.fpkId }
       })
     },
     // 获取客户类别

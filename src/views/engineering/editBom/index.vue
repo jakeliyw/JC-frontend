@@ -336,8 +336,8 @@ export default {
     async createOrganization() {
       const { data: RES } = await queryTOrgOrganizationsL()
       this.teamList = RES.map(item => {
-        this.company = item.FNAME
-        return { label: item.FNAME, value: item.FPKID }
+        this.company = item.fname
+        return { label: item.fname, value: item.fpkId }
       })
     },
     // 获取页面数据

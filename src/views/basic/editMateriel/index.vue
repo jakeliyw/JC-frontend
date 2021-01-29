@@ -555,10 +555,10 @@ export default {
         })
         return VALUE
       })
-      if (fattribtte.includes(undefined)) {
-        this.$message.warning('物料属性必须选择')
-        return
-      }
+      // if (fattribtte.includes(undefined)) {
+      //   this.$message.warning('物料属性必须选择')
+      //   return
+      // }
       const SmallCode = `${codeNumber.toString()}`
       const DATA = {
         largeCode: this.oneMaterialValue.largeCode,
@@ -584,6 +584,7 @@ export default {
         fprotect: this.basicValue.fprotect,
         fmodel: this.basicValue.fmodel,
         fdescripTion: this.basicValue.fdescripTion,
+        fvolumeUnitId: this.dimensionalValue.fvolumeUnitId,
         fvolumeunitName: this.dimensionalValue.fvolumeunitName,
         fvolume: this.dimensionalValue.fvolume,
         fthickness: this.dimensionalValue.fthickness,
@@ -592,30 +593,25 @@ export default {
         fheight: this.dimensionalValue.fheight,
         fopenLength: this.dimensionalValue.fopenLength,
         fweightUnitName: this.weightValue.fweightUnitName,
+        fweightUnitId: this.weightValue.fweightUnitId,
         fgrossWeight: this.weightValue.fgrossWeight,
         fnetWeight: this.weightValue.fnetWeight,
         fattribtte: JSON.stringify(fattribtte)
       }
       Object.assign(DATA, this.information)
-      for (const key in DATA) {
-        if (DATA[key] === '' || DATA[key] === undefined) {
-          this.$message.warning('内容输入不完整，请重新输入！')
-          return
-        }
-      }
+      // for (const key in DATA) {
+      //   if (DATA[key] === '' || DATA[key] === undefined) {
+      //     this.$message.warning('内容输入不完整，请重新输入！')
+      //     return
+      //   }
+      // }
       const CHECKOUT = [this.fisasset, this.fisinventory, this.fisproduce, this.fispurchase, this.fissale,
         this.fissubcontract]
       const RES = CHECKOUT.every(item => {
         return item === false
       })
-      if (RES === false) {
+      if (RES === true) {
         this.$message.warning('控制信息必选一项！')
-        return
-      } else if (this.weightValue.fnetWeight > this.weightValue.fgrossWeight) {
-        this.$message.warning('净重不能大于毛重')
-        return
-      } else if (!this.information.fstockId) {
-        this.$message.warning('请切换到信息，选择仓库')
         return
       }
       // 物料备注可以为空
@@ -707,7 +703,7 @@ export default {
     },
     // 尺寸单位选中
     sizeSelect(row) {
-      this.dimensionalValue.fvolumeunitId = row.fvolumeunitId
+      this.dimensionalValue.fvolumeUnitId = row.fvolumeUnitId
       this.dimensionalValue.fvolumeunitName = row.fname
       this.openSizeDialog = false
     },
@@ -908,7 +904,12 @@ export default {
           ]
         }
       }
-      this.weightValue = RES
+      this.weightValue = {
+        fweightUnitName: RES.fweightUnitName,
+        fweightUnitId: RES.fweightUnitId,
+        fgrossWeight: RES.fgrossWeight,
+        fnetWeight: RES.fnetWeight
+      }
       this.weight = {
         fweightUnitName: {
           label: '重量单位',
@@ -926,7 +927,16 @@ export default {
           type: 'number'
         }
       }
-      this.dimensionalValue = RES
+      this.dimensionalValue = {
+        fvolumeunitName: RES.fvolumeunitName,
+        fvolumeUnitId: RES.fvolumeUnitId,
+        fopenLength: RES.fopenLength,
+        fvolume: RES.fvolume,
+        fthickness: RES.fthickness,
+        flength: RES.flength,
+        fwidth: RES.fwidth,
+        fheight: RES.fheight
+      }
       this.dimensional = {
         fvolumeunitName: {
           label: '尺寸单位',
