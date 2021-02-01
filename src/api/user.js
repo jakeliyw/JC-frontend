@@ -10,10 +10,11 @@ export function login(data) {
 }
 
 // 获取权限
-export function getInfo() {
+export function getInfo(data) {
   return request({
     url: '/tSecUser/getInfo',
-    method: 'get'
+    method: 'post',
+    data
   })
 }
 

@@ -98,7 +98,8 @@ export default {
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '250px', align: 'center' }
       ],
       // 表格数据
-      tableData: []
+      tableData: [],
+      fuserId: '' // 用户id
     }
   },
   mounted() {
@@ -111,7 +112,9 @@ export default {
     },
     // 获取列表数据
     async handleGetMaterielList() {
+      this.fuserId = window.sessionStorage.getItem('fuserId')
       const DATA = {
+        fuserId: this.fuserId,
         pageNum: this.pageNum,
         pageSize: this.size,
         ...this.searCollData
@@ -133,21 +136,21 @@ export default {
     },
     // 审批
     async approval(FMATERIALID) {
-      const { code, message } = await updateMaterialReview({ fmaterial: FMATERIALID })
+      const { code, message } = await updateMaterialReview({ fmaterial: FMATERIALID, fuserId: this.fuserId })
       if (code !== 0) {
         return
       }
-      this.$message.success(message)
+      this.$message.success({ message })
       this.$router.push({ name: 'MaterielList' })
       this.reload()
     },
     // 审批不通过
     async approvalRejection(FMATERIALID) {
-      const { code, message } = await updateMaterialNotReview({ fmaterial: FMATERIALID })
+      const { code, message } = await updateMaterialNotReview({ fmaterial: FMATERIALID, fuserId: this.fuserId })
       if (code !== 0) {
         return
       }
-      this.$message.success(message)
+      this.$message.success({ message })
       this.$router.push({ name: 'RefuseMateriel' })
       this.reload()
     }

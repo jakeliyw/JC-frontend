@@ -77,7 +77,7 @@ export default {
       size: 10, // 每页显示多少条数据
       tableHeader: [
         { label: '订单时间', prop: 'fcreateDate', align: 'center', minWidth: '155px' },
-        { label: '单据类型', prop: 'fbillType', align: 'center', minWidth: '110px' },
+        { label: '单据类型', prop: 'fbillType', align: 'center', minWidth: '110px', filters: [] },
         { label: '销售订单号', type: 'bill', align: 'center', minWidth: '110px' },
         { label: '客户订单号', prop: 'fpaezText', align: 'center', minWidth: '110px' },
         { label: '客户分组', prop: 'fprimaryGroup', align: 'center' },
@@ -92,7 +92,9 @@ export default {
         { label: '操作', type: 'btn', align: 'center', fixed: 'right', minWidth: '80px' }
       ],
       // 表格数据
-      tableData: []
+      tableData: [],
+      i: '',
+      tableFilters: []
     }
   },
   mounted() {
@@ -106,6 +108,31 @@ export default {
       this.tableData = RES.array.map(item => {
         return (toMxAmina(item))
       })
+      // this.tableHeader.forEach(res => {
+      //   res.filters = []
+      //   this.tableData.forEach(item => {
+      //     console.log(item)
+      //     res.filters.push({
+      //       text: item[res.prop], value: item[res.prop]
+      //     })
+      //   })
+      // })
+
+      const fbillType = []
+      this.tableData.forEach(item => {
+        fbillType.push(item.fbillType)
+      })
+      const [...setArr] = new Set(fbillType)
+      this.tableHeader.forEach(res => {
+        res.filters = []
+        setArr.forEach(item => {
+          res.filters.push({
+            text: item, value: item
+          })
+        })
+      })
+      console.log(setArr)
+
       this.total = RES.total
     },
     // 搜索

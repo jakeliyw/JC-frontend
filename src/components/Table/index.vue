@@ -37,9 +37,10 @@
       :min-width="col.minWidth || colMinWidth"
       :show-overflow-tooltip="tooltip"
       :sortable="col.sortable || sortable"
+      :filter-method="filterHandler"
+      :filters="col.filters || filters"
     >
-      <!--      :filter-method="filterHandler"
-       :filters="col.filters || filters"-->
+      <!--      -->
       <!--      操作-->
       <template slot-scope="scope">
         <!--    text      -->

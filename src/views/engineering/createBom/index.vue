@@ -511,8 +511,10 @@ export default {
         item.FCREATEDATE = GMTToStr(item.FCREATEDATE)
         return { FCREATEDATE, FDOSAGETYPE, FISSUETYPE, FMATERIALID, FMATERIALTYPE, FSEQ, FDOSAGE, FPRICE }
       })
+      const fuserId = window.sessionStorage.getItem('fuserId')
       const DATA = {
         flg: this.flg,
+        fuserId,
         FCREATEORGID: this.team,
         FUSEORGID: this.team,
         FLABORCOST: this.prodValue.FLABORCOST,
@@ -535,6 +537,8 @@ export default {
       if (code === 0) {
         this.$message.success(message)
         this.reload()
+      } else if (code === 1) {
+        this.$message.error(message)
       } else if (code === 2) {
         this.$confirm(message, '提示', {
           confirmButtonText: '确定',
@@ -546,6 +550,8 @@ export default {
           if (code === 0) {
             this.$message.success(message)
             this.reload()
+          } else if (code === 1) {
+            this.$message.warning(message)
           }
         }).catch(() => {
           this.$message.info('已取消保存')

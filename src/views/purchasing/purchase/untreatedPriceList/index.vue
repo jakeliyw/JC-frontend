@@ -73,7 +73,8 @@ export default {
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '250px', align: 'center' }
       ],
       // 表格数据
-      tableData: []
+      tableData: [],
+      fuserId: '' // 用户id
     }
   },
   mounted() {
@@ -82,7 +83,8 @@ export default {
   methods: {
     // 获取列表数据
     async handleGetUntreated() {
-      const DATA = { pageNum: this.pageNum, pageSize: this.size, ...this.searCollData }
+      this.fuserId = window.sessionStorage.getItem('fuserId')
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, ...this.searCollData, fuserId: this.fuserId }
       const { data: RES } = await queryUntreatePurPriceList(DATA)
       this.tableData = RES.array
       this.total = RES.total
@@ -98,7 +100,7 @@ export default {
     },
     // 审批
     async approval(fid) {
-      const { message, code } = await reviewPurPrice({ fid })
+      const { message, code } = await reviewPurPrice({ fid, fuserId: this.fuserId })
       if (code !== 0) {
         return
       }
@@ -108,7 +110,7 @@ export default {
     },
     // 审批不通过
     async approvalRejection(fid) {
-      const { message, code } = await updateNotReview({ fid })
+      const { message, code } = await updateNotReview({ fid, fuserId: this.fuserId })
       if (code !== 0) {
         return
       }

@@ -131,10 +131,10 @@ export default {
       const { FTYPE, fMaterialId } = await queryFtypeInfo({ fnumber: FNUMBER })
       if (FTYPE === 0) {
         this.$router.push({ path: `/detailBom/${FNUMBER}` })
-        this.$message.success('进入bom')
+        this.$message.success({ message: '进入bom' })
       } else {
         this.$router.push({ path: `/detailMateriel/${fMaterialId}` })
-        this.$message.success('进入物料清单')
+        this.$message.success({ message: '进入物料清单' })
       }
     },
     // 审批

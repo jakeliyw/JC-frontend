@@ -304,7 +304,9 @@ export default {
           fdownPrice: item.fdownPrice
         }
       })
+      const fuserId = window.sessionStorage.getItem('fuserId')
       const DATA = {
+        fuserId,
         fid: this.optionValue.fpaReason,
         details: DETAILS
       }

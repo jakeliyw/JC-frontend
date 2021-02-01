@@ -98,7 +98,8 @@ export default {
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '250px', align: 'center' }
       ],
       // 表格数据
-      tableData: []
+      tableData: [],
+      fuserId: '' // 用户id
     }
   },
   mounted() {
@@ -111,9 +112,11 @@ export default {
     },
     // 获取列表数据
     async handleGetBomList() {
+      this.fuserId = window.sessionStorage.getItem('fuserId')
       const DATA = {
         pageNum: this.pageNum,
         pageSize: this.size,
+        fuserId: this.fuserId,
         ...this.searCollData
       }
       const { data: RES } = await queryUntreatedBomList(DATA)
@@ -132,29 +135,29 @@ export default {
       const { FTYPE, fMaterialId } = await queryFtypeInfo({ fnumber: FNUMBER })
       if (FTYPE === 0) {
         this.$router.push({ path: `/detailBom/${FNUMBER}` })
-        this.$message.success('进入bom')
+        this.$message.success({ message: '进入bom' })
       } else {
         this.$router.push({ path: `/detailMateriel/${fMaterialId}` })
-        this.$message.success('进入物料清单')
+        this.$message.success({ message: '进入物料清单' })
       }
     },
     // 审批
     async approval(FID) {
-      const { message, code } = await updateReview({ fid: FID })
+      const { message, code } = await updateReview({ fid: FID, fuserId: this.fuserId })
       if (code !== 0) {
         return
       }
-      this.$message.success(message)
+      this.$message.success({ message })
       this.$router.push({ name: 'UnderReviewBom' })
       this.reload()
     },
     // 审批不通过
     async approvalRejection(FID) {
-      const { message, code } = await updateNotReview({ fid: FID })
+      const { message, code } = await updateNotReview({ fid: FID, fuserId: this.fuserId })
       if (code !== 0) {
         return
       }
-      this.$message.success(message)
+      this.$message.success({ message })
       this.$router.push({ name: 'RefuseBom' })
       this.reload()
     }

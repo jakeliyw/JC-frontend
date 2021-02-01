@@ -63,7 +63,7 @@ import jcTitle from '@/components/Title'
 import { queryBomList } from '@/api/engineering/bomList'
 import { Forbid, toDocument } from '@/components/ToMxamineState'
 import { queryFtypeInfo } from '@/api/engineering/deitalBom'
-import { updateAgainReview } from '@/api/engineering/refuseBom'
+import { updateNotReview } from '@/api/engineering/untreatedBom'
 import search from '@/components/Search'
 import searData from '@/components/Search/mixin'
 export default {
@@ -135,12 +135,13 @@ export default {
     },
     // 反审核
     async Retrial(FID) {
-      const { message, code } = await updateAgainReview({ fid: FID })
+      const fuserId = window.sessionStorage.getItem('fuserId')
+      const { message, code } = await updateNotReview({ fid: FID, fuserId })
       if (code !== 0) {
         return
       }
-      this.$message.success(message)
-      this.$router.push({ name: 'UntreatedBom' })
+      this.$message.success({ message })
+      this.$router.push({ name: 'RefuseBom' })
       this.reload()
     },
     // 进入bom
@@ -148,10 +149,10 @@ export default {
       const { FTYPE, fMaterialId } = await queryFtypeInfo({ fnumber: FNUMBER })
       if (FTYPE === 0) {
         this.$router.push({ path: `/detailBom/${FNUMBER}` })
-        this.$message.success('进入bom')
+        this.$message.success({ message: '进入bom' })
       } else {
         this.$router.push({ path: `/detailMateriel/${fMaterialId}` })
-        this.$message.success('进入物料清单')
+        this.$message.success({ message: '进入物料清单' })
       }
     }
   }

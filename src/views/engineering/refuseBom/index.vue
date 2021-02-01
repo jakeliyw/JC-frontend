@@ -142,7 +142,7 @@ export default {
       if (code !== 0) {
         return
       }
-      this.$message.success(message)
+      this.$message.success({ message })
       this.$router.push({ name: 'UntreatedBom' })
       this.reload()
     }

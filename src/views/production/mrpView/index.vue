@@ -155,6 +155,8 @@ export default {
       tableData: [],
       tableHeader: [
         { label: '状态', prop: 'zt', align: 'center' },
+        { label: '客户订单号', prop: 'KHDD', align: 'center' },
+        { label: '销售订单号', prop: 'SoNum', align: 'center' },
         { label: '订单类型', prop: 'ddlx', align: 'center', minWidth: '100px' },
         { label: '生产单号', prop: 'ssdh', align: 'center', minWidth: '140px' },
         { label: '型号', prop: 'itemXH', align: 'center' },
@@ -173,7 +175,9 @@ export default {
         { label: '加工单价', prop: 'rprice', align: 'center' },
         { label: '行金额', prop: 'hje', align: 'center' },
         { label: '配件交期', prop: 'pjjq', align: 'center', minWidth: '100px' },
-        { label: '包装方式', prop: 'BZBOM', align: 'center' }
+        { label: '大类', prop: 'CZ', align: 'center' },
+        { label: '订单详情', prop: 'DDQC', align: 'center' },
+        { label: '工单号', prop: 'Monum', align: 'center' }
       ],
       insetData: {
         CreateID: '',

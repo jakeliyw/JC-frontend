@@ -495,21 +495,21 @@ export default {
     },
     // 生成流水号
     SmallCode() {
-      const SERIAL = this.threeMaterielData.filter(item => {
-        return item.value !== ''
-      })
-      if (SERIAL.length !== this.threeMaterielData.length) {
-        return
-      }
-      const SmallCode = SERIAL.map(item => item.value)
+      // const SERIAL = this.threeMaterielData.filter(item => {
+      //   return item.value !== ''
+      // })
+      // if (SERIAL.length !== this.threeMaterielData.length) {
+      //   return
+      // }
+      const SmallCode = this.threeMaterielData.map(item => item.value)
       return SmallCode
     },
     // 选中三类
     async createSerial() {
       const codeNumber = this.SmallCode()
-      if (codeNumber === undefined) {
-        return
-      }
+      // if (codeNumber === undefined) {
+      //   return
+      // }
       const DATA = {
         ...this.contrastPagination,
         largeCode: this.oneMaterialValue.largeCode,
@@ -526,7 +526,7 @@ export default {
     async materialSelection() {
       const codeNumber = this.SmallCode()
       if (this.serialNumber === '') {
-        this.$message.warning('数据填写不完整，请重新填写！')
+        this.$message.warning({ message: '数据填写不完整，请重新填写！' })
         return
       }
       const DATA = {
@@ -555,12 +555,11 @@ export default {
         })
         return VALUE
       })
-      // if (fattribtte.includes(undefined)) {
-      //   this.$message.warning('物料属性必须选择')
-      //   return
-      // }
-      const SmallCode = `${codeNumber.toString()}`
+      const smallCode = `${codeNumber.toString()}`
+      const fuserId = window.sessionStorage.getItem('fuserId')
       const DATA = {
+        fuserId,
+        smallCode,
         largeCode: this.oneMaterialValue.largeCode,
         mediumCode: this.toMaterialValue.mediumCode,
         fmaterialId: this.$route.query.fmaterialId,
@@ -583,6 +582,8 @@ export default {
         ferpclsId: this.basicValue.ferpclsId,
         fprotect: this.basicValue.fprotect,
         fmodel: this.basicValue.fmodel,
+        // 物料备注
+        fremarks: this.basicValue.fremarks,
         fdescripTion: this.basicValue.fdescripTion,
         fvolumeUnitId: this.dimensionalValue.fvolumeUnitId,
         fvolumeunitName: this.dimensionalValue.fvolumeunitName,
@@ -596,35 +597,25 @@ export default {
         fweightUnitId: this.weightValue.fweightUnitId,
         fgrossWeight: this.weightValue.fgrossWeight,
         fnetWeight: this.weightValue.fnetWeight,
+        fimg: this.imageUrl,
         fattribtte: JSON.stringify(fattribtte)
       }
       Object.assign(DATA, this.information)
-      // for (const key in DATA) {
-      //   if (DATA[key] === '' || DATA[key] === undefined) {
-      //     this.$message.warning('内容输入不完整，请重新输入！')
-      //     return
-      //   }
-      // }
       const CHECKOUT = [this.fisasset, this.fisinventory, this.fisproduce, this.fispurchase, this.fissale,
         this.fissubcontract]
       const RES = CHECKOUT.every(item => {
         return item === false
       })
       if (RES === true) {
-        this.$message.warning('控制信息必选一项！')
+        this.$message.warning({ message: '控制信息必选一项！' })
         return
       }
-      // 物料备注可以为空
-      DATA.fremarks = this.basicValue.fremarks
-      // 图片可以为空
-      DATA.fimg = this.imageUrl
-      DATA.smallCode = SmallCode
       const { code, message, data } = await updateMaterialDetail(DATA)
       if (code !== 0) {
-        this.$message.error(message)
+        this.$message.warning({ message })
         return
       }
-      this.$message.success(message)
+      this.$message.success({ message })
       this.$router.push({
         name: 'EditMateriel',
         query: {

@@ -181,14 +181,14 @@ export default {
       if (FTYPE === 0) {
         const materielCode = this.$route.params.FNUMBER
         if (materielCode === FNUMBER) {
-          this.$message.error('没有查询到下层bom')
+          this.$message.error({ message: '没有查询到下层bom' })
           return
         }
         this.$router.push({ path: `/detailBom/${FNUMBER}` })
-        this.$message.success('进入bom')
+        this.$message.success({ message: '进入bom' })
       } else {
         this.$router.push({ path: `/detailMateriel/${fMaterialId}` })
-        this.$message.success('进入物料清单')
+        this.$message.success({ message: '进入物料清单' })
       }
     },
     // 获取其它

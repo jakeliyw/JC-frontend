@@ -76,6 +76,7 @@ import search from '@/components/Search'
 import searData from '@/components/Search/mixin'
 export default {
   name: 'MaterielList',
+  inject: ['reload'],
   components: {
     jcTable,
     jcPagination,
@@ -167,11 +168,12 @@ export default {
     },
     // 反审核
     async Retrial(FMATERIALID) {
-      const { code, message } = await updateMaterialNotReview({ fmaterial: FMATERIALID })
+      const fuserId = window.sessionStorage.getItem('fuserId')
+      const { code, message } = await updateMaterialNotReview({ fmaterial: FMATERIALID, fuserId })
       if (code !== 0) {
         return
       }
-      this.$message.success(message)
+      this.$message.success({ message })
       this.$router.push({ name: 'RefuseMateriel' })
       this.reload()
     }

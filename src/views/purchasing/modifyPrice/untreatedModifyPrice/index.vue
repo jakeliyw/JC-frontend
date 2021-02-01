@@ -67,17 +67,18 @@ export default {
       pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
       tableHeader: [
-        { label: '调价编码', prop: 'fbillno', align: 'center' },
+        { label: '调价编码', prop: 'fnumber', align: 'center' },
         { label: '调价名称', prop: 'fname', align: 'center' },
         { label: '调价日期', prop: 'fdate', align: 'center' },
         { label: '描述', prop: 'fdescripTion', align: 'center', minWidth: '200px' },
-        { label: '采购组织', prop: 'fpurchaseOrg', align: 'center' },
+        { label: '供应商', prop: 'fsupplier', align: 'center' },
         { label: '生效时间', prop: 'fcreateDate', align: 'center' },
         { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', minWidth: '150px' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '250px', align: 'center' }
       ],
       // 表格数据
-      tableData: []
+      tableData: [],
+      fuserId: '' // 用户id
     }
   },
   mounted() {
@@ -86,7 +87,8 @@ export default {
   methods: {
     // 获取列表数据
     async handleGetUntreated() {
-      const DATA = { pageNum: this.pageNum, pageSize: this.size, ...this.searCollData }
+      this.fuserId = window.sessionStorage.getItem('fuserId')
+      const DATA = { pageNum: this.pageNum, pageSize: this.size, ...this.searCollData, fuserId: this.fuserId }
       const { data: RES } = await queryUntreatePurPatList(DATA)
       this.tableData = RES.array
       this.total = RES.total
@@ -102,7 +104,7 @@ export default {
     },
     // 审批通过
     async approval(fid) {
-      const { message, code } = await reviewPurPat({ fid })
+      const { message, code } = await reviewPurPat({ fid, fuserId: this.fuserId })
       if (code !== 0) {
         return
       }
@@ -112,7 +114,7 @@ export default {
     },
     // 审批不通过
     async approvalRejection(fid) {
-      const { message, code } = await updateNotReview({ fid })
+      const { message, code } = await updateNotReview({ fid, fuserId: this.fuserId })
       if (code !== 0) {
         return
       }

@@ -345,7 +345,9 @@ export default {
           fdownPrice: item.fdownPrice
         }
       })
+      const fuserId = window.sessionStorage.getItem('fuserId')
       const DATA = {
+        fuserId,
         fcreateOrgId: this.optionValue.fcreateOrgId,
         fname: this.optionValue.fname,
         fdescription: this.optionValue.fdescription,

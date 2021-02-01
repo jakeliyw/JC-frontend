@@ -323,7 +323,9 @@ export default {
           fentryEffectiveDate: item.feffectiveDate
         }
       })
+      const fuserId = window.sessionStorage.getItem('fuserId')
       const DATA = {
+        fuserId,
         fid: this.purchaseForm.fid,
         details: DETAILS
       }
@@ -365,10 +367,10 @@ export default {
             fmaterialId: '', // 物料编码
             fprice: 0, // 单价
             ftaxPrice: 0, // 含税单价
-            fminNum: 0, // 最小起订量
+            fminNum: 1, // 最小起订量
             fupPrice: 0, // 价格上限
             fdownPrice: 0, // 价格下限
-            feffectiveDate: '', // 生效时间
+            feffectiveDate: new Date(), // 生效时间
             ftaxRate: this.ftaxRate, // 税率
             fdescripTion: '' // 描述
           }
