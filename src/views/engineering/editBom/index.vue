@@ -406,7 +406,8 @@ export default {
             FISSUETYPE: '1', // 选中值
             FPRICE: 0,
             FDOSAGE: 0,
-            money: 0
+            money: 0,
+            FCREATEDATE: new Date()
           }
         )
       }
@@ -436,27 +437,31 @@ export default {
         item.FCREATEDATE = GMTToStr(item.FCREATEDATE)
         return { FMATERIALID, FMATERIALTYPE, FDOSAGE, FISSUETYPE, FPRICE }
       })
+      const fuserId = window.sessionStorage.getItem('fuserId')
       const DATA = {
         FID: this.FID,
         flg: this.flg,
+        fuserId,
         FMATERIALID: this.FMATERIALID,
         FLABORCOST: this.prodValue.FLABORCOST,
         fTreeEntity
       }
       if (DATA.FLABORCOST === 0) {
-        this.$message.warning('人工成本不能小于0,请重新输入!')
+        this.$message.warning({ message: '人工成本不能小于0,请重新输入!' })
         return
       }
       for (const ITEM of DATA.fTreeEntity) {
         if (ITEM.FMATERIALID === undefined || ITEM.FDOSAGE === 0) {
-          this.$message.warning('表格数据不能为空或用量不能为0')
+          this.$message.warning({ message: '表格数据不能为空或用量不能为0' })
           return
         }
       }
       const { message, code } = await upDateBom(DATA)
       if (code === 0) {
-        this.$message.success(message)
+        this.$message.success({ message })
         this.reload()
+      } else if (code === 1) {
+        this.$message.error({ message })
       } else if (code === 2) {
         this.$confirm(message, '提示', {
           confirmButtonText: '确定',
@@ -466,31 +471,33 @@ export default {
           DATA.flg = true
           const { message, code } = await upDateBom(DATA)
           if (code === 0) {
-            this.$message.success(message)
+            this.$message.success({ message })
             this.reload()
+          } else if (code === 1) {
+            this.$message.error({ message })
           }
         }).catch(() => {
-          this.$message.info('已取消保存')
+          this.$message.info({ message: '已取消保存' })
         })
       }
     },
     // 进入bom
     async getIntoBom(FNUMBER) {
       if (!FNUMBER) {
-        this.$message.warning('物料编码为空,无法进入子bom')
+        this.$message.warning({ message: '物料编码为空,无法进入子bom' })
         return
       }
       const { FTYPE, fMaterialId } = await queryFtypeInfo({ fnumber: FNUMBER })
       if (FTYPE === 0) {
         if (this.$route.params.FNUMBER === FNUMBER) {
-          this.$message.warning('没有查询到下层bom')
+          this.$message.warning({ message: '没有查询到下层bom' })
           return
         }
         this.$router.push({ path: `/detailBom/${FNUMBER}` })
-        this.$message.success('进入bom')
+        this.$message.success({ message: '进入bom' })
       } else {
         this.$router.push({ path: `/detailMateriel/${fMaterialId}` })
-        this.$message.success('进入物料清单')
+        this.$message.success({ message: '进入物料清单' })
       }
     },
     // 刷新bom
@@ -500,11 +507,11 @@ export default {
     // 删除bom
     deleteBom(item, index) {
       if (index === 0) {
-        this.$message.error('不能删除首行数据')
+        this.$message.error({ message: '不能删除首行数据' })
         return
       }
       this.sonTableData.splice(index, 1)
-      this.$message.success('删除行成功')
+      this.$message.success({ message: '删除行成功' })
     }
   }
 }

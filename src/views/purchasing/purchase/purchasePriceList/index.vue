@@ -52,7 +52,7 @@
 import jcTable from '@/components/Table/index'
 import jcPagination from '@/components/Pagination/index'
 import jcTitle from '@/components/Title'
-import { queryTPurPriceList, updateAgainReview } from '@/api/purchaseManagement/purchasePrice'
+import { queryTPurPriceList, updateNotReview } from '@/api/purchaseManagement/purchasePrice'
 import { toMxAmina } from '@/components/ToMxamineState'
 import search from '@/components/Search/index'
 import searData from '@/components/Search/mixin'
@@ -121,12 +121,13 @@ export default {
     },
     // 反审核
     async editPurchase(fid) {
-      const { message, code } = await updateAgainReview({ fid })
+      const fuserId = window.sessionStorage.getItem('fuserId')
+      const { message, code } = await updateNotReview({ fid, fuserId })
       if (code !== 0) {
         return
       }
       this.$message.success(message)
-      this.$router.push({ name: 'UntreatedPriceList' })
+      this.$router.push({ name: 'RefusePriceList' })
       this.reload()
     },
     // 删除采购

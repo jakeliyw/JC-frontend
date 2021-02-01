@@ -425,8 +425,8 @@ export default {
       supplierName: '', // 供应商弹窗关键词
       popupTitle: '', // 查询条件文本
       cellStyle: { padding: '10 10' }, // 行高
-      fpriceDisabled: false, // 单价禁用
-      ftaxPriceDisabled: true, // 含税单价禁用
+      fpriceDisabled: true, // 单价禁用
+      ftaxPriceDisabled: false, // 含税单价禁用
       // 点击行的序号
       tableIndex: 0,
       selectTaxRate: '', // 供应商选中税率
@@ -520,8 +520,10 @@ export default {
             return
           }
         }
+        const fuserId = window.sessionStorage.getItem('fuserId')
         const DETAILS = this.tableData.map(item => {
           return {
+            fuserId,
             fmaterialId: item.FMATERIALID,
             fprice: item.fprice,
             ftaxPrice: item.ftaxPrice,
@@ -546,11 +548,13 @@ export default {
           details: DETAILS
         }
         insertPurPrice(DATA).then(res => {
-          if (res.code === 0) {
-            this.purchaseForm.code = res.data
-            this.$message.success(res.message)
-            this.reload()
+          if (res.code !== 0) {
+            this.$message.error(res.message)
+            return
           }
+          this.purchaseForm.code = res.data
+          this.$message.success(res.message)
+          this.reload()
         }).catch(error => {
           this.$message.error(error)
         })
@@ -699,7 +703,8 @@ export default {
       this.openSupplier = false
     },
     // 含税选中
-    handleTax() {
+    handleTax(row) {
+      console.log(row)
       if (this.purchaseForm.fisIncludedTax) {
         // 单价不可输
         this.fpriceDisabled = true

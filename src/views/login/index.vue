@@ -93,6 +93,7 @@ export default {
               this.loading = false
               return
             }
+            window.sessionStorage.setItem('fuserId', res.data.fuserId)
             this.$router.push({ path: this.redirect || '/' })
             this.$message.success(`${this.loginForm.userName}${res.message}`)
             this.loading = false

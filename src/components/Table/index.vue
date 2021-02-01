@@ -36,8 +36,11 @@
       :header-align="col.headerAlign"
       :min-width="col.minWidth || colMinWidth"
       :show-overflow-tooltip="tooltip"
-      :sortable="sortable"
+      :sortable="col.sortable || sortable"
+      :filter-method="filterHandler"
+      :filters="col.filters || filters"
     >
+      <!--      -->
       <!--      操作-->
       <template slot-scope="scope">
         <!--    text      -->
@@ -92,9 +95,15 @@ export default {
       type: Boolean,
       default: true
     },
-    sortable: { // 单元格内容过长显示省略号
+    sortable: { // 单元格是否排序
       type: Boolean,
       default: false
+    },
+    filters: {
+      type: Array,
+      default: function() {
+        return []
+      }
     },
     colMinWidth: { // 单元格最小宽度
       type: String,
@@ -152,9 +161,7 @@ export default {
       this.$refs.table.clearSelection()
       if (selection.length > 0 && selection[0] === this.tableData[0]) {
         this.tableData.map(item => {
-          if (item.zt === '未转') {
-            this.$refs.table.toggleRowSelection(item)
-          }
+          this.$refs.table.toggleRowSelection(item)
         })
       }
       this.handleGetSelection()

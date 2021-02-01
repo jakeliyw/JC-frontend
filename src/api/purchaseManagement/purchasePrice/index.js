@@ -19,9 +19,9 @@ export function detailPriceList(params) {
 }
 
 // 采购价目表重新审核
-export function updateAgainReview(data) {
+export function updateNotReview(data) {
   return request({
-    url: '/tPurPricelist/updateAgainReview',
+    url: '/tPurPricelist/updateNotReview',
     method: 'put',
     data
   })

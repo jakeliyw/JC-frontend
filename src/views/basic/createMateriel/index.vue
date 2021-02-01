@@ -300,6 +300,7 @@ import {
   queryMaterialAttribute,
   queryMaterialAttributes
 } from '@/api/basicManagement/createMateriel'
+import { Message } from 'element-ui'
 export default {
   name: 'CreateMateriel',
   components: {
@@ -542,17 +543,20 @@ export default {
     async preservation() {
       const ITEM = this.organization.FCREATEORG.selectItems.find(item => item)
       const codeNumber = this.SmallCode()
+      if (codeNumber === undefined || codeNumber === '') {
+        this.$message.warning({ message: '三类物料必须选择' })
+        return
+      }
       const fattribtte = this.materielProperty.map(item => {
         const VALUE = item.handrail.find(obj => {
           return item.value === obj.value
         })
         return VALUE
       })
-      if (codeNumber === undefined) {
-        return
-      }
       const smallCode = `${codeNumber.toString()}`
+      const fuserId = window.sessionStorage.getItem('fuserId')
       const DATA = {
+        fuserId,
         fcreateOrgId: ITEM.value,
         fuseOrgId: ITEM.value,
         largeCode: this.oneMaterialValue.largeCode,
@@ -577,6 +581,9 @@ export default {
         ferpclsId: this.basicValue.ferpclsId,
         fprotect: this.basicValue.fprotect,
         fmodel: this.basicValue.fmodel,
+        // 物料备注
+        fremarks: this.basicValue.fremarks,
+        fimg: this.imageUrl,
         fdescripTion: this.basicValue.fdescripTion,
         fattribtte: JSON.stringify(fattribtte)
       }
@@ -586,21 +593,16 @@ export default {
       const RES = CHECKOUT.every(item => {
         return item === false
       })
-      console.log(RES)
       if (RES === true) {
-        this.$message.warning('控制信息必选一项！')
+        this.$message.warning({ message: '控制信息必选一项！' })
         return
       }
-      // 图片可以为空
-      DATA.fimg = this.imageUrl
-      // 物料备注可以为空
-      DATA.fremarks = this.basicValue.fremarks
       const { code, message } = await insertMaterialDetail(DATA)
       if (code === 1) {
-        this.$message.error(message)
+        this.$message.warning({ message })
         return
       }
-      this.$message.success(message)
+      this.$message.success({ message })
       this.reload()
     },
     // 三类物料

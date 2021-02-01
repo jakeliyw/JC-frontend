@@ -23,11 +23,6 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  // 将预加载关闭，使得打包更快
-  chainWebpack: config => {
-    config.plugins.delete('prefetch')
-    config.plugins.delete('preload')
-  },
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'scss',
@@ -50,7 +45,7 @@ module.exports = {
     },
     proxy: {
       [process.env.VUE_APP_BASE_API]: {
-        target: 'http://192.168.1.136:8887',
+        target: 'http://192.168.1.136:8888',
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''

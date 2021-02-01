@@ -53,7 +53,7 @@ export default {
   mixins: [searData],
   data() {
     return {
-      ftype: 6,
+      ftype: 8,
       fbillNo: 'fname',
       total: 0, // 总条目
       pageNum: 1, // 当前页

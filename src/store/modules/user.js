@@ -8,6 +8,7 @@ const user = {
     userName: '',
     avatar: 'https://s3.ax1x.com/2020/11/19/DuAbbd.jpg',
     roleName: '',
+    fuserId: '',
     permissionList: [],
     menuList: []
   },
@@ -43,7 +44,8 @@ const user = {
     // get user info
     async GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getInfo().then(res => {
+        const fuserId = window.sessionStorage.getItem('fuserId')
+        getInfo({ fuserId }).then(res => {
           if (!res) {
             return
           }
