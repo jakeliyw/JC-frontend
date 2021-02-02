@@ -37,10 +37,9 @@
       :min-width="col.minWidth || colMinWidth"
       :show-overflow-tooltip="tooltip"
       :sortable="col.sortable || sortable"
-      :filter-method="filterHandler"
+      :filter-method="col.filters?filterHandler:function (){}"
       :filters="col.filters"
     >
-      <!--      -->
       <!--      操作-->
       <template slot-scope="scope">
         <!--    text      -->
@@ -97,7 +96,7 @@ export default {
     },
     sortable: { // 单元格是否排序
       type: Boolean,
-      default: false
+      default: true
     },
     colMinWidth: { // 单元格最小宽度
       type: String,

@@ -83,7 +83,7 @@ export default {
         { label: '销售订单号', type: 'bill', align: 'center', minWidth: '110px' },
         { label: '客户订单号', prop: 'fpaezText', align: 'center', minWidth: '110px' },
         { label: '客户分组', prop: 'fprimaryGroup', align: 'center' },
-        { label: '客户', prop: 'customer', align: 'center' },
+        { label: '客户', prop: 'customer', align: 'center', filters: [] },
         { label: '产品数量', prop: 'fqty', align: 'center' },
         { label: '结算货币', prop: 'fsettleCurr', align: 'center' },
         { label: '销售部门', prop: 'fsaleDept', align: 'center' },
@@ -108,6 +108,25 @@ export default {
       this.tableData = RES.array.map(item => {
         return (toMxAmina(item))
       })
+      this.tableHeader.forEach(res => {
+        res.filters = []
+        this.tableData.forEach(item => {
+          if (item[res.prop]) {
+            res.filters.push({
+              text: item[res.prop], value: item[res.prop]
+            })
+          }
+        })
+        const obj = {}
+        const result = []
+        res.filters.map(item => {
+          if (!obj[item.text]) {
+            result.push(item)
+            obj[item.text] = true
+          }
+        })
+        res.filters = result
+      })
       this.total = RES.total
     },
     // 搜索
@@ -128,6 +147,7 @@ export default {
       }
       this.$message.success(message)
       this.reload()
+      this.$router.push({ name: 'MarketUntreated' })
     },
     // 详情
     detailPurchase(id) {

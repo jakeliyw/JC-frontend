@@ -300,7 +300,6 @@ import {
   queryMaterialAttribute,
   queryMaterialAttributes
 } from '@/api/basicManagement/createMateriel'
-import { Message } from 'element-ui'
 export default {
   name: 'CreateMateriel',
   components: {

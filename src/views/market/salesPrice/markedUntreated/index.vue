@@ -101,7 +101,8 @@ export default {
   methods: {
     // 获取列表数据
     async handleGetUntreated() {
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, ...this.searCollData }
+      const fid = window.sessionStorage.getItem('fuserId')
+      const DATA = { pageNum: this.currentPage, pageSize: this.size, ...this.searCollData, fuserId: fid }
       const { data: RES } = await queryUntreatePriceList(DATA)
       this.tableData = RES.array.map(item => {
         return (toMxAmina(item))
@@ -119,21 +120,31 @@ export default {
     },
     // 审批通过
     async untreated(fid) {
-      const { message, code } = await reviewPrice({ fid })
+      const DATA = {
+        fid: fid,
+        fuserId: window.sessionStorage.getItem('fuserId')
+      }
+      const { message, code } = await reviewPrice(DATA)
       if (code !== 0) {
         return
       }
       this.$message.success(message)
       this.reload()
+      this.$router.push({ name: 'MarkedAudit' })
     },
     // 审批不通过
     async untreatedRejection(fid) {
-      const { message, code } = await notReviewPrice({ fid })
+      const DATA = {
+        fid: fid,
+        fuserId: window.sessionStorage.getItem('fuserId')
+      }
+      const { message, code } = await notReviewPrice(DATA)
       if (code !== 0) {
         return
       }
       this.reload()
       this.$message.success(message)
+      this.$router.push({ name: 'MarkedNoPass' })
     }
   }
 }

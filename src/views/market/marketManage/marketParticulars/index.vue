@@ -25,12 +25,13 @@
               </el-table-column>
               <el-table-column prop="fdescripTion" label="物料描述" min-width="300px" align="center" :show-overflow-tooltip="true" />
               <el-table-column prop="funit" label="基本单位" min-width="80px" align="center" />
-              <el-table-column prop="fqty" label="产品数量" align="center" />
-              <el-table-column prop="fprice" label="产品单价" align="center" />
+              <el-table-column prop="fqty" label="数量" align="center" />
+              <el-table-column prop="fprice" label="单价" align="center" />
+              <el-table-column label="含税单价" prop="ftaxPrice" align="center" min-width="100px" />
+              <el-table-column label="金额" prop="famount" align="center" min-width="100px" />
+              <el-table-column label="含税金额" prop="ftaxAmount" align="center" min-width="100px" />
               <el-table-column prop="fdownPrice" label="基准价" align="center" />
-              <el-table-column prop="totalPrice" label="总价" align="center" />
-              <el-table-column prop="fsettleCurr" label="币别" align="center" />
-              <el-table-column prop="fvolume" label="产品体积" align="center" />
+              <el-table-column prop="fsettleCurr" label="结算币别" align="center" />
               <el-table-column prop="fisFree" label="是否赠品" align="center">
                 <template slot-scope="scope">
                   <el-checkbox v-model="scope.row.fisFree" disabled />
@@ -255,14 +256,15 @@ export default {
           label: '备注',
           type: 'textarea',
           disabled: 'disabled'
-        }, fisIncludedTax: {
-          label: '是否含税',
-          type: 'checkbox',
-          disabled: 'disabled'
         }, fsalType: {
           label: '订单类型',
           disabled: 'disabled'
         }
+        // fisIncludedTax: {
+        //   label: '是否含税',
+        //   type: 'checkbox',
+        //   disabled: 'disabled'
+        // },
       }
     },
     // 预览图片

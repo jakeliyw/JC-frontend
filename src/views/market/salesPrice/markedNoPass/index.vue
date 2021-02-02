@@ -123,6 +123,7 @@ export default {
       }
       this.$message.success(message)
       this.reload()
+      this.$router.push({ name: 'MarkedUntreated' })
     },
     // 价目详情
     particulars(id) {

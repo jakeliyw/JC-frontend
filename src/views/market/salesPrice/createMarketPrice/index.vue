@@ -10,8 +10,8 @@
               <el-option
                 v-for="option in teamList"
                 :key="option.value"
-                :label="option.FNAME"
-                :value="option.FPKID"
+                :label="option.fname"
+                :value="option.fpkId"
               />
             </el-select>
           </el-form-item>
@@ -84,27 +84,26 @@
               {{ scope.row.deliveryPrice }}
             </template>
           </el-table-column>
-          <el-table-column label="销售系数(%)" prop="fpriceBase" min-width="150px" align="center">
+          <el-table-column label="净价" prop="fdownPrice" align="center" />
+          <el-table-column label="销售系数" prop="fpriceBase" min-width="180px" align="center">
             <template slot-scope="scope">
-              <el-input-number
-                v-model="scope.row.fpriceBase"
-                :min="10"
-                :max="40"
-                size="mini"
-                @change="inputNum(scope.$index)"
-              />
+              <ul v-if="scope.row.fmaterialId" class="tabndispl">
+                <li>
+                  <div><= 500</div>
+                  <div>0.6</div>
+                </li>
+                <li>
+                  <div>501 <= 1000</div>
+                  <div>0.65</div>
+                </li>
+                <li>
+                  <div>1001=></div>
+                  <div>0.7</div>
+                </li>
+              </ul>
             </template>
           </el-table-column>
-          <el-table-column label="销售基准价" prop="fdownPrice" min-width="150px" align="center">
-            <template slot-scope="scope">
-              <el-input-number
-                v-model="scope.row.fdownPrice"
-                size="mini"
-                disabled
-              />
-            </template>
-          </el-table-column>
-          <el-table-column label="操作" prop="fqty" min-width="80px" align="center" fixed="right">
+          <el-table-column label="操作" min-width="80px" align="center" fixed="right">
             <template slot-scope="scope">
               <el-button type="danger" size="mini" @click="delectSale(scope.$index)">删除</el-button>
             </template>
@@ -242,7 +241,7 @@ export default {
           funitName: '', // 单位
           fpriceBase: 10, // 销售系数
           deliveryPrice: '', // 出厂价
-          fdownPrice: '' // 销售基准价
+          fdownPrice: '' // 净价
         }]
       },
       cellStyle: { padding: '10 10' },
@@ -282,13 +281,14 @@ export default {
           return false
         }
         for (const item of this.prodValue.priceDetails) {
-          if (item.fmaterialId === '' || item.fdownPrice === '' || item.fpriceBase === '') {
+          if (item.fmaterialId === '' || item.fpriceBase === '') {
             this.$message.error('表格不能为空或删除空行')
             this.loading = false
             return false
           }
         }
         const DATA = this.prodValue
+        this.prodValue.fuserId = window.sessionStorage.getItem('fuserId')
         insertSalPrice(DATA).then(res => {
           this.loading = false
           if (res.code === 0) {
@@ -319,7 +319,7 @@ export default {
       }
       if (index === this.prodValue.priceDetails.length - 1) {
         this.prodValue.priceDetails.push(
-          { fpriceBase: 10, fdownPrice: 0 }
+          { fpriceBase: 10 }
         )
       }
       const DATA = {
@@ -342,26 +342,13 @@ export default {
       const DATA = { fmaterialId: this.materialId }
       const { data: RES } = await querySalPriceMaterial(DATA)
       // 销售系数
-      const fpriceBase = (this.prodValue.priceDetails[this.tableIndex].fpriceBase) / 100
       this.prodValue.priceDetails[this.tableIndex].fmaterialId = RES.fmaterialId
       this.prodValue.priceDetails[this.tableIndex].fmaterialIdName = RES.fnumber
       this.prodValue.priceDetails[this.tableIndex].fdescripTion = RES.fdescripTion
       this.prodValue.priceDetails[this.tableIndex].funitId = RES.funitId
       this.prodValue.priceDetails[this.tableIndex].funitName = RES.funitName
       this.prodValue.priceDetails[this.tableIndex].deliveryPrice = RES.deliveryPrice
-      // 基准价
-      this.prodValue.priceDetails[this.tableIndex].fdownPrice = (RES.deliveryPrice * (1 + fpriceBase)).toFixed(4)
     },
-    // 监听销售系数
-    inputNum(index) {
-      this.tableIndex = index
-      if (this.prodValue.priceDetails[this.tableIndex].fmaterialId) {
-        const fBase = (this.prodValue.priceDetails[this.tableIndex].fpriceBase) / 100 // 系数
-        const fPrice = this.prodValue.priceDetails[this.tableIndex].deliveryPrice // 出厂价
-        this.prodValue.priceDetails[this.tableIndex].fdownPrice = (fPrice * (1 + fBase)).toFixed(4) // 基准价
-      }
-    },
-
     // 获取客户数据(子传父)
     clientData(item) {
       if (item.fcustId) {
@@ -421,6 +408,13 @@ export default {
     .el-form-item {
       max-width: 263px;
     }
+  }
+  .el-table ::v-deep .tabndispl{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
   }
 }
 

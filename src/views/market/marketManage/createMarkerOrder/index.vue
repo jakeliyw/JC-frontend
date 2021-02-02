@@ -122,16 +122,22 @@
           <el-form-item label="备注" prop="fnote">
             <el-input v-model.trim="prodValue.fnote" type="textarea" placeholder="请填写备注" size="mini" />
           </el-form-item>
-          <el-form-item label="是否含税">
+          <el-form-item v-if="false" label="是否含税">
             <el-checkbox v-model="prodValue.fisIncludedTax" />
           </el-form-item>
           <el-form-item v-if="button('salOrder:type')" label="订单类型">
-            <el-button class="btnType" type="primary" size="mini" @click="prodValue.saler = !prodValue.saler">切换</el-button>
+            <el-button class="btnType" type="primary" size="mini" @click="prodValue.saler = !prodValue.saler">切换
+            </el-button>
             <el-tag v-if="prodValue.saler" type="success">正常订单</el-tag>
             <el-tag v-if="!prodValue.saler" type="danger">特批订单</el-tag>
           </el-form-item>
         </el-form>
-        <tab :msg="prodValue.fpriceListId" @visible="prodOrder" />
+        <tab
+          :msg="prodValue.fpriceListId"
+          :msg2="prodValue.fexchangeRate"
+          :standardprice="standardPrice"
+          @visible="prodOrder"
+        />
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
@@ -281,7 +287,8 @@ export default {
         flocalCurrId: '', // 本位币id
         fxxchangeTypeId: '', // 汇率类型id
         fxxchangeType: '', // 汇率类型
-        flocalCurr: '' // 本位币
+        flocalCurr: '', // 本位币
+        fsysmbol: '' // 币别符号
       },
       fcurrencyId: '', // 汇率类型ID
       frateTypeId: '', // 币别ID
@@ -313,7 +320,15 @@ export default {
       size: 10,
       total: 0,
       otherUrlObject: {}, // 其它审核人
-      otherLogTableData: [] // 日志数据
+      otherLogTableData: [], // 日志数据
+      standardPrice: {
+        fsettleCurrIdName: '',
+        fsysmbol: '',
+        fexchangeRate: '',
+        flocalCurrId: '',
+        fsettleCurrId: '',
+        fxxchangeTypeId: ''
+      }
     }
   },
   created() {
@@ -346,19 +361,19 @@ export default {
             this.loading = false
             return false
           }
-          if (this.prodValue.fsalType === 0) {
-            if (item.fprice < item.fdownPrice) {
-              this.$message.error('销售单价不能小于基准价')
-              this.loading = false
-              return false
-            }
-          } else {
-            if (item.fprice < item.deliveryPrice) {
-              this.$message.error('销售单价不能小于出厂价')
-              this.loading = false
-              return false
-            }
-          }
+          // if (this.prodValue.fsalType === 0) {
+          //   if (item.fprice < item.fdownPrice) {
+          //     this.$message.error('销售单价不能小于基准价')
+          //     this.loading = false
+          //     return false
+          //   }
+          // } else {
+          //   if (item.fprice < item.deliveryPrice) {
+          //     this.$message.error('销售单价不能小于出厂价')
+          //     this.loading = false
+          //     return false
+          //   }
+          // }
         }
         for (const item of this.prodValue.planDetails) {
           if (item.frecAdvanceRate === '' || item.frecAdvanCeamount === '') {
@@ -368,7 +383,7 @@ export default {
           }
         }
         const DATA = this.prodValue
-
+        this.prodValue.fuserId = window.sessionStorage.getItem('fuserId')
         insertSalOrder(DATA).then(res => {
           this.prodValue.fbillNo = res.data
           this.loading = false
@@ -416,11 +431,13 @@ export default {
           if (res.code === 0) {
             // 成功
             this.prodValue.fpriceListId = res.data.fid
+            this.standardPrice.fid = res.data.fid
             this.prodValue.fpriceListIdName = res.data.fname
           } else {
             // 失败-该客户未新增销售价目为空
             this.prodValue.fcustId = ''
             this.prodValue.fname = ''
+            this.$message.warning(res.message)
           }
         })
       } else {
@@ -455,7 +472,11 @@ export default {
       if (item.fsettleCurrId) {
         this.prodValue.fsettleCurrIdName = item.fsettleCurrIdName
         this.prodValue.fsettleCurrId = item.fsettleCurrId
+        this.prodValue.fsysmbol = item.fsysmbol
         this.currencyVisiblit = item.isCurrencyDialog
+        this.standardPrice.fsettleCurrId = item.fsettleCurrId
+        this.standardPrice.fsysmbol = item.fsysmbol
+        this.standardPrice.fsettleCurrIdName = item.fsettleCurrIdName
         // 获取汇率
         this.querySalerRate()
       } else {
@@ -498,6 +519,9 @@ export default {
       this.prodValue.flocalCurrId = RES.flocalCurrId
       this.prodValue.fxxchangeType = RES.fxxchangeType
       this.prodValue.fxxchangeTypeId = RES.fxxchangeTypeId
+      this.standardPrice.flocalCurrId = RES.flocalCurrId
+      this.standardPrice.fxxchangeTypeId = RES.fxxchangeTypeId
+
       this.querySalerRate()
     },
     // 查询销售订单汇率
@@ -510,6 +534,7 @@ export default {
       const { data: RES } = await querySalerRate(DATA)
       if (RES) {
         this.prodValue.fexchangeRate = RES.fexchangeRate
+        this.standardPrice.fexchangeRate = RES.fexchangeRate
       } else {
         this.prodValue.fexchangeRate = ''
       }
@@ -537,20 +562,23 @@ export default {
 }
 </script>
 <style lang="scss">
-.el-form-item__error{
+.el-form-item__error {
   top: 33px;
 }
 </style>
 <style scoped lang="scss">
 .content {
   @include listBom;
-  .el-tabs{
-    .disRow{
+
+  .el-tabs {
+    .disRow {
       height: 68vh;
-      .positRe{
+
+      .positRe {
         position: relative;
         margin-left: 100px;
         margin-top: 20px;
+
         .avatar-uploader .el-upload {
           height: 300px;
           border: 1px dashed #d9d9d9;
@@ -574,6 +602,7 @@ export default {
           border: 1px solid #aaa;
           border-radius: 6px;
           background: #eee;
+
           span {
             color: #409EFF;
           }
@@ -614,6 +643,7 @@ export default {
         }
       }
     }
+
     .el-form {
       display: flex;
       flex-wrap: wrap;
@@ -621,13 +651,15 @@ export default {
       .el-form-item {
         width: 263px;
         margin-bottom: 5px;
-        .btnType{
+
+        .btnType {
           margin-right: 20px;
         }
       }
     }
   }
 }
+
 .el-input__icon {
   cursor: pointer;
 }
