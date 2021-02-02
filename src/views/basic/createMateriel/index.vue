@@ -777,7 +777,7 @@ export default {
         fnumber: '',
         foldnumber: '',
         fbarCode: '无',
-        ferpclsId: '2',
+        ferpclsId: '',
         fprotect: '无',
         fmodel: '',
         fdescripTion: '',

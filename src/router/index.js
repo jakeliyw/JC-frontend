@@ -82,7 +82,7 @@ export const asyncRouterMap = [
         path: '/editMateriel',
         name: 'EditMateriel',
         component: () => import('@/views/basic/editMateriel'),
-        meta: { title: '修改物料' },
+        meta: { title: '修改物料', noCache: false },
         hidden: true,
         menu: 'editMateriel'
       },

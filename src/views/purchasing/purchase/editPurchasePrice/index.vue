@@ -330,10 +330,12 @@ export default {
         details: DETAILS
       }
       updatePurPrice(DATA).then(res => {
-        if (res.code === 0) {
-          this.$message.success(res.message)
-          this.reload()
+        if (res.code !== 0) {
+          this.$message.warning(res.message)
+          return
         }
+        this.$message.success(res.message)
+        this.reload()
       }).catch(error => {
         this.$message.error(error)
       })

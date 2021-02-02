@@ -14,15 +14,6 @@
         :table-header="tableHeader"
         :cell-style="cellStyle"
       >
-        <el-table-column
-          label="物料编码"
-          align="center"
-          min-width="150px"
-        >
-          <template slot-scope="scope">
-            <span class="jumpMateriel" @click="jumpMateriel(scope.row.fnumber)">{{ scope.row.fnumber }}</span>
-          </template>
-        </el-table-column>
         <template v-slot:btnSlot="clo">
           <el-button v-show="false" type="warning" size="mini" @click="editPurchase(clo.scope.row.fid)">修改价目</el-button>
           <el-button v-show="false" type="danger" size="mini" @click="deletePurchase(clo.scope.row.fid)">删除价目</el-button>
@@ -71,14 +62,12 @@ export default {
       },
       cellStyle: { padding: '10 10' }, // 行高
       tableHeader: [
+        { label: '单据编号', prop: 'fbillno', align: 'center' },
         { label: '调价名称', prop: 'fname', align: 'center' },
-        { label: '供应商名称', prop: 'fsupplier', minWidth: '200px', align: 'center' },
-        { label: '物料描述', prop: 'fdescripTion', align: 'center', minWidth: '300px' },
-        { label: '计价单位', prop: 'funit', align: 'center' },
-        { label: '调后单价', prop: 'fafterPrice', align: 'center' },
-        { label: '调后含税单价', prop: 'fafterTaxPrice', align: 'center', minWidth: '150px' },
-        { label: '币别', prop: 'fcurrency', align: 'center' },
-        { label: '调后价格系数', prop: 'fafterPriceCoefficient', align: 'center', minWidth: '150px' },
+        { label: '调价原因', prop: 'fdataValue', align: 'center' },
+        { label: '调价日期', prop: 'fdate', align: 'center' },
+        { label: '描述', prop: 'fdescripTion', align: 'center', minWidth: '200px' },
+        { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', minWidth: '150px' },
         { label: '生效时间', prop: 'fcreateDate', align: 'center' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '120px', align: 'center' }
       ],
