@@ -91,6 +91,7 @@ export default {
           this.$store.dispatch('login', this.loginForm).then(res => {
             if (res.code !== 0) {
               this.loading = false
+              this.$message.warning(res.message)
               return
             }
             window.sessionStorage.setItem('fuserId', res.data.fuserId)

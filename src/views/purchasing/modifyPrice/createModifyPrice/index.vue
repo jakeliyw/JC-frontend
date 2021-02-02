@@ -356,10 +356,12 @@ export default {
       }
       insertTPurPat(DATA).then(res => {
         this.optionValue.billCode = res.data
-        if (res.code === 0) {
-          this.$message.success(res.message)
-          this.reload()
+        if (res.code !== 0) {
+          this.$message.error(res.message)
+          return
         }
+        this.$message.success(res.message)
+        this.reload()
       }).catch(error => {
         this.$message.error(error)
       })

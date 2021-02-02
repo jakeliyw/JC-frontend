@@ -38,7 +38,7 @@
       :show-overflow-tooltip="tooltip"
       :sortable="col.sortable || sortable"
       :filter-method="filterHandler"
-      :filters="col.filters || filters"
+      :filters="col.filters"
     >
       <!--      -->
       <!--      操作-->
@@ -98,12 +98,6 @@ export default {
     sortable: { // 单元格是否排序
       type: Boolean,
       default: false
-    },
-    filters: {
-      type: Array,
-      default: function() {
-        return []
-      }
     },
     colMinWidth: { // 单元格最小宽度
       type: String,

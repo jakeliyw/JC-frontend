@@ -306,7 +306,7 @@ import {
 import { queryMaterialLog } from '@/api/basicManagement/materielList'
 
 export default {
-  name: 'CreateMateriel',
+  name: 'EditMateriel',
   components: {
     jcForm,
     jcPopup,
@@ -338,7 +338,6 @@ export default {
       popupTitle: '', // 查询条件文本
       dialogTitle: '', // 弹窗标题
       total: 0, // 条目
-      materialCode: '', // 物料编码
       serialNumber: '', // 流水号
       otherPagination: {
         pageNum: 1,
@@ -756,6 +755,13 @@ export default {
     // 获取表单
     async handleForm() {
       const { data: RES } = await queryMaterialDetail({ fnumber: this.$route.query.fnumber })
+      if (RES == null) {
+        this.$message.warning({ message: '物料编码已更改，请重新点击进入！', duration: 5 * 1000 })
+        // 关闭当前tag页签
+        this.$store.state.tagsView.visitedViews.splice(this.$store.state.tagsView.visitedViews.findIndex(item => item.path === this.$route.path), 1)
+        this.$router.push(this.$store.state.tagsView.visitedViews[this.$store.state.tagsView.visitedViews.length - 1].path)
+        return
+      }
       this.fispurchase = RES.fispurchase
       this.fissale = RES.fissale
       this.fisinventory = RES.fisinventory
