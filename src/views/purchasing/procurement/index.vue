@@ -45,6 +45,7 @@
         <el-button type="primary" size="mini" @click="gainData()">运算</el-button>
         <el-button type="primary" size="mini" @click="handleExport">导出Excel</el-button>
         <el-button type="primary" size="mini" @click="Show_StockInfo">设置默认供应商</el-button>
+        <el-button type="primary" size="mini" @click="batch">批量填充供应商</el-button>
       </el-form-item>
     </el-form>
     <jc-table
@@ -67,7 +68,13 @@
       </template>
       <!--供应商-->
       <template v-slot:btnSlot="col">
-        <el-select v-model="col.scope.row.fsupplierid" size="mini" :disabled="col.scope.row.zt==='已转'">
+        <el-select
+          v-if="col.scope.row.zt==='未转'"
+          v-model="col.scope.row.fsupplierid"
+          size="mini"
+          :disabled="col.scope.row.zt==='已转'"
+          @change="seleBatch(col.scope)"
+        >
           <el-option
             v-for="item in col.scope.row.fsuppSelect"
             :key="item.scbmno"
@@ -75,6 +82,7 @@
             :value="item.scbmno"
           />
         </el-select>
+        <el-select v-else v-model="col.scope.row.fsuppliername" size="mini" :disabled="col.scope.row.zt==='已转'" />
       </template>
       <!--仓库-->
       <template v-slot:tagSlot="col">
@@ -285,6 +293,7 @@ export default {
       if (RES.array.length === 0) {
         this.$message.warning('生产订单没有转单')
       }
+      this.tableData = RES.array
       RES.array.map((item, index) => {
         if (item.ck === 'null') {
           item.ck = '杰希仓库'
@@ -301,16 +310,7 @@ export default {
         item.shs = Number(item.shs).toFixed(4)
         item.sXprice = Number(item.sXprice).toFixed(4)
         item.hje = (item.rprice * item.cgQty).toFixed(2)
-        // 获取供应商
-        if (item.ddlx === '生产订单') {
-          this.ddlx = 'SCDD'
-        } else if (item.ddlx === '委外订单') {
-          this.ddlx = 'WWDD'
-        } else if (item.ddlx === '采购订单') {
-          this.ddlx = 'CGDD'
-        }
       })
-      this.tableData = RES.array
       // 筛选
       this.tableHeader.forEach(res => {
         res.filters = []
@@ -336,45 +336,45 @@ export default {
     // 确认下发
     async InsertMO() {
       this.insetData.insert_MoLists = []
-      this.val.forEach((res, index) => {
-        if (res.zt === '未转') {
+      for (const index in this.tableData) {
+        if (!this.tableData[index].fsupplierid || !this.tableData[index].ckid) {
+          this.$message.error(Number(index) + Number(1) + '行供应商或仓库不能为空')
+          return
+        }
+        if (this.tableData[index].rprice === 0) {
+          this.$message.error(Number(index) + Number(1) + '行采购单价不能为零')
+          return
+        }
+        if (this.tableData[index].rprice > Number(this.tableData[index].sXprice)) {
+          this.$message.warning(Number(index) + Number(1) + '行采购单价不能超过限价')
+          return
+        }
+      }
+      for (const item of this.val) {
+        if (item.zt === '未转') {
           this.insetData.insert_MoLists.push({
-            DDLX: res.ddlx,
-            Qutntity: res.qty,
-            Rprice: String(res.rprice),
-            StockID: res.ckid,
-            StockName: res.ck,
-            SCBMID: res.fsupplierid,
-            SCBM: res.fsuppliername,
-            DueDocdate: res.pjjq,
-            ItemCode: res.itemCode
+            DDLX: item.ddlx,
+            Qutntity: item.qty,
+            Rprice: String(item.rprice),
+            StockID: item.ckid,
+            StockName: item.ck,
+            SCBMID: item.fsupplierid,
+            SCBM: item.fsuppliername,
+            DueDocdate: item.pjjq,
+            ItemCode: item.itemCode
           })
         }
-        if (res.rprice === 0) {
-          this.$message.error(Number(index + 1) + '行采购单价不能为零')
-          return
-        }
-        if (res.rprice > Number(res.sXprice)) {
-          this.$message.warning(Number(index + 1) + '行采购单价不能超过限价')
-          return
-        }
-      })
+      }
       if (this.insetData.insert_MoLists.length === 0) {
         this.$message.error('没有可下发订单')
         return
       }
       const DATA = this.insetData
-      for (const item of this.insetData.insert_MoLists) {
-        if (!item.SCBM || !item.StockID) {
-          this.$message.error('供应商或仓库不能为空')
-          return
-        }
-      }
       // 下发转单
       await InsertPO(DATA).then(res => {
         if (res.data.result) {
           this.$message.success('转单成功')
-          this.MrpInfo(res.data.messger)
+          this.gainData(res.data.messger)
         } else {
           this.$message.error(res.data.messger)
         }
@@ -400,11 +400,18 @@ export default {
     // 设置默认供应商
     Show_StockInfo() {
       this.tableData.map((item, index) => {
+        // 获取供应商
+        if (item.ddlx === '生产订单') {
+          this.ddlx = 'SCDD'
+        } else if (item.ddlx === '委外订单') {
+          this.ddlx = 'WWDD'
+        } else if (item.ddlx === '采购订单') {
+          this.ddlx = 'CGDD'
+        }
         const DATA = { ddlx: this.ddlx, itemCode: item.itemCode, bm: '' }
         Show_StockInfo(DATA).then(res => {
           item.fsuppSelect = res.data
           item.fsupplierid = res.data[0].scbmno
-          item.fsuppliername = res.data[0].scbm
           // 获取单价上限
           const DATA = {
             fsupplierId: item.fsupplierid,
@@ -418,6 +425,20 @@ export default {
             }
           })
         })
+      })
+    },
+    // 供应商切换请求限价
+    seleBatch(item) {
+      const DATA = {
+        fsupplierId: item.row.fsupplierid,
+        itemcode: item.row.itemCode
+      }
+      MrpGetCGprice(DATA).then(res => {
+        if (res.data.result) {
+          this.tableData[item.$index].sXprice = Number(res.data.price).toFixed(4)
+          this.tableData[item.$index].rprice = Number(res.data.price).toFixed(4)
+          this.countHjr(item.$index) // 改变行金额
+        }
       })
     },
     // 仓库列表
@@ -455,6 +476,24 @@ export default {
     // 点击数量，改变行金额
     countHjr(ev) {
       this.tableData[ev].hje = (this.tableData[ev].rprice * this.tableData[ev].cgQty).toFixed(2)
+    },
+    // 批量填充供应商
+    batch() {
+      if (this.val.length > 0) {
+        this.val.map(item => {
+          item.fsuppSelect.forEach(res => {
+            if (res.scbmno === this.val[0].fsupplierid) {
+              item.fsupplierid = this.val[0].fsupplierid
+            } else {
+              item.fsupplierid = ''
+              item.sXprice = 0
+              item.rprice = 0
+            }
+          })
+        })
+      } else {
+        this.$message.warning('请选择数据')
+      }
     }
   }
 }
@@ -472,29 +511,37 @@ export default {
       width: 263px;
       margin-bottom: 15px;
     }
-    .el-form-item:nth-child(1){
+
+    .el-form-item:nth-child(1) {
       width: 526px;
-      &::v-deep .el-input__inner{
+
+      &::v-deep .el-input__inner {
         width: 418px;
       }
-      .el-input__icon{
+
+      .el-input__icon {
         cursor: pointer;
         transform: translateX(260px);
       }
     }
-    .el-form-item:last-child{
+
+    .el-form-item:last-child {
       width: 526px;
-      &::v-deep .el-form-item__content{
+
+      &::v-deep .el-form-item__content {
         width: 418px;
       }
     }
-    &::v-deep .el-input__inner{
+
+    &::v-deep .el-input__inner {
       width: 155px;
     }
-    &::v-deep .el-form-item__content{
+
+    &::v-deep .el-form-item__content {
       width: 160px;
     }
-    .el-input__icon{
+
+    .el-input__icon {
       cursor: pointer;
     }
   }

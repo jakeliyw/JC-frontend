@@ -25,22 +25,9 @@
             <el-table-column prop="fdescripTion" label="物料描述" min-width="300px" align="center" :show-overflow-tooltip="true" />
             <el-table-column prop="funit" label="基本单位" min-width="80px" align="center" />
             <el-table-column prop="fpriceBase" label="销售系数" min-width="190px" align="center">
-              <template>
-                <ul class="tabndispl">
-                  <li>
-                    <div><=500</div>
-                    <div>0.6</div>
-                  </li>
-                  <li>
-                    <div>501<=1000</div>
-                    <div>0.6</div>
-                  </li>
-                  <li>
-                    <div>1001=></div>
-                    <div>0.6</div>
-                  </li>
-                </ul>
-              </template>
+              <el-table-column label="<=500" align="center">0.6</el-table-column>
+              <el-table-column label="501=>1000" align="center" width="90px">0.65</el-table-column>
+              <el-table-column label="1001<=" align="center">0.7</el-table-column>
             </el-table-column>
             <el-table-column prop="deliveryPrice" label="出厂价" align="center" />
             <el-table-column prop="fdownPrice" label="销售基准价" min-width="90px" align="center" />
@@ -169,13 +156,22 @@ export default {
   }
   .el-tabs{
     height: calc( 100vh - 180px );
-  }
-  .el-table ::v-deep .tabndispl{
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: space-between;
+    .el-table {
+      border: 1px solid #ccc;
+      &::v-deep thead.is-group th{
+        border-color: #ccc;
+        padding: 5px 0;
+      }
+      &::v-deep thead.is-group th:last-child{
+        border-right: none;
+      }
+      &::v-deep td{
+        border-color: #ccc;
+      }
+      &::v-deep td:last-child{
+        border-right: none;
+      }
+    }
   }
 }
 </style>

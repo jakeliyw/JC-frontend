@@ -23,7 +23,7 @@
       width="50"
     />
     <!--    id列-->
-    <el-table-column v-if="serial" type="index" :sortable="sortable" label="序号" width="80" align="center" />
+    <el-table-column v-if="serial" type="index" :sortable="sortable" label="序号" width="80" fixed="left" align="center" />
     <slot />
     <el-table-column
       v-for="(col, index) of cpTableHeader"

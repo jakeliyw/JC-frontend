@@ -322,7 +322,7 @@ export const asyncRouterMap = [
             path: '/marketPriceList',
             name: 'MarketPriceList',
             component: () => import('@/views/market/salesPrice/marketPriceList/index'),
-            meta: { title: '销售价目表' },
+            meta: { title: '销售客户价目表' },
             menu: 'marketPriceList'
           }
         ]
@@ -619,7 +619,7 @@ export const asyncRouterMap = [
     },
     children: [
       {
-        path: '/mrpView ',
+        path: '/mrpView',
         name: 'MrpView',
         component: () => import('@/views/production/mrpView/index'),
         meta: { title: '生产拆单' },

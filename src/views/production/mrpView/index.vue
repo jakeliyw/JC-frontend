@@ -177,7 +177,7 @@ export default {
         { label: '配件交期', prop: 'pjjq', align: 'center', minWidth: '130px', filters: [] },
         { label: '大类', prop: 'cz', align: 'center', minWidth: '90px', filters: [] },
         { label: '订单详情', prop: 'ddxq', align: 'center', minWidth: '130px', filters: [] },
-        { label: '工单号', prop: 'mOnum', align: 'center', minWidth: '120px', filters: [] }
+        { label: '生产工单号', prop: 'mOnum', align: 'center', minWidth: '120px', filters: [] }
       ],
       insetData: {
         CreateID: '',
@@ -210,7 +210,7 @@ export default {
     handleExport() {
       require.ensure([], () => {
         const tHeader = ['状态', '客户订单号', '销售订单号', '订单类型', '生产单号', '型号', '物料编号', '物料描述', '尺寸', '生产类型', '生产部门', '仓库名',
-          '库存', '计划数量', '单位', '损耗率', '损耗数', '生产数量', '加工单价', '行金额', '配件交期', '包装BOM', '大类', '订单详情', '工单号']
+          '库存', '计划数量', '单位', '损耗率', '损耗数', '生产数量', '加工单价', '行金额', '配件交期', '包装BOM', '大类', '订单详情', '生产工单号']
         const filterVal = ['zt', 'KHDD', 'SoNum', 'ddlx', 'ssdh', 'itemXH', 'itemCode', 'itemName', 'cc', 'sclx', 'scbm', 'ck',
           'kc', 'qty', 'dw', 'shl', 'shs', 'scQty', 'rprice', 'hje', 'pjjq', 'BZBOM', 'CZ', 'DDQC', 'Monum']
         if (this.val.length === 0) {

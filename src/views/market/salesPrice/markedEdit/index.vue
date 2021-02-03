@@ -75,22 +75,9 @@
               </template>
             </el-table-column>
             <el-table-column label="销售系数" prop="fpriceBase" min-width="180px" align="center">
-              <template>
-                <ul class="tabndispl">
-                  <li>
-                    <div><=500</div>
-                    <div>0.6</div>
-                  </li>
-                  <li>
-                    <div>501<=1000</div>
-                    <div>0.6</div>
-                  </li>
-                  <li>
-                    <div>1001=></div>
-                    <div>0.6</div>
-                  </li>
-                </ul>
-              </template>
+              <el-table-column label="<=500" align="center">0.6</el-table-column>
+              <el-table-column label="501=>1000" align="center" width="100px">0.65</el-table-column>
+              <el-table-column label="1001<=" align="center">0.7</el-table-column>
             </el-table-column>
             <el-table-column label="销售基准价" prop="fdownPrice" min-width="150px" align="center">
               <template slot-scope="scope">
@@ -351,6 +338,25 @@ export default {
 <style lang="scss" scoped>
 .content {
   @include listBom;
+  .el-tabs{
+    height: calc( 100vh - 230px );
+    .el-table {
+      border: 1px solid #ccc;
+      &::v-deep thead.is-group th{
+        border-color: #ccc;
+        padding: 5px 0;
+      }
+      &::v-deep thead.is-group th:last-child{
+        border-right: none;
+      }
+      &::v-deep td{
+        border-color: #ccc;
+      }
+      &::v-deep td:last-child{
+        border-right: none;
+      }
+    }
+  }
   .el-form{
     display: flex;
     flex-wrap: wrap;
@@ -358,13 +364,6 @@ export default {
       max-width: 263px;
       margin-bottom: 15px;
     }
-  }
-  .el-table ::v-deep .tabndispl{
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: space-between;
   }
 }
 .materiel-form {
