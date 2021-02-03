@@ -185,18 +185,18 @@ export default {
       cellStyle: { padding: '10 10' },
       tableData: [],
       tableHeader: [
-        { label: '状态', prop: 'zt', align: 'center', minWidth: '90px', filterHeader: function() {} },
-        { label: '客户订单号', prop: 'khdh', align: 'center', minWidth: '130px', filterHeader: function() {} },
-        { label: '销售订单号', prop: 'sonum', align: 'center', minWidth: '130px', filterHeader: function() {} },
-        { label: '订单类型', prop: 'ddlx', align: 'center', minWidth: '120px', filterHeader: function() {} },
-        { label: '采购单号', prop: 'cgdh', align: 'center', minWidth: '140px', filterHeader: function() {} },
-        { label: '型号', prop: 'itemXH', align: 'center', minWidth: '90px', filterHeader: function() {} },
+        { label: '状态', prop: 'zt', align: 'center', minWidth: '90px', filterHeaders: true },
+        { label: '客户订单号', prop: 'khdh', align: 'center', minWidth: '130px', filterHeaders: true },
+        { label: '销售订单号', prop: 'sonum', align: 'center', minWidth: '130px', filterHeaders: true },
+        { label: '订单类型', prop: 'ddlx', align: 'center', minWidth: '120px', filterHeaders: true },
+        { label: '采购单号', prop: 'cgdh', align: 'center', minWidth: '140px', filterHeaders: true },
+        { label: '型号', prop: 'itemXH', align: 'center', minWidth: '90px', filterHeaders: true },
         { label: '物料编号', prop: 'itemCode', align: 'center', minWidth: '210px' },
         { label: '物料描述', prop: 'itemName', align: 'left', minWidth: '260px', headerAlign: 'center' },
         { label: '尺寸', prop: 'cc', align: 'center', minWidth: '120px' },
         { label: '生产类型', prop: 'cglx', align: 'center', minWidth: '120px' },
-        { label: '供应商', type: 'btn', prop: 'fsuppliername', align: 'center', minWidth: '150px', filterHeader: function() {} },
-        { label: '仓库', type: 'tag', prop: 'ck', align: 'center', minWidth: '150px', filterHeader: function() {} },
+        { label: '供应商', type: 'btn', prop: 'fsuppliername', align: 'center', minWidth: '150px', filterHeaders: true },
+        { label: '仓库', type: 'tag', prop: 'ck', align: 'center', minWidth: '150px', filterHeaders: true },
         { label: '库存', prop: 'kc', align: 'center', minWidth: '90px' },
         { label: '计划采购数量', prop: 'qty', align: 'center', minWidth: '140px' },
         { label: '数量单位', prop: 'dw', align: 'center', minWidth: '120px' },
@@ -206,12 +206,12 @@ export default {
         { label: '采购单价', type: 'state', prop: 'rprice', align: 'center', minWidth: '160px' },
         { label: '采购限价', prop: 'sXprice', align: 'center', minWidth: '130px' },
         { label: '行金额', prop: 'hje', align: 'center', minWidth: '120px' },
-        { label: '配件交期', prop: 'pjjq', align: 'center', minWidth: '120px', filterHeader: function() {} },
+        { label: '配件交期', prop: 'pjjq', align: 'center', minWidth: '120px', filterHeaders: true },
         { label: '包装方式', prop: 'BZBOM', align: 'center', minWidth: '120px' }
       ],
       insetData: {
         CreateID: '',
-        // Sonum: '',
+        Sonum: '',
         insert_MoLists: []
       },
       // 仓库
@@ -391,13 +391,6 @@ export default {
       }
       this.orderVisiblit = false
     },
-    // 接受子组件传值,获取销售订单号
-    orderData(ev) {
-      if (ev.XSDDH.length > 0) {
-        this.orderNumber.sonum = ev.XSDDH.join(',')
-      }
-      this.orderVisiblit = false
-    },
     // 获取大类名称
     largeData(ev) {
       this.largeName = ev.largeName
@@ -405,7 +398,7 @@ export default {
       this.largeVisiblit = false
     },
     // 设置默认供应商
-    Show_StockInfo() {
+    async Show_StockInfo() {
       this.tableData.map((item, index) => {
         // 获取供应商
         if (item.ddlx === '生产订单') {
@@ -416,22 +409,25 @@ export default {
           this.ddlx = 'CGDD'
         }
         const DATA = { ddlx: this.ddlx, itemCode: item.itemCode, bm: '' }
-        Show_StockInfo(DATA).then(res => {
-          item.fsuppSelect = res.data
-          item.fsupplierid = res.data[0].scbmno
-          // 获取单价上限
-          const DATA = {
-            fsupplierId: item.fsupplierid,
-            itemcode: item.itemCode
-          }
-          MrpGetCGprice(DATA).then(res => {
-            if (res.data.result) {
-              item.sXprice = Number(res.data.price).toFixed(4)
-              item.rprice = Number(res.data.price).toFixed(4)
-              this.countHjr(index) // 改变行金额
+        if (!item.fsupplierid) {
+          Show_StockInfo(DATA).then(res => {
+            item.fsuppSelect = res.data
+            item.fsupplierid = res.data[0].scbmno
+            item.fsuppliername = res.data[0].scbm
+            // 获取单价上限
+            const DATA = {
+              fsupplierId: item.fsupplierid,
+              itemcode: item.itemCode
             }
+            MrpGetCGprice(DATA).then(res => {
+              if (res.data.result) {
+                item.sXprice = Number(res.data.price).toFixed(4)
+                item.rprice = Number(res.data.price).toFixed(4)
+                this.countHjr(index) // 改变行金额
+              }
+            })
           })
-        })
+        }
       })
     },
     // 供应商切换请求限价
@@ -489,10 +485,12 @@ export default {
       if (this.val.length > 0) {
         this.val.map(item => {
           item.fsuppSelect.forEach(res => {
-            if (res.scbmno === this.val[0].fsupplierid) {
-              item.fsupplierid = this.val[0].fsupplierid
+            if (res.scbmno === this.val[0].fsuppSelect[0].scbmno) {
+              item.fsupplierid = res.scbmno
+              // item.fsuppliername = this.val[0].fsuppSelect[0].scbm
             } else {
               item.fsupplierid = ''
+              // item.fsuppliername = ''
               item.sXprice = 0
               item.rprice = 0
             }

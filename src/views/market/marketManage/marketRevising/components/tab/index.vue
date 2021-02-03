@@ -242,7 +242,6 @@ export default {
     // 物料弹窗选中
     materialData(item) {
       if (item.fmaterialId) {
-        console.log(this.material)
         this.tabTwo.saleDetails[this.material].fmaterialId = item.fmaterialId
         this.tabTwo.saleDetails[this.material].fnumber = item.fnumber
         this.tabTwo.saleDetails[this.material].fdescripTion = item.fdescripTion
@@ -265,7 +264,6 @@ export default {
       }
       this.isMateria = true
       this.material = index
-      console.log(index)
       // 新增一行
       if (index === this.tabTwo.saleDetails.length - 1) {
         this.tabTwo.saleDetails.push(

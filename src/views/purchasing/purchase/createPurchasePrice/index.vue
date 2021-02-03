@@ -704,7 +704,6 @@ export default {
     },
     // 含税选中
     handleTax(row) {
-      console.log(row)
       if (this.purchaseForm.fisIncludedTax) {
         // 单价不可输
         this.fpriceDisabled = true
