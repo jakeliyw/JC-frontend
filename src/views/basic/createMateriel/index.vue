@@ -391,8 +391,8 @@ export default {
         fbillTypeId: 0, // 采购类型id
         fpobillTypeName: null, // 采购类型名称
         fquotaType: '1', // 配额方式id
-        fstockId: 0, // 仓库
-        fstockName: null, // 仓库名称
+        fstockId: 323311, // 仓库
+        fstockName: '杰希仓库', // 仓库名称
         position: 0, // 仓位
         fminStock: 0, // 最小库存
         fsafeStock: 0, // 安全库存
@@ -414,7 +414,6 @@ export default {
     this.handleControl()
     this.getOneMaterielData()
     this.getBasicUnit()
-    this.getVolumeList()
   },
   methods: {
     // 允许资产
@@ -653,19 +652,11 @@ export default {
         return { label: item.fname, value: item.fbaseUnitId }
       })
     },
-    // 获取重量单位
-    async getWeightData() {
-      const RES = await this.dialogData('重量单位', { ...this.weightPagination }, queryFweightList)
-      this.weightTableData = RES.data
-      return {
-        fname: RES.data[0].fname,
-        fweightUnitId: RES.data[0].fweightUnitId
-      }
-    },
     // 重量单位
     async handleFweightList() {
       this.openWeightDialog = true
-      this.getWeightData()
+      const RES = await this.dialogData('重量单位', { ...this.weightPagination }, queryFweightList)
+      this.weightTableData = RES.data
     },
     // 重量单位选中
     weightSelect(row) {
@@ -673,19 +664,12 @@ export default {
       this.weightValue.fname = row.fname
       this.openWeightDialog = false
     },
-    // 获取尺寸单位
-    async getVolumeList() {
-      const RES = await this.dialogData('尺寸单位', { ...this.sizePagination }, queryFvolumeList)
-      this.sizeTableData = RES.data
-      return {
-        fname: RES.data[0].fname,
-        fvolumeUnitId: RES.data[0].fvolumeUnitId
-      }
-    },
     // 尺寸单位
     async handleFvolumeList() {
-      this.getVolumeList()
       this.openSizeDialog = true
+      const RES = await this.dialogData('尺寸单位', { ...this.sizePagination }, queryFvolumeList)
+      console.log(RES)
+      this.sizeTableData = RES.data
     },
     // 尺寸单位选中
     sizeSelect(row) {
@@ -722,8 +706,6 @@ export default {
       const organizationRes = await this.getOrganization()
       this.basicUnit = await this.getBasicUnit()
       const materielType = await this.getMaterielType()
-      const { fname, fweightUnitId } = await this.getWeightData()
-      const { fname: fnameNAME, fvolumeUnitId } = await this.getVolumeList()
       this.organizationValue = {
         FCREATEORG: 1,
         fuseorg: this.useOrganization
@@ -848,8 +830,8 @@ export default {
         }
       }
       this.weightValue = {
-        fname,
-        fweightUnitId, // ID值
+        fname: '千克(kg)',
+        fweightUnitId: 10095, // ID值
         fgrossWeight: '',
         fnetWeight: ''
       }
@@ -871,8 +853,8 @@ export default {
         }
       }
       this.dimensionalValue = {
-        fname: fnameNAME,
-        fvolumeUnitId,
+        fname: '毫米(mm)',
+        fvolumeUnitId: 540082,
         flength: 0.0,
         fwidth: 0.0,
         fheight: 0.0,

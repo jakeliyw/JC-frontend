@@ -138,6 +138,7 @@ export default {
       const fuserId = window.sessionStorage.getItem('fuserId')
       const { message, code } = await updateNotReview({ fid: FID, fuserId })
       if (code !== 0) {
+        this.$message.warning(message)
         return
       }
       this.$message.success({ message })

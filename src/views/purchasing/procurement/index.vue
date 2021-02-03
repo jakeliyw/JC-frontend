@@ -185,33 +185,33 @@ export default {
       cellStyle: { padding: '10 10' },
       tableData: [],
       tableHeader: [
-        { label: '状态', prop: 'zt', align: 'center', minWidth: '90px', filters: [] },
-        { label: '客户订单号', prop: 'khdh', align: 'center', minWidth: '130px', filters: [] },
-        { label: '销售订单号', prop: 'sonum', align: 'center', minWidth: '130px', filters: [] },
-        { label: '订单类型', prop: 'ddlx', align: 'center', minWidth: '120px', filters: [] },
-        { label: '采购单号', prop: 'cgdh', align: 'center', minWidth: '140px', filters: [] },
-        { label: '型号', prop: 'itemXH', align: 'center', minWidth: '90px', filters: [] },
-        { label: '物料编号', prop: 'itemCode', align: 'center', minWidth: '210px', filters: [] },
-        { label: '物料描述', prop: 'itemName', align: 'left', minWidth: '260px', headerAlign: 'center', filters: [] },
-        { label: '尺寸', prop: 'cc', align: 'center', minWidth: '120px', filters: [] },
-        { label: '生产类型', prop: 'cglx', align: 'center', minWidth: '120px', filters: [] },
-        { label: '供应商', type: 'btn', prop: 'fsuppliername', align: 'center', minWidth: '150px', filters: [] },
-        { label: '仓库', type: 'tag', prop: 'ck', align: 'center', minWidth: '150px', filters: [] },
-        { label: '库存', prop: 'kc', align: 'center', minWidth: '90px', filters: [] },
-        { label: '计划采购数量', prop: 'qty', align: 'center', minWidth: '140px', filters: [] },
-        { label: '数量单位', prop: 'dw', align: 'center', minWidth: '120px', filters: [] },
-        { label: '损耗率', prop: 'shl', align: 'center', minWidth: '110px', filters: [] },
-        { label: '损耗数', prop: 'shs', align: 'center', minWidth: '110px', filters: [] },
-        { label: '实际采购数量', prop: 'cgQty', align: 'center', minWidth: '140px', filters: [] },
-        { label: '采购单价', type: 'state', prop: 'rprice', align: 'center', minWidth: '160px', filters: [] },
-        { label: '采购限价', prop: 'sXprice', align: 'center', minWidth: '130px', filters: [] },
-        { label: '行金额', prop: 'hje', align: 'center', minWidth: '120px', filters: [] },
-        { label: '配件交期', prop: 'pjjq', align: 'center', minWidth: '120px', filters: [] },
-        { label: '包装方式', prop: 'BZBOM', align: 'center', minWidth: '120px', filters: [] }
+        { label: '状态', prop: 'zt', align: 'center', minWidth: '90px' },
+        { label: '客户订单号', prop: 'khdh', align: 'center', minWidth: '130px' },
+        { label: '销售订单号', prop: 'sonum', align: 'center', minWidth: '130px' },
+        { label: '订单类型', prop: 'ddlx', align: 'center', minWidth: '120px' },
+        { label: '采购单号', prop: 'cgdh', align: 'center', minWidth: '140px' },
+        { label: '型号', prop: 'itemXH', align: 'center', minWidth: '90px' },
+        { label: '物料编号', prop: 'itemCode', align: 'center', minWidth: '210px' },
+        { label: '物料描述', prop: 'itemName', align: 'left', minWidth: '260px', headerAlign: 'center' },
+        { label: '尺寸', prop: 'cc', align: 'center', minWidth: '120px' },
+        { label: '生产类型', prop: 'cglx', align: 'center', minWidth: '120px' },
+        { label: '供应商', type: 'btn', prop: 'fsuppliername', align: 'center', minWidth: '150px' },
+        { label: '仓库', type: 'tag', prop: 'ck', align: 'center', minWidth: '150px' },
+        { label: '库存', prop: 'kc', align: 'center', minWidth: '90px' },
+        { label: '计划采购数量', prop: 'qty', align: 'center', minWidth: '140px' },
+        { label: '数量单位', prop: 'dw', align: 'center', minWidth: '120px' },
+        { label: '损耗率', prop: 'shl', align: 'center', minWidth: '110px' },
+        { label: '损耗数', prop: 'shs', align: 'center', minWidth: '110px' },
+        { label: '实际采购数量', prop: 'cgQty', align: 'center', minWidth: '140px' },
+        { label: '采购单价', type: 'state', prop: 'rprice', align: 'center', minWidth: '160px' },
+        { label: '采购限价', prop: 'sXprice', align: 'center', minWidth: '130px' },
+        { label: '行金额', prop: 'hje', align: 'center', minWidth: '120px' },
+        { label: '配件交期', prop: 'pjjq', align: 'center', minWidth: '120px' },
+        { label: '包装方式', prop: 'BZBOM', align: 'center', minWidth: '120px' }
       ],
       insetData: {
         CreateID: '',
-        Sonum: '',
+        // Sonum: '',
         insert_MoLists: []
       },
       // 仓库
@@ -383,6 +383,13 @@ export default {
     // 多选时触发的事件
     selectData(val) {
       this.val = val
+    },
+    // 接受子组件传值,获取销售订单号
+    orderData(ev) {
+      if (ev.XSDDH.length > 0) {
+        this.orderNumber.sonum = ev.XSDDH.join(',')
+      }
+      this.orderVisiblit = false
     },
     // 接受子组件传值,获取销售订单号
     orderData(ev) {

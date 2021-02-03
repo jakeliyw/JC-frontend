@@ -171,6 +171,7 @@ export default {
       const fuserId = window.sessionStorage.getItem('fuserId')
       const { code, message } = await updateMaterialNotReview({ fmaterial: FMATERIALID, fuserId })
       if (code !== 0) {
+        this.$message.warning(message)
         return
       }
       this.$message.success({ message })

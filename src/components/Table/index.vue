@@ -37,8 +37,12 @@
       :min-width="col.minWidth || colMinWidth"
       :show-overflow-tooltip="tooltip"
       :sortable="col.sortable || sortable"
+<<<<<<< HEAD
+=======
       :filter-method="col.filters?filterHandler:function (){}"
+>>>>>>> 699db3b44f4d4e1e45867efd2a633ce40e0ca0d1
       :filters="col.filters"
+      :filter-method="col.filterHeader"
     >
       <!--      操作-->
       <template slot-scope="scope">
@@ -170,7 +174,7 @@ export default {
       }
     },
     // 筛选
-    filterHandler(value, row, column) {
+    filterHeader(value, row, column) {
       const property = column['property']
       return row[property] === value
     }

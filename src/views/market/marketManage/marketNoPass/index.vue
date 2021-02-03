@@ -129,6 +129,17 @@ export default {
       })
       this.total = RES.total
     },
+    uniqArrObject(arr) {
+      const result = {}
+      const finalResult = []
+      for (let i = 0; i < arr.length; i++) {
+        result[arr[i].text] = arr[i]
+      }
+      for (const key in result) {
+        finalResult.push(result[key])
+      }
+      return finalResult
+    },
     // 搜索
     handleQueryUntreated() {
       this.padlocktr = '1'

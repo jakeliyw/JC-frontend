@@ -31,6 +31,10 @@
           <el-tag v-if="clo.scope.row.fcloseStatus==='A'">否</el-tag>
           <el-tag v-else type="danger">是</el-tag>
         </template>
+        <template v-slot:btnSlot="clo">
+          <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">详情</el-button>
+          <el-button type="danger" size="mini" @click="approvalRejection(clo.scope.row.fid)">反审核</el-button>
+        </template>
       </jc-table>
       <jc-pagination
         v-show="stork.total > 0"
