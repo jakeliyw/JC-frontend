@@ -88,7 +88,7 @@ export default {
         { label: '结算货币', prop: 'fsettleCurr', align: 'center' },
         { label: '销售部门', prop: 'fsaleDept', align: 'center' },
         { label: '销售员', prop: 'fsaler', align: 'center' },
-        { label: '禁用状态', type: 'tag', align: 'center' },
+        { label: '禁用状态', type: 'tag', align: 'center' }
       ],
       cellStyle: { padding: '10 10' },
       prodValue: { XSDDH: '' },
@@ -101,7 +101,7 @@ export default {
   methods: {
     // 获取销售订单
     async handleGetUntreated() {
-      const DATA = { pageNum: this.stork.pageNum, pageSize: this.stork.pageSize, fbillNo: this.stork.fname, fdocumentStatus: '' }
+      const DATA = { pageNum: this.stork.pageNum, pageSize: this.stork.pageSize, fbillNo: this.stork.fname, fdocumentStatus: 'C' }
       const { data: RES, data: total } = await queryTSalOrderList(DATA)
       this.storklDialogData = RES.array.map(item => {
         return (toMxAmina(item))

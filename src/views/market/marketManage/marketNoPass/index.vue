@@ -108,15 +108,25 @@ export default {
       this.tableData = RES.array.map(item => {
         return (toMxAmina(item))
       })
-      // [...new Set(arr)]
-      // this.tableHeader.map(res => {
-      //   res.filters = []
-      //   this.tableData.forEach(item => {
-      //     res.filters.push({
-      //       text: item[res.prop], value: item[res.prop]
-      //     })
-      //   })
-      // })
+      this.tableHeader.forEach(res => {
+        res.filters = []
+        this.tableData.forEach(item => {
+          if (item[res.prop]) {
+            res.filters.push({
+              text: item[res.prop], value: item[res.prop]
+            })
+          }
+        })
+        const obj = {}
+        const result = []
+        res.filters.map(item => {
+          if (!obj[item.text]) {
+            result.push(item)
+            obj[item.text] = true
+          }
+        })
+        res.filters = result
+      })
       this.total = RES.total
     },
     uniqArrObject(arr) {
