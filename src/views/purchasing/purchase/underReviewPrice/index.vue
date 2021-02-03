@@ -68,7 +68,7 @@ export default {
         { label: '币别', prop: 'fcurrency', align: 'center' },
         { label: '生效时间', prop: 'fcreateDate', align: 'center' },
         { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', minWidth: '150px' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '100px', align: 'center' }
+        { label: '操作', type: 'btn', minWidth: '100px', align: 'center' }
       ],
       // 表格数据
       tableData: []

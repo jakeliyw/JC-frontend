@@ -26,6 +26,7 @@
             filterable
             default-first-option
             style="width: 200px"
+            disabled
           >
             <el-option
               v-for="item of toMaterielData"

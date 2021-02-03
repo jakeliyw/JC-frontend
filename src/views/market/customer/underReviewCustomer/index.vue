@@ -66,7 +66,7 @@ export default {
         { label: '客户名称', prop: 'fname', align: 'center', minWidth: '200px' },
         { label: '客户分组', prop: 'fcustGroup', align: 'center' },
         { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', minWidth: '150px' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '250px', align: 'center' }
+        { label: '操作', type: 'btn', minWidth: '250px', align: 'center' }
       ],
       // 表格数据
       tableData: []

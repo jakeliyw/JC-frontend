@@ -64,7 +64,7 @@ export default {
         { label: '客户编码', prop: 'fnumber', align: 'center' },
         { label: '客户名称', prop: 'fname', align: 'center' },
         { label: '客户分组', prop: 'fcustGroup', align: 'center', minWidth: '200px' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
+        { label: '操作', type: 'btn', minWidth: '200px', align: 'center' }
       ],
       // 表格数据
       tableData: []

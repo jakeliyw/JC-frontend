@@ -56,6 +56,7 @@ export default {
       tableHeader: [
         { label: '物料描述', prop: 'fdescripTion', align: 'center' },
         { label: '物料编码', prop: 'fnumber', align: 'center' },
+        { label: '规格', prop: 'fspecificaTion', align: 'center' },
         { label: '计价单位', prop: 'funit', align: 'center' },
         { label: '单价', prop: 'fprice', align: 'center' },
         { label: '含税单价', prop: 'ftaxPrice', align: 'center' },
@@ -97,6 +98,7 @@ export default {
           pageSize: this.pageSize
         }
       )
+      console.log(RES)
       this.tableData = RES.detail
       RES.fisIncludedTax = JSON.parse(RES.fisIncludedTax)
       this.optionValue = RES
