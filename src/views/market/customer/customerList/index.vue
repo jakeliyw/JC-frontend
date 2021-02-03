@@ -94,6 +94,7 @@ export default {
     async editCustomerList(fcustId) {
       const { message, code } = await againReviewCustomer({ fcustId })
       if (code !== 0) {
+        this.$message.warning(message)
         return
       }
       this.$message.success(message)

@@ -1,21 +1,45 @@
 <template>
   <div class="content">
     <jc-title />
-    <el-form :model="orderNumber" label-width="90px">
+    <el-form :model="orderNumber" label-width="120px">
       <el-form-item label="销售订单号">
-        <el-input v-model.trim="Sonum" size="mini" @keyup.enter.native="gainData()" @blur="gainData()" />
-      </el-form-item>
-      <el-form-item label="客户">
-        <el-input v-model="orderNumber.customer" disabled size="mini" />
+        <el-input v-model.trim="orderNumber.sonum" size="mini">
+          <i
+            slot="suffix"
+            class="el-input__icon el-icon-search"
+            @click="orderVisiblit=true"
+          />
+        </el-input>
       </el-form-item>
       <el-form-item label="客户订单号">
-        <el-input v-model="orderNumber.fpaezText1" disabled size="mini" />
+        <el-input v-model="orderNumber.khdh" size="mini" />
       </el-form-item>
-      <el-form-item label="品质标准">
-        <el-input v-model="orderNumber.fpaezCombo" disabled size="mini" />
+      <el-form-item label="成品交期始">
+        <el-date-picker
+          v-model="orderNumber.sd"
+          type="date"
+          size="mini"
+          value-format="yyyy-MM-dd"
+          placeholder="选择开始日期"
+        />
       </el-form-item>
-      <el-form-item label="交货日期">
-        <el-input v-model="orderNumber.fdeliveryDate" disabled size="mini" />
+      <el-form-item label="成品交期至">
+        <el-date-picker
+          v-model="orderNumber.ed"
+          type="date"
+          size="mini"
+          value-format="yyyy-MM-dd"
+          placeholder="选择结束日期"
+        />
+      </el-form-item>
+      <el-form-item label="大类列表">
+        <el-input v-model.trim="largeName" size="mini">
+          <i
+            slot="suffix"
+            class="el-input__icon el-icon-search"
+            @click="largeVisiblit=true"
+          />
+        </el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" size="mini" @click="gainData()">运算</el-button>
@@ -78,6 +102,10 @@
     </div>
     <!--  生产部门-->
     <stork v-if="storkVisiblit" :msg="ddlx" :msg2="itemCode" @stork="storkData" />
+    <!--  销售单价弹窗-->
+    <order-num v-if="orderVisiblit" @xsddh="orderData" />
+    <!--  大类列表弹窗-->
+    <large v-if="largeVisiblit" @large="largeData" />
     <!--    仓库-->
     <jc-popup
       v-model="warehouseName"
@@ -116,11 +144,12 @@ import jcTitle from '@/components/Title'
 import jcPopup from '@/views/basic/createMateriel/components/Popup'
 import {
   MrpCGInfor,
-  Show_SALOrder,
   MrpGetCGprice,
   InsertPO
 } from '@/api/mrpView'
 import stork from '@/views/purchasing/procurement/components/stork/index'
+import orderNum from '@/views/purchasing/procurement/components/orderNum/index'
+import large from '@/views/purchasing/procurement/components/large/index'
 import jcPagination from '@/components/Pagination'
 import { queryTBdStock } from '@/api/purchaseManagement/createPurchasePrice'
 import { export_json_to_excel, formatJson } from '@/utils/Export2Excel'
@@ -132,49 +161,55 @@ export default {
     stork,
     jcPopup,
     jcPagination,
-    jcTitle
+    jcTitle,
+    orderNum,
+    large
   },
   data() {
     return {
       ddlx: '', // 订单类型
       itemCode: '',
       storkVisiblit: false, // 生产部门
-      Sonum: '', // 销售订单号
+      orderVisiblit: false, // 销售订单号弹窗
+      largeVisiblit: false, // 大类列表
       orderNumber: {
-        customer: '',
-        fpaezText1: '',
-        fpaezCombo: '',
-        fdeliveryDate: ''
+        sonum: '', // 销售订单号
+        khdh: '',
+        sd: '',
+        ed: '',
+        lagerCode: ''
       },
       indexSelf: '', // 下标
       cellStyle: { padding: '10 10' },
       tableData: [],
       tableHeader: [
-        { label: '状态', prop: 'zt', align: 'center' },
-        { label: '订单类型', prop: 'ddlx', align: 'center' },
+        { label: '状态', prop: 'zt', align: 'center', minWidth: '90px' },
+        { label: '客户订单号', prop: 'khdh', align: 'center', minWidth: '130px' },
+        { label: '销售订单号', prop: 'sonum', align: 'center', minWidth: '130px' },
+        { label: '订单类型', prop: 'ddlx', align: 'center', minWidth: '120px' },
         { label: '采购单号', prop: 'cgdh', align: 'center', minWidth: '140px' },
-        { label: '型号', prop: 'itemXH', align: 'center' },
+        { label: '型号', prop: 'itemXH', align: 'center', minWidth: '90px' },
         { label: '物料编号', prop: 'itemCode', align: 'center', minWidth: '210px' },
         { label: '物料描述', prop: 'itemName', align: 'left', minWidth: '260px', headerAlign: 'center' },
         { label: '尺寸', prop: 'cc', align: 'center', minWidth: '120px' },
-        { label: '生产类型', prop: 'cglx', align: 'center', minWidth: '100px' },
+        { label: '生产类型', prop: 'cglx', align: 'center', minWidth: '120px' },
         { label: '供应商', type: 'btn', prop: 'fsuppliername', align: 'center', minWidth: '150px' },
         { label: '仓库', type: 'tag', prop: 'ck', align: 'center', minWidth: '150px' },
-        { label: '库存', prop: 'kc', align: 'center' },
-        { label: '计划采购数量', prop: 'qty', align: 'center', minWidth: '100px' },
-        { label: '数量单位', prop: 'dw', align: 'center' },
-        { label: '损耗率', prop: 'shl', align: 'center' },
-        { label: '损耗数', prop: 'shs', align: 'center' },
-        { label: '实际采购数量', prop: 'cgQty', align: 'center', minWidth: '100px' },
+        { label: '库存', prop: 'kc', align: 'center', minWidth: '90px' },
+        { label: '计划采购数量', prop: 'qty', align: 'center', minWidth: '140px' },
+        { label: '数量单位', prop: 'dw', align: 'center', minWidth: '120px' },
+        { label: '损耗率', prop: 'shl', align: 'center', minWidth: '110px' },
+        { label: '损耗数', prop: 'shs', align: 'center', minWidth: '110px' },
+        { label: '实际采购数量', prop: 'cgQty', align: 'center', minWidth: '140px' },
         { label: '采购单价', type: 'state', prop: 'rprice', align: 'center', minWidth: '160px' },
-        { label: '采购限价', prop: 'sXprice', align: 'center' },
-        { label: '行金额', prop: 'hje', align: 'center' },
-        { label: '配件交期', prop: 'pjjq', align: 'center', minWidth: '100px' },
-        { label: '包装方式', prop: 'BZBOM', align: 'center' }
+        { label: '采购限价', prop: 'sXprice', align: 'center', minWidth: '130px' },
+        { label: '行金额', prop: 'hje', align: 'center', minWidth: '120px' },
+        { label: '配件交期', prop: 'pjjq', align: 'center', minWidth: '120px' },
+        { label: '包装方式', prop: 'BZBOM', align: 'center', minWidth: '120px' }
       ],
       insetData: {
         CreateID: '',
-        Sonum: '',
+        // Sonum: '',
         insert_MoLists: []
       },
       // 仓库
@@ -195,7 +230,26 @@ export default {
         pageSize: 10 // 每页显示多少条数据
       },
       val: [],
-      showCode: 0
+      showCode: 0,
+      largeName: ''
+    }
+  },
+  watch: {
+    largeName() {
+      if (!this.largeName) {
+        this.orderNumber.lagerCode = ''
+      }
+    },
+    orderNumber: {
+      handler() {
+        if (!this.orderNumber.sd) {
+          this.orderNumber.sd = ''
+        }
+        if (!this.orderNumber.ed) {
+          this.orderNumber.ed = ''
+        }
+      },
+      deep: true
     }
   },
   methods: {
@@ -215,44 +269,14 @@ export default {
         }
       })
     },
-    // 获取表头数据
+    // 获取表格数据
     async gainData(ev) {
       if (ev) {
         this.insetData.Sonum = ev
-        this.Sonum = ev
+        this.orderNumber.sonum = ev
       }
-      if (!this.Sonum) {
-        return false
-      }
-      this.insetData.Sonum = this.Sonum
-      const DATA = { sonum: this.Sonum }
-      // 获取表头数据
-      const RES = await Show_SALOrder(DATA)
-      if (RES.code === 0) {
-        this.orderNumber.customer = RES.data.fname
-        this.orderNumber.fpaezText1 = RES.data.f_PAEZ_TEXT1
-        this.orderNumber.fpaezCombo = RES.data.f_PAEZ_COMBO
-        this.orderNumber.fdeliveryDate = RES.data.f_JC_Duedocdate
-        if (this.orderNumber.customer) {
-          this.MrpInfo()
-        }
-      } else {
-        this.orderNumber = {}
-        this.tableData = []
-      }
-    },
-    // 获取表格数据
-    async MrpInfo(ev) {
-      if (ev) {
-        this.insetData.Sonum = ev
-        this.Sonum = ev
-      }
-      if (!this.orderNumber.customer) {
-        this.$message.error('销售订单未审核')
-        return
-      }
-      this.insetData.Sonum = this.Sonum
-      const DATA = { sonum: this.Sonum }
+      this.insetData.Sonum = this.orderNumber.sonum
+      const DATA = { ...this.orderNumber }
       const { data: RES } = await MrpCGInfor(DATA)
       this.insetData.CreateID = RES.creater
       if (RES.array.length === 0) {
@@ -346,6 +370,19 @@ export default {
         this.storkVisiblit = false
       }
     },
+    // 接受子组件传值,获取销售订单号
+    orderData(ev) {
+      if (ev.XSDDH.length > 0) {
+        this.orderNumber.sonum = ev.XSDDH.join(',')
+      }
+      this.orderVisiblit = false
+    },
+    // 获取大类名称
+    largeData(ev) {
+      this.largeName = ev.largeName
+      this.orderNumber.lagerCode = ev.largeCode
+      this.largeVisiblit = false
+    },
     // 获取单价上限
     MrpGetCGprice() {
       const DATA = {
@@ -398,14 +435,6 @@ export default {
     countHjr(ev) {
       this.tableData[ev].hje = (this.tableData[ev].rprice * this.tableData[ev].cgQty).toFixed(2)
     }
-    // 已转订单 禁止选择
-    // selectable(row, index) {
-    //   if (row.zt === '未转') {
-    //     return true
-    //   } else {
-    //     return false
-    //   }
-    // }
   }
 }
 </script>
@@ -421,6 +450,26 @@ export default {
     .el-form-item {
       width: 263px;
       margin-bottom: 15px;
+    }
+    .el-form-item:nth-child(1){
+      width: 526px;
+      &::v-deep .el-input__inner{
+        width: 418px;
+        position: relative;
+      }
+      .el-input__icon{
+        cursor: pointer;
+        transform: translateX(260px);
+      }
+    }
+    &::v-deep .el-input__inner{
+      width: 155px;
+    }
+    &::v-deep .el-form-item__content{
+      width: 160px;
+    }
+    .el-input__icon{
+      cursor: pointer;
     }
   }
 

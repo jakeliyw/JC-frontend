@@ -24,7 +24,24 @@
             </el-table-column>
             <el-table-column prop="fdescripTion" label="物料描述" min-width="300px" align="center" :show-overflow-tooltip="true" />
             <el-table-column prop="funit" label="基本单位" min-width="80px" align="center" />
-            <el-table-column prop="fpriceBase" label="销售系数(%)" min-width="90px" align="center" />
+            <el-table-column prop="fpriceBase" label="销售系数" min-width="190px" align="center">
+              <template>
+                <ul class="tabndispl">
+                  <li>
+                    <div><=500</div>
+                    <div>0.6</div>
+                  </li>
+                  <li>
+                    <div>501<=1000</div>
+                    <div>0.6</div>
+                  </li>
+                  <li>
+                    <div>1001=></div>
+                    <div>0.6</div>
+                  </li>
+                </ul>
+              </template>
+            </el-table-column>
             <el-table-column prop="deliveryPrice" label="出厂价" align="center" />
             <el-table-column prop="fdownPrice" label="销售基准价" min-width="90px" align="center" />
             <el-table-column prop="feffectiveDate" label="生效期" min-width="100px" align="center" :show-overflow-tooltip="true" />
@@ -152,6 +169,13 @@ export default {
   }
   .el-tabs{
     height: calc( 100vh - 180px );
+  }
+  .el-table ::v-deep .tabndispl{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
   }
 }
 </style>

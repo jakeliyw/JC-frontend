@@ -95,6 +95,7 @@ export default {
       this.prodValue.fsettleCurrIdName = item.fname
       this.prodValue.fsettleCurrId = item.fcurrencyId
       this.prodValue.isCurrencyDialog = false
+      this.prodValue.fsysmbol = item.fsysmbol
       this.$emit('currency', this.prodValue)
     },
     // 关闭前回调

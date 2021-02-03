@@ -26,6 +26,8 @@
         </template>
         <template v-slot:btnSlot="col">
           <el-button type="primary" class="btn" size="mini" @click="particulars(col.scope.row.fid)">详情</el-button>
+          <el-button type="danger" size="mini" @click="untreatedRejection(col.scope.row.fid)">反审核</el-button>
+
         </template>
       </jc-table>
     </div>
@@ -47,6 +49,7 @@ import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
 import {
+  notReviewPrice,
   querySalPriceList
 } from '@/api/marketManage/marketPriceList'
 import search from '@/components/Search'
@@ -79,7 +82,7 @@ export default {
         { label: '价目对象', prop: 'fpriceObject', align: 'center' },
         { label: '创建时间', prop: 'fcreateDate', align: 'center', minWidth: '150px' },
         { label: '审核状态', type: 'state', align: 'center', minWidth: '110px' },
-        { label: '操作', type: 'btn', fixed: 'right', align: 'center', minWidth: '80px' }
+        { label: '操作', type: 'btn', fixed: 'right', align: 'center', minWidth: '160px' }
       ]
     }
   },
@@ -104,6 +107,19 @@ export default {
     // 价目详情
     particulars(id) {
       this.$router.push({ path: `/marketDetail/${id}` })
+    },
+    // 反审核
+    async untreatedRejection(fid) {
+      const DATA = {
+        fid: fid,
+        fuserId: window.sessionStorage.getItem('fuserId')
+      }
+      const { message, code } = await notReviewPrice(DATA)
+      if (code === 0) {
+        this.handleGetUntreated()
+        this.$message.success(message)
+        this.$router.push({ name: 'MarkedNoPass' })
+      }
     }
   }
 }

@@ -74,15 +74,22 @@
                 {{ scope.row.deliveryPrice }}
               </template>
             </el-table-column>
-            <el-table-column label="销售系数(%)" prop="fpriceBase" min-width="150px" align="center">
-              <template slot-scope="scope">
-                <el-input-number
-                  v-model="scope.row.fpriceBase"
-                  :min="10"
-                  :max="40"
-                  size="mini"
-                  @change="inputNum(scope.$index)"
-                />
+            <el-table-column label="销售系数" prop="fpriceBase" min-width="180px" align="center">
+              <template>
+                <ul class="tabndispl">
+                  <li>
+                    <div><=500</div>
+                    <div>0.6</div>
+                  </li>
+                  <li>
+                    <div>501<=1000</div>
+                    <div>0.6</div>
+                  </li>
+                  <li>
+                    <div>1001=></div>
+                    <div>0.6</div>
+                  </li>
+                </ul>
               </template>
             </el-table-column>
             <el-table-column label="销售基准价" prop="fdownPrice" min-width="150px" align="center">
@@ -94,7 +101,7 @@
                 />
               </template>
             </el-table-column>
-            <el-table-column label="操作" prop="fqty" min-width="80px" align="center" fixed="right">
+            <el-table-column label="操作" min-width="80px" align="center" fixed="right">
               <template slot-scope="scope">
                 <el-button type="danger" size="mini" @click="delectSale(scope.$index)">删除</el-button>
               </template>
@@ -257,6 +264,7 @@ export default {
       }
       const DATA = this.organizationValue
       this.organizationValue.priceDetails = this.tableData
+      this.organizationValue.fuserId = window.sessionStorage.getItem('fuserId')
       updateSalPrice(DATA).then(res => {
         this.loading = false
         if (res.code === 0) {
@@ -350,6 +358,13 @@ export default {
       max-width: 263px;
       margin-bottom: 15px;
     }
+  }
+  .el-table ::v-deep .tabndispl{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
   }
 }
 .materiel-form {

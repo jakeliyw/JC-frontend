@@ -306,7 +306,7 @@ export default {
     preservation() {
       for (const ITEM of this.tableData) {
         if (ITEM.fmaterialId === '' || ITEM.fprice === 0 ||
-        ITEM.ftaxPrice === 0 || ITEM.fminNum === 0 || ITEM.feffectiveDate == null) {
+          ITEM.ftaxPrice === 0 || ITEM.fminNum === 0 || ITEM.feffectiveDate == null) {
           this.$message.warning('表格不能为空,或表格值不能为0')
           return
         }

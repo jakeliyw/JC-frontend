@@ -37,8 +37,8 @@
       :min-width="col.minWidth || colMinWidth"
       :show-overflow-tooltip="tooltip"
       :sortable="col.sortable || sortable"
-      :filter-method="filterHandler"
       :filters="col.filters"
+      :filter-method="col.filterHeader"
     >
       <!--      -->
       <!--      操作-->
@@ -97,7 +97,7 @@ export default {
     },
     sortable: { // 单元格是否排序
       type: Boolean,
-      default: false
+      default: true
     },
     colMinWidth: { // 单元格最小宽度
       type: String,
@@ -171,7 +171,7 @@ export default {
       }
     },
     // 筛选
-    filterHandler(value, row, column) {
+    filterHeader(value, row, column) {
       const property = column['property']
       return row[property] === value
     }

@@ -16,6 +16,7 @@ export function queryTSalOrderNtry(params) {
     params
   })
 }
+
 // 新增销售订单
 export function insertSalOrder(data) {
   return request({
@@ -188,6 +189,14 @@ export function querySalPriceCustomer(params) {
 export function querySalOrderLog(data) {
   return request({
     url: '/TJxLog/querySalOrderLog',
+    method: 'post',
+    data
+  })
+}
+// 获取对应的销售基准价
+export function querySalDownPrice(data) {
+  return request({
+    url: '/tSalOrder/querySalDownPrice',
     method: 'post',
     data
   })

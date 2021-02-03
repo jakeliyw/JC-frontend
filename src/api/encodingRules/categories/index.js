@@ -8,6 +8,14 @@ export function queryLargeTypeList(data) {
     data
   })
 }
+// 获取大类列表数据(采购拆单)
+export function queryLargehanList(data) {
+  return request({
+    url: '/tJxLargeitemtype/queryLargehanList',
+    method: 'post',
+    data
+  })
+}
 // 获取中类列表数据
 export function queryTwoMaterialNumbert(params) {
   return request({

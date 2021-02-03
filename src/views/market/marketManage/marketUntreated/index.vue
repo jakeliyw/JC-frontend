@@ -104,7 +104,8 @@ export default {
   methods: {
     // 获取列表数据
     async handleGetUntreated() {
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, ...this.searCollData }
+      const fid = window.sessionStorage.getItem('fuserId')
+      const DATA = { pageNum: this.currentPage, pageSize: this.size, ...this.searCollData, fuserId: fid }
       const { data: RES } = await queryUntreateSalorderList(DATA)
       this.tableData = RES.array.map(item => {
         return (toMxAmina(item))
@@ -122,21 +123,29 @@ export default {
     },
     // 审批通过
     async approval(fid) {
-      const { message, code } = await reviewSalorder({ fid })
-      if (code !== 0) {
-        return
+      const DATA = {
+        fid: fid,
+        fuserId: window.sessionStorage.getItem('fuserId')
       }
-      this.$message.success(message)
-      this.reload()
+      const { message, code } = await reviewSalorder(DATA)
+      if (code === 0) {
+        this.$message.success(message)
+        this.reload()
+        this.$router.push({ name: 'MarketAudit' })
+      }
     },
     // 审批不通过
     async approvalRejection(fid) {
-      const { message, code } = await notReviewSalorder({ fid })
-      if (code !== 0) {
-        return
+      const DATA = {
+        fid: fid,
+        fuserId: window.sessionStorage.getItem('fuserId')
       }
-      this.reload()
-      this.$message.success(message)
+      const { message, code } = await notReviewSalorder(DATA)
+      if (code === 0) {
+        this.handleGetUntreated()
+        this.$message.success(message)
+        this.$router.push({ name: 'MarketNoPass' })
+      }
     }
   }
 }

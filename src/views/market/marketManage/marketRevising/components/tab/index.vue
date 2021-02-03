@@ -2,7 +2,7 @@
   <div class="tab">
     <el-tabs v-model="activeName">
       <!--明细表格-->
-      <el-tab-pane label="明细信息" name="first">
+      <el-tab-pane label="明细信息" class="tabOne" name="first">
         <jc-table
           :table-data="tabTwo.saleDetails"
           :table-header="tableHeader"
@@ -31,26 +31,35 @@
           />
           <el-table-column label="型号" prop="fmodel" align="center" min-width="100px" />
           <el-table-column label="单位" prop="funit" align="center" />
-          <el-table-column label="数量" prop="fqty" min-width="140px" align="center">
+          <el-table-column label="数量" prop="fqty" min-width="100px" align="center">
             <template slot-scope="scope">
               <el-input-number
                 v-model="scope.row.fqty"
                 :min="0"
                 size="mini"
-                @change="handleChange"
+                @change="handleChange(scope.$index)"
               />
             </template>
           </el-table-column>
-          <el-table-column label="销售单价" prop="fprice" align="center" min-width="140px">
+          <el-table-column label="单价" prop="fprice" align="center" min-width="100px">
             <template slot-scope="scope">
               <el-input-number
                 v-model="scope.row.fprice"
                 :min="0"
                 size="mini"
+                @change="handleChange4(scope.$index)"
               />
             </template>
           </el-table-column>
-          <el-table-column label="销售基准价" prop="fdownPrice" align="center" min-width="100px" />
+          <el-table-column label="含税单价" prop="ftaxPrice" align="center" min-width="100px" />
+          <el-table-column label="金额" prop="famount" align="center" min-width="100px" />
+          <el-table-column label="含税金额" prop="ftaxAmount" align="center" min-width="100px" />
+          <el-table-column label="结算币别" prop="fsettleCurrId" align="center" min-width="100px">
+            <template>
+              {{ standardPrice.fsettleCurrIdName }}
+            </template>
+          </el-table-column>
+          <el-table-column :label="fdownName" prop="fdownPrice" align="center" min-width="160px" />
           <el-table-column label="是否赠品" prop="fisFree" align="center">
             <template slot-scope="scope">
               <el-checkbox
@@ -60,14 +69,14 @@
               />
             </template>
           </el-table-column>
-          <el-table-column label="税率(%)" prop="fentryTaxRate" min-width="140px" align="center">
+          <el-table-column label="税率(%)" prop="fentryTaxRate" min-width="100px" align="center">
             <template slot-scope="scope">
               <el-input-number
                 v-model="scope.row.ftaxRate"
                 :min="0"
                 size="mini"
                 :disabled="scope.row.fisFree"
-                @change="handleChange1"
+                @change="handleChange1(scope.$index)"
               />
             </template>
           </el-table-column>
@@ -151,6 +160,7 @@ import jcTable from '@/components/Table'
 import jumpMateriel from '@/components/JumpMateriel'
 import material from '@/views/market/marketManage/createMarkerOrder/components/material'
 import uploadImg from '@/views/market/marketManage/createMarkerOrder/components/uploadImg'
+import { querySalDownPrice } from '@/api/marketManage/marketOrder'
 
 export default {
   components: {
@@ -171,10 +181,17 @@ export default {
     msg2: { // 表单数据
       type: Object,
       required: true
+    },
+    standardPrice: {
+      type: Object,
+      default: function() {
+        return {}
+      }
     }
   },
   data() {
     return {
+      fdownName: '销售基准价',
       fid: '', // 价目ID
       isMateria: false, // 物料弹窗组件
       isUploadImg: false, // 上传图片组件
@@ -204,7 +221,8 @@ export default {
         }],
         // 收款计划
         planDetails: []
-      }
+      },
+      shuliang: 0.6
     }
   },
   watch: {
@@ -212,21 +230,29 @@ export default {
       this.tabTwo.saleDetails = this.msg
       this.tabTwo.planDetails = this.msg1
       this.fid = this.msg2.fpriceListId
+    },
+    standardPrice: {
+      handler() {
+        this.querySalDownPrice()
+      },
+      deep: true
     }
   },
   methods: {
     // 物料弹窗选中
     materialData(item) {
       if (item.fmaterialId) {
+        console.log(this.material)
         this.tabTwo.saleDetails[this.material].fmaterialId = item.fmaterialId
         this.tabTwo.saleDetails[this.material].fnumber = item.fnumber
         this.tabTwo.saleDetails[this.material].fdescripTion = item.fdescripTion
         this.tabTwo.saleDetails[this.material].funitId = item.funitId
         this.tabTwo.saleDetails[this.material].funit = item.funitName
         this.tabTwo.saleDetails[this.material].fmodel = item.fmodel
-        this.tabTwo.saleDetails[this.material].fdownPrice = item.fdownPrice
         this.tabTwo.saleDetails[this.material].deliveryPrice = item.deliveryPrice
+        this.tabTwo.saleDetails[this.material].fid = item.fid
         this.isMateria = false
+        this.querySalDownPrice()
       } else {
         this.isMateria = false
       }
@@ -239,6 +265,7 @@ export default {
       }
       this.isMateria = true
       this.material = index
+      console.log(index)
       // 新增一行
       if (index === this.tabTwo.saleDetails.length - 1) {
         this.tabTwo.saleDetails.push(
@@ -281,10 +308,34 @@ export default {
       this.$emit('visible', this.tabTwo)
     },
     // 监听销售数量
-    handleChange(value) {
+    handleChange(index) {
+      this.material = index
+      const fqty = this.tabTwo.saleDetails[index].fqty
+      const fprice = this.tabTwo.saleDetails[index].fprice
+      const ftaxRate = this.tabTwo.saleDetails[index].ftaxRate
+      this.tabTwo.saleDetails[index].famount = (fprice * fqty).toFixed(4)
+      this.tabTwo.saleDetails[index].ftaxAmount = (fqty * fprice * (1 + ftaxRate / 100)).toFixed(4)
       this.$emit('visible', this.tabTwo)
-    }, // 监听税率
-    handleChange1(value) {
+      this.fqtyPrice()
+    }, // 监听单价
+    handleChange4(index) {
+      this.material = index
+      const fqty = this.tabTwo.saleDetails[index].fqty
+      const fprice = this.tabTwo.saleDetails[index].fprice
+      const ftaxRate = this.tabTwo.saleDetails[index].ftaxRate
+      this.tabTwo.saleDetails[index].famount = (fprice * fqty).toFixed(4)
+      this.tabTwo.saleDetails[index].ftaxAmount = (fqty * fprice * (1 + ftaxRate / 100)).toFixed(4)
+      this.tabTwo.saleDetails[index].ftaxPrice = (fprice * (1 + ftaxRate / 100)).toFixed(4)
+      this.$emit('visible', this.tabTwo)
+    },
+    // 监听税率
+    handleChange1(index) {
+      this.material = index
+      const fqty = this.tabTwo.saleDetails[index].fqty
+      const fprice = this.tabTwo.saleDetails[index].fprice
+      const ftaxRate = this.tabTwo.saleDetails[index].ftaxRate
+      this.tabTwo.saleDetails[index].ftaxAmount = (fqty * fprice * (1 + ftaxRate / 100)).toFixed(4)
+      this.tabTwo.saleDetails[index].ftaxPrice = (fprice * (1 + ftaxRate / 100)).toFixed(4)
       this.$emit('visible', this.tabTwo)
     }, // 监听应收比例
     handleChange2(value) {
@@ -312,6 +363,39 @@ export default {
     proviewImg(img) {
       this.imgVisible = true
       this.priview = img
+    },
+    // 获取对应的销售基准价
+    async querySalDownPrice() {
+      const DATA = {
+        fxxchangeTypeId: this.standardPrice.fxxchangeTypeId,
+        fsettleCurrId: this.standardPrice.fsettleCurrId,
+        flocalCurrId: this.standardPrice.flocalCurrId,
+        fid: this.tabTwo.saleDetails[this.material].fid,
+        fmaterialId: this.tabTwo.saleDetails[this.material].fmaterialId
+      }
+      const { data: RES } = await querySalDownPrice(DATA)
+      this.tabTwo.saleDetails[this.material].fdownPrice = RES.fdownPrice
+      this.tabTwo.saleDetails[this.material].fdownPrices = RES.fdownPrice
+      this.fdownName = '销售基准价' + '(' + this.standardPrice.fsettleCurrIdName + ')'
+      this.fqtyPrice()
+    },
+    fqtyPrice() {
+      const fqty = this.tabTwo.saleDetails[this.material].fqty
+      this.shuliang = 0.6
+      if (fqty <= 500) {
+        this.shuliang = 0.6
+      } else if (fqty > 500 && fqty <= 1000) {
+        this.shuliang = 0.65
+      } else if (fqty > 1000) {
+        this.shuliang = 0.7
+      }
+      const fdownPrice = this.tabTwo.saleDetails[this.material].fdownPrices
+      if (!fdownPrice) {
+        this.tabTwo.saleDetails[this.material].fdownPrices = this.tabTwo.saleDetails[this.material].fdownPrice
+        this.fdownName = '销售基准价' + '(' + this.standardPrice.fsettleCurrIdName + ')'
+        return
+      }
+      this.tabTwo.saleDetails[this.material].fdownPrice = (fdownPrice / this.shuliang).toFixed(4)
     }
   }
 }
@@ -339,7 +423,30 @@ export default {
     }
   }
 }
+.el-table {
+  &::v-deep .el-input-number .el-input__inner {
+    padding: 0;
+    width: 140px;
+  }
+  &::v-deep .el-input-number__increase{
+    display: none;
+  }
+  &::v-deep .el-input-number__decrease{
+    display: none;
+  }
+}
 .tab {
+  .tabOne{
+    .el-table{
+      &::v-deep .el-input-number .el-input__inner{
+        padding: 0;
+        width: 80px;
+        position: relative;
+        left: -25px;
+      }
+
+    }
+  }
   .materiel-form {
     display: flex;
     align-items: center;

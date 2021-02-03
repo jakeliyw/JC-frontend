@@ -619,7 +619,7 @@ export const asyncRouterMap = [
     },
     children: [
       {
-        path: '/mrpView ',
+        path: '/mrpView',
         name: 'MrpView',
         component: () => import('@/views/production/mrpView/index'),
         meta: { title: '生产拆单' },

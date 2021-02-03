@@ -27,6 +27,7 @@
         </template>
         <template v-slot:btnSlot="clo">
           <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">详情</el-button>
+          <el-button type="danger" size="mini" @click="approvalRejection(clo.scope.row.fid)">反审核</el-button>
         </template>
       </jc-table>
     </div>
@@ -48,6 +49,7 @@ import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
 import {
+  notReviewSalorder,
   queryTSalOrderList
 } from '@/api/marketManage/marketOrder'
 import search from '@/components/Search'
@@ -85,7 +87,7 @@ export default {
         { label: '销售员', prop: 'fsaler', align: 'center' },
         { label: '禁用状态', type: 'tag', align: 'center' },
         { label: '审核状态', type: 'state', align: 'center', minWidth: '100px' },
-        { label: '操作', type: 'btn', align: 'center', fixed: 'right', minWidth: '80px' }
+        { label: '操作', type: 'btn', align: 'center', fixed: 'right', minWidth: '160px' }
       ]
     }
   },
@@ -110,6 +112,19 @@ export default {
     // 订单详情
     detailPurchase(id) {
       this.$router.push({ path: `/marketParticulars/${id}` })
+    },
+    // 反审核
+    async approvalRejection(fid) {
+      const DATA = {
+        fid: fid,
+        fuserId: window.sessionStorage.getItem('fuserId')
+      }
+      const { message, code } = await notReviewSalorder(DATA)
+      if (code === 0) {
+        this.handleGetUntreated()
+        this.$message.success(message)
+        this.$router.push({ name: 'MarketNoPass' })
+      }
     }
   }
 }

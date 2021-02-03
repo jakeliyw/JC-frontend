@@ -102,7 +102,7 @@
           <el-form-item label="备注" prop="fnote">
             <el-input v-model.trim="prodValue.fnote" type="textarea" placeholder="请填写备注" size="mini" />
           </el-form-item>
-          <el-form-item label="是否含税">
+          <el-form-item v-if="false" label="是否含税">
             <el-checkbox v-model="prodValue.fisIncludedTax" />
           </el-form-item>
           <el-form-item v-if="button('salOrder:type')" label="单据类型">
@@ -111,7 +111,7 @@
             <el-tag v-if="!prodValue.saler" type="danger">特批订单</el-tag>
           </el-form-item>
         </el-form>
-        <tab :msg="saleDetails" :msg1="planDetails" :msg2="prodValue" @visible="handlechange" />
+        <tab :msg="saleDetails" :msg1="planDetails" :msg2="prodValue" :standard-price="standardPrice" @visible="handlechange" />
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
@@ -235,7 +235,15 @@ export default {
       otherLogTableData: [], // 日志数据
       pageNum: 1,
       size: 10,
-      total: 0
+      total: 0,
+      standardPrice: {
+        fsettleCurrIdName: '',
+        fsysmbol: '',
+        fexchangeRate: '',
+        flocalCurrId: '',
+        fsettleCurrId: '',
+        fxxchangeTypeId: ''
+      }
     }
   },
   created() {
@@ -256,6 +264,12 @@ export default {
       this.prodValue = RES
       this.saleDetails = RES.saleDetails
       this.planDetails = RES.planDetails
+      this.standardPrice.fsysmbol = RES.fsysmbol
+      this.standardPrice.fsettleCurrIdName = RES.flocalCurr
+      this.standardPrice.fexchangeRate = RES.fexchangeRate
+      this.standardPrice.fxxchangeTypeId = RES.fxxchangeTypeId
+      this.standardPrice.fsettleCurrId = RES.fsettleCurrId
+      this.standardPrice.flocalCurrId = RES.flocalCurrId
       // 修改自动添加一条空数据
       this.saleDetails.push(
         {
@@ -288,25 +302,26 @@ export default {
       const DATA = this.prodValue
       this.prodValue.planDetails = this.planDetails
       this.prodValue.saleDetails = this.saleDetails
+      this.prodValue.fuserId = window.sessionStorage.getItem('fuserId')
       // 表格不能为空
       for (const item of this.prodValue.saleDetails) {
         if (item.fmaterialId === '' || item.funitId === '' || item.fqty === '') {
           this.$message.error('表格不能为空或删除空行')
           return false
         }
-        if (this.prodValue.fsalType === 0) {
-          if (item.fprice < item.fdownPrice) {
-            this.$message.error('销售单价不能小于基准价')
-            this.loading = false
-            return false
-          }
-        } else {
-          if (item.fprice < item.deliveryPrice) {
-            this.$message.error('销售单价不能小于出厂价')
-            this.loading = false
-            return false
-          }
-        }
+        // if (this.prodValue.fsalType === 0) {
+        //   if (item.fprice < item.fdownPrice) {
+        //     this.$message.error('销售单价不能小于基准价')
+        //     this.loading = false
+        //     return false
+        //   }
+        // } else {
+        //   if (item.fprice < item.deliveryPrice) {
+        //     this.$message.error('销售单价不能小于出厂价')
+        //     this.loading = false
+        //     return false
+        //   }
+        // }
       }
       updateSalOrder(DATA).then(res => {
         if (res.code === 0) {
@@ -356,6 +371,8 @@ export default {
         this.prodValue.fsettleCurr = item.fsettleCurrIdName
         this.prodValue.fsettleCurrId = item.fsettleCurrId
         this.currencyVisiblit = item.isCurrencyDialog
+        this.standardPrice.fsysmbol = item.fsysmbol
+        this.standardPrice.fsettleCurrIdName = item.fsettleCurrIdName
         // 获取汇率
         this.querySalerRate()
       } else {
@@ -386,9 +403,10 @@ export default {
       }
       const { data: RES } = await querySalerRate(DATA)
       if (RES) {
-        this.prodValue.fexchangeRate = RES.fexchangeRate
+        this.prodValue.fexchangeRate = Number(RES.fexchangeRate)
+        this.standardPrice.fexchangeRate = RES.fexchangeRate
       } else {
-        this.prodValue.fexchangeRate = ''
+        this.prodValue.fexchangeRate = 0
       }
     },
     // 明细信息、收款计划数据

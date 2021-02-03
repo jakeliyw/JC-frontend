@@ -154,7 +154,7 @@ export default {
       cellStyle: { padding: '10 10' },
       tableData: [],
       tableHeader: [
-        { label: '状态', prop: 'zt', align: 'center' },
+        { label: '状态', prop: 'zt', align: 'center', filterHeader: Function },
         { label: '客户订单号', prop: 'khdd', align: 'center' },
         { label: '销售订单号', prop: 'soNum', align: 'center' },
         { label: '订单类型', prop: 'ddlx', align: 'center', minWidth: '100px' },
