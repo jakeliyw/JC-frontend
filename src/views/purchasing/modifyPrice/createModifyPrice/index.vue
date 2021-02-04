@@ -262,7 +262,7 @@ export default {
         }
       ], // 调价表数据
       modifyPriceHeader: [
-        { label: '规格型号', prop: 'fspecificaTion', align: 'center' },
+        { label: '物料规格', prop: 'fspecificaTion', align: 'center' },
         { label: '价格上限', prop: 'fupPrice', align: 'center' },
         { label: '价格下限', prop: 'fdownPrice', align: 'center' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '100px', align: 'center' }
