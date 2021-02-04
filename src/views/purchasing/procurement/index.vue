@@ -41,7 +41,7 @@
           />
         </el-input>
       </el-form-item>
-      <el-form-item>
+      <el-form-item label-width="40px">
         <el-button type="primary" size="mini" @click="gainData()">运算</el-button>
         <el-button type="primary" size="mini" @click="handleExport">导出Excel</el-button>
         <el-button type="primary" size="mini" @click="Show_StockInfo">设置默认供应商</el-button>
@@ -73,7 +73,7 @@
           v-model="col.scope.row.fsupplierid"
           size="mini"
           :disabled="col.scope.row.zt==='已转'"
-          @change="seleBatch(col.scope)"
+          @change="seleBatch(col.scope.$index)"
         >
           <el-option
             v-for="item in col.scope.row.fsuppSelect"
@@ -399,7 +399,7 @@ export default {
     },
     // 设置默认供应商
     async Show_StockInfo() {
-      this.tableData.map((item, index) => {
+      this.val.map((item, index) => {
         // 获取供应商
         if (item.ddlx === '生产订单') {
           this.ddlx = 'SCDD'
@@ -431,16 +431,16 @@ export default {
       })
     },
     // 供应商切换请求限价
-    seleBatch(item) {
+    seleBatch(index) {
       const DATA = {
-        fsupplierId: item.row.fsupplierid,
-        itemcode: item.row.itemCode
+        fsupplierId: this.tableData[index].fsupplierid,
+        itemcode: this.tableData[index].itemCode
       }
       MrpGetCGprice(DATA).then(res => {
         if (res.data.result) {
-          this.tableData[item.$index].sXprice = Number(res.data.price).toFixed(4)
-          this.tableData[item.$index].rprice = Number(res.data.price).toFixed(4)
-          this.countHjr(item.$index) // 改变行金额
+          this.tableData[index].sXprice = Number(res.data.price).toFixed(4)
+          this.tableData[index].rprice = Number(res.data.price).toFixed(4)
+          this.countHjr(index) // 改变行金额
         }
       })
     },
@@ -483,18 +483,20 @@ export default {
     // 批量填充供应商
     batch() {
       if (this.val.length > 0) {
-        this.val.map(item => {
-          item.fsuppSelect.forEach(res => {
+        this.val.map((item, index) => {
+          for (const res of item.fsuppSelect) {
             if (res.scbmno === this.val[0].fsuppSelect[0].scbmno) {
               item.fsupplierid = res.scbmno
               // item.fsuppliername = this.val[0].fsuppSelect[0].scbm
+              this.seleBatch(index)
+              break
             } else {
               item.fsupplierid = ''
               // item.fsuppliername = ''
               item.sXprice = 0
               item.rprice = 0
             }
-          })
+          }
         })
       } else {
         this.$message.warning('请选择数据')

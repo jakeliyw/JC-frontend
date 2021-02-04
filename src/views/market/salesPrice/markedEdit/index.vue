@@ -79,12 +79,12 @@
               <el-table-column label="101<=x<=500" align="center" min-width="110px" prop="fdownPrice2" />
               <el-table-column label="x>=501" align="center" prop="fdownPrice3" />
             </el-table-column>
-            <el-table-column label="销售基准价(含税)" min-width="180px" align="center">
+            <el-table-column label="含税销售基准价" min-width="180px" align="center">
               <template slot="header">
                 <el-select v-model="fdownPriceRate" size="mini" @change="priceRate">
-                  <el-option label="销售基准价(13%税率)" value="13">销售基准价(13%税率)</el-option>
-                  <el-option label="销售基准价(7%税率)" value="7">销售基准价(7%税率)</el-option>
-                  <el-option label="销售基准价(5%税率)" value="5">销售基准价(5%税率)</el-option>
+                  <el-option label="含税销售基准价(13%)" value="13">含税销售基准价(13%)</el-option>
+                  <el-option label="含税销售基准价(7%)" value="7">含税销售基准价(7%)</el-option>
+                  <el-option label="含税销售基准价(5%)" value="5">含税销售基准价(5%)</el-option>
                 </el-select>
               </template>
               <el-table-column label="x<=100" align="center" prop="fdownPrice4" />
@@ -269,6 +269,7 @@ export default {
           fmaterialId: '', // 物料编码ID
           fmaterialIdName: '', // 物料编码
           funitName: '', // 单位
+          funitId: '', // 单位id
           fpriceBase: 10, // 销售系数
           deliveryPrice: '', // 出厂价
           fdownPrice: '' // 净价
@@ -306,6 +307,8 @@ export default {
           setTimeout(() => {
             this.reload()
           }, 2000)
+        } else {
+          this.$message.error(res.message)
         }
       })
     },
@@ -313,6 +316,7 @@ export default {
     async materielSelectRow(item) {
       this.tableData[this.tableIndex].fmaterialId = item.fmaterialId
       this.tableData[this.tableIndex].foldNumber = item.foldNumber
+      this.tableData[this.tableIndex].funitId = item.funitId
       this.isMaterielDialog = false
       this.querySalPriceMaterial()
     },

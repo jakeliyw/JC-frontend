@@ -14,7 +14,7 @@
               :table-data="saleDetails"
               :table-header="tableHeader"
               :cell-style="cellStyle"
-              table-height="48vh"
+              table-height="calc(100vh - 480px)"
             >
               <el-table-column prop="fnumber" label="物料编码" min-width="150px" align="center" :show-overflow-tooltip="true">
                 <template slot-scope="scope">
@@ -49,7 +49,7 @@
             <jc-table
               :table-data="planDetails"
               :table-header="tableHeader1"
-              table-height="48vh"
+              table-height="calc(100vh - 480px)"
               serial
               :cell-style="cellStyle"
             >
@@ -85,7 +85,7 @@
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
-          other-height="580px"
+          other-height="calc(100vh - 350px)"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -321,7 +321,7 @@ export default {
   @include listBom;
   .el-tabs {
     .disRow {
-      height: 68vh;
+      height: calc(100vh - 260px);
       .positRe {
         position: relative;
         margin-left: 100px;

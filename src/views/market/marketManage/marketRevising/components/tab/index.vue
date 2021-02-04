@@ -7,7 +7,7 @@
           :table-data="tabTwo.saleDetails"
           :table-header="tableHeader"
           serial
-          table-height="44vh"
+          table-height="calc(100vh - 520px)"
           :cell-style="cellStyle"
         >
           <el-table-column label="物料编码" prop="fmaterialId" align="center" width="200px">
@@ -105,7 +105,7 @@
           :table-data="tabTwo.planDetails"
           :table-header="tableHeader"
           serial
-          table-height="44vh"
+          table-height="calc(100vh - 520px)"
           :cell-style="cellStyle"
         >
           <el-table-column label="是否预收" prop="fqty" align="center" width="80px">
@@ -311,8 +311,9 @@ export default {
       const fqty = this.tabTwo.saleDetails[index].fqty
       const fprice = this.tabTwo.saleDetails[index].fprice
       const ftaxRate = this.tabTwo.saleDetails[index].ftaxRate
-      this.tabTwo.saleDetails[index].famount = (fprice * fqty).toFixed(4)
-      this.tabTwo.saleDetails[index].ftaxAmount = (fqty * fprice * (1 + ftaxRate / 100)).toFixed(4)
+      const ftaxPrice = (fprice * (1 + ftaxRate / 100)).toFixed(4)
+      this.tabTwo.saleDetails[index].famount = (fprice * fqty).toFixed(2)
+      this.tabTwo.saleDetails[index].ftaxAmount = (fqty * ftaxPrice).toFixed(2)
       this.$emit('visible', this.tabTwo)
       this.fqtyPrice()
     }, // 监听单价
@@ -321,9 +322,10 @@ export default {
       const fqty = this.tabTwo.saleDetails[index].fqty
       const fprice = this.tabTwo.saleDetails[index].fprice
       const ftaxRate = this.tabTwo.saleDetails[index].ftaxRate
-      this.tabTwo.saleDetails[index].famount = (fprice * fqty).toFixed(4)
-      this.tabTwo.saleDetails[index].ftaxAmount = (fqty * fprice * (1 + ftaxRate / 100)).toFixed(4)
-      this.tabTwo.saleDetails[index].ftaxPrice = (fprice * (1 + ftaxRate / 100)).toFixed(4)
+      const ftaxPrice = (fprice * (1 + ftaxRate / 100)).toFixed(4)
+      this.tabTwo.saleDetails[index].famount = (fprice * fqty).toFixed(2)
+      this.tabTwo.saleDetails[index].ftaxAmount = (fqty * ftaxPrice).toFixed(2)
+      this.tabTwo.saleDetails[index].ftaxPrice = ftaxPrice
       this.$emit('visible', this.tabTwo)
     },
     // 监听税率
@@ -332,8 +334,9 @@ export default {
       const fqty = this.tabTwo.saleDetails[index].fqty
       const fprice = this.tabTwo.saleDetails[index].fprice
       const ftaxRate = this.tabTwo.saleDetails[index].ftaxRate
-      this.tabTwo.saleDetails[index].ftaxAmount = (fqty * fprice * (1 + ftaxRate / 100)).toFixed(4)
-      this.tabTwo.saleDetails[index].ftaxPrice = (fprice * (1 + ftaxRate / 100)).toFixed(4)
+      const ftaxPrice = (fprice * (1 + ftaxRate / 100)).toFixed(4)
+      this.tabTwo.saleDetails[index].ftaxAmount = (fqty * ftaxPrice).toFixed(2)
+      this.tabTwo.saleDetails[index].ftaxPrice = ftaxPrice
       this.$emit('visible', this.tabTwo)
     }, // 监听应收比例
     handleChange2(value) {
