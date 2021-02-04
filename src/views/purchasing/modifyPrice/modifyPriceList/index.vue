@@ -69,7 +69,7 @@ export default {
         { label: '描述', prop: 'fdescripTion', align: 'center', minWidth: '200px' },
         { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', minWidth: '150px' },
         { label: '生效时间', prop: 'fcreateDate', align: 'center' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '120px', align: 'center' }
+        { label: '操作', type: 'btn', minWidth: '120px', align: 'center' }
       ],
       // 表格数据
       tableData: []

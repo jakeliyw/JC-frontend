@@ -17,101 +17,7 @@
           :table-header="modifyPriceHeader"
           :cell-style="cellStyle"
           table-height="calc(100vh - 400px)"
-        >
-          <el-table-column label="价目表" prop="fname" align="center" min-width="150px">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.fname" size="mini" placeholder="请选择价目表" disabled>
-                <i
-                  slot="suffix"
-                  class="el-input__icon el-icon-search"
-                />
-              </el-input>
-            </template>
-          </el-table-column>
-          <el-table-column label="含税" prop="fisIncludedTax" align="center">
-            <template slot-scope="scope">
-              <el-checkbox v-model="scope.row.fisIncludedTax" disabled />
-            </template>
-          </el-table-column>
-          <el-table-column label="物料编码" prop="fnumber" align="center" min-width="150px">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.fnumber" size="mini" placeholder="请选择物料编码" disabled>
-                <i slot="suffix" class="el-input__icon el-icon-search" />
-              </el-input>
-            </template>
-          </el-table-column>
-          <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" :show-overflow-tooltip="true" />
-          <el-table-column label="供应商名称" prop="fsupplier" align="center" min-width="100px" :show-overflow-tooltip="true" />
-          <el-table-column label="币别" prop="fcurrency" align="center" min-width="100px" :show-overflow-tooltip="true" />
-          <el-table-column label="调前单价" prop="fprice" align="center" min-width="150px">
-            <template slot-scope="scope">
-              <el-input-number
-                v-model="scope.row.fprice"
-                size="mini"
-                :precision="4"
-                :step="0.0001"
-                :min="0.0000"
-                disabled
-              />
-            </template>
-          </el-table-column>
-          <el-table-column label="调后单价" prop="fafterPrice" align="center" min-width="150px">
-            <template slot-scope="scope">
-              <el-input-number
-                v-model="scope.row.fafterPrice"
-                size="mini"
-                :precision="4"
-                :step="0.0001"
-                :min="0.0000"
-                disabled
-              />
-            </template>
-          </el-table-column>
-          <el-table-column label="调前含税单价" prop="ftaxPrice" align="center" min-width="150px">
-            <template slot-scope="scope">
-              <el-input-number
-                v-model="scope.row.ftaxPrice"
-                size="mini"
-                :precision="4"
-                :step="0.0001"
-                :min="0.0000"
-                disabled
-              />
-            </template>
-          </el-table-column>
-          <el-table-column label="调后含税单价" prop="fafterTaxPrice" align="center" min-width="150px">
-            <template slot-scope="scope">
-              <el-input-number
-                v-model="scope.row.fafterTaxPrice"
-                size="mini"
-                :precision="4"
-                :step="0.0001"
-                :min="0.0000"
-                disabled
-              />
-            </template>
-          </el-table-column>
-          <el-table-column label="调前税率" prop="ftaxRate" align="center" min-width="150px">
-            <template slot-scope="scope">
-              <el-input-number v-model="scope.row.ftaxRate" size="mini" :precision="4" :step="0.0001" :min="0.0000" disabled />
-            </template>
-          </el-table-column>
-          <el-table-column label="调后税率" prop="fafterTaxRate" align="center" min-width="150px">
-            <template slot-scope="scope">
-              <el-input-number
-                v-model="scope.row.fafterTaxRate"
-                size="mini"
-                :precision="4"
-                :step="0.0001"
-                :min="0.0000"
-                disabled
-              />
-            </template>
-          </el-table-column>
-          <template v-slot:btnSlot>
-            <el-button type="danger" size="mini" disabled>删除调价</el-button>
-          </template>
-        </jc-table>
+        />
       </el-tab-pane>
       <el-tab-pane label="其它" name="other">
         <jc-other
@@ -155,10 +61,20 @@ export default {
       teamList: [], // 组织数
       modifyPriceTable: [], // 调价表数据
       modifyPriceHeader: [
-        { label: '规格型号', prop: 'fspecificaTion', align: 'center' },
+        { label: '价目表', prop: 'fname', align: 'center' },
+        { label: '含税', prop: 'fisIncludedTax', align: 'center' },
+        { label: '物料编码', prop: 'fnumber', align: 'center' },
+        { label: '物料描述', prop: 'fdescripTion', align: 'center' },
+        { label: '供应商名称', prop: 'fsupplier', align: 'center' },
+        { label: '调前单价', prop: 'fprice', align: 'center' },
+        { label: '调后单价', prop: 'fafterPrice', align: 'center' },
+        { label: '调前含税单价', prop: 'ftaxPrice', align: 'center' },
+        { label: '调后含税单价', prop: 'fafterTaxPrice', align: 'center' },
+        { label: '调前税率', prop: 'ftaxRate', align: 'center' },
+        { label: '调后税率', prop: 'fafterTaxRate', align: 'center' },
+        { label: '物料规格', prop: 'fspecificaTion', align: 'center' },
         { label: '价格上限', prop: 'fupPrice', align: 'center' },
         { label: '价格下限', prop: 'fdownPrice', align: 'center' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '100px', align: 'center' }
       ], // 调价表头数据
       otherUrlObject: {}, // 其它审核人
       otherLogTableData: [], // 日志数据
@@ -196,40 +112,6 @@ export default {
         fname: RES.fname, // 名称
         billCode: RES.fbillno, // 单据编号
         fdescription: RES.fdescripTion // 描述
-      }
-      this.options = {
-        fcreateOrgId: {
-          label: '创建组织',
-          type: 'select',
-          span: 6,
-          disabled: 'disabled',
-          selectItems: this.teamList
-        },
-        fdataValue: {
-          label: '调价原因',
-          type: 'slot',
-          span: 6,
-          disabled: 'disabled',
-          rules: [{ required: true, message: '调价原因不可为空', trigger: 'blur' }]
-        },
-        fname: {
-          label: '名称',
-          span: 6,
-          disabled: 'disabled',
-          rules: [{ required: true, message: '名称不可为空', trigger: 'blur' }]
-        },
-        billCode: {
-          label: '单据编号',
-          span: 6,
-          disabled: 'disabled'
-        },
-        fdescription: {
-          label: '描述',
-          span: 6,
-          disabled: 'disabled',
-          type: 'textarea',
-          rules: [{ required: true, message: '描述不可为空', trigger: 'blur' }]
-        }
       }
     },
     refresh() {
