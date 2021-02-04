@@ -23,7 +23,7 @@
       width="50"
     />
     <!--    id列-->
-    <el-table-column v-if="serial" type="index" :sortable="sortable" label="序号" width="80" fixed="left" align="center" />
+    <el-table-column v-if="serial" type="index" label="序号" width="80" align="center" />
     <slot />
     <el-table-column
       v-for="(col, index) of cpTableHeader"
@@ -36,9 +36,9 @@
       :header-align="col.headerAlign"
       :min-width="col.minWidth || colMinWidth"
       :show-overflow-tooltip="tooltip"
-      :sortable="col.sortable || sortable"
-      :filter-method="col.filters"
+      :sortable="sortable"
       :filters="col.filters"
+      :filter-method="col.filterHeaders && filterHeader"
     >
       <!--      操作-->
       <template slot-scope="scope">
@@ -123,7 +123,8 @@ export default {
   },
   data() {
     return {
-      cpTableHeader: []
+      cpTableHeader: [],
+      filtrate: [] // 筛选数据
     }
   },
   watch: {
@@ -150,13 +151,18 @@ export default {
     },
     // 全选
     handleSelectAll(selection) {
-      // 用于多选表格，清空用户的选择
+      // 用于多选表格，清空用户的选择filtrate
       this.$refs.table.clearSelection()
-      if (selection.length > 0 && selection[0] === this.tableData[0]) {
-        this.tableData.map(item => {
+      if (selection.length > 0 && selection[0]) {
+        selection.map(item => {
           this.$refs.table.toggleRowSelection(item)
         })
       }
+      // if (selection.length > 0 && selection[0] === this.filtrate[0]) {
+      //   this.filtrate.map(item => {
+      //     this.$refs.table.toggleRowSelection(item)
+      //   })
+      // }
       this.handleGetSelection()
     },
     // 获取勾选的值
@@ -171,7 +177,11 @@ export default {
     },
     // 筛选
     filterHeader(value, row, column) {
+      this.filtrate = []
       const property = column['property']
+      if (row[property] === value) {
+        return this.filtrate.push(row)
+      }
       return row[property] === value
     }
   }
@@ -189,7 +199,24 @@ export default {
     font-size: 14px;
   }
 }
-
+.el-table {
+  border: 1px solid #ccc;
+  th{
+    border-color: #ccc;
+  }
+  th.is-leaf{
+    border-bottom: 1px solid #ccc;
+  }
+  th:last-child{
+    border-right: none;
+  }
+  td{
+    border-color: #ccc;
+  }
+  td:last-child{
+    border-right: none;
+  }
+}
 .el-input.is-disabled .el-input__inner{
   color: black;
 }

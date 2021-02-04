@@ -82,14 +82,14 @@ export default {
         { label: '单据类型', prop: 'fbillType', align: 'center', minWidth: '110px' },
         { label: '销售订单号', type: 'bill', align: 'center', minWidth: '110px' },
         { label: '客户订单号', prop: 'fpaezText', align: 'center', minWidth: '110px' },
-        { label: '客户分组', prop: 'fprimaryGroup', align: 'center' },
-        { label: '客户', prop: 'customer', align: 'center', filters: [] },
-        { label: '产品数量', prop: 'fqty', align: 'center' },
-        { label: '结算货币', prop: 'fsettleCurr', align: 'center' },
-        { label: '销售部门', prop: 'fsaleDept', align: 'center' },
-        { label: '销售员', prop: 'fsaler', align: 'center' },
+        { label: '客户分组', prop: 'fprimaryGroup', align: 'center', minWidth: '100px' },
+        { label: '客户', prop: 'customer', align: 'center' },
+        { label: '产品数量', prop: 'fqty', align: 'center', minWidth: '100px' },
+        { label: '结算货币', prop: 'fsettleCurr', align: 'center', minWidth: '100px' },
+        { label: '销售部门', prop: 'fsaleDept', align: 'center', minWidth: '100px' },
+        { label: '销售员', prop: 'fsaler', align: 'center', minWidth: '90px' },
         { label: '状态流程', type: 'states', align: 'center', minWidth: '180px' },
-        { label: '禁用状态', type: 'tag', align: 'center' },
+        { label: '禁用状态', type: 'tag', align: 'center', minWidth: '100px' },
         { label: '审核状态', type: 'state', align: 'center', minWidth: '100px' },
         { label: '操作', type: 'btn', align: 'center', fixed: 'right', minWidth: '200px' }
       ],
@@ -108,37 +108,7 @@ export default {
       this.tableData = RES.array.map(item => {
         return (toMxAmina(item))
       })
-      this.tableHeader.forEach(res => {
-        res.filters = []
-        this.tableData.forEach(item => {
-          if (item[res.prop]) {
-            res.filters.push({
-              text: item[res.prop], value: item[res.prop]
-            })
-          }
-        })
-        const obj = {}
-        const result = []
-        res.filters.map(item => {
-          if (!obj[item.text]) {
-            result.push(item)
-            obj[item.text] = true
-          }
-        })
-        res.filters = result
-      })
       this.total = RES.total
-    },
-    uniqArrObject(arr) {
-      const result = {}
-      const finalResult = []
-      for (let i = 0; i < arr.length; i++) {
-        result[arr[i].text] = arr[i]
-      }
-      for (const key in result) {
-        finalResult.push(result[key])
-      }
-      return finalResult
     },
     // 搜索
     handleQueryUntreated() {

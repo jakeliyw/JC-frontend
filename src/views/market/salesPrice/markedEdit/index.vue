@@ -42,7 +42,7 @@
               <el-form-item label="备注">
                 <el-input v-model="organizationValue.fdescripTion" type="textarea" size="mini" />
               </el-form-item>
-              <el-form-item label="含税">
+              <el-form-item v-if="false" label="含税">
                 <el-checkbox v-model="organizationValue.fisIncludedTax" />
               </el-form-item>
             </el-form>
@@ -52,10 +52,10 @@
           <jc-table
             :table-data="tableData"
             :table-header="tableHeader"
-            table-height="55vh"
+            table-height="calc(100vh - 400px)"
             :cell-style="cellStyle"
           >
-            <el-table-column label="物料编码" prop="fmaterialId" align="center" min-width="135px">
+            <el-table-column label="物料编码" prop="fmaterialId" align="center" min-width="200px">
               <template slot-scope="scope">
                 <el-input v-model.trim="scope.row.fmaterialIdName" placeholder="请选择物料编码" size="mini">
                   <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fmaterialIdName)" />
@@ -67,19 +67,29 @@
                 </el-input>
               </template>
             </el-table-column>
+            <el-table-column label="旧物料编码" prop="foldNumber" align="center" width="120px">
+              <template slot-scope="scope">
+                {{ scope.row.foldNumber }}
+              </template>
+            </el-table-column>
             <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="250px" :show-overflow-tooltip="true" />
             <el-table-column label="销售单位" prop="funit" align="center" />
-            <el-table-column label="出厂价" align="center">
+            <el-table-column label="销售基准价" min-width="180px" align="center">
+              <el-table-column label="x<=100" align="center" prop="fdownPrice1" />
+              <el-table-column label="101<=x<=500" align="center" min-width="110px" prop="fdownPrice2" />
+              <el-table-column label="x>=501" align="center" prop="fdownPrice3" />
+            </el-table-column>
+            <el-table-column label="销售基准价(含税)" min-width="180px" align="center">
+              <el-table-column label="x<=100" align="center" prop="fdownPrice4" />
+              <el-table-column label="101<=x<=500" align="center" min-width="110px" prop="fdownPrice5" />
+              <el-table-column label="x>=501" align="center" prop="fdownPrice6" />
+            </el-table-column>
+            <el-table-column v-if="false" label="出厂价" align="center">
               <template slot-scope="scope">
                 {{ scope.row.deliveryPrice }}
               </template>
             </el-table-column>
-            <el-table-column label="销售系数" prop="fpriceBase" min-width="180px" align="center">
-              <el-table-column label="<=500" align="center">0.6</el-table-column>
-              <el-table-column label="501=>1000" align="center" width="100px">0.65</el-table-column>
-              <el-table-column label="1001<=" align="center">0.7</el-table-column>
-            </el-table-column>
-            <el-table-column label="销售基准价" prop="fdownPrice" min-width="150px" align="center">
+            <el-table-column v-if="false" label="销售基准价" prop="fdownPrice" min-width="150px" align="center">
               <template slot-scope="scope">
                 <el-input-number
                   v-model="scope.row.fdownPrice"
@@ -98,6 +108,7 @@
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
+          other-height="calc(100vh - 450px)"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -234,6 +245,14 @@ export default {
       for (const iten of RES.detail) {
         iten.fmaterialIdName = iten.fnumber
       }
+      RES.detail.map(item => {
+        item.fdownPrice1 = (item.fdownPrice / 0.6).toFixed(4)
+        item.fdownPrice2 = (item.fdownPrice / 0.65).toFixed(4)
+        item.fdownPrice3 = (item.fdownPrice / 0.7).toFixed(4)
+        item.fdownPrice4 = (item.fdownPrice / 0.6 * 1.13).toFixed(4)
+        item.fdownPrice5 = (item.fdownPrice / 0.65 * 1.13).toFixed(4)
+        item.fdownPrice6 = (item.fdownPrice / 0.7 * 1.13).toFixed(4)
+      })
       this.tableData = RES.detail
       this.organizationValue = RES
       // 表格添加一空行
@@ -268,6 +287,7 @@ export default {
     // 物料弹窗选中
     async materielSelectRow(item) {
       this.tableData[this.tableIndex].fmaterialId = item.fmaterialId
+      this.tableData[this.tableIndex].foldNumber = item.foldNumber
       this.isMaterielDialog = false
       this.querySalPriceMaterial()
     },
@@ -278,7 +298,14 @@ export default {
       }
       if (index === this.tableData.length - 1) {
         this.tableData.push(
-          { fpriceBase: 10, fdownPrice: 0 }
+          {
+            fmaterialId: '', // 物料编码ID
+            fmaterialIdName: '', // 物料编码
+            funitName: '', // 单位
+            fpriceBase: 10, // 销售系数
+            deliveryPrice: '', // 出厂价
+            fdownPrice: ''
+          }
         )
       }
       const DATA = {
@@ -339,21 +366,9 @@ export default {
 .content {
   @include listBom;
   .el-tabs{
-    height: calc( 100vh - 230px );
     .el-table {
-      border: 1px solid #ccc;
       &::v-deep thead.is-group th{
-        border-color: #ccc;
         padding: 5px 0;
-      }
-      &::v-deep thead.is-group th:last-child{
-        border-right: none;
-      }
-      &::v-deep td{
-        border-color: #ccc;
-      }
-      &::v-deep td:last-child{
-        border-right: none;
       }
     }
   }

@@ -668,7 +668,6 @@ export default {
     async handleFvolumeList() {
       this.openSizeDialog = true
       const RES = await this.dialogData('尺寸单位', { ...this.sizePagination }, queryFvolumeList)
-      console.log(RES)
       this.sizeTableData = RES.data
     },
     // 尺寸单位选中

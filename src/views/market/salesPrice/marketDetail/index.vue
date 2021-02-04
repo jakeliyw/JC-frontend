@@ -12,32 +12,38 @@
           <jc-table
             :table-data="tableData"
             :table-header="tableHeader"
-            table-height="500px"
+            table-height="calc(100vh - 360px)"
             :cell-style="cellStyle"
           >
-            <el-table-column prop="fnumber" label="物料编码" min-width="140px" align="center" :show-overflow-tooltip="true">
+            <el-table-column prop="fnumber" label="物料编码" min-width="200px" align="center" :show-overflow-tooltip="true">
               <template slot-scope="scope">
                 <el-input v-model="scope.row.fnumber" size="mini" disabled>
                   <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fnumber)" />
                 </el-input>
               </template>
             </el-table-column>
+            <el-table-column prop="foldNumber" label="旧物料编码" min-width="120px" align="center" />
             <el-table-column prop="fdescripTion" label="物料描述" min-width="300px" align="center" :show-overflow-tooltip="true" />
             <el-table-column prop="funit" label="基本单位" min-width="80px" align="center" />
-            <el-table-column prop="fpriceBase" label="销售系数" min-width="190px" align="center">
-              <el-table-column label="<=500" align="center">0.6</el-table-column>
-              <el-table-column label="501=>1000" align="center" width="90px">0.65</el-table-column>
-              <el-table-column label="1001<=" align="center">0.7</el-table-column>
+            <el-table-column label="销售基准价" min-width="190px" align="center">
+              <el-table-column label="x<=100" align="center" prop="fdownPrice1" />
+              <el-table-column label="101<=x<=500" align="center" min-width="110px" prop="fdownPrice2" />
+              <el-table-column label="x>=501" align="center" prop="fdownPrice3" />
             </el-table-column>
-            <el-table-column prop="deliveryPrice" label="出厂价" align="center" />
-            <el-table-column prop="fdownPrice" label="销售基准价" min-width="90px" align="center" />
+            <el-table-column label="销售基准价(含税)" min-width="180px" align="center">
+              <el-table-column label="x<=100" align="center" prop="fdownPrice4" />
+              <el-table-column label="101<=x<=500" align="center" min-width="110px" prop="fdownPrice5" />
+              <el-table-column label="x>=501" align="center" prop="fdownPrice6" />
+            </el-table-column>
+            <el-table-column v-if="false" prop="deliveryPrice" label="出厂价" align="center" />
+            <el-table-column v-if="false" prop="fdownPrice" label="销售基准价" min-width="90px" align="center" />
             <el-table-column prop="feffectiveDate" label="生效期" min-width="100px" align="center" :show-overflow-tooltip="true" />
           </jc-table>
         </div>
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
-          other-height="550px"
+          other-height="calc(100vh - 420px)"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -102,6 +108,14 @@ export default {
       const id = this.$route.params.id
       const DATA = { fid: id }
       const { data: RES } = await querySalPriceNtry(DATA)
+      RES.detail.map(item => {
+        item.fdownPrice1 = (item.fdownPrice / 0.6).toFixed(4)
+        item.fdownPrice2 = (item.fdownPrice / 0.65).toFixed(4)
+        item.fdownPrice3 = (item.fdownPrice / 0.7).toFixed(4)
+        item.fdownPrice4 = (item.fdownPrice / 0.6 * 1.13).toFixed(4)
+        item.fdownPrice5 = (item.fdownPrice / 0.65 * 1.13).toFixed(4)
+        item.fdownPrice6 = (item.fdownPrice / 0.7 * 1.13).toFixed(4)
+      })
       this.tableData = RES.detail
       RES.limitName = '客户'
       this.organizationValue = RES
@@ -137,12 +151,12 @@ export default {
         fdescripTion: {
           label: '备注',
           disabled: 'disabled'
-        },
-        fisIncludedTax: {
-          label: '含税',
-          type: 'checkbox',
-          disabled: 'disabled'
         }
+        // fisIncludedTax: {
+        //   label: '含税',
+        //   type: 'checkbox',
+        //   disabled: 'disabled'
+        // }
       }
     }
   }
@@ -155,21 +169,9 @@ export default {
     cursor: pointer;
   }
   .el-tabs{
-    height: calc( 100vh - 180px );
     .el-table {
-      border: 1px solid #ccc;
       &::v-deep thead.is-group th{
-        border-color: #ccc;
         padding: 5px 0;
-      }
-      &::v-deep thead.is-group th:last-child{
-        border-right: none;
-      }
-      &::v-deep td{
-        border-color: #ccc;
-      }
-      &::v-deep td:last-child{
-        border-right: none;
       }
     }
   }

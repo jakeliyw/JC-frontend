@@ -27,7 +27,6 @@
         <template v-slot:btnSlot="col">
           <el-button type="primary" class="btn" size="mini" @click="particulars(col.scope.row.fid)">详情</el-button>
           <el-button type="danger" size="mini" @click="untreatedRejection(col.scope.row.fid)">反审核</el-button>
-
         </template>
       </jc-table>
     </div>
@@ -76,13 +75,13 @@ export default {
       tableHeader: [
         { label: '销售组织', prop: 'fsaleOrg', align: 'center', minWidth: '130px' },
         { label: '编码', type: 'tag', align: 'center', minWidth: '110px' },
-        { label: '价目名称', prop: 'fname', align: 'center' },
+        { label: '价目名称', prop: 'fname', align: 'center', minWidth: '110px' },
         { label: '币别', prop: 'fcurrency', align: 'center' },
         { label: '含税', type: 'bill', align: 'center' },
-        { label: '价目对象', prop: 'fpriceObject', align: 'center' },
+        { label: '价目对象', prop: 'fpriceObject', align: 'center', minWidth: '110px' },
         { label: '创建时间', prop: 'fcreateDate', align: 'center', minWidth: '150px' },
         { label: '审核状态', type: 'state', align: 'center', minWidth: '110px' },
-        { label: '操作', type: 'btn', fixed: 'right', align: 'center', minWidth: '160px' }
+        { label: '操作', type: 'btn', align: 'center', minWidth: '160px' }
       ]
     }
   },

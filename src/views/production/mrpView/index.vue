@@ -154,18 +154,18 @@ export default {
       cellStyle: { padding: '10 10' },
       tableData: [],
       tableHeader: [
-        { label: '状态', prop: 'zt', align: 'center', minWidth: '90px', filterHeader: function() {} },
-        { label: '客户订单号', prop: 'khdd', align: 'center', minWidth: '130px', filterHeader: function() {} },
-        { label: '销售订单号', prop: 'soNum', align: 'center', minWidth: '130px', filterHeader: function() {} },
-        { label: '订单类型', prop: 'ddlx', align: 'center', minWidth: '130px', filterHeader: function() {} },
-        { label: '生产单号', prop: 'ssdh', align: 'center', minWidth: '140px', filterHeader: function() {} },
-        { label: '型号', prop: 'itemXH', align: 'center', minWidth: '90px, ', filterHeader: function() {} },
+        { label: '状态', prop: 'zt', align: 'center', minWidth: '90px', filterHeaders: true },
+        { label: '客户订单号', prop: 'khdd', align: 'center', minWidth: '130px', filterHeaders: true },
+        { label: '销售订单号', prop: 'soNum', align: 'center', minWidth: '130px', filterHeaders: true },
+        { label: '订单类型', prop: 'ddlx', align: 'center', minWidth: '130px', filterHeaders: true },
+        { label: '生产单号', prop: 'ssdh', align: 'center', minWidth: '140px', filterHeaders: true },
+        { label: '型号', prop: 'itemXH', align: 'center', minWidth: '90px, ', filterHeaders: true },
         { label: '物料编号', prop: 'itemCode', align: 'center', minWidth: '160px' },
         { label: '物料描述', prop: 'itemName', align: 'left', minWidth: '260px', headerAlign: 'center' },
         { label: '尺寸', prop: 'cc', align: 'center', minWidth: '120px' },
-        { label: '生产类型', type: 'state', prop: 'sclx', align: 'center', minWidth: '130px', filterHeader: function() {} },
-        { label: '生产部门', type: 'btn', prop: 'scbm', align: 'center', minWidth: '150px', filterHeader: function() {} },
-        { label: '仓库', type: 'tag', prop: 'ck', align: 'center', minWidth: '150px', filterHeader: function() {} },
+        { label: '生产类型', type: 'state', prop: 'sclx', align: 'center', minWidth: '130px', filterHeaders: true },
+        { label: '生产部门', type: 'btn', prop: 'scbm', align: 'center', minWidth: '150px', filterHeaders: true },
+        { label: '仓库', type: 'tag', prop: 'ck', align: 'center', minWidth: '150px', filterHeaders: true },
         { label: '库存', prop: 'kc', align: 'center', minWidth: '90px' },
         { label: '计划数量', prop: 'qty', align: 'center', minWidth: '130px' },
         { label: '数量单位', prop: 'dw', align: 'center', minWidth: '130px' },
@@ -175,9 +175,9 @@ export default {
         { label: '加工单价', prop: 'rprice', align: 'center', minWidth: '130px' },
         { label: '行金额', prop: 'hje', align: 'center', minWidth: '120px' },
         { label: '配件交期', prop: 'pjjq', align: 'center', minWidth: '130px' },
-        { label: '大类', prop: 'cz', align: 'center', minWidth: '90px', filterHeader: function() {} },
-        { label: '订单详情', prop: 'ddxq', align: 'center', minWidth: '130px', filterHeader: function() {} },
-        { label: '生产工单号', prop: 'mOnum', align: 'center', minWidth: '120px', filterHeader: function() {} }
+        { label: '大类', prop: 'cz', align: 'center', minWidth: '90px', filterHeaders: true },
+        { label: '订单详情', prop: 'ddxq', align: 'center', minWidth: '130px', filterHeaders: true },
+        { label: '生产工单号', prop: 'mOnum', align: 'center', minWidth: '120px', filterHeaders: true }
       ],
       insetData: {
         CreateID: '',
@@ -243,26 +243,6 @@ export default {
         if (this.orderNumber.customer) {
           this.MrpInfo()
         }
-        // 筛选
-        this.tableHeader.forEach(res => {
-          res.filters = []
-          this.tableData.forEach(item => {
-            if (item[res.prop]) {
-              res.filters.push({
-                text: item[res.prop], value: item[res.prop]
-              })
-            }
-          })
-          const obj = {}
-          const result = []
-          res.filters.map(item => {
-            if (!obj[item.text]) {
-              result.push(item)
-              obj[item.text] = true
-            }
-          })
-          res.filters = result
-        })
       } else {
         this.orderNumber = {}
         this.tableData = []
@@ -294,6 +274,26 @@ export default {
         item.hje = Number(item.hje).toFixed(2)
       })
       this.tableData = RES.array
+      // 筛选
+      this.tableHeader.forEach(res => {
+        res.filters = []
+        this.tableData.forEach(item => {
+          if (item[res.prop]) {
+            res.filters.push({
+              text: item[res.prop], value: item[res.prop]
+            })
+          }
+        })
+        const obj = {}
+        const result = []
+        res.filters.map(item => {
+          if (!obj[item.text]) {
+            result.push(item)
+            obj[item.text] = true
+          }
+        })
+        res.filters = result
+      })
     },
     // 确认下发
     async InsertMO() {
