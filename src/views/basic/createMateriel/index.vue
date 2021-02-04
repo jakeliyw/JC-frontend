@@ -63,7 +63,7 @@
           </div>
           <div class="basics">
             <jc-form :option-value="basicValue" :options="basic">
-              <el-select v-model="basicValue.fbaseUnitId" placeholder="请选择基本单位" size="small" @change="handleCompany">
+              <el-select v-model="basicValue.fbaseUnitId" placeholder="请选择基本单位" size="small" @change="handleCompany" filterable>
                 <el-option
                   v-for="item in basicUnit"
                   :key="item.value"
@@ -525,7 +525,8 @@ export default {
         mediumCode: this.toMaterialValue.mediumCode,
         smallCode: `${codeNumber.toString()}`
       }
-      const { data: RES, fdescripTion } = await queryMaterialAttribute(DATA)
+      const { data: RES, fdescripTion, fbaseUnitId } = await queryMaterialAttribute(DATA)
+      this.basicValue.fbaseUnitId = fbaseUnitId
       this.fdescripTion = fdescripTion
       this.basicValue.fdescripTion = fdescripTion
       this.materielProperty = RES
@@ -753,7 +754,7 @@ export default {
         }
       }
       this.basicValue = {
-        fbaseUnitId: 10101,
+        fbaseUnitId: '',
         fnumber: '',
         foldnumber: '',
         fbarCode: '无',
