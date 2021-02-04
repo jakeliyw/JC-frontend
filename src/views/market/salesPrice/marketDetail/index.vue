@@ -31,6 +31,13 @@
               <el-table-column label="x>=501" align="center" prop="fdownPrice3" />
             </el-table-column>
             <el-table-column label="销售基准价(含税)" min-width="180px" align="center">
+              <template slot="header">
+                <el-select v-model="fdownPriceRate" size="mini" @change="priceRate">
+                  <el-option label="销售基准价(13%税率)" value="13">销售基准价(13%税率)</el-option>
+                  <el-option label="销售基准价(7%税率)" value="7">销售基准价(7%税率)</el-option>
+                  <el-option label="销售基准价(5%税率)" value="5">销售基准价(5%税率)</el-option>
+                </el-select>
+              </template>
               <el-table-column label="x<=100" align="center" prop="fdownPrice4" />
               <el-table-column label="101<=x<=500" align="center" min-width="110px" prop="fdownPrice5" />
               <el-table-column label="x>=501" align="center" prop="fdownPrice6" />
@@ -84,6 +91,8 @@ export default {
   mixins: [jumpMateriel, salPrice],
   data() {
     return {
+      rate: 1.13, // 销售基准价(默认13%税率)
+      fdownPriceRate: '13', // 销售基准价税率
       // 表头
       cellStyle: { padding: '10 10' }, // 行高
       tableData: [], // 价目明细数据
@@ -112,9 +121,9 @@ export default {
         item.fdownPrice1 = (item.fdownPrice / 0.6).toFixed(4)
         item.fdownPrice2 = (item.fdownPrice / 0.65).toFixed(4)
         item.fdownPrice3 = (item.fdownPrice / 0.7).toFixed(4)
-        item.fdownPrice4 = (item.fdownPrice / 0.6 * 1.13).toFixed(4)
-        item.fdownPrice5 = (item.fdownPrice / 0.65 * 1.13).toFixed(4)
-        item.fdownPrice6 = (item.fdownPrice / 0.7 * 1.13).toFixed(4)
+        item.fdownPrice4 = (item.fdownPrice / 0.6 * this.rate).toFixed(4)
+        item.fdownPrice5 = (item.fdownPrice / 0.65 * this.rate).toFixed(4)
+        item.fdownPrice6 = (item.fdownPrice / 0.7 * this.rate).toFixed(4)
       })
       this.tableData = RES.detail
       RES.limitName = '客户'
@@ -158,6 +167,16 @@ export default {
         //   disabled: 'disabled'
         // }
       }
+    },
+    priceRate(val) {
+      this.rate = 1 + (val / 100)
+      this.tableData.map(item => {
+        if (item.fdownPrice) {
+          item.fdownPrice4 = (item.fdownPrice / 0.6 * this.rate).toFixed(4)
+          item.fdownPrice5 = (item.fdownPrice / 0.65 * this.rate).toFixed(4)
+          item.fdownPrice6 = (item.fdownPrice / 0.7 * this.rate).toFixed(4)
+        }
+      })
     }
   }
 }
@@ -172,6 +191,13 @@ export default {
     .el-table {
       &::v-deep thead.is-group th{
         padding: 5px 0;
+        .el-input__inner{
+          background: #e6ebfc;
+          color: #909399;
+          font-size: 13px;
+          font-weight: 550;
+          border: none;
+        }
       }
     }
   }

@@ -128,13 +128,12 @@ export default {
   @include listBom;
   .header{
     position:relative;
-    .header-name{
+   .header-name{
       width: 100%;
     }
     .btn{
       transform: translateY(18%);
       margin-left: 410px!important;
-      z-index: 999;
     }
   }
 }

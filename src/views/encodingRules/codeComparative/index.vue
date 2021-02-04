@@ -75,10 +75,10 @@ export default {
   },
   data() {
     return {
-      activeName: '50', // 第一个选项卡
+      activeName: '20', // 第一个选项卡
       attributeArray: [], // 物料属性
       typeArray: [], // 小类
-      LargeCode: '', // 选择的大类名称
+      LargeCode: '20', // 选择的大类名称
       oneMaterielData: [], // 搜索-下拉框数据-大类名称
       tableData: [], // 列表数据
       cellStyle: { padding: '10 10' }, // 行高
@@ -148,9 +148,10 @@ export default {
     async queryLargeList() {
       const { data: RES } = await queryLargeList()
       for (const item of RES) {
-        if (item.largeName.indexOf('成品-') !== -1) {
+        if (item.largeName.indexOf('成品-') !== -1 || item.largeName.indexOf('成品') === 0) {
           this.oneMaterielData.push(item)
           this.LargeCode = this.oneMaterielData[0].largeCode
+          this.activeName = this.oneMaterielData[0].largeCode
         }
       }
       for (const item of RES) {
@@ -169,7 +170,7 @@ export default {
         }
       }
       for (const item of RES) {
-        if (item.largeName.indexOf('主材') === -1 && item.largeName.indexOf('五金') === -1 && item.largeName.indexOf('功能') === -1 && item.largeName.indexOf('半成品') === -1 && item.largeName.indexOf('成品部件') === -1 && item.largeName.indexOf('成品-') === -1) {
+        if (item.largeName.indexOf('主材') === -1 && item.largeName.indexOf('五金') === -1 && item.largeName.indexOf('功能') === -1 && item.largeName.indexOf('半成品') === -1 && item.largeName.indexOf('成品部件') === -1 && item.largeName.indexOf('成品-') === -1 && item.largeName.indexOf('成品') !== 0) {
           this.oneMaterielData.push(item)
         }
       }
@@ -187,17 +188,17 @@ export default {
     .el-table .valignTop {
       vertical-align: top;
       padding: 0;
-      border-color: #888;
+      border-color: #ccc;
     }
     .el-table--border td{
-      border-right: 1px solid #888;
+      border-right: 1px solid #ccc;
     }
     .gutter{
       display: none;
     }
     .el-table--border th{
-      border-bottom: 1px solid #888;
-      border-right: 1px solid #888;
+      border-bottom: 1px solid #ccc;
+      border-right: 1px solid #ccc;
     }
     .el-table thead.is-group th{
       background: #e6ebfc;
@@ -242,13 +243,12 @@ export default {
   }
   .table-content{
     margin-top: 0;
-    border:1px solid #888;
   }
   .btn1{
     margin-left: 20px;
   }
   .overHei{
-    border-bottom: 1px solid #888;
+    border-bottom: 1px solid #ccc;
     max-height: 25px;
     padding: 5px;
     padding-bottom: 25px;
@@ -264,10 +264,10 @@ export default {
   }
   .codeRule{
     font-size: 14px;
-    border: 1px solid #888;
+    border: 1px solid #ccc;
     border-bottom: none;
     .hrBag {
-      background-color: #888;
+      background-color: #ccc;
       height:1px; border:none;
       margin: 0;
     }

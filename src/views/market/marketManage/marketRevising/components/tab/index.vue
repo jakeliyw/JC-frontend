@@ -380,11 +380,11 @@ export default {
     fqtyPrice() {
       const fqty = this.tabTwo.saleDetails[this.material].fqty
       this.shuliang = 0.6
-      if (fqty <= 500) {
+      if (fqty <= 100) {
         this.shuliang = 0.6
-      } else if (fqty > 500 && fqty <= 1000) {
+      } else if (fqty > 100 && fqty <= 500) {
         this.shuliang = 0.65
-      } else if (fqty > 1000) {
+      } else if (fqty > 500) {
         this.shuliang = 0.7
       }
       const fdownPrice = this.tabTwo.saleDetails[this.material].fdownPrices

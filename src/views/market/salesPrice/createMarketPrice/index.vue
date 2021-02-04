@@ -96,6 +96,13 @@
             <el-table-column label="x>=501" align="center" prop="fdownPrice3" />
           </el-table-column>
           <el-table-column label="销售基准价(含税)" min-width="180px" align="center">
+            <template slot="header">
+              <el-select v-model="fdownPriceRate" size="mini" @change="priceRate">
+                <el-option label="销售基准价(13%税率)" value="13">销售基准价(13%税率)</el-option>
+                <el-option label="销售基准价(7%税率)" value="7">销售基准价(7%税率)</el-option>
+                <el-option label="销售基准价(5%税率)" value="5">销售基准价(5%税率)</el-option>
+              </el-select>
+            </template>
             <el-table-column label="x<=100" align="center" prop="fdownPrice4" />
             <el-table-column label="101<=x<=500" align="center" min-width="110px" prop="fdownPrice5" />
             <el-table-column label="x>=501" align="center" prop="fdownPrice6" />
@@ -195,6 +202,8 @@ export default {
   inject: ['reload'],
   data() {
     return {
+      rate: 1.13, // 销售基准价(默认13%税率)
+      fdownPriceRate: '13', // 销售基准价税率
       ftype: 0,
       fbillNo: 'fnumber', // 编码
       clientVisiblit: false, // 客户弹窗
@@ -249,8 +258,6 @@ export default {
           { required: true, message: '请选择销售组织', trigger: 'change' }
         ], fcurrencyId: [
           { required: true, message: '请选择币别', trigger: 'change' }
-        ], fdescripTion: [
-          { required: true, message: '请输入备注', trigger: 'blue' }
         ], fcustId: [
           { required: true, message: '请选择客户', trigger: 'change' }
         ]
@@ -357,9 +364,19 @@ export default {
       this.prodValue.priceDetails[this.tableIndex].fdownPrice1 = (RES.fdownPrice / 0.6).toFixed(4)
       this.prodValue.priceDetails[this.tableIndex].fdownPrice2 = (RES.fdownPrice / 0.65).toFixed(4)
       this.prodValue.priceDetails[this.tableIndex].fdownPrice3 = (RES.fdownPrice / 0.7).toFixed(4)
-      this.prodValue.priceDetails[this.tableIndex].fdownPrice4 = (RES.fdownPrice / 0.6 * 1.13).toFixed(4)
-      this.prodValue.priceDetails[this.tableIndex].fdownPrice5 = (RES.fdownPrice / 0.65 * 1.13).toFixed(4)
-      this.prodValue.priceDetails[this.tableIndex].fdownPrice6 = (RES.fdownPrice / 0.7 * 1.13).toFixed(4)
+      this.prodValue.priceDetails[this.tableIndex].fdownPrice4 = (RES.fdownPrice / 0.6 * this.rate).toFixed(4)
+      this.prodValue.priceDetails[this.tableIndex].fdownPrice5 = (RES.fdownPrice / 0.65 * this.rate).toFixed(4)
+      this.prodValue.priceDetails[this.tableIndex].fdownPrice6 = (RES.fdownPrice / 0.7 * this.rate).toFixed(4)
+    },
+    priceRate(val) {
+      this.rate = 1 + (val / 100)
+      this.prodValue.priceDetails.map(item => {
+        if (item.fdownPrice) {
+          item.fdownPrice4 = (item.fdownPrice1 * this.rate).toFixed(4)
+          item.fdownPrice5 = (item.fdownPrice2 * this.rate).toFixed(4)
+          item.fdownPrice6 = (item.fdownPrice3 * this.rate).toFixed(4)
+        }
+      })
     },
     // 获取客户数据(子传父)
     clientData(item) {
@@ -414,6 +431,13 @@ export default {
     .el-table {
       &::v-deep thead.is-group th{
         padding: 5px 0;
+        .el-input__inner{
+          background: #e6ebfc;
+          color: #909399;
+          font-size: 13px;
+          font-weight: 550;
+          border: none;
+        }
       }
     }
   }
