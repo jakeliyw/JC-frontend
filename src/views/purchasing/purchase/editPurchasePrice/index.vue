@@ -257,8 +257,8 @@ export default {
       FDESCRIPTION: '', // 弹窗描述
       FSPECIFICATION: '', // 弹窗规格型号
       cellStyle: { padding: '10 10' }, // 行高
-      fpriceDisabled: false, // 单价禁用
-      ftaxPriceDisabled: true, // 含税单价禁用
+      fpriceDisabled: true, // 单价禁用
+      ftaxPriceDisabled: false, // 含税单价禁用
       // 点击行的序号
       tableIndex: 0,
       otherUrlObject: {}, // 其它审核人
@@ -407,8 +407,9 @@ export default {
     },
     // 单价
     handleUnitPrice(row) {
-      // console.log(num.ftaxPrice, num.fprice, num.fupPrice, num.fdownPrice)
-      row.ftaxPrice = row.fprice * (1 + row.ftaxPrice / 100)
+      console.log(row.fprice, row.ftaxPrice)
+      // 含税单价
+      row.ftaxPrice = row.fprice * (1 + row.ftaxRate / 100)
       // // 上限
       row.fupPrice = row.fprice
       // // 下限
