@@ -151,19 +151,18 @@ export default {
     },
     // 全选
     handleSelectAll(selection) {
-      console.log(selection, selection[0], this.tableData)
       // 用于多选表格，清空用户的选择filtrate
       this.$refs.table.clearSelection()
-      if (selection.length > 0 && selection[0] === this.tableData[0]) {
-        this.tableData.map(item => {
+      if (selection.length > 0 && selection[0]) {
+        selection.map(item => {
           this.$refs.table.toggleRowSelection(item)
         })
       }
-      if (selection.length > 0 && selection[0] === this.filtrate[0]) {
-        this.filtrate.map(item => {
-          this.$refs.table.toggleRowSelection(item)
-        })
-      }
+      // if (selection.length > 0 && selection[0] === this.filtrate[0]) {
+      //   this.filtrate.map(item => {
+      //     this.$refs.table.toggleRowSelection(item)
+      //   })
+      // }
       this.handleGetSelection()
     },
     // 获取勾选的值
@@ -181,7 +180,7 @@ export default {
       this.filtrate = []
       const property = column['property']
       if (row[property] === value) {
-        this.filtrate.push(row)
+        return this.filtrate.push(row)
       }
       return row[property] === value
     }

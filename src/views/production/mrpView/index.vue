@@ -243,26 +243,6 @@ export default {
         if (this.orderNumber.customer) {
           this.MrpInfo()
         }
-        // 筛选
-        this.tableHeader.forEach(res => {
-          res.filters = []
-          this.tableData.forEach(item => {
-            if (item[res.prop]) {
-              res.filters.push({
-                text: item[res.prop], value: item[res.prop]
-              })
-            }
-          })
-          const obj = {}
-          const result = []
-          res.filters.map(item => {
-            if (!obj[item.text]) {
-              result.push(item)
-              obj[item.text] = true
-            }
-          })
-          res.filters = result
-        })
       } else {
         this.orderNumber = {}
         this.tableData = []
@@ -294,6 +274,26 @@ export default {
         item.hje = Number(item.hje).toFixed(2)
       })
       this.tableData = RES.array
+      // 筛选
+      this.tableHeader.forEach(res => {
+        res.filters = []
+        this.tableData.forEach(item => {
+          if (item[res.prop]) {
+            res.filters.push({
+              text: item[res.prop], value: item[res.prop]
+            })
+          }
+        })
+        const obj = {}
+        const result = []
+        res.filters.map(item => {
+          if (!obj[item.text]) {
+            result.push(item)
+            obj[item.text] = true
+          }
+        })
+        res.filters = result
+      })
     },
     // 确认下发
     async InsertMO() {
