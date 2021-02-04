@@ -18,7 +18,6 @@
           <el-button type="primary" size="mini" @click="detailCustomer(clo.scope.row.fcustId)">查询客户</el-button>
         </template>
       </jc-table>
-      />
     </div>
     <!--    分页器-->
     <div class="footer">
