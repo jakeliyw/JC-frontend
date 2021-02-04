@@ -45,7 +45,11 @@ module.exports = {
     },
     proxy: {
       [process.env.VUE_APP_BASE_API]: {
+<<<<<<< HEAD
         target: 'http://192.168.1.136:8888',
+=======
+        target: 'http://127.0.0.1:8888',
+>>>>>>> cf0c3432fe6474f295fa9ed7dcb8c23ba9b1885a
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''

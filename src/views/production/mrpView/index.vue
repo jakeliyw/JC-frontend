@@ -154,30 +154,30 @@ export default {
       cellStyle: { padding: '10 10' },
       tableData: [],
       tableHeader: [
-        { label: '状态', prop: 'zt', align: 'center', filterHeader: Function },
-        { label: '客户订单号', prop: 'khdd', align: 'center' },
-        { label: '销售订单号', prop: 'soNum', align: 'center' },
-        { label: '订单类型', prop: 'ddlx', align: 'center', minWidth: '100px' },
-        { label: '生产单号', prop: 'ssdh', align: 'center', minWidth: '140px' },
-        { label: '型号', prop: 'itemXH', align: 'center' },
+        { label: '状态', prop: 'zt', align: 'center', minWidth: '90px', filterHeader: function() {} },
+        { label: '客户订单号', prop: 'khdd', align: 'center', minWidth: '130px', filterHeader: function() {} },
+        { label: '销售订单号', prop: 'soNum', align: 'center', minWidth: '130px', filterHeader: function() {} },
+        { label: '订单类型', prop: 'ddlx', align: 'center', minWidth: '130px', filterHeader: function() {} },
+        { label: '生产单号', prop: 'ssdh', align: 'center', minWidth: '140px', filterHeader: function() {} },
+        { label: '型号', prop: 'itemXH', align: 'center', minWidth: '90px, ', filterHeader: function() {} },
         { label: '物料编号', prop: 'itemCode', align: 'center', minWidth: '160px' },
         { label: '物料描述', prop: 'itemName', align: 'left', minWidth: '260px', headerAlign: 'center' },
         { label: '尺寸', prop: 'cc', align: 'center', minWidth: '120px' },
-        { label: '生产类型', type: 'state', prop: 'sclx', align: 'center', minWidth: '100px' },
-        { label: '生产部门', type: 'btn', prop: 'scbm', align: 'center', minWidth: '150px' },
-        { label: '仓库', type: 'tag', prop: 'ck', align: 'center', minWidth: '150px' },
-        { label: '库存', prop: 'kc', align: 'center' },
-        { label: '计划数量', prop: 'qty', align: 'center' },
-        { label: '数量单位', prop: 'dw', align: 'center' },
-        { label: '损耗率', prop: 'shl', align: 'center' },
-        { label: '损耗数', prop: 'shs', align: 'center' },
-        { label: '生产数量', prop: 'scQty', align: 'center' },
-        { label: '加工单价', prop: 'rprice', align: 'center' },
-        { label: '行金额', prop: 'hje', align: 'center' },
-        { label: '配件交期', prop: 'pjjq', align: 'center', minWidth: '100px' },
-        { label: '层次', prop: 'cz', align: 'center' },
-        { label: '订单详情', prop: 'ddxq', align: 'center' },
-        { label: '生产工单号', prop: 'mOnum', align: 'center' }
+        { label: '生产类型', type: 'state', prop: 'sclx', align: 'center', minWidth: '130px', filterHeader: function() {} },
+        { label: '生产部门', type: 'btn', prop: 'scbm', align: 'center', minWidth: '150px', filterHeader: function() {} },
+        { label: '仓库', type: 'tag', prop: 'ck', align: 'center', minWidth: '150px', filterHeader: function() {} },
+        { label: '库存', prop: 'kc', align: 'center', minWidth: '90px' },
+        { label: '计划数量', prop: 'qty', align: 'center', minWidth: '130px' },
+        { label: '数量单位', prop: 'dw', align: 'center', minWidth: '130px' },
+        { label: '损耗率', prop: 'shl', align: 'center', minWidth: '120px' },
+        { label: '损耗数', prop: 'shs', align: 'center', minWidth: '120px' },
+        { label: '生产数量', prop: 'scQty', align: 'center', minWidth: '130px' },
+        { label: '加工单价', prop: 'rprice', align: 'center', minWidth: '130px' },
+        { label: '行金额', prop: 'hje', align: 'center', minWidth: '120px' },
+        { label: '配件交期', prop: 'pjjq', align: 'center', minWidth: '130px' },
+        { label: '大类', prop: 'cz', align: 'center', minWidth: '90px', filterHeader: function() {} },
+        { label: '订单详情', prop: 'ddxq', align: 'center', minWidth: '130px', filterHeader: function() {} },
+        { label: '生产工单号', prop: 'mOnum', align: 'center', minWidth: '120px', filterHeader: function() {} }
       ],
       insetData: {
         CreateID: '',
@@ -210,7 +210,7 @@ export default {
     handleExport() {
       require.ensure([], () => {
         const tHeader = ['状态', '客户订单号', '销售订单号', '订单类型', '生产单号', '型号', '物料编号', '物料描述', '尺寸', '生产类型', '生产部门', '仓库名',
-          '库存', '计划数量', '单位', '损耗率', '损耗数', '生产数量', '加工单价', '行金额', '配件交期', '包装BOM', '大类', '订单详情', '工单号']
+          '库存', '计划数量', '单位', '损耗率', '损耗数', '生产数量', '加工单价', '行金额', '配件交期', '包装BOM', '大类', '订单详情', '生产工单号']
         const filterVal = ['zt', 'KHDD', 'SoNum', 'ddlx', 'ssdh', 'itemXH', 'itemCode', 'itemName', 'cc', 'sclx', 'scbm', 'ck',
           'kc', 'qty', 'dw', 'shl', 'shs', 'scQty', 'rprice', 'hje', 'pjjq', 'BZBOM', 'CZ', 'DDQC', 'Monum']
         if (this.val.length === 0) {
@@ -243,6 +243,26 @@ export default {
         if (this.orderNumber.customer) {
           this.MrpInfo()
         }
+        // 筛选
+        this.tableHeader.forEach(res => {
+          res.filters = []
+          this.tableData.forEach(item => {
+            if (item[res.prop]) {
+              res.filters.push({
+                text: item[res.prop], value: item[res.prop]
+              })
+            }
+          })
+          const obj = {}
+          const result = []
+          res.filters.map(item => {
+            if (!obj[item.text]) {
+              result.push(item)
+              obj[item.text] = true
+            }
+          })
+          res.filters = result
+        })
       } else {
         this.orderNumber = {}
         this.tableData = []
