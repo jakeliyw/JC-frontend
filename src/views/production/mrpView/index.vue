@@ -177,7 +177,7 @@ export default {
         { label: '配件交期', prop: 'pjjq', align: 'center', minWidth: '130px' },
         { label: '大类', prop: 'cz', align: 'center', minWidth: '90px', filterHeaders: true },
         { label: '订单详情', prop: 'ddxq', align: 'center', minWidth: '130px', filterHeaders: true },
-        { label: '生产工单号', prop: 'mOnum', align: 'center', minWidth: '120px', filterHeaders: true }
+        { label: '生产工单号', prop: 'mOnum', align: 'center', minWidth: '130px', filterHeaders: true }
       ],
       insetData: {
         CreateID: '',

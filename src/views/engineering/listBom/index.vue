@@ -91,7 +91,7 @@ export default {
         { label: '物料规格', prop: 'FSPECIFICATION', minWidth: '120px', align: 'center' },
         { label: '仓库', prop: 'FSTOCK', align: 'center' },
         { label: '创建时间', prop: 'FCREATEDATE', align: 'center', minWidth: '110px' },
-        { label: '禁用状态', type: 'tag', align: 'center' },
+        { label: '禁用状态', type: 'tag', align: 'center', minWidth: '100px' },
         { label: '审核状态', type: 'states', align: 'center', minWidth: '100px' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '300px', align: 'center' }
       ],

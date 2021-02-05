@@ -90,8 +90,8 @@ export default {
         { label: '单位', prop: 'funit', align: 'center' },
         { label: '创建时间', prop: 'fcreateDate', align: 'center', minWidth: '110px' },
         { label: '状态流程', type: 'state', align: 'center', minWidth: '100px' },
-        { label: '禁用状态', type: 'tag', align: 'center' },
-        { label: '审核状态', type: 'states', align: 'center' },
+        { label: '禁用状态', type: 'tag', align: 'center', minWidth: '100px' },
+        { label: '审核状态', type: 'states', align: 'center', minWidth: '100px' },
         { label: '操作', type: 'btn', minWidth: '200px', align: 'center' }
       ],
       // 表格数据

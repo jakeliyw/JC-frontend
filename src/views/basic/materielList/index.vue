@@ -101,8 +101,8 @@ export default {
         { label: '物料规格', prop: 'fspecificaTion', align: 'center', minWidth: '120px' },
         { label: '单位', prop: 'funit', align: 'center' },
         { label: '创建时间', prop: 'fcreateDate', align: 'center', minWidth: '110px' },
-        { label: '禁用状态', type: 'tag', align: 'center' },
-        { label: '审核状态', type: 'state', align: 'center' },
+        { label: '禁用状态', type: 'tag', align: 'center', minWidth: '100px' },
+        { label: '审核状态', type: 'state', align: 'center', minWidth: '100px' },
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
       ], // 表头数据
       materialTableData: [], // 表格数据
@@ -203,6 +203,8 @@ export default {
 
   .left-mainPage {
     width: 15vw;
+    height: calc(100vh - 220px);
+    overflow: auto;
     display: flex;
     flex-direction: column;
     border: 1px solid #ebeef5;
