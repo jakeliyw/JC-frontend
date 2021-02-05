@@ -30,8 +30,8 @@
               <el-table-column label="含税单价" prop="ftaxPrice" align="center" min-width="100px" />
               <el-table-column label="金额" prop="famount" align="center" min-width="100px" />
               <el-table-column label="含税金额" prop="ftaxAmount" align="center" min-width="100px" />
-              <el-table-column prop="fdownPrice" label="基准价" align="center" />
               <el-table-column prop="fsettleCurr" label="结算币别" align="center" />
+              <el-table-column prop="fdownPrice" :label="fdownName" align="center" min-width="120" />
               <el-table-column prop="fisFree" label="是否赠品" align="center">
                 <template slot-scope="scope">
                   <el-checkbox v-model="scope.row.fisFree" disabled />
@@ -153,6 +153,7 @@ export default {
   mixins: [jumpMateriel, mixinsImg],
   data() {
     return {
+      fdownName: '销售基准价',
       actionURL: '',
       priview: '',
       imgVisible: false,
@@ -194,6 +195,7 @@ export default {
         RES.fsalType = '特批订单'
       }
       this.organizationValue = RES
+      this.fdownName = this.fdownName + '(' + RES.fsettleCurr + ')'
       this.organization = {
         fcreateDate: {
           label: '订单时间',

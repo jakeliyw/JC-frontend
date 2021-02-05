@@ -327,7 +327,9 @@ export default {
         fexchangeRate: '',
         flocalCurrId: '',
         fsettleCurrId: '',
-        fxxchangeTypeId: ''
+        fxxchangeTypeId: '',
+        fid: '',
+        cutMoney: ''
       }
     }
   },
@@ -479,6 +481,7 @@ export default {
         this.standardPrice.fsettleCurrId = item.fsettleCurrId
         this.standardPrice.fsysmbol = item.fsysmbol
         this.standardPrice.fsettleCurrIdName = item.fsettleCurrIdName
+        this.standardPrice.cutMoney = '结算币别切换'
         // 获取汇率
         this.querySalerRate()
       } else {

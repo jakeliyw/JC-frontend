@@ -130,7 +130,6 @@ export default {
         pageSize: this.size
       }
       const { data: RES } = await getPriceList(DATA)
-      console.log(RES.result)
       if (RES.result) {
         this.tableData = RES.data
         this.total = RES.data[0].count

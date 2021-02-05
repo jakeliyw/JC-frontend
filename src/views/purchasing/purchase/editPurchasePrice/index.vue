@@ -407,7 +407,6 @@ export default {
     },
     // 单价
     handleUnitPrice(row) {
-      console.log(row.fprice, row.ftaxPrice)
       // 含税单价
       row.ftaxPrice = row.fprice * (1 + row.ftaxRate / 100)
       // // 上限

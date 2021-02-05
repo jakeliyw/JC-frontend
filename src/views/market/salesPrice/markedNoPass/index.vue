@@ -113,9 +113,13 @@ export default {
     detailPurchase(id) {
       this.$router.push({ path: `/MarkedEdit/${id}` })
     },
-    // 审批通过
+    // 重新审核
     async review(fid) {
-      const { message, code } = await againReviewPrice({ fid })
+      const DATA = {
+        fid: fid,
+        fuserId: window.sessionStorage.getItem('fuserId')
+      }
+      const { message, code } = await againReviewPrice(DATA)
       if (code !== 0) {
         return
       }

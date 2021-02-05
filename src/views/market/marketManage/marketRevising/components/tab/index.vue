@@ -191,6 +191,7 @@ export default {
   },
   data() {
     return {
+      cutMoney: '',
       fdownName: '销售基准价',
       fid: '', // 价目ID
       isMateria: false, // 物料弹窗组件
@@ -234,6 +235,9 @@ export default {
     standardPrice: {
       handler() {
         this.querySalDownPrice()
+        this.cutMoney = this.standardPrice.cutMoney
+        this.fdownName = '销售基准价'
+        this.fdownName = this.fdownName + '(' + this.standardPrice.fsettleCurrIdName + ')'
       },
       deep: true
     }
@@ -250,6 +254,7 @@ export default {
         this.tabTwo.saleDetails[this.material].fmodel = item.fmodel
         this.tabTwo.saleDetails[this.material].deliveryPrice = item.deliveryPrice
         this.tabTwo.saleDetails[this.material].fid = item.fid
+        this.cutMoney = ''
         this.isMateria = false
         this.querySalDownPrice()
       } else {
@@ -276,6 +281,7 @@ export default {
             fisFree: false,
             ftaxRate: '',
             fdeliveryDate: '',
+            fdownPrice: '',
             salImage: {
               imageUrl: '', // 图片
               imageUrl1: '', // 图片
@@ -367,18 +373,44 @@ export default {
     },
     // 获取对应的销售基准价
     async querySalDownPrice() {
-      const DATA = {
-        fxxchangeTypeId: this.standardPrice.fxxchangeTypeId,
-        fsettleCurrId: this.standardPrice.fsettleCurrId,
-        flocalCurrId: this.standardPrice.flocalCurrId,
-        fid: this.tabTwo.saleDetails[this.material].fid,
-        fmaterialId: this.tabTwo.saleDetails[this.material].fmaterialId
+      if (this.cutMoney !== '') {
+        for (const index in this.tabTwo.saleDetails) {
+          if (this.tabTwo.saleDetails[index].fid) {
+            this.material = index
+            const DATA = {
+              fxxchangeTypeId: this.standardPrice.fxxchangeTypeId,
+              fsettleCurrId: this.standardPrice.fsettleCurrId,
+              flocalCurrId: this.standardPrice.flocalCurrId,
+              fid: this.tabTwo.saleDetails[this.material].fid,
+              fmaterialId: this.tabTwo.saleDetails[this.material].fmaterialId
+            }
+            const { data: RES } = await querySalDownPrice(DATA)
+            if (RES) {
+              this.tabTwo.saleDetails[this.material].fdownPrice = RES.fdownPrice
+              this.tabTwo.saleDetails[this.material].fdownPrices = RES.fdownPrice
+              this.fdownName = '销售基准价' + '(' + this.standardPrice.fsettleCurrIdName + ')'
+              this.fqtyPrice()
+            } else {
+              continue
+            }
+          }
+        }
+      } else {
+        const DATA = {
+          fxxchangeTypeId: this.standardPrice.fxxchangeTypeId,
+          fsettleCurrId: this.standardPrice.fsettleCurrId,
+          flocalCurrId: this.standardPrice.flocalCurrId,
+          fid: this.tabTwo.saleDetails[this.material].fid,
+          fmaterialId: this.tabTwo.saleDetails[this.material].fmaterialId
+        }
+        const { data: RES } = await querySalDownPrice(DATA)
+        if (RES) {
+          this.tabTwo.saleDetails[this.material].fdownPrice = RES.fdownPrice
+          this.tabTwo.saleDetails[this.material].fdownPrices = RES.fdownPrice
+          this.fdownName = '销售基准价' + '(' + this.standardPrice.fsettleCurrIdName + ')'
+          this.fqtyPrice()
+        }
       }
-      const { data: RES } = await querySalDownPrice(DATA)
-      this.tabTwo.saleDetails[this.material].fdownPrice = RES.fdownPrice
-      this.tabTwo.saleDetails[this.material].fdownPrices = RES.fdownPrice
-      this.fdownName = '销售基准价' + '(' + this.standardPrice.fsettleCurrIdName + ')'
-      this.fqtyPrice()
     },
     fqtyPrice() {
       const fqty = this.tabTwo.saleDetails[this.material].fqty
@@ -393,7 +425,6 @@ export default {
       const fdownPrice = this.tabTwo.saleDetails[this.material].fdownPrices
       if (!fdownPrice) {
         this.tabTwo.saleDetails[this.material].fdownPrices = this.tabTwo.saleDetails[this.material].fdownPrice
-        this.fdownName = '销售基准价' + '(' + this.standardPrice.fsettleCurrIdName + ')'
         return
       }
       this.tabTwo.saleDetails[this.material].fdownPrice = (fdownPrice / this.shuliang).toFixed(4)

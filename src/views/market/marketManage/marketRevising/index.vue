@@ -242,7 +242,8 @@ export default {
         fexchangeRate: '',
         flocalCurrId: '',
         fsettleCurrId: '',
-        fxxchangeTypeId: ''
+        fxxchangeTypeId: '',
+        cutMoney: ''
       }
     }
   },
@@ -265,7 +266,7 @@ export default {
       this.saleDetails = RES.saleDetails
       this.planDetails = RES.planDetails
       this.standardPrice.fsysmbol = RES.fsysmbol
-      this.standardPrice.fsettleCurrIdName = RES.flocalCurr
+      this.standardPrice.fsettleCurrIdName = RES.fsettleCurr
       this.standardPrice.fexchangeRate = RES.fexchangeRate
       this.standardPrice.fxxchangeTypeId = RES.fxxchangeTypeId
       this.standardPrice.fsettleCurrId = RES.fsettleCurrId
@@ -374,7 +375,9 @@ export default {
         this.prodValue.fsettleCurrId = item.fsettleCurrId
         this.currencyVisiblit = item.isCurrencyDialog
         this.standardPrice.fsysmbol = item.fsysmbol
+        this.standardPrice.fsettleCurrId = item.fsettleCurrId
         this.standardPrice.fsettleCurrIdName = item.fsettleCurrIdName
+        this.standardPrice.cutMoney = '结算币别切换'
         // 获取汇率
         this.querySalerRate()
       } else {

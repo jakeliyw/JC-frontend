@@ -122,7 +122,11 @@ export default {
     },
     // 重新审核
     async approval(fid) {
-      const { message, code } = await againReviewSalorder({ fid })
+      const DATA = {
+        fid: fid,
+        fuserId: window.sessionStorage.getItem('fuserId')
+      }
+      const { message, code } = await againReviewSalorder(DATA)
       if (code !== 0) {
         return
       }

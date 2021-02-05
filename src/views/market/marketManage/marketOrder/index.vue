@@ -87,7 +87,7 @@ export default {
         { label: '销售员', prop: 'fsaler', align: 'center', minWidth: '90px' },
         { label: '禁用状态', type: 'tag', align: 'center', minWidth: '100px' },
         { label: '审核状态', type: 'state', align: 'center', minWidth: '100px' },
-        { label: '操作', type: 'btn', align: 'center', fixed: 'right', minWidth: '160px' }
+        { label: '操作', type: 'btn', align: 'center', minWidth: '160px' }
       ]
     }
   },
