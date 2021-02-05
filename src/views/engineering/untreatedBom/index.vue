@@ -98,7 +98,7 @@ export default {
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '250px', align: 'center' }
       ],
       // 表格数据
-      tableData: [],
+      tableData: []
     }
   },
   mounted() {
