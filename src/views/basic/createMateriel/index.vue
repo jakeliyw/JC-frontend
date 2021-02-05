@@ -63,7 +63,7 @@
           </div>
           <div class="basics">
             <jc-form :option-value="basicValue" :options="basic">
-              <el-select v-model="basicValue.fbaseUnitId" placeholder="请选择基本单位" size="small" @change="handleCompany" filterable>
+              <el-select v-model="basicValue.fbaseUnitId" placeholder="请选择基本单位" size="small" filterable @change="handleCompany">
                 <el-option
                   v-for="item in basicUnit"
                   :key="item.value"

@@ -74,7 +74,7 @@ export default {
         { label: '调后税率', prop: 'fafterTaxRate', align: 'center' },
         { label: '物料规格', prop: 'fspecificaTion', align: 'center' },
         { label: '价格上限', prop: 'fupPrice', align: 'center' },
-        { label: '价格下限', prop: 'fdownPrice', align: 'center' },
+        { label: '价格下限', prop: 'fdownPrice', align: 'center' }
       ], // 调价表头数据
       otherUrlObject: {}, // 其它审核人
       otherLogTableData: [], // 日志数据

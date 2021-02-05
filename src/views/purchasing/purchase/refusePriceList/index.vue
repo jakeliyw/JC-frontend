@@ -65,7 +65,7 @@ export default {
       // 表头
       tableHeader: [
         { label: '价目编码', prop: 'fnumber', minWidth: '100px', align: 'center' },
-        { label: '价目表名称', prop: 'fname', align: 'center' },
+        { label: '价目表名称', prop: 'fname', align: 'center', minWidth: '100px' },
         { label: '供应商名称', prop: 'fsupplier', align: 'center', minWidth: '200px' },
         { label: '是否含税', prop: 'fisIncludedTax', align: 'center' },
         { label: '币别', prop: 'fcurrency', align: 'center' },
@@ -119,13 +119,12 @@ export default {
   @include listBom;
   .header{
     position:relative;
-    .header-name{
+   .header-name{
       width: 100%;
     }
     .btn{
       transform: translateY(18%);
       margin-left: 410px!important;
-      z-index: 999;
     }
   }
 }

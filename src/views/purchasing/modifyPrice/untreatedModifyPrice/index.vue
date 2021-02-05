@@ -67,14 +67,14 @@ export default {
       pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
       tableHeader: [
-        { label: '单据编号', prop: 'fbillno', align: 'center' },
-        { label: '调价名称', prop: 'fname', align: 'center' },
-        { label: '调价原因', prop: 'fdataValue', align: 'center' },
-        { label: '调价日期', prop: 'fdate', align: 'center' },
+        { label: '单据编号', prop: 'fbillno', align: 'center', minWidth: '100px' },
+        { label: '调价名称', prop: 'fname', align: 'center', minWidth: '100px' },
+        { label: '调价原因', prop: 'fdataValue', align: 'center', minWidth: '100px' },
+        { label: '调价日期', prop: 'fdate', align: 'center', minWidth: '100px' },
         { label: '描述', prop: 'fdescripTion', align: 'center', minWidth: '200px' },
         { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', minWidth: '150px' },
-        { label: '生效时间', prop: 'fcreateDate', align: 'center' },
-        { label: '操作', type: 'btn', minWidth: '250px', align: 'center' }
+        { label: '生效时间', prop: 'fcreateDate', align: 'center', minWidth: '100px' },
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '250px', align: 'center' }
       ],
       // 表格数据
       tableData: [],
@@ -130,13 +130,12 @@ export default {
   @include listBom;
   .header{
     position:relative;
-    .header-name{
+   .header-name{
       width: 100%;
     }
     .btn{
       transform: translateY(18%);
       margin-left: 410px!important;
-      z-index: 999;
     }
   }
 }

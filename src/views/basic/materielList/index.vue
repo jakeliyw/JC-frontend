@@ -218,7 +218,6 @@ export default {
     .btn{
       transform: translateY(18%);
       margin-left: 410px!important;
-      z-index: 999;
     }
   }
 }

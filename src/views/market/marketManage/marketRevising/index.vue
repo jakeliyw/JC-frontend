@@ -115,7 +115,7 @@
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
-          other-height="480px"
+          other-height="calc(100vh - 450px)"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -332,6 +332,8 @@ export default {
           setTimeout(() => {
             this.reload()
           }, 1000)
+        } else {
+          this.$message.error(res.message)
         }
       })
     },
@@ -436,7 +438,7 @@ export default {
   @include listBom;
   .el-tabs {
     .disRow {
-      height: 68vh;
+      height: calc(100vh - 300px);
       .positRe {
         position: relative;
         margin-left: 100px;

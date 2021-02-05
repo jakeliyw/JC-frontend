@@ -522,10 +522,14 @@ export default {
   @include bomCreate;
   .dialogForm{
     position:relative;
+    .bom-form{
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
     .btn{
       transform: translateY(18%);
       margin-left: 410px!important;
-      z-index: 999;
     }
   }
 }

@@ -141,7 +141,7 @@
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
-          other-height="540px"
+          other-height="calc(100vh - 390px)"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -395,6 +395,8 @@ export default {
             setTimeout(() => {
               this.reload()
             }, 1000)
+          } else {
+            this.$message.error(res.message)
           }
         })
       })
@@ -521,7 +523,6 @@ export default {
       this.prodValue.fxxchangeTypeId = RES.fxxchangeTypeId
       this.standardPrice.flocalCurrId = RES.flocalCurrId
       this.standardPrice.fxxchangeTypeId = RES.fxxchangeTypeId
-
       this.querySalerRate()
     },
     // 查询销售订单汇率
@@ -572,7 +573,7 @@ export default {
 
   .el-tabs {
     .disRow {
-      height: 68vh;
+      height: calc(100vh - 300px);
 
       .positRe {
         position: relative;

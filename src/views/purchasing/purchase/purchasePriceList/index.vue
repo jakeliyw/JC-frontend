@@ -143,13 +143,15 @@ export default {
   @include listBom;
   .header{
     position:relative;
-    .header-name{
-      width: 100%;
-    }
+     .header-name{
+       width: 100%;
+       display: flex;
+       justify-content: flex-start;
+       align-items: flex-start;
+     }
     .btn{
       transform: translateY(18%);
       margin-left: 410px!important;
-      z-index: 999;
     }
   }
 }

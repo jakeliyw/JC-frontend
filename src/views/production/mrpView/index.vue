@@ -17,7 +17,7 @@
       <el-form-item label="交货日期">
         <el-input v-model="orderNumber.fdeliveryDate" disabled size="mini" />
       </el-form-item>
-      <el-form-item>
+      <el-form-item label-width="50px">
         <el-button type="primary" size="mini" @click="gainData()">运算</el-button>
         <el-button type="primary" size="mini" @click="handleExport">导出Excel</el-button>
       </el-form-item>

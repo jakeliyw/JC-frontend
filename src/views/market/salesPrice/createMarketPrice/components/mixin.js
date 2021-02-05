@@ -8,11 +8,10 @@ export default {
       const DATA = { fmaterialId: this.tableData[this.tableIndex].fmaterialId }
       const { data: RES } = await querySalPriceMaterial(DATA)
       // 销售系数和表格数据
-      const fpriceBase = (this.tableData[this.tableIndex].fpriceBase) / 100
+      // const fpriceBase = (this.tableData[this.tableIndex].fpriceBase) / 100
       this.tableData[this.tableIndex].fmaterialId = RES.fmaterialId
       this.tableData[this.tableIndex].fmaterialIdName = RES.fnumber
       this.tableData[this.tableIndex].fdescripTion = RES.fdescripTion
-      this.tableData[this.tableIndex].funitId = RES.funitId
       this.tableData[this.tableIndex].funit = RES.funitName
       this.tableData[this.tableIndex].deliveryPrice = RES.deliveryPrice
       this.tableData[this.tableIndex].fdownPrice = RES.fdownPrice
@@ -22,8 +21,8 @@ export default {
       this.tableData[this.tableIndex].fdownPrice4 = (RES.fdownPrice / 0.6 * 1.13).toFixed(4)
       this.tableData[this.tableIndex].fdownPrice5 = (RES.fdownPrice / 0.65 * 1.13).toFixed(4)
       this.tableData[this.tableIndex].fdownPrice6 = (RES.fdownPrice / 0.7 * 1.13).toFixed(4)
-      // 基准价
-      this.tableData[this.tableIndex].fdownPrice = (RES.deliveryPrice * (1 + fpriceBase)).toFixed(4)
+      // // 基准价
+      // this.tableData[this.tableIndex].fdownPrice = (RES.deliveryPrice * (1 + fpriceBase)).toFixed(4)
     },
     // 获取其它
     async handleOther() {

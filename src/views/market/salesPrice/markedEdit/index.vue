@@ -79,7 +79,14 @@
               <el-table-column label="101<=x<=500" align="center" min-width="110px" prop="fdownPrice2" />
               <el-table-column label="x>=501" align="center" prop="fdownPrice3" />
             </el-table-column>
-            <el-table-column label="销售基准价(含税)" min-width="180px" align="center">
+            <el-table-column label="含税销售基准价" min-width="180px" align="center">
+              <template slot="header">
+                <el-select v-model="fdownPriceRate" size="mini" @change="priceRate">
+                  <el-option label="含税销售基准价(13%)" value="13">含税销售基准价(13%)</el-option>
+                  <el-option label="含税销售基准价(7%)" value="7">含税销售基准价(7%)</el-option>
+                  <el-option label="含税销售基准价(5%)" value="5">含税销售基准价(5%)</el-option>
+                </el-select>
+              </template>
               <el-table-column label="x<=100" align="center" prop="fdownPrice4" />
               <el-table-column label="101<=x<=500" align="center" min-width="110px" prop="fdownPrice5" />
               <el-table-column label="x>=501" align="center" prop="fdownPrice6" />
@@ -133,13 +140,8 @@
       width="60%"
     >
       <div class="materiel-form">
-        <span class="materiel-code">物料编码</span>
-        <el-input v-model.trim="FNUMBER" class="input-width" size="mini" placeholder="请输入物料编码" @keyup.enter.native="handleMaterielSearch" />
-        <span class="materiel-code">物料描述</span>
-        <el-input v-model.trim="FDESCRIPTION" class="input-width" size="mini" placeholder="请输入物料描述" @keyup.enter.native="handleMaterielSearch" />
-        <span class="materiel-code">物料规格</span>
-        <el-input v-model.trim="FSPECIFICATION" class="input-width" size="mini" placeholder="请输入规格" @keyup.enter.native="handleMaterielSearch" />
-        <el-button size="mini" type="primary" @click="handleMaterielSearch">搜索</el-button>
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleMaterielSearch" />
+        <el-button size="mini" type="primary" class="btn" @click="handleMaterielSearch">搜索</el-button>
       </div>
       <jc-table
         :table-data="materielDialogData"
@@ -180,7 +182,8 @@ import jcMarker from '@/components/marker'
 import client from '@/views/market/marketManage/createMarkerOrder/components/client'
 import currency from '@/views/market/marketManage/createMarkerOrder/components/currency'
 import salPrice from '@/views/market/salesPrice/createMarketPrice/components/mixin' // 其他
-
+import search from '@/components/Search'
+import searData from '@/components/Search/mixin'
 export default {
   components: {
     jcTable,
@@ -188,12 +191,17 @@ export default {
     jcTitle,
     jcMarker,
     currency,
-    client
+    client,
+    search
   },
-  mixins: [jumpMateriel, salPrice],
+  mixins: [jumpMateriel, salPrice, searData],
   inject: ['reload'],
   data() {
     return {
+      ftype: 0,
+      fbillNo: 'fnumber', // 编码
+      rate: 1.13, // 销售基准价(默认13%税率)
+      fdownPriceRate: '13', // 销售基准价税率
       isMaterielDialog: false, // 物料弹窗
       // 物料弹窗分页
       materielPagination: {
@@ -249,16 +257,34 @@ export default {
         item.fdownPrice1 = (item.fdownPrice / 0.6).toFixed(4)
         item.fdownPrice2 = (item.fdownPrice / 0.65).toFixed(4)
         item.fdownPrice3 = (item.fdownPrice / 0.7).toFixed(4)
-        item.fdownPrice4 = (item.fdownPrice / 0.6 * 1.13).toFixed(4)
-        item.fdownPrice5 = (item.fdownPrice / 0.65 * 1.13).toFixed(4)
-        item.fdownPrice6 = (item.fdownPrice / 0.7 * 1.13).toFixed(4)
+        item.fdownPrice4 = (item.fdownPrice / 0.6 * this.rate).toFixed(4)
+        item.fdownPrice5 = (item.fdownPrice / 0.65 * this.rate).toFixed(4)
+        item.fdownPrice6 = (item.fdownPrice / 0.7 * this.rate).toFixed(4)
       })
       this.tableData = RES.detail
       this.organizationValue = RES
       // 表格添加一空行
       this.tableData.push(
-        { fpriceBase: 10, fdownPrice: 0 }
+        {
+          fmaterialId: '', // 物料编码ID
+          fmaterialIdName: '', // 物料编码
+          funitName: '', // 单位
+          funitId: '', // 单位id
+          fpriceBase: 10, // 销售系数
+          deliveryPrice: '', // 出厂价
+          fdownPrice: '' // 净价
+        }
       )
+    },
+    priceRate(val) {
+      this.rate = 1 + (val / 100)
+      this.tableData.map(item => {
+        if (item.fdownPrice) {
+          item.fdownPrice4 = (item.fdownPrice1 * this.rate).toFixed(4)
+          item.fdownPrice5 = (item.fdownPrice2 * this.rate).toFixed(4)
+          item.fdownPrice6 = (item.fdownPrice3 * this.rate).toFixed(4)
+        }
+      })
     },
     // 保存
     subMarker() {
@@ -281,6 +307,8 @@ export default {
           setTimeout(() => {
             this.reload()
           }, 2000)
+        } else {
+          this.$message.error(res.message)
         }
       })
     },
@@ -288,6 +316,7 @@ export default {
     async materielSelectRow(item) {
       this.tableData[this.tableIndex].fmaterialId = item.fmaterialId
       this.tableData[this.tableIndex].foldNumber = item.foldNumber
+      this.tableData[this.tableIndex].funitId = item.funitId
       this.isMaterielDialog = false
       this.querySalPriceMaterial()
     },
@@ -311,9 +340,7 @@ export default {
       const DATA = {
         pageNum: this.materielPagination.pageNum,
         pageSize: this.materielPagination.pageSize,
-        fnumber: this.FNUMBER,
-        fdescription: this.FDESCRIPTION,
-        fspecification: this.FSPECIFICATION
+        ...this.searCollData
       }
       const { data: RES } = await queryMaterialList(DATA)
       this.materielDialogData = RES.array
@@ -369,6 +396,13 @@ export default {
     .el-table {
       &::v-deep thead.is-group th{
         padding: 5px 0;
+        .el-input__inner{
+          background: #e6ebfc;
+          color: #909399;
+          font-size: 13px;
+          font-weight: 550;
+          border: none;
+        }
       }
     }
   }
@@ -379,6 +413,15 @@ export default {
       max-width: 263px;
       margin-bottom: 15px;
     }
+  }
+}
+.materiel-form{
+  position:relative;
+  width: 100%;
+  .btn{
+    transform: translateY(18%);
+    margin-left: 410px!important;
+    z-index: 999;
   }
 }
 .materiel-form {

@@ -11,7 +11,6 @@
       <jc-table
         :table-data="tableData"
         :table-header="tableHeader"
-        :cell-style="cellStyle"
       >
         <template v-slot:tagSlot="col">
           <el-link type="primary" @click="detailPurchase(col.scope.row.fid)">{{ col.scope.row.fnumber }}</el-link>
@@ -91,8 +90,7 @@ export default {
         { label: '操作', type: 'btn', fixed: 'right', align: 'center', minWidth: '230px' }
       ],
       // 表格数据
-      tableData: [],
-      cellStyle: { padding: '10 10' }
+      tableData: []
     }
   },
   mounted() {
@@ -154,13 +152,12 @@ export default {
   @include listBom;
   .header{
     position:relative;
-    .header-name{
+   .header-name{
       width: 100%;
     }
     .btn{
       transform: translateY(18%);
       margin-left: 410px!important;
-      z-index: 999;
     }
   }
 }
