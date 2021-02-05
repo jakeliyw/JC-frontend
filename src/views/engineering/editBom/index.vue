@@ -437,11 +437,9 @@ export default {
         item.FCREATEDATE = GMTToStr(item.FCREATEDATE)
         return { FMATERIALID, FMATERIALTYPE, FDOSAGE, FISSUETYPE, FPRICE }
       })
-      const fuserId = window.sessionStorage.getItem('fuserId')
       const DATA = {
         FID: this.FID,
         flg: this.flg,
-        fuserId,
         FMATERIALID: this.FMATERIALID,
         FLABORCOST: this.prodValue.FLABORCOST,
         fTreeEntity

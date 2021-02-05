@@ -304,9 +304,7 @@ export default {
           fdownPrice: item.fdownPrice
         }
       })
-      const fuserId = window.sessionStorage.getItem('fuserId')
       const DATA = {
-        fuserId,
         fid: this.optionValue.fpaReason,
         details: DETAILS
       }
@@ -402,7 +400,7 @@ export default {
           fdownPrice: 0 // 下限
         })
       }
-      if (!row.fid) {
+      if (!row.fpriceListId) {
         this.$message.warning('价目表未选择或数据出错,请重新选择')
         return
       }

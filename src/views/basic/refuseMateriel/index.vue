@@ -140,8 +140,10 @@ export default {
     },
     // 重审物料
     async Retrial(FMATERIALID) {
-      const { code, message } = await updateMaterialAgainReview({ fmaterial: FMATERIALID })
+      const fuserId = window.sessionStorage.getItem('fuserId')
+      const { code, message } = await updateMaterialAgainReview({ fmaterial: FMATERIALID, fuserId })
       if (code !== 0) {
+        this.$message.warning(message)
         return
       }
       this.$message.success({ message })

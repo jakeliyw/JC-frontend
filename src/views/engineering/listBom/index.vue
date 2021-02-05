@@ -135,8 +135,7 @@ export default {
     },
     // 反审核
     async Retrial(FID) {
-      const fuserId = window.sessionStorage.getItem('fuserId')
-      const { message, code } = await updateNotReview({ fid: FID, fuserId })
+      const { message, code } = await updateNotReview({ fid: FID })
       if (code !== 0) {
         this.$message.warning(message)
         return

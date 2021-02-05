@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 
+const fuserId = window.sessionStorage.getItem('fuserId')
 // 查询采购调价原因
 export function queryFpareason(data) {
   return request({
@@ -11,6 +12,7 @@ export function queryFpareason(data) {
 
 // 新增采购调价表
 export function insertTPurPat(data) {
+  data.fuserId = fuserId
   return request({
     url: '/tPurPat/insertTPurPat',
     method: 'post',

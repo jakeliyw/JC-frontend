@@ -556,9 +556,7 @@ export default {
         return VALUE
       })
       const smallCode = `${codeNumber.toString()}`
-      const fuserId = window.sessionStorage.getItem('fuserId')
       const DATA = {
-        fuserId,
         smallCode,
         largeCode: this.oneMaterialValue.largeCode,
         mediumCode: this.toMaterialValue.mediumCode,
