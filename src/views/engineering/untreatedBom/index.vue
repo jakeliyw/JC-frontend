@@ -99,7 +99,6 @@ export default {
       ],
       // 表格数据
       tableData: [],
-      fuserId: '' // 用户id
     }
   },
   mounted() {
@@ -112,11 +111,9 @@ export default {
     },
     // 获取列表数据
     async handleGetBomList() {
-      this.fuserId = window.sessionStorage.getItem('fuserId')
       const DATA = {
         pageNum: this.pageNum,
         pageSize: this.size,
-        fuserId: this.fuserId,
         ...this.searCollData
       }
       const { data: RES } = await queryUntreatedBomList(DATA)
@@ -143,7 +140,7 @@ export default {
     },
     // 审批
     async approval(FID) {
-      const { message, code } = await updateReview({ fid: FID, fuserId: this.fuserId })
+      const { message, code } = await updateReview({ fid: FID })
       if (code !== 0) {
         return
       }
@@ -153,7 +150,7 @@ export default {
     },
     // 审批不通过
     async approvalRejection(FID) {
-      const { message, code } = await updateNotReview({ fid: FID, fuserId: this.fuserId })
+      const { message, code } = await updateNotReview({ fid: FID })
       if (code !== 0) {
         return
       }

@@ -168,8 +168,7 @@ export default {
     },
     // 反审核
     async Retrial(FMATERIALID) {
-      const fuserId = window.sessionStorage.getItem('fuserId')
-      const { code, message } = await updateMaterialNotReview({ fmaterial: FMATERIALID, fuserId })
+      const { code, message } = await updateMaterialNotReview({ fmaterial: FMATERIALID })
       if (code !== 0) {
         this.$message.warning(message)
         return

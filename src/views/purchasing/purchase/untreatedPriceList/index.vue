@@ -63,14 +63,14 @@ export default {
       pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
       tableHeader: [
-        { label: '价目编码', prop: 'fnumber', align: 'center' },
-        { label: '价目表名称', prop: 'fname', minWidth: '100px', align: 'center' },
+        { label: '价目编码', prop: 'fnumber', minWidth: '100px', align: 'center' },
+        { label: '价目表名称', prop: 'fname', align: 'center', minWidth: '100px' },
         { label: '供应商名称', prop: 'fsupplier', align: 'center', minWidth: '200px' },
         { label: '是否含税', prop: 'fisIncludedTax', align: 'center' },
         { label: '币别', prop: 'fcurrency', align: 'center' },
-        { label: '生效时间', prop: 'fcreateDate', align: 'center' },
+        { label: '创建时间', prop: 'fcreateDate', align: 'center' },
         { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', minWidth: '150px' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '250px', align: 'center' }
+        { label: '操作', type: 'btn', minWidth: '250px', align: 'center' }
       ],
       // 表格数据
       tableData: [],

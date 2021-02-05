@@ -511,10 +511,8 @@ export default {
         item.FCREATEDATE = GMTToStr(item.FCREATEDATE)
         return { FCREATEDATE, FDOSAGETYPE, FISSUETYPE, FMATERIALID, FMATERIALTYPE, FSEQ, FDOSAGE, FPRICE }
       })
-      const fuserId = window.sessionStorage.getItem('fuserId')
       const DATA = {
         flg: this.flg,
-        fuserId,
         FCREATEORGID: this.team,
         FUSEORGID: this.team,
         FLABORCOST: this.prodValue.FLABORCOST,

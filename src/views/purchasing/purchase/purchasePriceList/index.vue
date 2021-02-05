@@ -14,16 +14,6 @@
         :table-header="tableHeader"
         :cell-style="cellStyle"
       >
-        <el-table-column label="价目名称" prop="fname" align="center" show-overflow-tooltip />
-        <el-table-column label="供应商名称" prop="fsupplier" align="center" show-overflow-tooltip min-width="150px" />
-        <el-table-column
-          label="物料编码"
-          align="center"
-        >
-          <template slot-scope="scope">
-            <span class="jumpMateriel" @click="jumpMateriel(scope.row.fnumber)">{{ scope.row.fnumber }}</span>
-          </template>
-        </el-table-column>
         <template v-slot:btnState="clo">
           <el-tag>{{ clo.scope.row.fdocumentStatus }}</el-tag>
         </template>
@@ -77,12 +67,12 @@ export default {
       },
       cellStyle: { padding: '10, 10' },
       tableHeader: [
-        { label: '价目编码', prop: 'fnumber', align: 'center' },
-        { label: '价目表名称', prop: 'fname', minWidth: '100px', align: 'center' },
+        { label: '价目编码', prop: 'fnumber', minWidth: '100px', align: 'center' },
+        { label: '价目表名称', prop: 'fname', align: 'center', minWidth: '100px' },
         { label: '供应商名称', prop: 'fsupplier', align: 'center', minWidth: '200px' },
         { label: '是否含税', prop: 'fisIncludedTax', align: 'center' },
         { label: '币别', prop: 'fcurrency', align: 'center' },
-        { label: '生效时间', prop: 'fcreateDate', align: 'center' },
+        { label: '创建时间', prop: 'fcreateDate', align: 'center' },
         { label: '审核状态', type: 'state', prop: 'fdocumentStatus', align: 'center' },
         { label: '操作', type: 'btn', minWidth: '200px', align: 'center' }
       ],
@@ -94,10 +84,6 @@ export default {
     this.handleGetPurchaseList()
   },
   methods: {
-    // 进入物料主数据
-    jumpMateriel(fnumber) {
-      this.$router.push({ path: `/detailMateriel/${fnumber}` })
-    },
     // 获取列表数据
     async handleGetPurchaseList() {
       const { data: RES } = await queryTPurPriceList({ ...this.getPriceList, ...this.searCollData })

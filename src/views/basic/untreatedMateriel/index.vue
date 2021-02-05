@@ -98,8 +98,7 @@ export default {
         { label: '操作', type: 'btn', fixed: 'right', minWidth: '250px', align: 'center' }
       ],
       // 表格数据
-      tableData: [],
-      fuserId: '' // 用户id
+      tableData: []
     }
   },
   mounted() {
@@ -112,9 +111,7 @@ export default {
     },
     // 获取列表数据
     async handleGetMaterielList() {
-      this.fuserId = window.sessionStorage.getItem('fuserId')
       const DATA = {
-        fuserId: this.fuserId,
         pageNum: this.pageNum,
         pageSize: this.size,
         ...this.searCollData
@@ -136,7 +133,7 @@ export default {
     },
     // 审批
     async approval(FMATERIALID) {
-      const { code, message } = await updateMaterialReview({ fmaterial: FMATERIALID, fuserId: this.fuserId })
+      const { code, message } = await updateMaterialReview({ fmaterial: FMATERIALID })
       if (code !== 0) {
         return
       }
@@ -146,7 +143,7 @@ export default {
     },
     // 审批不通过
     async approvalRejection(FMATERIALID) {
-      const { code, message } = await updateMaterialNotReview({ fmaterial: FMATERIALID, fuserId: this.fuserId })
+      const { code, message } = await updateMaterialNotReview({ fmaterial: FMATERIALID })
       if (code !== 0) {
         return
       }

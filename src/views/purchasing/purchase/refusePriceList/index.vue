@@ -69,7 +69,7 @@ export default {
         { label: '供应商名称', prop: 'fsupplier', align: 'center', minWidth: '200px' },
         { label: '是否含税', prop: 'fisIncludedTax', align: 'center' },
         { label: '币别', prop: 'fcurrency', align: 'center' },
-        { label: '生效时间', prop: 'fcreateDate', align: 'center' },
+        { label: '创建时间', prop: 'fcreateDate', align: 'center' },
         { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', minWidth: '150px' },
         { label: '操作', type: 'btn', minWidth: '180px', align: 'center' }
       ],

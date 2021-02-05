@@ -1,5 +1,7 @@
 import request from '@/utils/request'
 
+const fuserId = window.sessionStorage.getItem('fuserId')
+
 // 获取列表数据
 export function queryBomFaterList(data) {
   return request({
@@ -61,6 +63,7 @@ export function queryTOrgOrganizationsL(params) {
 
 // 新建bom数据
 export function insertBom(data) {
+  data.fuserId = fuserId
   return request({
     url: '/tEngBom/insertBom',
     method: 'post',
