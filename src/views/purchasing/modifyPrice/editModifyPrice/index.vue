@@ -404,7 +404,7 @@ export default {
         this.$message.warning('价目表未选择或数据出错,请重新选择')
         return
       }
-      this.materielPagination.fid = this.modifyPriceTable[this.tableIndex].fid
+      this.materielPagination.fid = this.modifyPriceTable[this.tableIndex].fpriceListId
       this.openMaterial = true
       this.dialogTitle = '物料编码列表'
       this.popupTitle = '物料编码'

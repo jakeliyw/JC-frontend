@@ -163,7 +163,7 @@ export default {
 .el-form{
   display: flex;
   .el-form-item{
-    width: 263px;
+    width: 283px;
   }
 }
 </style>
