@@ -54,7 +54,16 @@
               />
             </template>
           </el-table-column>
-          <el-table-column label="含税单价" prop="ftaxPrice" align="center" min-width="100px" />
+          <el-table-column label="含税单价" prop="ftaxPrice" align="center" min-width="100px">
+            <template slot-scope="scope">
+              <el-input-number
+                v-model="scope.row.ftaxPrice"
+                :min="0"
+                size="mini"
+                @change="handleChange5(scope.$index)"
+              />
+            </template>
+          </el-table-column>
           <el-table-column label="金额" prop="famount" align="center" min-width="100px" />
           <el-table-column label="含税金额" prop="ftaxAmount" align="center" min-width="100px" />
           <el-table-column label="结算币别" prop="fsettleCurrId" align="center" min-width="100px">
@@ -63,6 +72,14 @@
             </template>
           </el-table-column>
           <el-table-column :label="fdownName" prop="fdownPrice" align="center" min-width="160px" />
+          <el-table-column :label="fdownName" prop="ftaxDownPrice" align="center" min-width="160px">
+            <template slot="header">
+              {{ '含税' + fdownName }}
+            </template>
+            <template slot-scope="scope">
+              {{ scope.row.ftaxDownPrice }}
+            </template>
+          </el-table-column>
           <el-table-column label="是否赠品" prop="fisFree" align="center">
             <template slot-scope="scope">
               <el-checkbox
@@ -219,6 +236,7 @@ export default {
             famount: '',
             ftaxAmount: '',
             fdownPrice: '',
+            ftaxDownPrice: '',
             salImage: {
               imageUrl: '', // 图片
               imageUrl1: '', // 图片
@@ -337,6 +355,7 @@ export default {
       this.$emit('visible', this.tabTwo)
       this.fqtyPrice()
     },
+    // 监听单价
     handleChange4(index) {
       this.material = index
       const fqty = this.tabTwo.saleDetails[index].fqty
@@ -348,15 +367,29 @@ export default {
       this.tabTwo.saleDetails[index].ftaxPrice = ftaxPrice
       this.$emit('visible', this.tabTwo)
     },
+    // 监听含税单价
+    handleChange5(index) {
+      this.material = index
+      const fqty = this.tabTwo.saleDetails[index].fqty
+      const ftaxPrice = this.tabTwo.saleDetails[index].ftaxPrice
+      const ftaxRate = this.tabTwo.saleDetails[index].ftaxRate
+      this.tabTwo.saleDetails[index].ftaxAmount = (fqty * ftaxPrice).toFixed(2)
+      this.tabTwo.saleDetails[index].fprice = (ftaxPrice / (1 + ftaxRate / 100)).toFixed(4)
+      this.tabTwo.saleDetails[index].famount = (this.tabTwo.saleDetails[index].fprice * fqty).toFixed(2)
+      this.$emit('visible', this.tabTwo)
+    },
     // 监听税率
     handleChange1(index) {
       this.material = index
       const fqty = this.tabTwo.saleDetails[index].fqty
       const fprice = this.tabTwo.saleDetails[index].fprice
       const ftaxRate = this.tabTwo.saleDetails[index].ftaxRate
+      const fdownPrices = this.tabTwo.saleDetails[this.material].fdownPrice
       const ftaxPrice = (fprice * (1 + ftaxRate / 100)).toFixed(4)
       this.tabTwo.saleDetails[index].ftaxAmount = (fqty * ftaxPrice).toFixed(2)
       this.tabTwo.saleDetails[index].ftaxPrice = ftaxPrice
+      this.tabTwo.saleDetails[index].ftaxDownPrice = (fdownPrices * (1 + ftaxRate / 100)).toFixed(2)
+
       this.$emit('visible', this.tabTwo)
     }, // 监听应收比例
     handleChange2(value) {
@@ -422,16 +455,37 @@ export default {
 
     fqtyPrice() {
       const fqty = this.tabTwo.saleDetails[this.material].fqty
-      this.shuliang = 0.6
-      if (fqty <= 100) {
-        this.shuliang = 0.6
-      } else if (fqty > 100 && fqty <= 500) {
-        this.shuliang = 0.65
-      } else if (fqty > 500) {
-        this.shuliang = 0.7
+      const fnumber = this.tabTwo.saleDetails[this.material].fmaterialIdName.split('-')[0]
+      this.shuliang = 0.5
+      if (fnumber === '50') { // 餐椅
+        if (fqty < 80) {
+          this.shuliang = 0.5
+        } else if (fqty >= 80 && fqty < 400) {
+          this.shuliang = 0.65
+        } else if (fqty >= 400 && fqty < 2000) {
+          this.shuliang = 0.65
+        } else if (fqty >= 2000 && fqty < 4000) {
+          this.shuliang = 0.65
+        } else if (fqty >= 4000) {
+          this.shuliang = 0.7
+        }
+      } else if (fnumber === '51') { // 餐台
+        if (fqty < 20) {
+          this.shuliang = 0.5
+        } else if (fqty >= 20 && fqty < 100) {
+          this.shuliang = 0.65
+        } else if (fqty >= 100 && fqty < 500) {
+          this.shuliang = 0.65
+        } else if (fqty >= 500 && fqty < 1000) {
+          this.shuliang = 0.65
+        } else if (fqty >= 1000) {
+          this.shuliang = 0.7
+        }
       }
       const fdownPrice = this.tabTwo.saleDetails[this.material].fdownPrices
+      const rate = this.tabTwo.saleDetails[this.material].ftaxRate
       this.tabTwo.saleDetails[this.material].fdownPrice = (fdownPrice / this.shuliang).toFixed(4)
+      this.tabTwo.saleDetails[this.material].ftaxDownPrice = (this.tabTwo.saleDetails[this.material].fdownPrice * (1 + rate / 100)).toFixed(2)
     }
   }
 }

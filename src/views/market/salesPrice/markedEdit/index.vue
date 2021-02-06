@@ -74,10 +74,22 @@
             </el-table-column>
             <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="250px" :show-overflow-tooltip="true" />
             <el-table-column label="销售单位" prop="funit" align="center" />
-            <el-table-column label="销售基准价" min-width="180px" align="center">
-              <el-table-column label="x<=100" align="center" prop="fdownPrice1" />
-              <el-table-column label="101<=x<=500" align="center" min-width="110px" prop="fdownPrice2" />
-              <el-table-column label="x>=501" align="center" prop="fdownPrice3" />
+            <el-table-column label="销售基准价(x:餐台数量, y:餐椅数量)" min-width="180px" align="center">
+              <el-table-column label="x<20" align="center">
+                <el-table-column label="y<80" align="center" min-width="110px" prop="fdownPrice1" />
+              </el-table-column>
+              <el-table-column label="20<=x<100" align="center">
+                <el-table-column label="80<=y<400" align="center" min-width="110px" prop="fdownPrice2" />
+              </el-table-column>
+              <el-table-column label="100<=x<500" align="center">
+                <el-table-column label="400<=y<2000" align="center" min-width="110px" prop="fdownPrice3" />
+              </el-table-column>
+              <el-table-column label="500<=x<1000" align="center">
+                <el-table-column label="2000<=y<4000" align="center" min-width="110px" prop="fdownPrice4" />
+              </el-table-column>
+              <el-table-column label="x>=1000" align="center">
+                <el-table-column label="y>=4000" align="center" min-width="110px" prop="fdownPrice5" />
+              </el-table-column>
             </el-table-column>
             <el-table-column label="含税销售基准价" min-width="180px" align="center">
               <template slot="header">
@@ -87,9 +99,21 @@
                   <el-option label="含税销售基准价(5%)" value="5">含税销售基准价(5%)</el-option>
                 </el-select>
               </template>
-              <el-table-column label="x<=100" align="center" prop="fdownPrice4" />
-              <el-table-column label="101<=x<=500" align="center" min-width="110px" prop="fdownPrice5" />
-              <el-table-column label="x>=501" align="center" prop="fdownPrice6" />
+              <el-table-column label="x<20" align="center">
+                <el-table-column label="y<80" align="center" min-width="110px" prop="fdownPrice11" />
+              </el-table-column>
+              <el-table-column label="20<=x<100" align="center">
+                <el-table-column label="80<=y<400" align="center" min-width="110px" prop="fdownPrice12" />
+              </el-table-column>
+              <el-table-column label="100<=x<500" align="center">
+                <el-table-column label="400<=y<2000" align="center" min-width="110px" prop="fdownPrice13" />
+              </el-table-column>
+              <el-table-column label="500<=x<1000" align="center">
+                <el-table-column label="2000<=y<4000" align="center" min-width="110px" prop="fdownPrice14" />
+              </el-table-column>
+              <el-table-column label="x>=1000" align="center">
+                <el-table-column label="y>=4000" align="center" min-width="110px" prop="fdownPrice15" />
+              </el-table-column>
             </el-table-column>
             <el-table-column v-if="false" label="出厂价" align="center">
               <template slot-scope="scope">
@@ -254,12 +278,17 @@ export default {
         iten.fmaterialIdName = iten.fnumber
       }
       RES.detail.map(item => {
-        item.fdownPrice1 = (item.fdownPrice / 0.6).toFixed(4)
-        item.fdownPrice2 = (item.fdownPrice / 0.65).toFixed(4)
-        item.fdownPrice3 = (item.fdownPrice / 0.7).toFixed(4)
-        item.fdownPrice4 = (item.fdownPrice / 0.6 * this.rate).toFixed(4)
-        item.fdownPrice5 = (item.fdownPrice / 0.65 * this.rate).toFixed(4)
-        item.fdownPrice6 = (item.fdownPrice / 0.7 * this.rate).toFixed(4)
+        item.fdownPrice1 = (item.fdownPrice / 0.5).toFixed(4)
+        item.fdownPrice2 = (item.fdownPrice / 0.55).toFixed(4)
+        item.fdownPrice3 = (item.fdownPrice / 0.6).toFixed(4)
+        item.fdownPrice4 = (item.fdownPrice / 0.65).toFixed(4)
+        item.fdownPrice5 = (item.fdownPrice / 0.7).toFixed(4)
+
+        item.fdownPrice11 = (item.fdownPrice / 0.5 * this.rate).toFixed(4)
+        item.fdownPrice12 = (item.fdownPrice / 0.55 * this.rate).toFixed(4)
+        item.fdownPrice13 = (item.fdownPrice / 0.6 * this.rate).toFixed(4)
+        item.fdownPrice14 = (item.fdownPrice / 0.65 * this.rate).toFixed(4)
+        item.fdownPrice15 = (item.fdownPrice / 0.7 * this.rate).toFixed(4)
       })
       this.tableData = RES.detail
       this.organizationValue = RES
@@ -276,13 +305,16 @@ export default {
         }
       )
     },
+    // 含税切换(5, 7, 13)
     priceRate(val) {
       this.rate = 1 + (val / 100)
       this.tableData.map(item => {
         if (item.fdownPrice) {
-          item.fdownPrice4 = (item.fdownPrice1 * this.rate).toFixed(4)
-          item.fdownPrice5 = (item.fdownPrice2 * this.rate).toFixed(4)
-          item.fdownPrice6 = (item.fdownPrice3 * this.rate).toFixed(4)
+          item.fdownPrice11 = (item.fdownPrice1 * this.rate).toFixed(4)
+          item.fdownPrice12 = (item.fdownPrice2 * this.rate).toFixed(4)
+          item.fdownPrice13 = (item.fdownPrice3 * this.rate).toFixed(4)
+          item.fdownPrice14 = (item.fdownPrice4 * this.rate).toFixed(4)
+          item.fdownPrice15 = (item.fdownPrice5 * this.rate).toFixed(4)
         }
       })
     },
@@ -395,7 +427,7 @@ export default {
   .el-tabs{
     .el-table {
       &::v-deep thead.is-group th{
-        padding: 5px 0;
+        padding: 3px 0;
         .el-input__inner{
           background: #e6ebfc;
           color: #909399;

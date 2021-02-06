@@ -15,12 +15,18 @@ export default {
       this.tableData[this.tableIndex].funit = RES.funitName
       this.tableData[this.tableIndex].deliveryPrice = RES.deliveryPrice
       this.tableData[this.tableIndex].fdownPrice = RES.fdownPrice
-      this.tableData[this.tableIndex].fdownPrice1 = (RES.fdownPrice / 0.6).toFixed(4)
-      this.tableData[this.tableIndex].fdownPrice2 = (RES.fdownPrice / 0.65).toFixed(4)
-      this.tableData[this.tableIndex].fdownPrice3 = (RES.fdownPrice / 0.7).toFixed(4)
-      this.tableData[this.tableIndex].fdownPrice4 = (RES.fdownPrice / 0.6 * 1.13).toFixed(4)
-      this.tableData[this.tableIndex].fdownPrice5 = (RES.fdownPrice / 0.65 * 1.13).toFixed(4)
-      this.tableData[this.tableIndex].fdownPrice6 = (RES.fdownPrice / 0.7 * 1.13).toFixed(4)
+
+      this.tableData[this.tableIndex].fdownPrice1 = (RES.fdownPrice / 0.5).toFixed(4)
+      this.tableData[this.tableIndex].fdownPrice2 = (RES.fdownPrice / 0.55).toFixed(4)
+      this.tableData[this.tableIndex].fdownPrice3 = (RES.fdownPrice / 0.6).toFixed(4)
+      this.tableData[this.tableIndex].fdownPrice4 = (RES.fdownPrice / 0.65).toFixed(4)
+      this.tableData[this.tableIndex].fdownPrice5 = (RES.fdownPrice / 0.7).toFixed(4)
+
+      this.tableData[this.tableIndex].fdownPrice11 = (RES.fdownPrice / 0.5 * this.rate).toFixed(4)
+      this.tableData[this.tableIndex].fdownPrice12 = (RES.fdownPrice / 0.55 * this.rate).toFixed(4)
+      this.tableData[this.tableIndex].fdownPrice13 = (RES.fdownPrice / 0.6 * this.rate).toFixed(4)
+      this.tableData[this.tableIndex].fdownPrice14 = (RES.fdownPrice / 0.65 * this.rate).toFixed(4)
+      this.tableData[this.tableIndex].fdownPrice15 = (RES.fdownPrice / 0.7 * this.rate).toFixed(4)
       // // 基准价
       // this.tableData[this.tableIndex].fdownPrice = (RES.deliveryPrice * (1 + fpriceBase)).toFixed(4)
     },

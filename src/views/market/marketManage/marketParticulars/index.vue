@@ -31,7 +31,15 @@
               <el-table-column label="金额" prop="famount" align="center" min-width="100px" />
               <el-table-column label="含税金额" prop="ftaxAmount" align="center" min-width="100px" />
               <el-table-column prop="fsettleCurr" label="结算币别" align="center" />
-              <el-table-column prop="fdownPrice" :label="fdownName" align="center" min-width="120" />
+              <el-table-column prop="fdownPrice" :label="fdownName" align="center" min-width="140" />
+              <el-table-column :label="fdownName" prop="ftaxDownPrice" align="center" min-width="160px">
+                <template slot="header">
+                  {{ '含税' + fdownName }}
+                </template>
+                <template slot-scope="scope">
+                  {{ scope.row.ftaxDownPrice }}
+                </template>
+              </el-table-column>
               <el-table-column prop="fisFree" label="是否赠品" align="center">
                 <template slot-scope="scope">
                   <el-checkbox v-model="scope.row.fisFree" disabled />
