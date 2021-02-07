@@ -109,6 +109,7 @@
           </el-table-column>
           <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" :show-overflow-tooltip="true" />
           <el-table-column label="规格型号" prop="fmodel" align="center" />
+          <el-table-column label="尺寸单位" prop="fvolumeUnit" align="center" />
           <el-table-column label="计价单位" prop="FBASEUNIT" align="center" />
           <el-table-column label="单价" prop="fprice" align="center" min-width="150px">
             <template slot-scope="scope">
@@ -595,6 +596,7 @@ export default {
     async materielSelectRow(item) {
       const { data: RES } = await queryMaterialSon({ fmateriAalId: item.FMATERIALID })
       this.tableData[this.tableIndex].fmaterialId = RES.FNUMBER
+      this.tableData[this.tableIndex].fvolumeUnit = RES.FVOLUMEUNIT
       this.tableData[this.tableIndex].FMATERIALID = RES.FMATERIALID
       this.tableData[this.tableIndex].fmodel = RES.FSPECIFICATION
       this.tableData[this.tableIndex].FBASEUNIT = RES.FBASEUNIT
