@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <jc-title />
-    <el-button type="primary" style="width: 80px;margin-bottom: 10px" size="mini" @click="subMarker()">保存</el-button>
+    <el-button type="primary" style="width: 80px;margin-bottom: 10px" size="mini" @click="subMarker()">提交</el-button>
     <el-tabs type="border-card" @tab-click="handleOther">
       <el-tab-pane label="价目明细">
         <div class="header-card">

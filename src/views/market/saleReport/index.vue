@@ -21,15 +21,39 @@
           <el-table-column label="物料编号" prop="itemcode" align="center" min-width="150" />
           <el-table-column label="旧物料编号" prop="olditemcode" align="center" min-width="150" />
           <el-table-column label="物料描述" prop="itemname" align="center" min-width="300" :show-overflow-tooltip="true" />
-          <el-table-column label="销售基准价" align="center">
-            <el-table-column label="x<=100" prop="price1" align="center" />
-            <el-table-column label="101<=x<=500" prop="price2" min-width="110" align="center" />
-            <el-table-column label="x>=501" prop="price3" align="center" />
+          <el-table-column label="销售基准价(x:餐台数量, y:餐椅数量)" min-width="190px" align="center">
+            <el-table-column label="x<20" align="center">
+              <el-table-column label="y<80" align="center" min-width="110px" prop="price1" />
+            </el-table-column>
+            <el-table-column label="20<=x<100" align="center">
+              <el-table-column label="80<=y<400" align="center" min-width="110px" prop="price2" />
+            </el-table-column>
+            <el-table-column label="100<=x<500" align="center">
+              <el-table-column label="400<=y<2000" align="center" min-width="110px" prop="price3" />
+            </el-table-column>
+            <el-table-column label="500<=x<1000" align="center">
+              <el-table-column label="2000<=y<4000" align="center" min-width="110px" prop="price4" />
+            </el-table-column>
+            <el-table-column label="x>=1000" align="center">
+              <el-table-column label="y>=4000" align="center" min-width="110px" prop="price5" />
+            </el-table-column>
           </el-table-column>
-          <el-table-column label="含税销售基准价(13%)" prop="itemname" align="center">
-            <el-table-column label="x<=100" prop="taxprice1" align="center" />
-            <el-table-column label="101<=x<=500" prop="taxprice2" min-width="110" align="center" />
-            <el-table-column label="x>=501" prop="taxprice3" align="center" />
+          <el-table-column label="含税销售基准价(13%)" min-width="180px" align="center">
+            <el-table-column label="x<20" align="center">
+              <el-table-column label="y<80" align="center" min-width="110px" prop="taxprice1" />
+            </el-table-column>
+            <el-table-column label="20<=x<100" align="center">
+              <el-table-column label="80<=y<400" align="center" min-width="110px" prop="taxprice2" />
+            </el-table-column>
+            <el-table-column label="100<=x<500" align="center">
+              <el-table-column label="400<=y<2000" align="center" min-width="110px" prop="taxprice3" />
+            </el-table-column>
+            <el-table-column label="500<=x<1000" align="center">
+              <el-table-column label="2000<=y<4000" align="center" min-width="110px" prop="taxprice4" />
+            </el-table-column>
+            <el-table-column label="x>=1000" align="center">
+              <el-table-column label="y>=4000" align="center" min-width="110px" prop="taxprice5" />
+            </el-table-column>
           </el-table-column>
           <el-table-column label="生效日期" prop="docdate" align="center" />
         </jc-table>

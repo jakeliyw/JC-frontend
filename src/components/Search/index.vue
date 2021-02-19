@@ -109,14 +109,14 @@ export default {
   width: 395px;
   background: #fff;
   z-index: 1;
-.el-icon-remove-outline{
-  cursor: pointer;
-  color: #1e9fff;
-  margin-left: 5px;
-  padding-top: 5px;
-}
+  .el-icon-remove-outline{
+    cursor: pointer;
+    color: #1e9fff;
+    margin-left: 5px;
+    padding-top: 5px;
+  }
   .hang{
-   margin-bottom: 10px;
+    margin-bottom: 10px;
   }
   .el-input{
     margin-left: 10px;
