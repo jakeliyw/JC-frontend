@@ -3,7 +3,7 @@
     <el-card class="header-card">
       <div class="tool">
         <el-button size="mini" @click="refresh">刷新</el-button>
-        <el-button size="mini" type="primary" @click="preservation">保存物料</el-button>
+        <el-button size="mini" type="primary" @click="preservation">提交</el-button>
       </div>
       <div class="organization">
         <jc-form :option-value="organizationValue" :options="organization" />

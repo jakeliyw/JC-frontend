@@ -5,7 +5,7 @@
       <el-tab-pane label="价目" name="purchase" class="layout">
         <div class="header">
           <el-button size="mini" @click="refresh">刷新</el-button>
-          <el-button size="mini" type="primary" @click="preservation">保存价目</el-button>
+          <el-button size="mini" type="primary" @click="preservation">提交</el-button>
         </div>
         <el-form ref="purchaseRef" :model="purchaseForm" label-width="100px" size="mini" :rules="purchaseRules">
           <el-row :gutter="30" type="flex" justify="start" class="elRow">

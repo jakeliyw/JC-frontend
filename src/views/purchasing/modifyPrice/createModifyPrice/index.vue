@@ -5,7 +5,7 @@
       <el-tab-pane label="调价" name="modifyPrice" class="layout">
         <div class="header">
           <el-button size="mini" @click="refresh">刷新</el-button>
-          <el-button size="mini" type="primary" @click="preservation">保存调价</el-button>
+          <el-button size="mini" type="primary" @click="preservation">提交</el-button>
         </div>
         <jc-form ref="zrf" :option-value="optionValue" :options="options">
           <el-input v-model="optionValue.fdataValue" class="input-width" size="mini">

@@ -5,7 +5,7 @@
       <el-tab-pane label="客户" name="customer" class="layout">
         <div class="header">
           <el-button size="mini">刷新</el-button>
-          <el-button size="mini" type="primary" @click="preservation">保存客户</el-button>
+          <el-button size="mini" type="primary" @click="preservation">提交</el-button>
         </div>
         <el-form ref="customerRef" :model="customerForm" label-width="100px" size="mini" :rules="customerRules">
           <el-row :gutter="30" type="flex" justify="start" class="elRow">

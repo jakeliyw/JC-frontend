@@ -4,7 +4,7 @@
     <el-card class="header-card">
       <div class="tool">
         <el-button size="mini" @click="refresh">刷新</el-button>
-        <el-button size="mini" type="primary" @click="preservation">保存bom</el-button>
+        <el-button size="mini" type="primary" @click="preservation">提交</el-button>
       </div>
       <div class="organization">
         <span class="text-margin">创建组织</span>
