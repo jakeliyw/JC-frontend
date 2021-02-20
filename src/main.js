@@ -12,7 +12,7 @@ import store from './store'
 import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
-import { hasPermission, buttonList } from '@/utils/hasPermission'
+import { hasPermission, buttonList, bomCoster } from '@/utils/hasPermission'
 
 /**
  * If you don't want to use mock-server
@@ -35,6 +35,7 @@ import { hasPermission, buttonList } from '@/utils/hasPermission'
 Vue.use(ElementUI)
 Vue.prototype.button = buttonList
 Vue.prototype.hasPerm = hasPermission
+Vue.prototype.bomCost = bomCoster
 Vue.prototype.backstageApi = process.env.VUE_APP_BASE_API
 Vue.config.productionTip = false
 

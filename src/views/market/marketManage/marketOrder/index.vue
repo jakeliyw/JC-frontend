@@ -124,6 +124,8 @@ export default {
         this.handleGetUntreated()
         this.$message.success(message)
         this.$router.push({ name: 'MarketNoPass' })
+      } else {
+        this.$message.error(message)
       }
     }
   }

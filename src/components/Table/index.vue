@@ -203,6 +203,7 @@ export default {
   border: 1px solid #ccc;
   th{
     border-color: #ccc;
+    user-select: initial; /* 表头可复制 */
   }
   th.is-leaf{
     border-bottom: 1px solid #ccc;

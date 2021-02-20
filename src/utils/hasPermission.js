@@ -5,6 +5,10 @@ export function hasPermission(permission) {
   return myPermissions.indexOf(permission) > -1
 }
 export function buttonList(permission) {
-  const myPermiss = store.getters.permissionList
-  return myPermiss.indexOf(permission) > -1
+  const myPermissions = store.getters.permissionList
+  return myPermissions.indexOf(permission) > -1
+}
+export function bomCoster(permission) {
+  const myPermissions = store.getters.permissionList
+  return myPermissions.indexOf(permission) > -1
 }

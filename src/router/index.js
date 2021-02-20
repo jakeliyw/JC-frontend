@@ -566,7 +566,7 @@ export const asyncRouterMap = [
         path: '/roleList',
         name: 'RoleList',
         component: () => import('@/views/userRights/roleList/index'),
-        meta: { title: '权限管理' },
+        meta: { title: '角色管理' },
         menu: 'roleList'
       },
       {

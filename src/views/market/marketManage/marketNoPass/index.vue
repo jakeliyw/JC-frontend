@@ -128,6 +128,7 @@ export default {
       }
       const { message, code } = await againReviewSalorder(DATA)
       if (code !== 0) {
+        this.$message.error(message)
         return
       }
       this.$message.success(message)
@@ -156,3 +157,4 @@ export default {
   }
 }
 </style>
+

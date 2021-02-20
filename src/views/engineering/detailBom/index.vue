@@ -11,7 +11,7 @@
         <el-select v-model="team" placeholder="请选择" size="mini" class="input-width" disabled />
         <span class="text-margin">使用组织</span>
         <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled />
-        <div class="summation">物料成本:
+        <div class="summation" v-if="bomCost('bom:price')">物料成本:
           <span class="color-text">{{ Math.round((FMATERIALCOST + Number.EPSILON) *100) / 100 }}元</span>
         </div>
       </div>
@@ -46,6 +46,7 @@
             label="物料描述"
             prop="FDESCRIPTION"
             width="250px"
+            align="center"
             :show-overflow-tooltip="true"
           />
           <el-table-column
@@ -64,12 +65,12 @@
               <span>{{ scope.row.FDOSAGE }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="单价" prop="FPRICE" align="center" width="200px">
+          <el-table-column  v-if="bomCost('bom:price')" label="单价" prop="FPRICE" align="center" width="200px">
             <template slot-scope="scope">
               <span>{{ scope.row.FPRICE }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="金额" prop="money" align="center" width="150px">
+          <el-table-column  v-if="bomCost('bom:price')" label="金额" prop="money" align="center" width="150px">
             <template slot-scope="scope">
               {{ parseInt((scope.row.FPRICE * scope.row.FDOSAGE) * 100) / 100 }}
             </template>
@@ -252,14 +253,6 @@ export default {
       this.prodValue = RES
       this.prodValue.FMATERIALCOST = this.Summation
       this.prodOptions = {
-        FMATERIALCOST: {
-          label: '材料成本',
-          disabled: 'disabled'
-        },
-        FLABORCOST: {
-          label: '人工成本',
-          disabled: 'disabled'
-        },
         FBARCODE: {
           label: '条码',
           disabled: 'disabled'
@@ -312,6 +305,16 @@ export default {
         FDESCRIPTION: {
           label: '物料描述',
           type: 'textarea',
+          disabled: 'disabled'
+        },
+        FMATERIALCOST: {
+          type: 'bom',
+          label: '材料成本',
+          disabled: 'disabled'
+        },
+        FLABORCOST: {
+          type: 'bom',
+          label: '人工成本',
           disabled: 'disabled'
         }
       }

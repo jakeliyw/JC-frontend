@@ -8,3 +8,11 @@ export function queryTJxRoleList(data) {
     data
   })
 }
+// 查询权限关联
+export function queryRoleMeun(params) {
+  return request({
+    url: '/tJxRole/queryRoleMeun',
+    method: 'get',
+    params
+  })
+}

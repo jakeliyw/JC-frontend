@@ -388,7 +388,7 @@ export default {
       const ftaxPrice = (fprice * (1 + ftaxRate / 100)).toFixed(4)
       this.tabTwo.saleDetails[index].ftaxAmount = (fqty * ftaxPrice).toFixed(2)
       this.tabTwo.saleDetails[index].ftaxPrice = ftaxPrice
-      this.tabTwo.saleDetails[index].ftaxDownPrice = (fdownPrices * (1 + ftaxRate / 100)).toFixed(2)
+      this.tabTwo.saleDetails[index].ftaxDownPrice = (fdownPrices * (1 + ftaxRate / 100)).toFixed(4)
 
       this.$emit('visible', this.tabTwo)
     }, // 监听应收比例
@@ -485,7 +485,7 @@ export default {
       const fdownPrice = this.tabTwo.saleDetails[this.material].fdownPrices
       const rate = this.tabTwo.saleDetails[this.material].ftaxRate
       this.tabTwo.saleDetails[this.material].fdownPrice = (fdownPrice / this.shuliang).toFixed(4)
-      this.tabTwo.saleDetails[this.material].ftaxDownPrice = (this.tabTwo.saleDetails[this.material].fdownPrice * (1 + rate / 100)).toFixed(2)
+      this.tabTwo.saleDetails[this.material].ftaxDownPrice = (this.tabTwo.saleDetails[this.material].fdownPrice * (1 + rate / 100)).toFixed(4)
     }
   }
 }

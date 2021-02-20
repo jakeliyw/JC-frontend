@@ -10,6 +10,25 @@
           :push="item.push || 0"
           class="grid-content"
         >
+          <!--BOM成本显示权限-->
+          <el-form-item
+            v-if="item.type === 'bom' && bomCost('bom:price')"
+            class="active"
+            :label="item.label"
+            :prop="key"
+            label-width="120px"
+            :rules="item.rules"
+          >
+            <el-input
+              v-model="optionValue[key]"
+              size="mini"
+              class="input-width"
+              :disabled="item.disabled"
+              :maxlength="item.maxlength || ''"
+              :type="item.type"
+              :placeholder="item.placeholder || `请输入${item.label || '内容'}`"
+            />
+          </el-form-item>
           <el-form-item
             v-if="item.type === 'slot'"
             :label="item.label"
@@ -325,7 +344,10 @@ export default {
   display: flex;
   flex-wrap: wrap;
 }
-
+.active{
+  width: 0;
+  padding: 0;
+}
 .input-width {
   width: 10vw;
 }

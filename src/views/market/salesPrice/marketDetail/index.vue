@@ -45,7 +45,7 @@
             <el-table-column label="销售基准价(含税)" min-width="180px" align="center">
               <template slot="header">
                 <el-select v-model="fdownPriceRate" size="mini" @change="priceRate">
-                  <el-option label="含税销售基准价(13%)" value="13">含税销售基准价(13%)</el-option>
+                  <el-option label="'bom:price'(13%)" value="13">含税销售基准价(13%)</el-option>
                   <el-option label="含税销售基准价(7%)" value="7">含税销售基准价(7%)</el-option>
                   <el-option label="含税销售基准价(5%)" value="5">含税销售基准价(5%)</el-option>
                 </el-select>
