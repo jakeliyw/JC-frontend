@@ -16,7 +16,7 @@
         <template v-slot:btnState="clo">
           <el-steps :active="clo.scope.row.fstatus" align-center class="font-style" finish-status="success" process-status="error">
             <el-step title="研发审核" />
-            <el-step title="财务审核" />
+            <el-step title="销售审核" />
           </el-steps>
         </template>
         <template v-slot:btnSlot="clo">
@@ -69,7 +69,7 @@ export default {
         { label: '客户名称', prop: 'fname', align: 'center', minWidth: '200px' },
         { label: '客户分组', prop: 'fcustGroup', align: 'center' },
         { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', minWidth: '150px' },
-        { label: '操作', type: 'btn', fixed: 'right', minWidth: '250px', align: 'center' }
+        { label: '操作', type: 'btn', minWidth: '250px', align: 'center' }
       ],
       // 表格数据
       tableData: []

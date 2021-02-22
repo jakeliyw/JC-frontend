@@ -39,7 +39,7 @@ service.interceptors.response.use(
     } else {
       return Message({
         message: response.data.message || '网络异常，请重新尝试',
-        type: 'error',
+        type: 'warning',
         duration: 5 * 1000
       })
     }

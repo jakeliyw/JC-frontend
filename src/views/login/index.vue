@@ -42,6 +42,9 @@
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录
       </el-button>
+      <span style="color: white">推荐使用Chrome浏览器，可以获得更佳页面操作体验
+      </span>
+      <a href="https://www.google.cn/intl/zh-CN/chrome/" style="color: #409eff; text-decoration:underline" target="_blank">https://www.google.cn/chrome/</a>
     </el-form>
   </div>
 </template>

@@ -90,7 +90,7 @@ export const asyncRouterMap = [
         path: '/untreatedMateriel',
         name: 'UntreatedMateriel',
         component: () => import('@/views/basic/untreatedMateriel'),
-        meta: { title: '还未处理物料', noCache: false },
+        meta: { title: '未处理物料', noCache: false },
         menu: 'untreatedMateriel'
       },
       {
@@ -152,7 +152,7 @@ export const asyncRouterMap = [
         path: '/untreatedBom',
         name: 'UntreatedBom',
         component: () => import('@/views/engineering/untreatedBom'),
-        meta: { title: '还未处理BOM', noCache: false },
+        meta: { title: '未处理BOM', noCache: false },
         menu: 'untreatedBom'
       },
       {
@@ -504,7 +504,7 @@ export const asyncRouterMap = [
             path: '/untreatedPriceList',
             name: 'UntreatedPriceList',
             component: () => import('@/views/purchasing/purchase/untreatedPriceList'),
-            meta: { title: '还未处理价目' },
+            meta: { title: '未处理价目' },
             menu: 'untreatedPriceList'
           },
           {

@@ -13,6 +13,11 @@
         :table-header="tableHeader"
         :cell-style="cellStyle"
       >
+        <!--审核状态-->
+        <template v-slot:btnStates="clo">
+          <el-tag v-if="clo.scope.row.fdocumentStatus !== '重新审核'">{{ clo.scope.row.fdocumentStatus }}</el-tag>
+          <el-tag v-else type="danger">{{ clo.scope.row.fdocumentStatus }}</el-tag>
+        </template>
         <template v-slot:btnSlot="clo">
           <el-button type="danger" size="mini" @click="editCustomerList(clo.scope.row.fcustId)">反审核</el-button>
           <el-button type="primary" size="mini" @click="detailCustomer(clo.scope.row.fcustId)">查询客户</el-button>
@@ -37,9 +42,10 @@ import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
 import jcTitle from '@/components/Title'
 import { queryCustomerList } from '@/api/marketManage/customer/customerList'
-import { againReviewCustomer } from '@/api/marketManage/customer/refuseCustomer'
+import { notReviewCustomer } from '@/api/marketManage/customer/untreatedCustomer'
 import search from '@/components/Search'
 import searData from '@/components/Search/mixin'
+import { toMxAmina } from '@/components/ToMxamineState'
 export default {
   name: 'CustomerList',
   inject: ['reload'],
@@ -63,6 +69,7 @@ export default {
         { label: '客户编码', prop: 'fnumber', align: 'center' },
         { label: '客户名称', prop: 'fname', align: 'center' },
         { label: '客户分组', prop: 'fcustGroup', align: 'center', minWidth: '200px' },
+        { label: '审核状态', type: 'states', align: 'center', minWidth: '100px' },
         { label: '操作', type: 'btn', minWidth: '200px', align: 'center' }
       ],
       // 表格数据
@@ -77,7 +84,9 @@ export default {
     async handleGetUntreated() {
       const DATA = { pageNum: this.pageNum, pageSize: this.size, ...this.searCollData }
       const { data: RES } = await queryCustomerList(DATA)
-      this.tableData = RES.array
+      this.tableData = RES.array.map(item => {
+        return toMxAmina(item)
+      })
       this.total = RES.total
     },
     // 搜索
@@ -91,13 +100,13 @@ export default {
     },
     // 反审核
     async editCustomerList(fcustId) {
-      const { message, code } = await againReviewCustomer({ fcustId })
+      const { message, code } = await notReviewCustomer({ fcustId })
       if (code !== 0) {
         this.$message.warning(message)
         return
       }
       this.$message.success(message)
-      this.$router.push({ name: 'UntreatedCustomer' })
+      this.$router.push({ name: 'RefuseCustomer' })
       this.reload()
     }
   }

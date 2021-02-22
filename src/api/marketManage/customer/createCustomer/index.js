@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 
+const fuserId = window.sessionStorage.getItem('fuserId')
 // 查询客户类别
 export function queryFcustType(params) {
   return request({
@@ -83,6 +84,7 @@ export function querytReccondition(data) {
 
 // 新增客户
 export function insertCustomer(data) {
+  data.fuserId = fuserId
   return request({
     url: '/tBdCustomer/insertCustomer',
     method: 'post',
