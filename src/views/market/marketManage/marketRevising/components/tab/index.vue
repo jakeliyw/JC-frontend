@@ -41,7 +41,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column label="单价" prop="fprice" align="center" min-width="100px">
+          <el-table-column v-if="false" label="单价" prop="fprice" align="center" min-width="100px">
             <template slot-scope="scope">
               <el-input-number
                 v-model="scope.row.fprice"
@@ -51,7 +51,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column label="含税单价" prop="ftaxPrice" align="center" min-width="100px">
+          <el-table-column label="销售单价" prop="ftaxPrice" align="center" min-width="100px">
             <template slot-scope="scope">
               <el-input-number
                 v-model="scope.row.ftaxPrice"
@@ -61,17 +61,17 @@
               />
             </template>
           </el-table-column>
-          <el-table-column label="金额" prop="famount" align="center" min-width="100px" />
-          <el-table-column label="含税金额" prop="ftaxAmount" align="center" min-width="100px" />
+          <el-table-column v-if="false" label="金额" prop="famount" align="center" min-width="100px" />
+          <el-table-column label="销售金额" prop="ftaxAmount" align="center" min-width="100px" />
           <el-table-column label="结算币别" prop="fsettleCurrId" align="center" min-width="100px">
             <template>
               {{ standardPrice.fsettleCurrIdName }}
             </template>
           </el-table-column>
-          <el-table-column :label="fdownName" prop="fdownPrice" align="center" min-width="160px" />
+          <el-table-column v-if="false" :label="fdownName" prop="fdownPrice" align="center" min-width="160px" />
           <el-table-column :label="fdownName" prop="ftaxDownPrice" align="center" min-width="160px">
             <template slot="header">
-              {{ '含税' + fdownName }}
+              {{ fdownName }}
             </template>
             <template slot-scope="scope">
               {{ scope.row.ftaxDownPrice }}
@@ -269,7 +269,6 @@ export default {
         this.tabTwo.saleDetails[this.material].funitId = item.funitId
         this.tabTwo.saleDetails[this.material].funit = item.funitName
         this.tabTwo.saleDetails[this.material].fmodel = item.fmodel
-        this.tabTwo.saleDetails[this.material].deliveryPrice = item.deliveryPrice
         this.tabTwo.saleDetails[this.material].fid = item.fid
         this.cutMoney = ''
         this.isMateria = false
@@ -362,16 +361,16 @@ export default {
       this.tabTwo.saleDetails[index].famount = (this.tabTwo.saleDetails[index].fprice * fqty).toFixed(2)
       this.$emit('visible', this.tabTwo)
     },
-    // 监听税率
+    // 监听税率,修改税率更改销售基准价(含税),不更改单价,含税单价,销售基准价
     handleChange1(index) {
       this.material = index
-      const fqty = this.tabTwo.saleDetails[index].fqty
-      const fprice = this.tabTwo.saleDetails[index].fprice
+      // const fqty = this.tabTwo.saleDetails[index].fqty
+      // const fprice = this.tabTwo.saleDetails[index].fprice
       const ftaxRate = this.tabTwo.saleDetails[index].ftaxRate
       const fdownPrices = this.tabTwo.saleDetails[this.material].fdownPrice
-      const ftaxPrice = (fprice * (1 + ftaxRate / 100)).toFixed(4)
-      this.tabTwo.saleDetails[index].ftaxAmount = (fqty * ftaxPrice).toFixed(2)
-      this.tabTwo.saleDetails[index].ftaxPrice = ftaxPrice
+      // const ftaxPrice = (fprice * (1 + ftaxRate / 100)).toFixed(4)
+      // this.tabTwo.saleDetails[index].ftaxAmount = (fqty * ftaxPrice).toFixed(2)
+      // this.tabTwo.saleDetails[index].ftaxPrice = ftaxPrice
       this.tabTwo.saleDetails[index].ftaxDownPrice = (fdownPrices * (1 + ftaxRate / 100)).toFixed(4)
       this.$emit('visible', this.tabTwo)
     }, // 监听应收比例
@@ -418,6 +417,7 @@ export default {
             if (RES) {
               this.tabTwo.saleDetails[this.material].fdownPrice = RES.fdownPrice
               this.tabTwo.saleDetails[this.material].fdownPrices = RES.fdownPrice
+              this.tabTwo.saleDetails[this.material].deliveryPrice = RES.deliveryPrice
               this.fdownName = '销售基准价' + '(' + this.standardPrice.fsettleCurrIdName + ')'
               this.fqtyPrice()
             } else {
@@ -437,6 +437,7 @@ export default {
         if (RES) {
           this.tabTwo.saleDetails[this.material].fdownPrice = RES.fdownPrice
           this.tabTwo.saleDetails[this.material].fdownPrices = RES.fdownPrice
+          this.tabTwo.saleDetails[this.material].deliveryPrice = RES.deliveryPrice
           this.fdownName = '销售基准价' + '(' + this.standardPrice.fsettleCurrIdName + ')'
           this.fqtyPrice()
         }
@@ -495,7 +496,7 @@ export default {
 }
 </style>
 <style scoped lang="scss">
-// 图纸单元格居中
+/* 图纸单元格居中 */
 .el-table ::v-deep td{
   &:nth-last-child(2) .cell {
     display: flex;

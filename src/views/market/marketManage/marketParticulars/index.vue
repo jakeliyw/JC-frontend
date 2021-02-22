@@ -26,15 +26,15 @@
               <el-table-column prop="fdescripTion" label="物料描述" min-width="300px" align="center" :show-overflow-tooltip="true" />
               <el-table-column prop="funit" label="基本单位" min-width="80px" align="center" />
               <el-table-column prop="fqty" label="数量" align="center" />
-              <el-table-column prop="fprice" label="单价" align="center" />
-              <el-table-column label="含税单价" prop="ftaxPrice" align="center" min-width="100px" />
-              <el-table-column label="金额" prop="famount" align="center" min-width="100px" />
-              <el-table-column label="含税金额" prop="ftaxAmount" align="center" min-width="100px" />
+              <el-table-column v-if="false" prop="fprice" label="单价" align="center" />
+              <el-table-column label="销售单价" prop="ftaxPrice" align="center" min-width="100px" />
+              <el-table-column v-if="false" label="金额" prop="famount" align="center" min-width="100px" />
+              <el-table-column label="销售金额" prop="ftaxAmount" align="center" min-width="100px" />
               <el-table-column prop="fsettleCurr" label="结算币别" align="center" />
-              <el-table-column prop="fdownPrice" :label="fdownName" align="center" min-width="140" />
+              <el-table-column v-if="false" prop="fdownPrice" :label="fdownName" align="center" min-width="140" />
               <el-table-column :label="fdownName" prop="ftaxDownPrice" align="center" min-width="160px">
                 <template slot="header">
-                  {{ '含税' + fdownName }}
+                  {{ fdownName }}
                 </template>
                 <template slot-scope="scope">
                   {{ scope.row.ftaxDownPrice }}
