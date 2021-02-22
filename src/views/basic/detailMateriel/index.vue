@@ -209,18 +209,23 @@ export default {
             span: 8,
             disabled: 'disabled'
           },
+          fbarCode: {
+            label: '条码',
+            span: 8,
+            disabled: 'disabled'
+          },
           fbaseUnitId: {
             label: '基本单位',
             span: 8,
             disabled: 'disabled'
           },
-          fspecificaTion: {
-            label: '物料规格',
+          fprotect: {
+            label: '环保等级',
             span: 8,
             disabled: 'disabled'
           },
-          fbarCode: {
-            label: '条码',
+          fspecificaTion: {
+            label: '物料规格',
             span: 8,
             disabled: 'disabled'
           },
@@ -232,7 +237,7 @@ export default {
           fremarks: {
             label: '物料备注',
             disabled: 'disabled',
-            span: 16
+            span: 8
           },
           fdescripTion: {
             label: '物料描述',
