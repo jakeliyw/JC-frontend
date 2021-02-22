@@ -8,7 +8,7 @@ export default {
       selectData: [] // 搜索下拉框数据
     }
   },
-  created() {
+  mounted() {
     this.queryCriteria()
   },
   methods: {

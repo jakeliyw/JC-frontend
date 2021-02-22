@@ -17,10 +17,11 @@
           table-height="calc(100vh - 350px)"
           :cell-style="cellStyle"
         >
-          <el-table-column label="价目编码" prop="pricenum" align="center" />
-          <el-table-column label="物料编号" prop="itemcode" align="center" min-width="150" />
-          <el-table-column label="旧物料编号" prop="olditemcode" align="center" min-width="150" />
-          <el-table-column label="物料描述" prop="itemname" align="center" min-width="300" :show-overflow-tooltip="true" />
+          <el-table-column v-if="false" label="价目编码" prop="pricenum" align="center" />
+          <el-table-column label="物料编号" prop="itemcode" align="center" min-width="100" />
+          <el-table-column label="旧物料编号" prop="olditemcode" align="center" min-width="90" />
+          <el-table-column label="型号" prop="fmodel" align="center" min-width="90" />
+          <el-table-column label="物料描述" prop="itemname" align="center" min-width="600" />
           <el-table-column label="销售基准价(x:餐台数量, y:餐椅数量)" min-width="190px" align="center">
             <el-table-column label="x<20" align="center">
               <el-table-column label="y<80" align="center" min-width="110px" prop="price1" />
@@ -55,7 +56,7 @@
               <el-table-column label="y>=4000" align="center" min-width="110px" prop="taxprice5" />
             </el-table-column>
           </el-table-column>
-          <el-table-column label="生效日期" prop="docdate" align="center" />
+          <el-table-column label="生效日期" prop="docdate" align="center" min-width="100" />
         </jc-table>
         <jc-pagination
           :total="total"

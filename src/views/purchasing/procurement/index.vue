@@ -258,9 +258,9 @@ export default {
     // 导出表格
     handleExport() {
       require.ensure([], () => {
-        const tHeader = ['状态', '订单类型', '采购单号', '型号', '物料编号', '物料描述', '尺寸', '生产类型', '供应商', '仓库名',
+        const tHeader = ['状态', '客户订单号', '销售订单号', '订单类型', '采购单号', '型号', '物料编号', '物料描述', '尺寸', '生产类型', '供应商', '仓库名',
           '库存', '计划采购数量量', '单位', '损耗率', '损耗数', '实际采购数量', '采购单价', '采购限价', '行金额', '配件交期', '包装方式']
-        const filterVal = ['zt', 'ddlx', 'cgdh', 'itemXH', 'itemCode', 'itemName', 'cc', 'cglx', 'fsuppliername', 'ck',
+        const filterVal = ['zt', 'khdh', 'sonum', 'ddlx', 'cgdh', 'itemXH', 'itemCode', 'itemName', 'cc', 'cglx', 'fsuppliername', 'ck',
           'kc', 'qty', 'dw', 'shl', 'shs', 'cgQty', 'rprice', 'sXprice', 'hje', 'pjjq', 'BZBOM']
         if (this.val.length === 0) {
           this.$message.warning('请选择导出数据')

@@ -1,7 +1,10 @@
 <template>
-  <div v-loading="loading" class="content">
+  <div class="content">
     <jc-title />
-    <el-button type="primary" style="width: 80px;margin-bottom: 10px" size="mini" @click="subMarker()">提交</el-button>
+    <div>
+      <el-button type="primary" style="width: 80px;margin-bottom: 10px" size="mini" @click="subMarker('E')">暂存</el-button>
+      <el-button type="success" style="width: 80px;margin-bottom: 10px" size="mini" @click="subMarker('A')">下单</el-button>
+    </div>
     <el-tabs type="border-card">
       <el-tab-pane label="主产品">
         <el-form ref="purchaseRef" :model="prodValue" label-width="100px" :rules="prodValueRules">
@@ -257,11 +260,11 @@ export default {
       gatheringVisiblit: false, // 收款条件弹窗
       priceListVisiblit: false, // 价目表弹窗
       tableHeight: '50vh', // 弹框中表格高度
-      loading: false, // 加载中
       standard: [], // 品质标准
       billtypes: [], // 单据类型
       teamList: [], // 组织
       prodValue: { // 表单数据
+        fdocumentStatus: '',
         saler: true,
         fsalType: 0, // 订单类型(正常、特批)
         fapprovalImage: '', // 审批图片
@@ -340,47 +343,55 @@ export default {
   },
   methods: {
     // 保存
-    subMarker() {
+    subMarker(ev) {
+      // 订单类型 正常/特批
       if (this.prodValue.saler) {
         this.prodValue.fsalType = 0
       } else {
         this.prodValue.fsalType = 1
       }
-      this.loading = true
+      this.prodValue.fdocumentStatus = ev
       this.$refs.purchaseRef.validate(valid => {
         if (!valid) {
-          this.loading = false
           return false
         }
         if (!this.prodValue.fexchangeRate) {
           this.$message.error('汇率不能为空')
-          this.loading = false
           return false
         }
         for (const item of this.prodValue.saleDetails) {
           if (item.fmaterialId === '' || item.funitId === '' || item.fqty === '') {
             this.$message.error('表格不能为空或删除空行')
-            this.loading = false
             return false
           }
-          // if (this.prodValue.fsalType === 0) {
-          //   if (item.fprice < item.fdownPrice) {
-          //     this.$message.error('销售单价不能小于基准价')
-          //     this.loading = false
-          //     return false
-          //   }
-          // } else {
-          //   if (item.fprice < item.deliveryPrice) {
-          //     this.$message.error('销售单价不能小于出厂价')
-          //     this.loading = false
-          //     return false
-          //   }
-          // }
+          if (this.prodValue.fsalType === 0) {
+            if (Number(item.fprice) < Number(item.deliveryPrice)) {
+              this.$message.error('销售单价不能小于出厂价')
+              return false
+            }
+            if (ev === 'A') {
+              if (Number(item.ftaxAmount) < Number(item.ftaxDownPrice)) {
+                this.$alert('物料： ' + item.fmaterialIdName + ' 销售单价小于基准价,请先点击暂存,找蒋总审批后,上传审批' +
+                  '图片,再提交.', '提示', {
+                  confirmButtonText: '确定'
+                })
+                return false
+              }
+            }
+          } else {
+            if (!this.prodValue.fapprovalImage) {
+              this.$message.error('请上传审批图片')
+              return false
+            }
+            if (Number(item.fprice) < Number(item.deliveryPrice)) {
+              this.$message.error('销售单价不能小于出厂价')
+              return false
+            }
+          }
         }
         for (const item of this.prodValue.planDetails) {
           if (item.frecAdvanceRate === '' || item.frecAdvanCeamount === '') {
             this.$message.error('表格不能为空')
-            this.loading = false
             return false
           }
         }
@@ -388,11 +399,10 @@ export default {
         this.prodValue.fuserId = window.sessionStorage.getItem('fuserId')
         insertSalOrder(DATA).then(res => {
           this.prodValue.fbillNo = res.data
-          this.loading = false
           if (res.code === 0) {
             this.$message({
               type: 'success',
-              message: '新增成功'
+              message: '操作成功'
             })
             setTimeout(() => {
               this.reload()

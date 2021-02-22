@@ -1,7 +1,10 @@
 <template>
   <div class="content">
     <jc-title />
-    <el-button type="primary" style="width: 80px;margin-bottom: 10px" size="mini" @click="subMarker()">提交</el-button>
+    <div>
+      <el-button type="primary" style="width: 80px;margin-bottom: 10px" size="mini" @click="subMarker('E')">暂存</el-button>
+      <el-button type="success" style="width: 80px;margin-bottom: 10px" size="mini" @click="subMarker('A')">下单</el-button>
+    </div>
     <el-tabs type="border-card" @tab-click="handleOther">
       <el-tab-pane label="主产品">
         <el-form ref="purchaseRef" :model="prodValue" label-width="100px">
@@ -294,12 +297,15 @@ export default {
       )
     },
     // 保存
-    subMarker() {
+    subMarker(ev) {
+      // 订单类型
       if (this.prodValue.saler) {
         this.prodValue.fsalType = 0
       } else {
         this.prodValue.fsalType = 1
       }
+      // 暂存、下单
+      this.prodValue.fdocumentStatus = ev
       const DATA = this.prodValue
       this.prodValue.planDetails = this.planDetails
       this.prodValue.saleDetails = this.saleDetails
@@ -310,25 +316,35 @@ export default {
           this.$message.error('表格不能为空或删除空行')
           return false
         }
-        // if (this.prodValue.fsalType === 0) {
-        //   if (item.fprice < item.fdownPrice) {
-        //     this.$message.error('销售单价不能小于基准价')
-        //     this.loading = false
-        //     return false
-        //   }
-        // } else {
-        //   if (item.fprice < item.deliveryPrice) {
-        //     this.$message.error('销售单价不能小于出厂价')
-        //     this.loading = false
-        //     return false
-        //   }
-        // }
+        if (this.prodValue.fsalType === 0) {
+          if (Number(item.fprice) < Number(item.deliveryPrice)) {
+            this.$message.error('销售单价不能小于出厂价')
+            return false
+          }
+          if (ev === 'A') {
+            if (Number(item.ftaxAmount) < Number(item.ftaxDownPrice)) {
+              this.$alert('物料： ' + item.fnumber + ' 销售单价小于基准价,请先点击暂存,找蒋总审批后,上传审批图片,再提交.', '提示', {
+                confirmButtonText: '确定'
+              })
+              return false
+            }
+          }
+        } else {
+          if (!this.prodValue.fapprovalImage) {
+            this.$message.error('请上传审批图片')
+            return false
+          }
+          if (Number(item.fprice) < Number(item.deliveryPrice)) {
+            this.$message.error('销售单价不能小于出厂价')
+            return false
+          }
+        }
       }
       updateSalOrder(DATA).then(res => {
         if (res.code === 0) {
           this.$message({
             type: 'success',
-            message: '修改成功'
+            message: '操作成功'
           })
           setTimeout(() => {
             this.reload()

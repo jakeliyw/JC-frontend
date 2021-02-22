@@ -12,6 +12,9 @@ export function toMxAmina(item) {
     case 'D':
       item.fdocumentStatus = '重新审核'
       break
+    case 'E':
+      item.fdocumentStatus = '暂存'
+      break
     default:
       item.fdocumentStatus = '创建'
   }
