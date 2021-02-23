@@ -74,7 +74,7 @@
           <el-table-column v-if="false" :label="fdownName" prop="fdownPrice" align="center" min-width="160px" />
           <el-table-column :label="fdownName" prop="ftaxDownPrice" align="center" min-width="160px">
             <template slot="header">
-              {{fdownName }}
+              {{ fdownName }}
             </template>
             <template slot-scope="scope">
               {{ scope.row.ftaxDownPrice }}

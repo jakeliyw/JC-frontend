@@ -11,7 +11,7 @@
         <el-select v-model="team" placeholder="请选择" size="mini" class="input-width" disabled />
         <span class="text-margin">使用组织</span>
         <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled />
-        <div class="summation" v-if="bomCost('bom:price')">物料成本:
+        <div v-if="bomCost('bom:price')" class="summation">物料成本:
           <span class="color-text">{{ Math.round((FMATERIALCOST + Number.EPSILON) *100) / 100 }}元</span>
         </div>
       </div>
@@ -65,12 +65,12 @@
               <span>{{ scope.row.FDOSAGE }}</span>
             </template>
           </el-table-column>
-          <el-table-column  v-if="bomCost('bom:price')" label="单价" prop="FPRICE" align="center" min-width="200px">
+          <el-table-column v-if="bomCost('bom:price')" label="单价" prop="FPRICE" align="center" min-width="200px">
             <template slot-scope="scope">
               <span>{{ scope.row.FPRICE }}</span>
             </template>
           </el-table-column>
-          <el-table-column  v-if="bomCost('bom:price')" label="金额" prop="money" align="center" min-width="150px">
+          <el-table-column v-if="bomCost('bom:price')" label="金额" prop="money" align="center" min-width="150px">
             <template slot-scope="scope">
               {{ parseInt((scope.row.FPRICE * scope.row.FDOSAGE) * 100) / 100 }}
             </template>

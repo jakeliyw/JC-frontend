@@ -409,7 +409,7 @@ export default {
           this.ddlx = 'CGDD'
         }
         const DATA = { ddlx: this.ddlx, itemCode: item.itemCode, bm: '' }
-        if (!item.fsupplierid) {
+        if (!item.fsupplierid || Number(item.rprice) === 0) {
           Show_StockInfo(DATA).then(res => {
             item.fsuppSelect = res.data
             item.fsupplierid = res.data[0].scbmno
@@ -516,7 +516,7 @@ export default {
 
     .el-form-item {
       width: 263px;
-      margin-bottom: 15px;
+      margin-bottom: 5px;
     }
 
     .el-form-item:nth-child(1) {
