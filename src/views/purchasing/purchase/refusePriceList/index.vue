@@ -64,10 +64,14 @@ export default {
       size: 10, // 每页显示多少条数据
       // 表头
       tableHeader: [
-        { label: '价目编码', prop: 'fnumber', minWidth: '100px', align: 'center' },
+        { label: '价目编码', prop: 'fnumbe', minWidth: '100px', align: 'center' },
         { label: '价目表名称', prop: 'fname', align: 'center', minWidth: '100px' },
         { label: '供应商名称', prop: 'fsupplier', align: 'center', minWidth: '200px' },
-        { label: '是否含税', prop: 'fisIncludedTax', align: 'center' },
+        { label: '物料编码', prop: 'fnumber', minWidth: '120px', align: 'center' },
+        { label: '物料型号', prop: 'fmodel', minWidth: '50px', align: 'center' },
+        { label: '物料描述', prop: 'fdescripTion', minWidth: '250px', align: 'center' },
+        { label: '物料规格', prop: 'fspecificaTion', minWidth: '100px', align: 'center' },
+        { label: '是否含税', prop: 'fisIncludedTax', align: 'center', minWidth: '50px' },
         { label: '币别', prop: 'fcurrency', align: 'center' },
         { label: '创建时间', prop: 'fcreateDate', align: 'center' },
         { label: '状态流程', type: 'state', prop: 'ftatus', align: 'center', minWidth: '150px' },
