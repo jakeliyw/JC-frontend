@@ -140,7 +140,7 @@
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
-          other-height="calc(100vh - 390px)"
+          other-height="calc(100vh - 360px)"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -460,6 +460,7 @@ export default {
   @include listBom;
   .el-tabs{
     .el-table {
+      margin-top: 10px;
       &::v-deep td{
         padding: 8px 0;
       }
@@ -481,7 +482,7 @@ export default {
     .el-form-item {
       width: 16.6%;
       min-width: 253px;
-      margin-bottom: 12px;
+      margin-bottom: 0px;
     }
   }
 }

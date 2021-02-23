@@ -6,7 +6,7 @@
           :table-data="tabTwo.saleDetails"
           :table-header="tableHeader"
           serial
-          table-height="calc(100vh - 520px)"
+          table-height="calc(100vh - 500px)"
           :cell-style="cellStyle"
         >
           <el-table-column label="物料编码" prop="fmaterialId" align="center" width="200px">
@@ -74,7 +74,7 @@
           <el-table-column v-if="false" :label="fdownName" prop="fdownPrice" align="center" min-width="160px" />
           <el-table-column :label="fdownName" prop="ftaxDownPrice" align="center" min-width="160px">
             <template slot="header">
-              {{fdownName }}
+              {{ fdownName }}
             </template>
             <template slot-scope="scope">
               {{ scope.row.ftaxDownPrice }}
@@ -124,7 +124,7 @@
           :table-data="tabTwo.planDetails"
           :table-header="tableHeader"
           serial
-          table-height="calc(100vh - 520px)"
+          table-height="calc(100vh - 500px)"
           :cell-style="cellStyle"
         >
           <el-table-column label="是否预收" prop="fqty" align="center" width="80px">

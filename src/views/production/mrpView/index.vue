@@ -413,7 +413,7 @@ export default {
 
     .el-form-item {
       width: 263px;
-      margin-bottom: 15px;
+      margin-bottom: 5px;
     }
   }
 

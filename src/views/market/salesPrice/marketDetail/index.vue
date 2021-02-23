@@ -52,7 +52,7 @@
           <jc-table
             :table-data="tableData"
             :table-header="tableHeader"
-            table-height="calc(100vh - 360px)"
+            table-height="calc(100vh - 340px)"
             :cell-style="cellStyle"
           >
             <el-table-column prop="fnumber" label="物料编码" min-width="200px" align="center" :show-overflow-tooltip="true">
@@ -114,7 +114,7 @@
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
-          other-height="calc(100vh - 420px)"
+          other-height="calc(100vh - 390px)"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -240,7 +240,7 @@ export default {
     .el-form-item {
       width: 16.6%;
       min-width: 253px;
-      margin-bottom: 12px;
+      margin-bottom: 0px;
     }
   }
 }

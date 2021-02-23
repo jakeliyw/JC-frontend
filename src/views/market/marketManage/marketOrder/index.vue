@@ -116,7 +116,7 @@ export default {
     // 反审核
     async approvalRejection(fid) {
       const DATA = {
-        fid: fid,
+        fid: fid
       }
       const { message, code } = await notReviewSalorder(DATA)
       if (code === 0) {
