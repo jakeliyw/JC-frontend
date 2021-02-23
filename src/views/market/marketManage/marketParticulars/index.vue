@@ -14,7 +14,7 @@
               :table-data="saleDetails"
               :table-header="tableHeader"
               :cell-style="cellStyle"
-              table-height="calc(100vh - 480px)"
+              table-height="calc(100vh - 460px)"
             >
               <el-table-column prop="fnumber" label="物料编码" min-width="150px" align="center" :show-overflow-tooltip="true">
                 <template slot-scope="scope">
@@ -57,7 +57,7 @@
             <jc-table
               :table-data="planDetails"
               :table-header="tableHeader1"
-              table-height="calc(100vh - 480px)"
+              table-height="calc(100vh - 460px)"
               serial
               :cell-style="cellStyle"
             >
@@ -93,7 +93,7 @@
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
-          other-height="calc(100vh - 350px)"
+          other-height="calc(100vh - 340px)"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -298,7 +298,7 @@ export default {
 .Particules{
   .el-form{
     .el-form-item{
-      margin-bottom: 5px;
+      margin-bottom: 0px;
     }
     .el-form-item__label{
       width: 100px!important;
@@ -331,7 +331,7 @@ export default {
   @include listBom;
   .el-tabs {
     .disRow {
-      height: calc(100vh - 260px);
+      height: calc(100vh - 255px);
       .positRe {
         position: relative;
         margin-left: 100px;
@@ -408,7 +408,7 @@ export default {
       .el-form-item {
         width: 16.6%;
         min-width: 246px;
-        margin-bottom: 5px;
+        margin-bottom: 0px;
         .btnType{
           margin-right: 20px;
         }

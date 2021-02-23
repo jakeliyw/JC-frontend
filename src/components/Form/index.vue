@@ -362,6 +362,6 @@ export default {
   width: 35vw;
 }
 .el-form-item{
-  margin-bottom: 15px;
+  margin-bottom: 0px;
 }
 </style>

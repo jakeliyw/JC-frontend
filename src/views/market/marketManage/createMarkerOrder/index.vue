@@ -144,7 +144,7 @@
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
-          other-height="calc(100vh - 390px)"
+          other-height="calc(100vh - 360px)"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -664,7 +664,7 @@ export default {
       .el-form-item {
         width: 16.6%;
         min-width: 246px;
-        margin-bottom: 5px;
+        margin-bottom: 0px;
 
         .btnType {
           margin-right: 20px;
