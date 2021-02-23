@@ -13,6 +13,7 @@
         :data="tableData"
         border
         row-key="loking"
+        :cell-style="cellStyle"
         height="calc(100vh - 300px)"
         :tree-props="{children: 'child', hasChildren: 'hasChildren'}"
         :header-cell-style="{background:'#E6EBFC', fontSize: '13px'}"
@@ -107,7 +108,7 @@ export default {
       total: 0, // 总条目
       currentPage: 1, // 当前页
       size: 10, // 每页显示多少条数据
-      cellStyle: { padding: '10 10' }, // 行高
+      cellStyle: { padding: '5px' }, // 行高
       // 表格数据
       tableData: [],
       tableHeader: []

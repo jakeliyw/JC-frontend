@@ -1,23 +1,21 @@
 <template>
   <div class="content">
     <jc-title />
-    <el-card class="header-card">
-      <div class="tool">
-        <el-button size="mini" disabled>刷新</el-button>
-        <el-button size="mini" type="primary" disabled>保存bom</el-button>
-      </div>
-      <div class="organization">
-        <span class="text-margin">创建组织</span>
-        <el-select v-model="team" placeholder="请选择" size="mini" class="input-width" disabled />
-        <span class="text-margin">使用组织</span>
-        <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled />
-        <div class="summation" v-if="bomCost('bom:price')">物料成本:
-          <span class="color-text">{{ Math.round((FMATERIALCOST + Number.EPSILON) *100) / 100 }}元</span>
-        </div>
-      </div>
-    </el-card>
     <el-tabs v-model="activeName" type="border-card" @tab-click="handleOther">
       <el-tab-pane label="主产品" name="product">
+        <div class="tool">
+          <el-button size="mini" disabled>刷新</el-button>
+          <el-button size="mini" type="primary" disabled>保存bom</el-button>
+          <div class="summation" v-if="bomCost('bom:price')">物料成本:
+            <span class="color-text">{{ Math.round((FMATERIALCOST + Number.EPSILON) *100) / 100 }}元</span>
+          </div>
+        </div>
+        <div class="organization" v-show="false">
+          <span class="text-margin">创建组织</span>
+          <el-select v-model="team" placeholder="请选择" size="mini" class="input-width" disabled />
+          <span class="text-margin">使用组织</span>
+          <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled />
+        </div>
         <jc-form ref="createBomForm" :option-value="prodValue" :options="prodOptions" label-width="100px">
           <el-input
             v-model="prodValue.FNUMBER"
@@ -30,11 +28,12 @@
           </el-input>
         </jc-form>
         <jc-table
+          class="materiel-table"
           :table-data="sonTableData"
           :cell-style="cellStyle"
           serial
           :table-header="sonTableHeader"
-          table-height="calc(100vh - 600px)"
+          table-height="calc(100vh - 450px)"
         >
           <el-table-column v-if="false" label="子物料ID" prop="FMATERIALID" align="center" />
           <el-table-column label="物料编码" prop="FNUMBER" align="center" min-width="200px">
@@ -128,7 +127,7 @@ export default {
   mixins: [JumpMateriel],
   data() {
     return {
-      cellStyle: { padding: '20 10' }, // 行高
+      cellStyle: { padding: '5px' }, // 行高
       activeName: 'product', // 默认主产品 product Other
       // 子表数据
       sonTableData: [],
@@ -305,6 +304,7 @@ export default {
         FDESCRIPTION: {
           label: '物料描述',
           type: 'textarea',
+          isActive: 'isActive',
           disabled: 'disabled'
         },
         FMATERIALCOST: {

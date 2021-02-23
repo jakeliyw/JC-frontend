@@ -90,7 +90,7 @@ export default {
       fbillNo: 'fnumber', // 产品描述
       materialGroupL: [], // tree组数据
       currentNodeKey: '',
-      cellStyle: { padding: '5 10' }, // 行高
+      cellStyle: { padding: '5px' }, // 行高
       pagination: {
         pageNum: 1, // 当前页
         pageSize: 10 // 每页显示多少条数据

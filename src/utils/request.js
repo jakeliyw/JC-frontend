@@ -14,7 +14,7 @@ service.interceptors.request.use(
   config => {
     /* 待给所有接口携带上用户fuserId*/
     const fuserId = window.sessionStorage.getItem('fuserId')
-    if (config.data !== undefined || config.method === 'post' || config.method === 'put') {
+    if (config.method === 'post' || config.method === 'put') {
       config.data['fuserId'] = fuserId
     }
     return config

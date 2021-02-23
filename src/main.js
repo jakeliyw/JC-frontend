@@ -36,7 +36,6 @@ Vue.use(ElementUI)
 Vue.prototype.button = buttonList
 Vue.prototype.hasPerm = hasPermission
 Vue.prototype.bomCost = bomCoster
-Vue.prototype.backstageApi = process.env.VUE_APP_BASE_API
 Vue.config.productionTip = false
 
 new Vue({

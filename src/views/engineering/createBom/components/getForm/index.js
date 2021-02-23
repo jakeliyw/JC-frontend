@@ -136,6 +136,7 @@ export default {
         },
         FDESCRIPTION: {
           label: '物料描述',
+          isActive: 'isActive',
           type: 'textarea',
           disabled: 'disabled'
         }

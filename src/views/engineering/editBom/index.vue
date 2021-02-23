@@ -1,31 +1,29 @@
 <template>
   <div class="content">
     <jc-title />
-    <el-card class="header-card">
-      <div class="tool">
-        <el-button size="mini" @click="refresh">刷新</el-button>
-        <el-button size="mini" type="primary" @click="preservation">确定更新</el-button>
-      </div>
-      <div class="organization">
-        <span class="text-margin">创建组织</span>
-        <el-select v-model="team" placeholder="请选择" size="mini">
-          <el-option
-            v-for="item in teamList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-            class="input-width"
-          />
-        </el-select>
-        <span class="text-margin">使用组织</span>
-        <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled />
-        <div class="summation">物料成本:
-          <span class="color-text">{{ Math.round((materialScience + Number.EPSILON) *100) / 100 }}元</span>
-        </div>
-      </div>
-    </el-card>
     <el-tabs v-model="activeName" type="border-card" @tab-click="handleOther">
       <el-tab-pane label="主产品" name="product">
+        <div class="tool">
+          <el-button size="mini" @click="refresh">刷新</el-button>
+          <el-button size="mini" type="primary" @click="preservation">确定更新</el-button>
+          <div class="summation">物料成本:
+            <span class="color-text">{{ Math.round((materialScience + Number.EPSILON) *100) / 100 }}元</span>
+          </div>
+        </div>
+        <div class="organization" v-show="false">
+          <span class="text-margin">创建组织</span>
+          <el-select v-model="team" placeholder="请选择" size="mini">
+            <el-option
+              v-for="item in teamList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+              class="input-width"
+            />
+          </el-select>
+          <span class="text-margin">使用组织</span>
+          <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled />
+        </div>
         <jc-form ref="createBomForm" :option-value="prodValue" :options="prodOptions" label-width="100px">
           <el-input
             v-model="prodValue.FNUMBER"
@@ -38,11 +36,12 @@
           </el-input>
         </jc-form>
         <jc-table
+          class="materiel-table"
           :table-data="sonTableData"
           :cell-style="cellStyle"
           serial
           :table-header="sonTableHeader"
-          table-height="calc(100vh - 600px)"
+          table-height="calc(100vh - 450px)"
         >
           <el-table-column v-if="false" label="子物料ID" prop="FMATERIALID" align="center" />
           <el-table-column label="物料编码" prop="FNUMBER" align="center" width="200px">
@@ -218,7 +217,7 @@ export default {
       pageNum: 1, // 当前页
       size: 10, // 每页显示多少条数据
       parentTableVisible: false, // 父项弹窗
-      cellStyle: { padding: '10 10' }, // 行高
+      cellStyle: { padding: '5px' }, // 行高
       disabled: true, // 按钮禁用
       flg: false, // true(警告提示后提交)/false(第一次提交)
       FNUMBER: '', // 弹窗编码

@@ -1,9 +1,12 @@
 @import "src/icons/static/iconfont/index";
 // 表格布局
 @mixin bomCreate{
-    padding: 20px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
+  .materiel-table{
+    margin-top: 10px;
+  }
   // 搜索框手势操作
   .input-width{
     width: 10vw;
@@ -33,15 +36,17 @@
       padding: 0 12px 0 0;
     }
   }
-  .header-card {
-    margin-bottom: 20px;
+
     .tool {
       display: flex;
-      align-items: center;
       flex-direction: row;
       margin-bottom: 10px;
+      .summation{
+        padding-left: 10px;
+        line-height: 28px;
+        display: block;
+      }
     }
-  }
   .input-width ::v-deep .el-input__inner{
     color: black;
   }
@@ -49,15 +54,6 @@
     display: flex;
     align-items: center;
     flex-wrap: nowrap;
-    .text-margin{
-      margin:0 10px;
-    }
-    .summation{
-      margin-left: 10px;
-      .color-text{
-        color: #409eff;
-      }
-    }
   }
   .table-content {
     margin-top: 20px;

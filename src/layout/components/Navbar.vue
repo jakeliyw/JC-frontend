@@ -48,6 +48,7 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
+      sessionStorage.removeItem('fuserId')
       this.$store.dispatch('logout').then(() => {
         location.reload() // 为了重新实例化vue-router对象 避免bug
       })

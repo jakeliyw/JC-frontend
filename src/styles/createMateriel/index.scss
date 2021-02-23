@@ -1,5 +1,5 @@
 @mixin createMateriel{
-    padding: 20px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
 
@@ -115,8 +115,6 @@
       flex-direction: row;
       align-items: center;
       margin-right: 50px;
-      margin-bottom: 12px;
-      //padding-bottom: 10px;
       .dialog-span {
         font-weight: bold;
         color: #606266;

@@ -66,7 +66,7 @@
           >
             <el-input-number
               v-model="optionValue[key]"
-              size="small"
+              size="mini"
               :precision="item.precision"
               :min="item.min"
               :step="item.step"
@@ -362,6 +362,6 @@ export default {
   width: 35vw;
 }
 .el-form-item{
-  margin-bottom: 15px;
+  margin-bottom: 0px;
 }
 </style>
