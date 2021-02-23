@@ -419,13 +419,11 @@ export default {
     },
     // 监听税率,修改税率更改销售基准价(含税),不更改单价,含税单价,销售基准价
     handleChange1(index) {
-      console.log(this.tabTwo.saleDetails[index])
       this.material = index
       // const fqty = this.tabTwo.saleDetails[index].fqty
       // const fprice = this.tabTwo.saleDetails[index].fprice
       const ftaxRate = this.tabTwo.saleDetails[index].ftaxRate
       const fdownPrices = this.tabTwo.saleDetails[this.material].fdownPrice
-      console.log(this.tabTwo.saleDetails[this.material].fdownPrice)
       // const ftaxPrice = (fprice * (1 + ftaxRate / 100)).toFixed(4)
       // this.tabTwo.saleDetails[index].ftaxAmount = (fqty * ftaxPrice).toFixed(2)
       // this.tabTwo.saleDetails[index].ftaxPrice = ftaxPrice

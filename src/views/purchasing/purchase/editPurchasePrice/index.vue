@@ -298,7 +298,6 @@ export default {
     },
     async getPriceList() {
       const { data: RES } = await detailPriceList({ fid: this.$route.params.id })
-      console.log(RES)
       this.ftaxRate = RES.ftaxRate
       RES.fisIncludedTax = JSON.parse(RES.fisIncludedTax)
       this.purchaseForm = RES

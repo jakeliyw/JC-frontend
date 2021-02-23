@@ -117,6 +117,8 @@ export default {
         this.handleGetUntreated()
         this.$message.success(message)
         this.$router.push({ name: 'MarkedNoPass' })
+      } else {
+        this.$message.warning(message)
       }
     }
   }

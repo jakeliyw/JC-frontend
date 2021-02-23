@@ -104,11 +104,12 @@ export default {
   methods: {
     // 获取列表数据
     async handleGetUntreated() {
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, ...this.searCollData, fuserId: fid }
+      const DATA = { pageNum: this.currentPage, pageSize: this.size, ...this.searCollData }
       const { data: RES } = await queryUntreateSalorderList(DATA)
       this.tableData = RES.array.map(item => {
         return (toMxAmina(item))
       })
+      console.log(this.tableData)
       this.total = RES.total
     },
     // 搜索
@@ -123,7 +124,7 @@ export default {
     // 审批通过
     async approval(fid) {
       const DATA = {
-        fid: fid,
+        fid: fid
       }
       const { message, code } = await reviewSalorder(DATA)
       if (code === 0) {
