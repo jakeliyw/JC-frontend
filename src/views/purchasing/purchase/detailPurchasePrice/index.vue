@@ -54,8 +54,8 @@ export default {
       activeName: 'purchase', // 默认在采购
       tableData: [],
       tableHeader: [
-        { label: '物料描述', prop: 'fdescripTion', align: 'center' },
         { label: '物料编码', prop: 'fnumber', align: 'center' },
+        { label: '物料描述', prop: 'fdescripTion', align: 'center' },
         { label: '规格', prop: 'fspecificaTion', align: 'center' },
         { label: '尺寸单位', prop: 'fvolumeUnit', align: 'center' },
         { label: '计价单位', prop: 'funit', align: 'center' },

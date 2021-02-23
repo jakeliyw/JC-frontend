@@ -325,9 +325,7 @@ export default {
           fentryEffectiveDate: item.feffectiveDate
         }
       })
-      const fuserId = window.sessionStorage.getItem('fuserId')
       const DATA = {
-        fuserId,
         fid: this.purchaseForm.fid,
         details: DETAILS
       }

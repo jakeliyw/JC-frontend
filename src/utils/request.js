@@ -13,11 +13,10 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     /* 待给所有接口携带上用户fuserId*/
-    // const fuserId = window.sessionStorage.getItem('fuserId')
-    // if (config.data !== undefined) {
-    //   console.log(config)
-    //   config.data['fuserId'] = fuserId
-    // }
+    const fuserId = window.sessionStorage.getItem('fuserId')
+    if (config.data !== undefined || config.method === 'post' || config.method === 'put') {
+      config.data['fuserId'] = fuserId
+    }
     return config
   },
   error => {
@@ -29,57 +28,55 @@ service.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   response => {
-    // const res = response.data
-
-    // if the custom code is not 20000, it is judged as an error.
-    if (response.data.code === 0) {
-      return Promise.resolve(response.data)
-    } else if (response.data.code === 2) {
-      return Promise.resolve(response.data)
-    } else if (response.data.code === 400) {
+    const res = response.data
+    if (res.code === 0) {
+      return Promise.resolve(res)
+    } else if (res.code === 2) {
+      return Promise.resolve(res)
+    } else if (res.code === 400) {
       router.replace({
         name: 'login'
       })
-    } else if (response.data.code === 1) {
-      return Promise.resolve(response.data)
+    } else if (res.code === 1) {
+      return Promise.resolve(res)
     } else {
       return Message({
-        message: response.data.message || '网络异常，请重新尝试',
+        message: res.message || '网络异常，请重新尝试',
         type: 'warning',
         duration: 5 * 1000
       })
     }
+  },
+  error => {
+    if (error.response.status) {
+      switch (error.response.status) {
+        case 500:
+          router.replace({
+            name: 'login'
+          })
+          Message({
+            message: '网络连接错误，请重新尝试！',
+            type: 'error',
+            duration: 5 * 1000
+          })
+          break
+        case 404:
+          Message({
+            message: '网络请求不存在！',
+            type: 'error',
+            duration: 5 * 1000
+          })
+          break
+        default:
+          Message({
+            message: error.response.data.message,
+            type: 'error',
+            duration: 5 * 1000
+          })
+      }
+    }
+    return Promise.reject(error.response)
   }
-  // error => {
-  //   if (error.response.status) {
-  //     switch (error.response.status) {
-  //       case 500:
-  //         router.replace({
-  //           name: 'login'
-  //         })
-  //         Message({
-  //           message: '网络连接错误，请重新尝试！',
-  //           type: 'error',
-  //           duration: 5 * 1000
-  //         })
-  //         break
-  //       case 404:
-  //         Message({
-  //           message: '网络请求不存在！',
-  //           type: 'error',
-  //           duration: 5 * 1000
-  //         })
-  //         break
-  //       default:
-  //         Message({
-  //           message: error.response.data.message,
-  //           type: 'error',
-  //           duration: 5 * 1000
-  //         })
-  //     }
-  //   }
-  //   return Promise.reject(error.response)
-  // }
 )
 
 export default service

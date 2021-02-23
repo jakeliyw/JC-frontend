@@ -521,7 +521,6 @@ export default {
             return
           }
         }
-        const fuserId = window.sessionStorage.getItem('fuserId')
         const DETAILS = this.tableData.map(item => {
           return {
             fmaterialId: item.FMATERIALID,
@@ -536,7 +535,6 @@ export default {
           }
         })
         const DATA = {
-          fuserId,
           fcreateOrgId: this.purchaseForm.fcreateOrgId,
           fname: this.purchaseForm.fname,
           fpriceObject: this.purchaseForm.fpriceObject,

@@ -1,10 +1,7 @@
 import request from '@/utils/request'
 
-const fuserId = window.sessionStorage.getItem('fuserId')
-
 // 创建物料
 export function insertMaterialDetail(data) {
-  data.fuserId = fuserId
   return request({
     url: '/tBdMaterial/insertMaterialDetail',
     method: 'post',
@@ -113,7 +110,6 @@ export function queryMaterialDetail(params) {
 
 // 更新物料
 export function updateMaterialDetail(data) {
-  data.fuserId = fuserId
   return request({
     url: '/tBdMaterial/updateMaterialDetail',
     method: 'put',

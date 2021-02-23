@@ -15,7 +15,8 @@
         :cell-style="cellStyle"
       >
         <template v-slot:btnState="clo">
-          <el-tag>{{ clo.scope.row.fdocumentStatus }}</el-tag>
+          <el-tag v-if="clo.scope.row.fdocumentStatus !== '重新审核'">{{ clo.scope.row.fdocumentStatus }}</el-tag>
+          <el-tag v-else type="danger">{{ clo.scope.row.fdocumentStatus }}</el-tag>
         </template>
         <template v-slot:btnSlot="clo">
           <el-button type="danger" size="mini" @click="editPurchase(clo.scope.row.fid)">反审核</el-button>
@@ -115,8 +116,7 @@ export default {
     },
     // 反审核
     async editPurchase(fid) {
-      const fuserId = window.sessionStorage.getItem('fuserId')
-      const { message, code } = await updateNotReview({ fid, fuserId })
+      const { message, code } = await updateNotReview({ fid })
       if (code !== 0) {
         this.$message.warning(message)
         return

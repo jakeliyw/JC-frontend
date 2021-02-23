@@ -1,7 +1,5 @@
 import request from '@/utils/request'
 
-const fuserId = window.sessionStorage.getItem('fuserId')
-
 // 获取列表数据
 export function queryBomFaterList(data) {
   return request({
@@ -10,6 +8,7 @@ export function queryBomFaterList(data) {
     data
   })
 }
+
 // 建BOM查询子类数据
 export function queryBomSonList(data) {
   return request({
@@ -21,8 +20,8 @@ export function queryBomSonList(data) {
 // 建BOM查询父类数据
 export function queryMaterialfather(params) {
   return request({
-    url: '/tBdMaterial/queryMaterialfather/',
-    method: 'post',
+    url: '/tBdMaterial/queryMaterialfather',
+    method: 'get',
     params
   })
 }
@@ -46,7 +45,7 @@ export function queryFissuetype(params) {
 // 弹窗选择子bom数据
 export function queryMaterialSon(params) {
   return request({
-    url: `/tBdMaterial/queryMaterialSon/`,
+    url: `/tBdMaterial/queryMaterialSon`,
     method: 'get',
     params
   })
@@ -63,7 +62,6 @@ export function queryTOrgOrganizationsL(params) {
 
 // 新建bom数据
 export function insertBom(data) {
-  data.fuserId = fuserId
   return request({
     url: '/tEngBom/insertBom',
     method: 'post',
