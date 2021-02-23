@@ -51,7 +51,7 @@
         <jc-table
           :table-data="prodValue.priceDetails"
           :table-header="tableHeader"
-          table-height="calc(100vh - 350px)"
+          table-height="calc(100vh - 340px)"
           serial
           :cell-style="cellStyle"
         >
@@ -317,7 +317,6 @@ export default {
           }
         }
         const DATA = this.prodValue
-        this.prodValue.fuserId = window.sessionStorage.getItem('fuserId')
         insertSalPrice(DATA).then(res => {
           this.loading = false
           if (res.code === 0) {
@@ -461,6 +460,9 @@ export default {
   @include listBom;
   .el-tabs{
     .el-table {
+      &::v-deep td{
+        padding: 8px 0;
+      }
       &::v-deep thead.is-group th{
         padding: 3px 0;
         .el-input__inner{
@@ -477,7 +479,9 @@ export default {
     display: flex;
     flex-wrap: wrap;
     .el-form-item {
-      max-width: 263px;
+      width: 16.6%;
+      min-width: 253px;
+      margin-bottom: 12px;
     }
   }
 }

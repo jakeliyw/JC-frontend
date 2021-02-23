@@ -134,9 +134,9 @@ export default {
     line-height: 30px;
   }
   .el-table {
-    border: 1px solid #888;
+    border: 1px solid #ccc;
     th, td{
-      border-color: #888;
+      border-color: #ccc;
     }
     th{
       padding: 5px 0;

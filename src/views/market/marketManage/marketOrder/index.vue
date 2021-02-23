@@ -117,7 +117,6 @@ export default {
     async approvalRejection(fid) {
       const DATA = {
         fid: fid,
-        fuserId: window.sessionStorage.getItem('fuserId')
       }
       const { message, code } = await notReviewSalorder(DATA)
       if (code === 0) {

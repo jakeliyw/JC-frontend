@@ -30,8 +30,8 @@
           <el-tag v-else type="danger">{{ clo.scope.row.fdocumentStatus }}</el-tag>
         </template>
         <template v-slot:btnSlot="clo">
-          <el-button type="warning" size="mini" @click="approval(clo.scope.row.fid)">重新审核</el-button>
-          <el-button type="danger" size="mini" @click="revisePurchase(clo.scope.row.fid)">修改订单</el-button>
+          <el-button type="danger" size="mini" @click="approval(clo.scope.row.fid)">重新审核</el-button>
+          <el-button type="warning" size="mini" @click="revisePurchase(clo.scope.row.fid)">修改订单</el-button>
         </template>
       </jc-table>
     </div>
@@ -123,8 +123,7 @@ export default {
     // 重新审核
     async approval(fid) {
       const DATA = {
-        fid: fid,
-        fuserId: window.sessionStorage.getItem('fuserId')
+        fid: fid
       }
       const { message, code } = await againReviewSalorder(DATA)
       if (code !== 0) {

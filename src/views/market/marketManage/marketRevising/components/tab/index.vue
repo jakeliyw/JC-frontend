@@ -228,6 +228,19 @@ export default {
       tabTwo: {
         // 明细信息
         saleDetails: [{
+          fmaterialId: '',
+          fdescripTion: '',
+          funitId: '',
+          fqty: 1,
+          fprice: '',
+          fisFree: false,
+          ftaxRate: '',
+          fdeliveryDate: '',
+          fdownPrice: '',
+          famount: 0,
+          ftaxAmount: 0,
+          ftaxPrice: 0,
+          ftaxDownPrice: '',
           salImage: {
             imageUrl: '', // 图片
             imageUrl1: '', // 图片
@@ -246,6 +259,45 @@ export default {
   watch: {
     msg() {
       this.tabTwo.saleDetails = this.msg
+      this.tabTwo.saleDetails.map((item, index) => {
+        if (item.deliveryPrice) {
+          const fqty = item.fqty
+          const fnumber = item.fnumber.split('-')[0]
+          this.shuliang = 0.5
+          if (fnumber === '50') { // 餐椅
+            if (fqty < 80) {
+              this.shuliang = 0.5
+            } else if (fqty >= 80 && fqty < 400) {
+              this.shuliang = 0.55
+            } else if (fqty >= 400 && fqty < 2000) {
+              this.shuliang = 0.60
+            } else if (fqty >= 2000 && fqty < 4000) {
+              this.shuliang = 0.65
+            } else if (fqty >= 4000) {
+              this.shuliang = 0.7
+            }
+          } else if (fnumber === '51') { // 餐台
+            if (fqty < 20) {
+              this.shuliang = 0.5
+            } else if (fqty >= 20 && fqty < 100) {
+              this.shuliang = 0.55
+            } else if (fqty >= 100 && fqty < 500) {
+              this.shuliang = 0.60
+            } else if (fqty >= 500 && fqty < 1000) {
+              this.shuliang = 0.65
+            } else if (fqty >= 1000) {
+              this.shuliang = 0.7
+            }
+          }
+          if (!this.isMateria) {
+            item.fdownPrice = (item.fdownPrice * this.shuliang).toFixed(4)
+            this.material = index
+            this.fqtyPrice()
+          }
+        }
+      })
+    },
+    msg1() {
       this.tabTwo.planDetails = this.msg1
       this.fid = this.msg2.fpriceListId
     },
@@ -292,12 +344,16 @@ export default {
             fmaterialId: '',
             fdescripTion: '',
             funitId: '',
-            fqty: 1,
+            fqty: '',
             fprice: '',
             fisFree: false,
             ftaxRate: '',
             fdeliveryDate: '',
             fdownPrice: '',
+            famount: '',
+            ftaxPrice: '',
+            ftaxAmount: '',
+            ftaxDownPrice: '',
             salImage: {
               imageUrl: '', // 图片
               imageUrl1: '', // 图片
@@ -336,8 +392,8 @@ export default {
       const ftaxPrice = (fprice * (1 + ftaxRate / 100)).toFixed(4)
       this.tabTwo.saleDetails[index].famount = (fprice * fqty).toFixed(2)
       this.tabTwo.saleDetails[index].ftaxAmount = (fqty * ftaxPrice).toFixed(2)
-      this.$emit('visible', this.tabTwo)
       this.fqtyPrice()
+      this.$emit('visible', this.tabTwo)
     }, // 监听单价
     handleChange4(index) {
       this.material = index
@@ -363,11 +419,13 @@ export default {
     },
     // 监听税率,修改税率更改销售基准价(含税),不更改单价,含税单价,销售基准价
     handleChange1(index) {
+      console.log(this.tabTwo.saleDetails[index])
       this.material = index
       // const fqty = this.tabTwo.saleDetails[index].fqty
       // const fprice = this.tabTwo.saleDetails[index].fprice
       const ftaxRate = this.tabTwo.saleDetails[index].ftaxRate
       const fdownPrices = this.tabTwo.saleDetails[this.material].fdownPrice
+      console.log(this.tabTwo.saleDetails[this.material].fdownPrice)
       // const ftaxPrice = (fprice * (1 + ftaxRate / 100)).toFixed(4)
       // this.tabTwo.saleDetails[index].ftaxAmount = (fqty * ftaxPrice).toFixed(2)
       // this.tabTwo.saleDetails[index].ftaxPrice = ftaxPrice
@@ -445,15 +503,15 @@ export default {
     },
     fqtyPrice() {
       const fqty = this.tabTwo.saleDetails[this.material].fqty
-      const fnumber = this.tabTwo.saleDetails[this.material].fmaterialIdName.split('-')[0]
+      const fnumber = this.tabTwo.saleDetails[this.material].fnumber.split('-')[0]
       this.shuliang = 0.5
       if (fnumber === '50') { // 餐椅
         if (fqty < 80) {
           this.shuliang = 0.5
         } else if (fqty >= 80 && fqty < 400) {
-          this.shuliang = 0.65
+          this.shuliang = 0.55
         } else if (fqty >= 400 && fqty < 2000) {
-          this.shuliang = 0.65
+          this.shuliang = 0.60
         } else if (fqty >= 2000 && fqty < 4000) {
           this.shuliang = 0.65
         } else if (fqty >= 4000) {
@@ -463,9 +521,9 @@ export default {
         if (fqty < 20) {
           this.shuliang = 0.5
         } else if (fqty >= 20 && fqty < 100) {
-          this.shuliang = 0.65
+          this.shuliang = 0.55
         } else if (fqty >= 100 && fqty < 500) {
-          this.shuliang = 0.65
+          this.shuliang = 0.60
         } else if (fqty >= 500 && fqty < 1000) {
           this.shuliang = 0.65
         } else if (fqty >= 1000) {
@@ -498,6 +556,7 @@ export default {
 <style scoped lang="scss">
 /* 图纸单元格居中 */
 .el-table ::v-deep td{
+  padding: 8px 0;
   &:nth-last-child(2) .cell {
     display: flex;
     justify-content: center;

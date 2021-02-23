@@ -99,8 +99,7 @@ export default {
   methods: {
     // 获取列表数据
     async handleGetUntreated() {
-      const fid = window.sessionStorage.getItem('fuserId')
-      const DATA = { pageNum: this.currentPage, pageSize: this.size, ...this.searCollData, fuserId: fid }
+      const DATA = { pageNum: this.currentPage, pageSize: this.size, ...this.searCollData }
       const { data: RES } = await queryUntreatePriceList(DATA)
       this.tableData = RES.array.map(item => {
         return (toMxAmina(item))
@@ -119,8 +118,7 @@ export default {
     // 审批通过
     async untreated(fid) {
       const DATA = {
-        fid: fid,
-        fuserId: window.sessionStorage.getItem('fuserId')
+        fid: fid
       }
       const { message, code } = await reviewPrice(DATA)
       if (code !== 0) {
@@ -133,8 +131,7 @@ export default {
     // 审批不通过
     async untreatedRejection(fid) {
       const DATA = {
-        fid: fid,
-        fuserId: window.sessionStorage.getItem('fuserId')
+        fid: fid
       }
       const { message, code } = await notReviewPrice(DATA)
       if (code !== 0) {

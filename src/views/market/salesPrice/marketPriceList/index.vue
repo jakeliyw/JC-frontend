@@ -110,8 +110,7 @@ export default {
     // 反审核
     async untreatedRejection(fid) {
       const DATA = {
-        fid: fid,
-        fuserId: window.sessionStorage.getItem('fuserId')
+        fid: fid
       }
       const { message, code } = await notReviewPrice(DATA)
       if (code === 0) {

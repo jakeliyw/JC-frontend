@@ -396,7 +396,6 @@ export default {
           }
         }
         const DATA = this.prodValue
-        this.prodValue.fuserId = window.sessionStorage.getItem('fuserId')
         insertSalOrder(DATA).then(res => {
           this.prodValue.fbillNo = res.data
           if (res.code === 0) {
@@ -663,11 +662,18 @@ export default {
       flex-wrap: wrap;
 
       .el-form-item {
-        width: 263px;
+        width: 16.6%;
+        min-width: 246px;
         margin-bottom: 5px;
 
         .btnType {
           margin-right: 20px;
+        }
+        .el-date-editor.el-input{
+          width: 100% !important;
+        }
+        .el-select{
+          width: 100%;
         }
       }
     }

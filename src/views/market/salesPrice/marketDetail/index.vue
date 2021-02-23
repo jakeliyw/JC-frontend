@@ -5,7 +5,47 @@
       <el-tab-pane label="价目明细">
         <div class="header-card">
           <div class="organization">
-            <jc-form :option-value="organizationValue" :options="organization" />
+            <el-form :model="organizationValue" label-width="100px">
+              <el-form-item label="销售组织">
+                <el-input v-model="organizationValue.fsaleOrg" disabled size="mini" />
+              </el-form-item>
+              <el-form-item label="编码">
+                <el-input v-model="organizationValue.fnumber" disabled size="mini" />
+              </el-form-item>
+              <el-form-item label="价目表名称">
+                <el-input v-model="organizationValue.fname" disabled size="mini" />
+              </el-form-item>
+              <el-form-item label="客户">
+                <el-input v-model="organizationValue.fcustName" disabled placeholder="请选择客户" size="mini">
+                  <i
+                    slot="suffix"
+                    class="el-input__icon el-icon-search"
+                    @click="clientVisiblit=true"
+                  />
+                </el-input>
+              </el-form-item>
+              <el-form-item label="限定客户" prop="limitName">
+                <el-input v-model="organizationValue.limitName" size="mini" disabled />
+              </el-form-item>
+              <el-form-item label="币别">
+                <el-input v-model="organizationValue.fcurrency" size="mini" disabled>
+                  <i
+                    slot="suffix"
+                    class="el-input__icon el-icon-search"
+                    @click="currencyVisiblit=true"
+                  />
+                </el-input>
+              </el-form-item>
+              <el-form-item label="价目对象">
+                <el-input v-model="organizationValue.fpriceObject" size="mini" disabled />
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input v-model="organizationValue.fdescripTion" type="textarea" size="mini" disabled />
+              </el-form-item>
+              <el-form-item v-if="false" label="含税">
+                <el-checkbox v-model="organizationValue.fisIncludedTax" disabled />
+              </el-form-item>
+            </el-form>
           </div>
         </div>
         <div class="table-content">
@@ -45,7 +85,7 @@
             <el-table-column label="销售基准价(含税)" min-width="180px" align="center">
               <template slot="header">
                 <el-select v-model="fdownPriceRate" size="mini" @change="priceRate">
-                  <el-option label="'bom:price'(13%)" value="13">含税销售基准价(13%)</el-option>
+                  <el-option label="含税销售基准价(13%)" value="13">含税销售基准价(13%)</el-option>
                   <el-option label="含税销售基准价(7%)" value="7">含税销售基准价(7%)</el-option>
                   <el-option label="含税销售基准价(5%)" value="5">含税销售基准价(5%)</el-option>
                 </el-select>
@@ -95,7 +135,6 @@
 
 <script>
 import jcTable from '@/components/Table'
-import jcForm from '@/components/Form'
 import jcTitle from '@/components/Title'
 import {
   querySalPriceNtry
@@ -107,7 +146,6 @@ import salPrice from '@/views/market/salesPrice/createMarketPrice/components/mix
 export default {
   components: {
     jcTable,
-    jcForm,
     jcTitle,
     jcMarker,
     jcPagination
@@ -157,45 +195,6 @@ export default {
       this.tableData = RES.detail
       RES.limitName = '客户'
       this.organizationValue = RES
-      this.organization = {
-        fsaleOrg: {
-          label: '销售组织',
-          disabled: 'disabled'
-        },
-        fnumber: {
-          label: '编码',
-          disabled: 'disabled'
-        },
-        fname: {
-          label: '价目表名称',
-          disabled: 'disabled'
-        },
-        fcustName: {
-          label: '客户名称',
-          disabled: 'disabled'
-        },
-        limitName: {
-          label: '限定客户',
-          disabled: 'disabled'
-        },
-        fcurrency: {
-          label: '币别',
-          disabled: 'disabled'
-        },
-        fpriceObject: {
-          label: '价目对象',
-          disabled: 'disabled'
-        },
-        fdescripTion: {
-          label: '备注',
-          disabled: 'disabled'
-        }
-        // fisIncludedTax: {
-        //   label: '含税',
-        //   type: 'checkbox',
-        //   disabled: 'disabled'
-        // }
-      }
     },
     priceRate(val) {
       this.rate = 1 + (val / 100)
@@ -220,6 +219,9 @@ export default {
   }
   .el-tabs{
     .el-table {
+      &::v-deep td{
+        padding: 8px 0;
+      }
       &::v-deep thead.is-group th{
         padding: 3px 0;
         .el-input__inner{
@@ -230,6 +232,15 @@ export default {
           border: none;
         }
       }
+    }
+  }
+  .el-form{
+    display: flex;
+    flex-wrap: wrap;
+    .el-form-item {
+      width: 16.6%;
+      min-width: 253px;
+      margin-bottom: 12px;
     }
   }
 }

@@ -37,7 +37,7 @@
           table-height="calc(100vh - 600px)"
         >
           <el-table-column v-if="false" label="子物料ID" prop="FMATERIALID" align="center" />
-          <el-table-column label="物料编码" prop="FNUMBER" align="center" width="200px">
+          <el-table-column label="物料编码" prop="FNUMBER" align="center" min-width="200px">
             <template slot-scope="scope">
               <span class="fnumber" @click="sonJumpMateriel(scope.row.FNUMBER)">{{ scope.row.FNUMBER }}</span>
             </template>
@@ -45,7 +45,7 @@
           <el-table-column
             label="物料描述"
             prop="FDESCRIPTION"
-            width="250px"
+            min-width="250px"
             align="center"
             :show-overflow-tooltip="true"
           />
@@ -53,34 +53,34 @@
             label="物料规格"
             prop="FSPECIFICATION"
             align="center"
-            width="150px"
+            min-width="150px"
           />
-          <el-table-column label="发料方式" prop="FISSUENAME" align="center" width="150px">
+          <el-table-column label="发料方式" prop="FISSUENAME" align="center" min-width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.FISSUENAME }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="用量" prop="FDOSAGE" align="center" width="200px">
+          <el-table-column label="用量" prop="FDOSAGE" align="center" min-width="200px">
             <template slot-scope="scope">
               <span>{{ scope.row.FDOSAGE }}</span>
             </template>
           </el-table-column>
-          <el-table-column  v-if="bomCost('bom:price')" label="单价" prop="FPRICE" align="center" width="200px">
+          <el-table-column  v-if="bomCost('bom:price')" label="单价" prop="FPRICE" align="center" min-width="200px">
             <template slot-scope="scope">
               <span>{{ scope.row.FPRICE }}</span>
             </template>
           </el-table-column>
-          <el-table-column  v-if="bomCost('bom:price')" label="金额" prop="money" align="center" width="150px">
+          <el-table-column  v-if="bomCost('bom:price')" label="金额" prop="money" align="center" min-width="150px">
             <template slot-scope="scope">
               {{ parseInt((scope.row.FPRICE * scope.row.FDOSAGE) * 100) / 100 }}
             </template>
           </el-table-column>
-          <el-table-column label="子项类型" prop="FMATERIALNAME" align="center" width="150px">
+          <el-table-column label="子项类型" prop="FMATERIALNAME" align="center" min-width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.FMATERIALNAME }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="生效时间" prop="date" width="200px" align="center">
+          <el-table-column label="生效时间" prop="date" min-width="200px" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.FCREATEDATE }}</span>
             </template>
@@ -128,7 +128,7 @@ export default {
   mixins: [JumpMateriel],
   data() {
     return {
-      cellStyle: { padding: '10 10' }, // 行高
+      cellStyle: { padding: '20 10' }, // 行高
       activeName: 'product', // 默认主产品 product Other
       // 子表数据
       sonTableData: [],

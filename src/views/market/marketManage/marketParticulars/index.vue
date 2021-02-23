@@ -401,8 +401,29 @@ export default {
         }
       }
     }
-  }
+    .el-form {
+      display: flex;
+      flex-wrap: wrap;
 
+      .el-form-item {
+        width: 16.6%;
+        min-width: 246px;
+        margin-bottom: 5px;
+        .btnType{
+          margin-right: 20px;
+        }
+        .el-date-editor.el-input{
+          width: 100% !important;
+        }
+        .el-select{
+          width: 100%;
+        }
+      }
+    }
+  }
+  .el-table ::v-deep td{
+    padding: 8px 0;
+  }
   .inTheBtn {
     transform: translateY(-15px);
   }

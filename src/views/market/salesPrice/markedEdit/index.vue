@@ -328,7 +328,6 @@ export default {
       }
       const DATA = this.organizationValue
       this.organizationValue.priceDetails = this.tableData
-      this.organizationValue.fuserId = window.sessionStorage.getItem('fuserId')
       updateSalPrice(DATA).then(res => {
         this.loading = false
         if (res.code === 0) {
@@ -426,6 +425,9 @@ export default {
   @include listBom;
   .el-tabs{
     .el-table {
+      &::v-deep td{
+        padding: 8px 0;
+      }
       &::v-deep thead.is-group th{
         padding: 3px 0;
         .el-input__inner{
@@ -442,8 +444,9 @@ export default {
     display: flex;
     flex-wrap: wrap;
     .el-form-item {
-      max-width: 263px;
-      margin-bottom: 15px;
+      width: 16.6%;
+      min-width: 253px;
+      margin-bottom: 12px;
     }
   }
 }

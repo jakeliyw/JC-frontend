@@ -322,7 +322,7 @@ export default {
             return false
           }
           if (ev === 'A') {
-            if (Number(item.ftaxAmount) < Number(item.ftaxDownPrice)) {
+            if (Number(item.ftaxPrice) < Number(item.ftaxDownPrice)) {
               this.$alert('物料： ' + item.fnumber + ' 销售单价小于基准价,请先点击暂存,找蒋总审批后,上传审批图片,再提交.', '提示', {
                 confirmButtonText: '确定'
               })
@@ -532,10 +532,17 @@ export default {
       flex-wrap: wrap;
 
       .el-form-item {
-        width: 263px;
+        width: 16.6%;
+        min-width: 246px;
         margin-bottom: 5px;
         .btnType{
           margin-right: 20px;
+        }
+        .el-date-editor.el-input{
+          width: 100% !important;
+        }
+        .el-select{
+          width: 100%;
         }
       }
     }

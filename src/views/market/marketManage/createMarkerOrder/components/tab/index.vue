@@ -236,7 +236,7 @@ export default {
             famount: '',
             ftaxAmount: 0,
             fdownPrice: '',
-            ftaxDownPrice: 0,
+            ftaxDownPrice: '',
             deliveryPrice: 0,
             salImage: {
               imageUrl: '', // 图片
@@ -299,7 +299,7 @@ export default {
             fdeliveryDate: '',
             fdownPrice: 0,
             ftaxAmount: 0,
-            ftaxDownPrice: 0,
+            ftaxDownPrice: '',
             deliveryPrice: 0,
             salImage: {
               imageUrl: '', // 图片
@@ -467,9 +467,9 @@ export default {
         if (fqty < 80) {
           this.shuliang = 0.5
         } else if (fqty >= 80 && fqty < 400) {
-          this.shuliang = 0.65
+          this.shuliang = 0.55
         } else if (fqty >= 400 && fqty < 2000) {
-          this.shuliang = 0.65
+          this.shuliang = 0.60
         } else if (fqty >= 2000 && fqty < 4000) {
           this.shuliang = 0.65
         } else if (fqty >= 4000) {
@@ -479,9 +479,9 @@ export default {
         if (fqty < 20) {
           this.shuliang = 0.5
         } else if (fqty >= 20 && fqty < 100) {
-          this.shuliang = 0.65
+          this.shuliang = 0.55
         } else if (fqty >= 100 && fqty < 500) {
-          this.shuliang = 0.65
+          this.shuliang = 0.60
         } else if (fqty >= 500 && fqty < 1000) {
           this.shuliang = 0.65
         } else if (fqty >= 1000) {
@@ -511,6 +511,7 @@ export default {
 .tab {
   // 图纸单元格居中
   .el-table ::v-deep td{
+      padding: 8px 0;
     &:nth-last-child(2) .cell {
       display: flex;
       justify-content: center;

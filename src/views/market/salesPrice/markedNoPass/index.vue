@@ -116,8 +116,7 @@ export default {
     // 重新审核
     async review(fid) {
       const DATA = {
-        fid: fid,
-        fuserId: window.sessionStorage.getItem('fuserId')
+        fid: fid
       }
       const { message, code } = await againReviewPrice(DATA)
       if (code !== 0) {

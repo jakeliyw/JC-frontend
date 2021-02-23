@@ -104,7 +104,6 @@ export default {
   methods: {
     // 获取列表数据
     async handleGetUntreated() {
-      const fid = window.sessionStorage.getItem('fuserId')
       const DATA = { pageNum: this.currentPage, pageSize: this.size, ...this.searCollData, fuserId: fid }
       const { data: RES } = await queryUntreateSalorderList(DATA)
       this.tableData = RES.array.map(item => {
@@ -125,7 +124,6 @@ export default {
     async approval(fid) {
       const DATA = {
         fid: fid,
-        fuserId: window.sessionStorage.getItem('fuserId')
       }
       const { message, code } = await reviewSalorder(DATA)
       if (code === 0) {
@@ -137,8 +135,7 @@ export default {
     // 审批不通过
     async approvalRejection(fid) {
       const DATA = {
-        fid: fid,
-        fuserId: window.sessionStorage.getItem('fuserId')
+        fid: fid
       }
       const { message, code } = await notReviewSalorder(DATA)
       if (code === 0) {
