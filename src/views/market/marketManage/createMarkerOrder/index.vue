@@ -365,14 +365,10 @@ export default {
             return false
           }
           if (this.prodValue.fsalType === 0) {
-            if (Number(item.fprice) < Number(item.deliveryPrice)) {
-              this.$message.error('销售单价不能小于出厂价')
-              return false
-            }
             if (ev === 'A') {
-              if (Number(item.ftaxAmount) < Number(item.ftaxDownPrice)) {
+              if (Number(item.ftaxPrice) < Number(item.ftaxDownPrice) && Number(item.ftaxDownPrice) !== 0) {
                 this.$alert('物料： ' + item.fmaterialIdName + ' 销售单价小于基准价,请先点击暂存,找蒋总审批后,上传审批' +
-                  '图片,再提交.', '提示', {
+                    '图片,再提交.', '提示', {
                   confirmButtonText: '确定'
                 })
                 return false
@@ -383,8 +379,8 @@ export default {
               this.$message.error('请上传审批图片')
               return false
             }
-            if (Number(item.fprice) < Number(item.deliveryPrice)) {
-              this.$message.error('销售单价不能小于出厂价')
+            if (Number(item.fprice) < Number(item.deliveryPrice) && Number(item.deliveryPrice) !== 0) {
+              this.$message.error('销售单价不能小于近成本价')
               return false
             }
           }
