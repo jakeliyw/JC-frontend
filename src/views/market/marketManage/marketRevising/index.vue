@@ -5,8 +5,8 @@
       <el-button type="primary" style="width: 80px;margin-bottom: 10px" size="mini" @click="subMarker('E')">暂存</el-button>
       <el-button type="success" style="width: 80px;margin-bottom: 10px" size="mini" @click="subMarker('A')">下单</el-button>
     </div>
-    <el-tabs type="border-card" @tab-click="handleOther">
-      <el-tab-pane label="主产品">
+    <el-tabs v-model="activeName" type="border-card" @tab-click="handleOther">
+      <el-tab-pane label="主产品" name="first">
         <el-form ref="purchaseRef" :model="prodValue" label-width="100px">
           <el-form-item label="单据类型" prop="fbillType">
             <el-input
@@ -116,7 +116,7 @@
         </el-form>
         <tab :msg="saleDetails" :msg1="planDetails" :msg2="prodValue" :standard-price="standardPrice" @visible="handlechange" />
       </el-tab-pane>
-      <el-tab-pane label="其他">
+      <el-tab-pane label="其他" name="second">
         <jc-marker
           other-height="calc(100vh - 425px)"
           :other-url-object="otherUrlObject"
@@ -133,7 +133,7 @@
           </div>
         </jc-marker>
       </el-tab-pane>
-      <el-tab-pane label="审批图片" class="disRow">
+      <el-tab-pane label="审批图片" name="third" class="disRow">
         <div class="positRe">
           <el-upload
             class="avatar-uploader"
@@ -214,6 +214,7 @@ export default {
   inject: ['reload'],
   data() {
     return {
+      activeName: 'first',
       priview: '', // 预览图片
       imgVisible: false, // 预览图片
       actionURL: '',
@@ -306,6 +307,7 @@ export default {
       }
       // 暂存、下单
       this.prodValue.fdocumentStatus = ev
+      this.prodValue.fstart = 0
       const DATA = this.prodValue
       this.prodValue.planDetails = this.planDetails
       this.prodValue.saleDetails = this.saleDetails
@@ -326,7 +328,8 @@ export default {
           }
         } else {
           if (!this.prodValue.fapprovalImage) {
-            this.$message.error('请上传审批图片')
+            this.$message.warning('请上传审批图片')
+            this.activeName = 'third'
             return false
           }
           if (Number(item.fprice) < Number(item.deliveryPrice) && Number(item.deliveryPrice) !== 0) {

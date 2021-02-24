@@ -244,6 +244,7 @@ export default {
           this.MrpInfo()
         }
       } else {
+        this.$message.error(RES.message)
         this.orderNumber = {}
         this.tableData = []
       }

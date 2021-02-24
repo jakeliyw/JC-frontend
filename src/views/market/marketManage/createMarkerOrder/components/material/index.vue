@@ -33,7 +33,7 @@
 <script>
 import jcTable from '@/components/Table'
 import jcPagination from '@/components/Pagination'
-import { querySalMaterialList } from '@/api/marketManage/marketOrder'
+import { queryMaterialList } from '@/api/marketManage/marketOrder'
 
 import searData from '@/components/Search/mixin'
 import search from '@/components/Search'
@@ -99,11 +99,11 @@ export default {
       const DATA = {
         pageNum: this.materielPagination.pageNum,
         pageSize: this.materielPagination.pageSize,
-        ...this.searCollData,
-        fid: this.msg1
+        ...this.searCollData
+        // fid: this.msg1
       }
       // 发起请求
-      const { data: RES } = await querySalMaterialList(DATA)
+      const { data: RES } = await queryMaterialList(DATA)
       this.materielDialogData = RES.array
       this.materielPagination.total = RES.total
       this.isMaterialDialog = true

@@ -16,8 +16,10 @@ service.interceptors.request.use(
     const fuserId = window.sessionStorage.getItem('fuserId')
     /* 审核权限列表-修改数据,不带fuserId   config.url !== '/tJxQuery/updayeTJxQuery'  */
     if (config.method === 'post' || config.method === 'put' && config.url !== '/tJxQuery/updayeTJxQuery') {
-      config.data['fuserId'] = fuserId
-      console.log(config)
+      //  新增审核权限，不带fuserId
+      if (config.url !== '/tJxQuery/insertTJxQuery') {
+        config.data['fuserId'] = fuserId
+      }
     }
     return config
   },
