@@ -51,13 +51,13 @@
               :auto-upload="false"
               class="upload"
             >
-              <img v-if="imageUrl" :src="`${backstageApi}${imageUrl}`" class="avatar">
+              <img v-if="imageUrl" :src="imageUrl" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon" />
             </el-upload>
           </div>
           <div class="basics">
             <jc-form :option-value="basicValue" :options="basic">
-              <el-select v-model="basicValue.fbaseUnitId" placeholder="请选择基本单位" size="small" filterable @change="handleCompany">
+              <el-select v-model="basicValue.fbaseUnitId" placeholder="请选择基本单位" size="mini" filterable @change="handleCompany">
                 <el-option
                   v-for="item in basicUnit"
                   :key="item.value"
@@ -893,8 +893,8 @@ export default {
         fdescripTion: {
           label: '物料描述',
           disabled: 'disabled',
-          isActive: 'isActive',
           type: 'textarea',
+          span: 10,
           rules: [
             { required: true, message: '请输入物料描述', trigger: 'blur' }
           ]

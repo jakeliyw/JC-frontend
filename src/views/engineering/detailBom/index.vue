@@ -1,24 +1,6 @@
 <template>
   <div class="content">
     <jc-title />
-<<<<<<< HEAD
-=======
-    <el-card class="header-card">
-      <div class="tool">
-        <el-button size="mini" disabled>刷新</el-button>
-        <el-button size="mini" type="primary" disabled>保存bom</el-button>
-      </div>
-      <div class="organization">
-        <span class="text-margin">创建组织</span>
-        <el-select v-model="team" placeholder="请选择" size="mini" class="input-width" disabled />
-        <span class="text-margin">使用组织</span>
-        <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled />
-        <div v-if="bomCost('bom:price')" class="summation">物料成本:
-          <span class="color-text">{{ Math.round((FMATERIALCOST + Number.EPSILON) *100) / 100 }}元</span>
-        </div>
-      </div>
-    </el-card>
->>>>>>> 38513e7d6ed3ff578f6f49f08104a50c37396aeb
     <el-tabs v-model="activeName" type="border-card" @tab-click="handleOther">
       <el-tab-pane label="主产品" name="product">
         <div class="tool">
@@ -322,8 +304,8 @@ export default {
         FDESCRIPTION: {
           label: '物料描述',
           type: 'textarea',
-          isActive: 'isActive',
-          disabled: 'disabled'
+          span: 8,
+          isActive: 'isActive'
         },
         FMATERIALCOST: {
           type: 'bom',

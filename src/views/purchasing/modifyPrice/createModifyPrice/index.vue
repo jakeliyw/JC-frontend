@@ -560,7 +560,7 @@ export default {
         },
         fdescription: {
           label: '描述',
-          span: 6,
+          span: 8,
           type: 'textarea',
           rules: [{ required: true, message: '描述不可为空', trigger: 'blur' }]
         }
@@ -598,6 +598,7 @@ export default {
   }
 }
 .layout ::v-deep .jcTable{
+  margin-top: 15px;
   min-height: calc(100vh - 450px);
 }
 .el-table ::v-deep .el-table__body-wrapper{

@@ -87,7 +87,7 @@
               :disabled="item.disabled"
               class="input-width"
               :allow-create="item.create || false"
-              size="small"
+              size="mini"
               :placeholder="item.placeholder || `请选择${item.label || '内容'}`"
               filterable
               default-first-option
@@ -172,12 +172,9 @@
           <el-form-item
             v-else-if="item.type === 'textarea'"
             :label="item.label"
-            :datafld="item.datafld"
             :prop="key"
             size="mini"
             :rules="item.rules"
-            label-width="100px"
-            :class="{ 'describe': item.isActive }"
           >
             <el-input
               v-model="optionValue[key]"

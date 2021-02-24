@@ -63,7 +63,7 @@
           </div>
           <div class="basics">
             <jc-form :option-value="basicValue" :options="basic">
-              <el-select v-model="basicValue.fbaseUnitId" placeholder="请选择基本单位" size="small" filterable @change="handleCompany">
+              <el-select v-model="basicValue.fbaseUnitId" placeholder="请选择基本单位" size="mini" filterable @change="handleCompany">
                 <el-option
                   v-for="item in basicUnit"
                   :key="item.value"
@@ -820,7 +820,7 @@ export default {
         fdescripTion: {
           label: '物料描述',
           disabled: 'disabled',
-          isActive: 'isActive',
+          span: 10,
           type: 'textarea',
           rules: [
             { required: true, message: '请输入物料描述', trigger: 'blur' }

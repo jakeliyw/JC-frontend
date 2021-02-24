@@ -489,14 +489,12 @@ export default {
         fdataValue: {
           label: '调价原因',
           type: 'slot',
-          span: 6,
-          rules: [{ required: true, message: '调价原因不可为空', trigger: 'blur' }]
+          span: 6
         },
         fname: {
           label: '名称',
           span: 6,
-          disabled: 'disabled',
-          rules: [{ required: true, message: '名称不可为空', trigger: 'blur' }]
+          disabled: 'disabled'
         },
         billCode: {
           label: '单据编号',
@@ -505,10 +503,9 @@ export default {
         },
         fdescription: {
           label: '描述',
-          span: 6,
+          span: 8,
           disabled: 'disabled',
-          type: 'textarea',
-          rules: [{ required: true, message: '描述不可为空', trigger: 'blur' }]
+          type: 'textarea'
         }
       }
     }
@@ -538,6 +535,7 @@ export default {
   cursor: pointer;
 }
 .layout ::v-deep .jcTable{
+  margin-top: 15px;
   min-height: calc(100vh - 450px);
 }
 .el-table ::v-deep .el-table__body-wrapper{

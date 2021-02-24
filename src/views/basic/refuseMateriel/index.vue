@@ -92,7 +92,7 @@ export default {
         { label: '状态流程', type: 'state', align: 'center', minWidth: '100px' },
         { label: '禁用状态', type: 'tag', align: 'center', minWidth: '100px' },
         { label: '审核状态', type: 'states', align: 'center', minWidth: '100px' },
-        { label: '操作', type: 'btn', minWidth: '200px', align: 'center' }
+        { label: '操作', type: 'btn', fixed: 'right', minWidth: '200px', align: 'center' }
       ],
       // 表格数据
       tableData: []

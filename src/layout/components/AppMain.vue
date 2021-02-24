@@ -1,6 +1,6 @@
 <template>
   <section class="app-main">
-    <keep-alive :max="100">
+    <keep-alive :include="cachedViews">
       <router-view :key="key" />
     </keep-alive>
   </section>

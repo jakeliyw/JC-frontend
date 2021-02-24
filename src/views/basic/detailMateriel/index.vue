@@ -241,9 +241,7 @@ export default {
           },
           fdescripTion: {
             label: '物料描述',
-            disabled: 'disabled',
-            span: 24,
-            isActive: 'isActive',
+            span: 10,
             type: 'textarea'
           }
         }
