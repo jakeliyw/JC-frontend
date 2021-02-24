@@ -321,12 +321,11 @@ export default {
     jcTable,
     jcPagination
   },
-  inject: ['reload'],
   data() {
     return {
       activeName: 'customer', // 默认在价目
       filterText: '', // 树结构查询
-      cellStyle: { padding: '10 10' }, // 行高
+      cellStyle: { padding: '5px' }, // 行高
       dialogTitle: '', // 弹窗标题
       popupTitle: '', // 搜索条件
       openCountry: false, // 国家弹窗
@@ -498,7 +497,7 @@ export default {
             return
           }
           this.$message.success(res.message)
-          this.reload()
+          this.$refs.customerRef.resetFields()
         }).catch(error => error)
       })
     },
