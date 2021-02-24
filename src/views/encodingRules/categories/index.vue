@@ -240,7 +240,7 @@ export default {
       currentPage: 1, // 当前页
       size: 10, // 每页显示多少条数据
       // 表头
-      cellStyle: { padding: '10 10' }, // 行高
+      cellStyle: { padding: '5px' }, // 行高
       tableHeader: [], // 大类表头
       inTheHeader: [], // 中类表头
       smallHeader: [], // 小类表头

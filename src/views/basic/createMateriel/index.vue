@@ -329,7 +329,7 @@ export default {
       assetsDisabled: true, // 资产禁用
       checkoutDisabled: false, // 单选框禁用
       useOrganization: '', // 使用组织
-      cellStyle: { padding: '10 10' }, // 行高
+      cellStyle: { padding: '5px' }, // 行高
       popupTitle: '', // 查询条件文本
       dialogTitle: '', // 弹窗标题
       total: 0, // 条目

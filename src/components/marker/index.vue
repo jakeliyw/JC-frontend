@@ -46,7 +46,7 @@ export default {
       // 其它表单
       otherOptions: {},
       otherValue: {},
-      cellStyle: { padding: '10 10' }, // 行高
+      cellStyle: { padding: '5px' }, // 行高
       // 日志头部
       logTableHeader: [
         { label: '日期', prop: 'createDate', align: 'center' },

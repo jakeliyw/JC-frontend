@@ -275,7 +275,7 @@ export default {
         pageSize: 10,
         total: 0
       },
-      cellStyle: { padding: '10 10' }, // 行高
+      cellStyle: { padding: '5px' }, // 行高
       optionValue: {}, // 表单值
       options: {}, // 表单控件
       tableIndex: 0 // 表格序号
