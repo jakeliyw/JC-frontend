@@ -304,8 +304,8 @@ export default {
         FDESCRIPTION: {
           label: '物料描述',
           type: 'textarea',
-          isActive: 'isActive',
-          disabled: 'disabled'
+          span: 8,
+          isActive: 'isActive'
         },
         FMATERIALCOST: {
           type: 'bom',

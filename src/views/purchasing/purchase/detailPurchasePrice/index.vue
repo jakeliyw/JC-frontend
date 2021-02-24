@@ -175,4 +175,7 @@ export default {
 .content{
   @include bomCreate;
 }
+.el-table {
+  margin-top: 15px;
+}
 </style>

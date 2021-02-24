@@ -113,6 +113,35 @@ export default {
         billCode: RES.fbillno, // 单据编号
         fdescription: RES.fdescripTion // 描述
       }
+      this.options = {
+        fcreateOrgId: {
+          label: '创建组织',
+          type: 'select',
+          span: 6,
+          selectItems: this.teamList
+        },
+        fdataValue: {
+          label: '调价原因',
+          type: 'slot',
+          span: 6
+        },
+        fname: {
+          label: '名称',
+          span: 6,
+          disabled: 'disabled'
+        },
+        billCode: {
+          label: '单据编号',
+          span: 6,
+          disabled: 'disabled'
+        },
+        fdescription: {
+          label: '描述',
+          span: 8,
+          disabled: 'disabled',
+          type: 'textarea'
+        }
+      }
     },
     refresh() {
       location.reload()
@@ -138,6 +167,9 @@ export default {
       width: 10vw;
     }
   }
+}
+.el-table{
+  margin-top: 15px;
 }
 .el-input__icon {
   cursor: pointer;
