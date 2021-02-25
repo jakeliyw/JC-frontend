@@ -87,7 +87,7 @@
             </template>
           </el-table-column>
           <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" :show-overflow-tooltip="true" />
-          <el-table-column label="规格型号" prop="fspecificaTion" align="center" :show-overflow-tooltip="true" />
+          <el-table-column label="物料规格" prop="fspecificaTion" align="center" :show-overflow-tooltip="true" />
           <el-table-column label="尺寸单位" prop="fvolumeUnit" align="center" />
           <el-table-column label="计价单位" prop="funit" align="center" />
           <el-table-column label="单价" prop="fprice" align="center" min-width="150px">
@@ -182,6 +182,7 @@
       <div class="materiel-form">
         <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="getGetMateriel" />
         <el-button size="mini" type="primary" class="btn" @click="getGetMateriel">搜索</el-button>
+        <el-button size="mini" type="primary" class="confirm" @click="confirm">确认</el-button>
       </div>
       <jc-table
         :table-data="materielDialogData"
@@ -189,6 +190,9 @@
         :cell-style="cellStyle"
         table-height="calc(100vh - 500px)"
         @clickRow="materielSelectRow"
+        ref="table"
+        @selectionChange="handleSelectAll"
+        tableSelection
       />
       <jc-pagination
         v-show="materielPagination.total > 0"
@@ -239,9 +243,9 @@ export default {
       ],
       materielDialogData: [],
       materielDialogHeader: [
-        { label: '使用组织', prop: 'FUSEORG', align: 'center' },
         { label: '物料编码', prop: 'FNUMBER', align: 'center' },
         { label: '物料规格', prop: 'FSPECIFICATION', align: 'center' },
+        { label: '尺寸单位', prop: 'FVOLUMEUNIT', align: 'center' },
         { label: '型号', prop: 'FMODEL', align: 'center' },
         { label: '描述', prop: 'FDESCRIPTION', align: 'center', minWidth: '150px' },
         { label: '创建时间', prop: 'FCREATEDATE', align: 'center' }
@@ -256,12 +260,13 @@ export default {
       openMaterialDialog: false, // 物料弹窗
       FNUMBER: '', // 弹窗编码
       FDESCRIPTION: '', // 弹窗描述
-      FSPECIFICATION: '', // 弹窗规格型号
+      FSPECIFICATION: '', // 弹窗物料规格
       cellStyle: { padding: '10 10' }, // 行高
       fpriceDisabled: true, // 单价禁用
       ftaxPriceDisabled: false, // 含税单价禁用
       // 点击行的序号
       tableIndex: 0,
+      selectAll: [], // 全选的值
       otherUrlObject: {}, // 其它审核人
       otherLogTableData: [], // 日志数据
       otherPagination: {
@@ -302,6 +307,33 @@ export default {
       RES.fisIncludedTax = JSON.parse(RES.fisIncludedTax)
       this.purchaseForm = RES
       this.tableData = RES.detail
+    },
+    // 全选
+    handleSelectAll(item) {
+      this.selectAll = item
+    },
+    // 确认
+    confirm() {
+      this.selectAll.forEach(item => {
+        this.tableData.push(
+          {
+            fmaterialId: item.FNUMBER, // 物料编码
+            FMATERIALID: item.FMATERIALID, // id
+            fprice: 0, // 单价
+            ftaxPrice: 0, // 含税单价
+            fminNum: 1, // 最小起订量
+            fupPrice: 0, // 价格上限
+            fdownPrice: 0, // 价格下限
+            feffectiveDate: '', // 生效时间
+            ftaxRate: this.selectTaxRate, // 税率
+            fdescripTion: item.FDESCRIPTION, // 描述
+            fmodel: item.FSPECIFICATION, // 物料规格
+            fvolumeUnit: item.FVOLUMEUNIT, // 尺寸单位
+            FBASEUNIT: item.FBASEUNIT // 计价单位
+          }
+        )
+      })
+      this.openMaterialDialog = false
     },
     // 保存采购列表
     preservation() {
@@ -363,21 +395,21 @@ export default {
     // 打开物料编码
     async handleGetMateriel(row, index) {
       this.tableIndex = index
-      if (index === this.tableData.length - 1) {
-        this.tableData.push(
-          {
-            fmaterialId: '', // 物料编码
-            fprice: 0, // 单价
-            ftaxPrice: 0, // 含税单价
-            fminNum: 1, // 最小起订量
-            fupPrice: 0, // 价格上限
-            fdownPrice: 0, // 价格下限
-            feffectiveDate: new Date(), // 生效时间
-            ftaxRate: this.ftaxRate, // 税率
-            fdescripTion: '' // 描述
-          }
-        )
-      }
+      // if (index === this.tableData.length - 1) {
+      //   this.tableData.push(
+      //     {
+      //       fmaterialId: '', // 物料编码
+      //       fprice: 0, // 单价
+      //       ftaxPrice: 0, // 含税单价
+      //       fminNum: 1, // 最小起订量
+      //       fupPrice: 0, // 价格上限
+      //       fdownPrice: 0, // 价格下限
+      //       feffectiveDate: new Date(), // 生效时间
+      //       ftaxRate: this.ftaxRate, // 税率
+      //       fdescripTion: '' // 描述
+      //     }
+      //   )
+      // }
       this.getGetMateriel()
       this.openMaterialDialog = true
     },

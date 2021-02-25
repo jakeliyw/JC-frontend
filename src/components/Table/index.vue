@@ -14,6 +14,7 @@
     @select="handleSelect"
     @select-all="handleSelectAll"
     @row-dblclick="openDetails"
+    :row-key="getRowKeys"
   >
     <!--    全选-->
     <el-table-column
@@ -21,6 +22,7 @@
       align="center"
       type="selection"
       width="50"
+      :reserve-selection="true"
     />
     <!--    id列-->
     <el-table-column v-if="serial" type="index" label="序号" width="80" align="center" />
@@ -137,6 +139,10 @@ export default {
     }
   },
   methods: {
+    // 翻页保留选中状态
+    getRowKeys(row) {
+      return row.FMATERIALID
+    },
     // 行事件
     openDetails(row) {
       this.$emit('clickRow', row)
@@ -158,11 +164,6 @@ export default {
           this.$refs.table.toggleRowSelection(item)
         })
       }
-      // if (selection.length > 0 && selection[0] === this.filtrate[0]) {
-      //   this.filtrate.map(item => {
-      //     this.$refs.table.toggleRowSelection(item)
-      //   })
-      // }
       this.handleGetSelection()
     },
     // 获取勾选的值
