@@ -220,7 +220,7 @@ export default {
     },
     // 删除角色
     delectRole(id) {
-      this.$confirm('确定删除么?', '提示', {
+      this.$confirm('确定要删除该角色么?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

@@ -185,14 +185,14 @@
         <el-button size="mini" type="primary" class="confirm" @click="confirm">确认</el-button>
       </div>
       <jc-table
+        ref="table"
         :table-data="materielDialogData"
         :table-header="materielDialogHeader"
         :cell-style="cellStyle"
         table-height="calc(100vh - 500px)"
+        table-selection
         @clickRow="materielSelectRow"
-        ref="table"
         @selectionChange="handleSelectAll"
-        tableSelection
       />
       <jc-pagination
         v-show="materielPagination.total > 0"

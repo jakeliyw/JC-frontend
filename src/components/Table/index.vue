@@ -11,10 +11,10 @@
     style="width: 100%"
     :header-cell-style="{background:'#E6EBFC', fontSize: '13px'}"
     :row-class-name="tabRowClassName"
+    :row-key="getRowKeys"
     @select="handleSelect"
     @select-all="handleSelectAll"
     @row-dblclick="openDetails"
-    :row-key="getRowKeys"
   >
     <!--    全选-->
     <el-table-column
