@@ -838,10 +838,7 @@ export default {
       this.basic = {
         fmodel: {
           label: '型号',
-          span: 8,
-          rules: [
-            { required: true, message: '型号不能为空', trigger: 'blur' }
-          ]
+          span: 8
         },
         fnumber: {
           label: '物料编码',
@@ -850,41 +847,26 @@ export default {
         },
         foldnumber: {
           label: '旧物料编码',
-          span: 8,
-          rules: [
-            { required: true, message: '旧物料编码不能为空', trigger: 'blur' }
-          ]
+          span: 8
         },
         fbarCode: {
           label: '条码',
-          span: 8,
-          rules: [
-            { required: true, message: '条码不能为空', trigger: 'blur' }
-          ]
+          span: 8
         },
         fbaseUnitId: {
           label: '基本单位',
           type: 'slot',
-          span: 8,
-          rules: [
-            { required: true, message: '请选择基本单位', trigger: 'change' }
-          ]
+          span: 8
         },
         fprotect: {
           label: '环保等级',
-          span: 8,
-          rules: [
-            { required: true, message: '请输入环保等级', trigger: 'blur' }
-          ]
+          span: 8
         },
         ferpclsId: {
           label: '物料类型',
           span: 8,
           type: 'select',
-          selectItems: materielType,
-          rules: [
-            { required: true, message: '请选择物料类型', trigger: 'blur' }
-          ]
+          selectItems: materielType
         },
         fremarks: {
           label: '物料备注',
@@ -894,10 +876,7 @@ export default {
           label: '物料描述',
           disabled: 'disabled',
           type: 'textarea',
-          span: 10,
-          rules: [
-            { required: true, message: '请输入物料描述', trigger: 'blur' }
-          ]
+          span: 10
         }
       }
       this.weightValue = {
@@ -909,10 +888,7 @@ export default {
       this.weight = {
         fweightUnitName: {
           label: '重量单位',
-          type: 'slot',
-          rules: [
-            { required: true, message: '请选择重量单位', trigger: 'blur' }
-          ]
+          type: 'slot'
         },
         fgrossWeight: {
           label: '毛重',
@@ -937,10 +913,7 @@ export default {
         fvolumeunitName: {
           label: '尺寸单位',
           type: 'slot',
-          span: 24,
-          rules: [
-            { required: true, message: '请选择尺寸单位', trigger: 'blur' }
-          ]
+          span: 24
         },
         fopenLength: {
           label: '展开长',

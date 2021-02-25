@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <jc-title />
+    <jc-title/>
     <el-tabs v-model="activeName" type="border-card">
       <el-tab-pane label="价目" name="purchase" class="layout">
         <div class="header">
@@ -24,32 +24,32 @@
             <el-col :span="6">
               <el-form-item label="供应商" prop="fsupplierName">
                 <el-input v-model="purchaseForm.fsupplierName" class="input-width">
-                  <i slot="suffix" class="el-input__icon el-icon-search" @click="handleSupplier" />
+                  <i slot="suffix" class="el-input__icon el-icon-search" @click="handleSupplier"/>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="币别" prop="fcurrencyFname">
                 <el-input v-model="purchaseForm.fcurrencyFname" class="input-width">
-                  <i slot="suffix" class="el-input__icon el-icon-search" @click="handleGetCurrency" />
+                  <i slot="suffix" class="el-input__icon el-icon-search" @click="handleGetCurrency"/>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="供应商税率" prop="fpaezBaseName">
                 <el-input v-model="purchaseForm.fpaezBaseName" class="input-width">
-                  <i slot="suffix" class="el-input__icon el-icon-search" @click="handleSupplierTaxRate" />
+                  <i slot="suffix" class="el-input__icon el-icon-search" @click="handleSupplierTaxRate"/>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="单据编号" prop="code">
-                <el-input v-model="purchaseForm.code" class="input-width" placeholder="保存时自动生成" disabled />
+                <el-input v-model="purchaseForm.code" class="input-width" placeholder="保存时自动生成" disabled/>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="名称" prop="fname">
-                <el-input v-model="purchaseForm.fname" class="input-width" />
+                <el-input v-model="purchaseForm.fname" class="input-width"/>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -78,12 +78,12 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="含税" prop="fisIncludedTax">
-                <el-checkbox v-model="purchaseForm.fisIncludedTax" @change="handleTax" />
+                <el-checkbox v-model="purchaseForm.fisIncludedTax" @change="handleTax"/>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="描述" prop="fdescripTion">
-                <el-input v-model="purchaseForm.fdescripTion" type="textarea" />
+                <el-input v-model="purchaseForm.fdescripTion" type="textarea"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -98,7 +98,7 @@
           <el-table-column label="物料编码" prop="fmaterialId" align="center" width="200px">
             <template slot-scope="scope">
               <el-input v-model="scope.row.fmaterialId" placeholder="请选择物料编码" size="mini">
-                <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fmaterialId)" />
+                <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fmaterialId)"/>
                 <i
                   slot="suffix"
                   class="el-input__icon el-icon-search"
@@ -107,10 +107,11 @@
               </el-input>
             </template>
           </el-table-column>
-          <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px" :show-overflow-tooltip="true" />
-          <el-table-column label="规格型号" prop="fmodel" align="center" />
-          <el-table-column label="尺寸单位" prop="fvolumeUnit" align="center" />
-          <el-table-column label="计价单位" prop="FBASEUNIT" align="center" />
+          <el-table-column label="物料描述" prop="fdescripTion" align="center" min-width="200px"
+                           :show-overflow-tooltip="true"/>
+          <el-table-column label="物料规格" prop="fmodel" align="center"/>
+          <el-table-column label="尺寸单位" prop="fvolumeUnit" align="center"/>
+          <el-table-column label="计价单位" prop="FBASEUNIT" align="center"/>
           <el-table-column label="单价" prop="fprice" align="center" min-width="150px">
             <template slot-scope="scope">
               <el-input-number
@@ -139,7 +140,8 @@
           </el-table-column>
           <el-table-column label="最小起订量" prop="fminNum" align="center" min-width="150px">
             <template slot-scope="scope">
-              <el-input-number v-model.number="scope.row.fminNum" size="mini" :precision="4" :step="0.0001" :min="0.0000" />
+              <el-input-number v-model.number="scope.row.fminNum" size="mini" :precision="4" :step="0.0001"
+                               :min="0.0000"/>
             </template>
           </el-table-column>
           <el-table-column label="生效时间" prop="feffectiveDate" width="200px" align="center" min-width="150px">
@@ -275,8 +277,10 @@
       @close="closeDialogForm"
     >
       <div class="materiel-form">
-        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="getGetMateriel" />
+        <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="getGetMateriel"/>
         <el-button size="mini" type="primary" class="btn" @click="getGetMateriel">搜索</el-button>
+        <el-button size="mini" type="primary" class="confirm" @click="confirm">确认</el-button>
+        <el-button size="mini" class="confirm" @click="cancel">取消全选</el-button>
       </div>
       <jc-table
         :table-data="materielDialogData"
@@ -284,6 +288,9 @@
         :cell-style="cellStyle"
         table-height="calc(100vh - 500px)"
         @clickRow="materielSelectRow"
+        ref="table"
+        @selectionChange="handleSelectAll"
+        tableSelection
       />
       <jc-pagination
         v-show="materielPagination.total > 0"
@@ -354,9 +361,9 @@ export default {
       ],
       materielDialogData: [],
       materielDialogHeader: [
-        { label: '使用组织', prop: 'FUSEORG', align: 'center' },
         { label: '物料编码', prop: 'FNUMBER', align: 'center' },
         { label: '物料规格', prop: 'FSPECIFICATION', align: 'center' },
+        { label: '尺寸单位', prop: 'FVOLUMEUNIT', align: 'center' },
         { label: '型号', prop: 'FMODEL', align: 'center' },
         { label: '描述', prop: 'FDESCRIPTION', align: 'center', minWidth: '150px' },
         { label: '创建时间', prop: 'FCREATEDATE', align: 'center' }
@@ -420,13 +427,14 @@ export default {
       openMaterialDialog: false, // 物料弹窗
       FNUMBER: '', // 弹窗编码
       FDESCRIPTION: '', // 弹窗描述
-      FSPECIFICATION: '', // 弹窗规格型号
+      FSPECIFICATION: '', // 弹窗物料规格
       fname: '', // 弹窗搜索关键字
       taxRateName: '', // 税率弹窗关键字
       supplierName: '', // 供应商弹窗关键词
       popupTitle: '', // 查询条件文本
       cellStyle: { padding: '10 10' }, // 行高
       fpriceDisabled: true, // 单价禁用
+      selectAll: [], // 全选的值
       ftaxPriceDisabled: false, // 含税单价禁用
       // 点击行的序号
       tableIndex: 0,
@@ -559,6 +567,37 @@ export default {
         })
       })
     },
+    // 全选
+    handleSelectAll(item) {
+      this.selectAll = item
+    },
+    // 取消全选
+    cancel() {
+      this.$refs.table.$refs.table.clearSelection()
+    },
+    // 确认
+    confirm() {
+      this.selectAll.forEach(item => {
+        this.tableData.unshift(
+          {
+            fmaterialId: item.FNUMBER, // 物料编码
+            FMATERIALID: item.FMATERIALID, // id
+            fprice: 0, // 单价
+            ftaxPrice: 0, // 含税单价
+            fminNum: 1, // 最小起订量
+            fupPrice: 0, // 价格上限
+            fdownPrice: 0, // 价格下限
+            feffectiveDate: '', // 生效时间
+            ftaxRate: this.selectTaxRate, // 税率
+            fdescripTion: item.FDESCRIPTION, // 描述
+            fmodel: item.FSPECIFICATION, // 物料规格
+            fvolumeUnit: item.FVOLUMEUNIT, // 尺寸单位
+            FBASEUNIT: item.FBASEUNIT // 计价单位
+          }
+        )
+      })
+      this.openMaterialDialog = false
+    },
     // 获取币别
     async handleGetCurrency() {
       this.openCurrency = true
@@ -668,21 +707,6 @@ export default {
     // 打开物料编码
     handleGetMateriel(row, index) {
       this.tableIndex = index
-      if (index === this.tableData.length - 1) {
-        this.tableData.push(
-          {
-            fmaterialId: '', // 物料编码
-            fprice: 0, // 单价
-            ftaxPrice: 0, // 含税单价
-            fminNum: 1, // 最小起订量
-            fupPrice: 0, // 价格上限
-            fdownPrice: 0, // 价格下限
-            feffectiveDate: '', // 生效时间
-            ftaxRate: this.selectTaxRate, // 税率
-            fdescripTion: '' // 描述
-          }
-        )
-      }
       this.getGetMateriel()
       this.openMaterialDialog = true
     },
@@ -818,16 +842,6 @@ export default {
         width: 10vw;
       }
     }
-    .materiel-form {
-      display: flex;
-      flex-direction: row;
-      position:relative;
-      .btn{
-        transform: translateY(18%);
-        margin-left: 410px!important;
-        z-index: 999;
-      }
-    }
   }
 }
 
@@ -835,23 +849,29 @@ export default {
   cursor: pointer;
 }
 
-.icon-jin-rud-ao-bo{
+.icon-jin-rud-ao-bo {
   cursor: pointer;
-  &:hover{
+
+  &:hover {
     color: #409eff;
   }
 }
+
 .materiel-form {
   display: flex;
   align-items: center;
   flex-direction: row;
   margin-bottom: 20px;
-  position:relative;
+  position: relative;
 
-  .btn{
+  .btn {
     transform: translateY(18%);
-    margin-left: 410px!important;
+    margin-left: 410px !important;
     z-index: 999;
+  }
+
+  .confirm {
+    transform: translateY(18%);
   }
 
   .materiel-code {
@@ -867,13 +887,16 @@ export default {
     margin-right: 10px;
   }
 }
+
 .dialogClass ::v-deep .el-dialog__body {
   padding: 0 20px;
 }
-.layout ::v-deep .jcTable{
+
+.layout ::v-deep .jcTable {
   min-height: calc(100vh - 450px);
 }
-.el-table ::v-deep .el-table__body-wrapper{
+
+.el-table ::v-deep .el-table__body-wrapper {
   height: 450px;
 }
 </style>

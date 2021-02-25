@@ -312,9 +312,6 @@ export default {
       })
       return flag
     },
-    reset() {
-      this.$emit('reset', this.$refs.form.resetFields())
-    },
 
     // 获取表单数据
     handleGetFormData() {
