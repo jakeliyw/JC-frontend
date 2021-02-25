@@ -28,10 +28,6 @@
               <el-table-column prop="fqty" label="数量" align="center" />
               <el-table-column v-if="false" prop="fprice" label="单价" align="center" />
               <el-table-column label="销售单价" prop="ftaxPrice" align="center" min-width="100px" />
-              <el-table-column v-if="false" label="金额" prop="famount" align="center" min-width="100px" />
-              <el-table-column label="销售金额" prop="ftaxAmount" align="center" min-width="100px" />
-              <el-table-column prop="fsettleCurr" label="结算币别" align="center" />
-              <el-table-column v-if="false" prop="fdownPrice" :label="fdownName" align="center" min-width="140" />
               <el-table-column :label="fdownName" prop="ftaxDownPrice" align="center" min-width="160px">
                 <template slot="header">
                   {{ fdownName }}
@@ -40,6 +36,10 @@
                   {{ scope.row.ftaxDownPrice }}
                 </template>
               </el-table-column>
+              <el-table-column v-if="false" label="金额" prop="famount" align="center" min-width="100px" />
+              <el-table-column label="销售金额" prop="ftaxAmount" align="center" min-width="100px" />
+              <el-table-column prop="fsettleCurr" label="结算币别" align="center" />
+              <el-table-column v-if="false" prop="fdownPrice" :label="fdownName" align="center" min-width="140" />
               <el-table-column prop="fisFree" label="是否赠品" align="center">
                 <template slot-scope="scope">
                   <el-checkbox v-model="scope.row.fisFree" disabled />

@@ -26,6 +26,7 @@
           <el-tag v-else type="danger">{{ clo.scope.row.fdocumentStatus }}</el-tag>
         </template>
         <template v-slot:btnSlot="clo">
+          <el-button type="warning" size="mini" @click="queryReportForm(clo.scope.row.fbillNo)">套打</el-button>
           <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">详情</el-button>
           <el-button type="danger" size="mini" @click="approvalRejection(clo.scope.row.fid)">反审核</el-button>
         </template>
@@ -87,7 +88,7 @@ export default {
         { label: '销售员', prop: 'fsaler', align: 'center', minWidth: '90px' },
         { label: '禁用状态', type: 'tag', align: 'center', minWidth: '100px' },
         { label: '审核状态', type: 'state', align: 'center', minWidth: '100px' },
-        { label: '操作', type: 'btn', align: 'center', minWidth: '160px' }
+        { label: '操作', type: 'btn', align: 'center', minWidth: '230px' }
       ]
     }
   },
@@ -126,6 +127,10 @@ export default {
       } else {
         this.$message.error(message)
       }
+    },
+    // 查看报表
+    queryReportForm(FNUMBER) {
+      this.$router.push({ path: `/marketForm/${FNUMBER}` })
     }
   }
 }

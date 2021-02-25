@@ -171,6 +171,7 @@
       <div class="materiel-form">
         <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleMaterielSearch" />
         <el-button size="mini" type="primary" class="btn" @click="handleMaterielSearch">搜索</el-button>
+        <!--        <el-button size="mini" type="primary" @click="selectionSub">多选添加</el-button>-->
       </div>
       <jc-table
         :table-data="materielDialogData"
@@ -180,6 +181,7 @@
         :cell-style="cellStyle"
         @clickRow="materielSelectRow"
       />
+      <!--   @selectionChange="selectionData"     <el-table-column type="selection" width="60px" sortable="true" align="center" />-->
       <jc-pagination
         v-show="materielPagination.total > 0"
         :total="materielPagination.total"
@@ -226,6 +228,7 @@ export default {
   inject: ['reload'],
   data() {
     return {
+      val: [], // 多选数据
       rate: 1.13, // 销售基准价(默认13%税率)
       fdownPriceRate: '13', // 销售基准价税率
       ftype: 0,
@@ -270,7 +273,7 @@ export default {
           fmaterialIdName: '', // 物料编码
           funitName: '', // 单位
           funitId: '', // 单位id
-          fpriceBase: 10, // 销售系数
+          fpriceBase: 13, // 销售系数
           deliveryPrice: '', // 出厂价
           fdownPrice: '' // 净价
         }]
@@ -294,7 +297,8 @@ export default {
       otherLogTableData: [], // 日志数据
       pageNum: 1,
       size: 10,
-      total: 0
+      total: 0,
+      priceIndex: []
     }
   },
   created() {
@@ -334,17 +338,42 @@ export default {
         })
       })
     },
+    // 多选时触发的事件
+    // selectionData(val) {
+    //   this.val = val
+    // },
+    // selectionSub() {
+    //   this.val.forEach((item, index) => {
+    //     this.tableIndex = this.index + index
+    //     this.prodValue.priceDetails.push(
+    //       {
+    //         fmaterialId: '', // 物料编码ID
+    //         fmaterialIdName: '', // 物料编码
+    //         funitName: '', // 单位
+    //         funitId: '', // 单位id
+    //         fpriceBase: 13, // 销售系数
+    //         deliveryPrice: '', // 出厂价
+    //         fdownPrice: '' // 净价
+    //       }
+    //     )
+    //     this.materielSelectRow(item, this.tableIndex)
+    //     this.getSalPriceMaterial(item, this.tableIndex)
+    //   })
+    // },
     // 物料弹窗选中
-    async materielSelectRow(item) {
+    async materielSelectRow(item, index) {
       this.materialId = item.fmaterialId
       this.prodValue.priceDetails[this.tableIndex].funitId = item.funitId
       this.prodValue.priceDetails[this.tableIndex].foldNumber = item.foldNumber
-      this.isMaterielDialog = false
+      // if (!index) {
       this.getSalPriceMaterial()
+      // }
+      this.isMaterielDialog = false
     },
     // 打开物料编码
     async handleGetMateriel(row, index) {
       if (index || index === 0) {
+        this.index = index // 点击时的下标，用于多选
         this.tableIndex = index
       }
       if (index === this.prodValue.priceDetails.length - 1) {
@@ -354,7 +383,7 @@ export default {
             fmaterialIdName: '', // 物料编码
             funitName: '', // 单位
             funitId: '', // 单位id
-            fpriceBase: 10, // 销售系数
+            fpriceBase: 13, // 销售系数
             deliveryPrice: '', // 出厂价
             fdownPrice: '' // 净价
           }
@@ -377,9 +406,11 @@ export default {
     },
     // 获取出厂价及物料信息
     async getSalPriceMaterial() {
+      // if (item) {
+      //   this.tableIndex = index
+      // }
       const DATA = { fmaterialId: this.materialId }
       const { data: RES } = await querySalPriceMaterial(DATA)
-      // 销售系数
       this.prodValue.priceDetails[this.tableIndex].fmaterialId = RES.fmaterialId
       this.prodValue.priceDetails[this.tableIndex].fmaterialIdName = RES.fnumber
       this.prodValue.priceDetails[this.tableIndex].fdescripTion = RES.fdescripTion
