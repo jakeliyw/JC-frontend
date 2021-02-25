@@ -14,8 +14,12 @@ service.interceptors.request.use(
   config => {
     /* 待给所有接口携带上用户fuserId*/
     const fuserId = window.sessionStorage.getItem('fuserId')
-    if (config.method === 'post' || config.method === 'put') {
-      config.data['fuserId'] = fuserId
+    /* 审核权限列表-修改数据,不带fuserId   config.url !== '/tJxQuery/updayeTJxQuery'  */
+    if (config.method === 'post' || config.method === 'put' && config.url !== '/tJxQuery/updayeTJxQuery') {
+      //  新增审核权限，不带fuserId
+      if (config.url !== '/tJxQuery/insertTJxQuery') {
+        config.data['fuserId'] = fuserId
+      }
     }
     return config
   },

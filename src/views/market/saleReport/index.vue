@@ -7,6 +7,9 @@
           <el-form-item label="新/旧物料编码">
             <el-input v-model.trim="standard.itemcode" />
           </el-form-item>
+          <el-form-item label="型号" label-width="60px">
+            <el-input v-model.trim="standard.itemxh" />
+          </el-form-item>
           <el-form-item label-width="20px">
             <el-button size="mini" type="primary" @click="standardListSearch">搜索</el-button>
           </el-form-item>
@@ -20,7 +23,7 @@
           <el-table-column v-if="false" label="价目编码" prop="pricenum" align="center" />
           <el-table-column label="物料编号" prop="itemcode" align="center" min-width="100" />
           <el-table-column label="旧物料编号" prop="olditemcode" align="center" min-width="90" />
-          <el-table-column label="型号" prop="fmodel" align="center" min-width="90" />
+          <el-table-column label="型号" prop="itemxh" align="center" min-width="80" />
           <el-table-column label="物料描述" prop="itemname" align="center" min-width="600" />
           <el-table-column label="销售基准价(x:餐台数量, y:餐椅数量)" min-width="190px" align="center">
             <el-table-column label="x<20" align="center">
@@ -128,6 +131,7 @@ export default {
       ],
       standard: {
         itemcode: '',
+        itemxh: '',
         kh: ''
       },
       tableData: [],
@@ -187,8 +191,5 @@ export default {
 }
 .el-form{
   display: flex;
-  .el-form-item{
-    width: 283px;
-  }
 }
 </style>

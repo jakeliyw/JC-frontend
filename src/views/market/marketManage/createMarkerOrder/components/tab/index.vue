@@ -274,10 +274,11 @@ export default {
   methods: {
     // 打开物料弹窗
     handleGetMateriel(row, index) {
-      if (!this.fid) {
-        this.$message.error('请先选择客户')
-        return false
-      }
+      // 判断是否有价目表,(改:自动创建价目表)
+      // if (!this.fid) {
+      //   this.$message.error('请先选择客户,获取价目表')
+      //   return false
+      // }
       if (!this.rate) {
         this.$message.error('请先选择销售组织和结算币别，获取汇率。')
         return false
@@ -431,7 +432,7 @@ export default {
               fxxchangeTypeId: this.standardprice.fxxchangeTypeId,
               fsettleCurrId: this.standardprice.fsettleCurrId,
               flocalCurrId: this.standardprice.flocalCurrId,
-              fid: this.tabTwo.saleDetails[this.material].fid,
+              // fid: this.tabTwo.saleDetails[this.material].fid,
               fmaterialId: this.tabTwo.saleDetails[this.material].fmaterialId
             }
             const { data: RES } = await querySalDownPrice(DATA)
@@ -509,7 +510,7 @@ export default {
 </style>
 <style scoped lang="scss">
 .tab {
-  // 图纸单元格居中
+  /* 图纸单元格居中 */
   .el-table ::v-deep td{
       padding: 8px 0;
     &:nth-last-child(2) .cell {

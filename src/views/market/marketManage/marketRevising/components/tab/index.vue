@@ -86,7 +86,7 @@
               />
             </template>
           </el-table-column>
-          <el-table-column label="税率(%)" prop="fentryTaxRate" min-width="100px" align="center">
+          <el-table-column label="税率(%)" prop="fentryTaxRate" align="center" min-width="100px">
             <template slot-scope="scope">
               <el-input-number
                 v-model="scope.row.ftaxRate"
@@ -331,10 +331,11 @@ export default {
     },
     // 打开物料编码
     async handleGetMateriel(row, index) {
-      if (!this.fid) {
-        this.$message.error('请先选择客户')
-        return false
-      }
+      // 判断是否有价目表,(改:自动创建价目表)
+      // if (!this.fid) {
+      //   this.$message.error('请先选择客户')
+      //   return false
+      // }
       this.isMateria = true
       this.material = index
       // 新增一行
@@ -466,7 +467,7 @@ export default {
               fxxchangeTypeId: this.standardPrice.fxxchangeTypeId,
               fsettleCurrId: this.standardPrice.fsettleCurrId,
               flocalCurrId: this.standardPrice.flocalCurrId,
-              fid: this.tabTwo.saleDetails[this.material].fid,
+              // fid: this.tabTwo.saleDetails[this.material].fid,
               fmaterialId: this.tabTwo.saleDetails[this.material].fmaterialId
             }
             const { data: RES } = await querySalDownPrice(DATA)
@@ -565,10 +566,6 @@ export default {
   }
 }
 .el-table {
-  &::v-deep .el-input-number .el-input__inner {
-    padding: 0;
-    width: 140px;
-  }
   &::v-deep .el-input-number__increase{
     display: none;
   }
@@ -581,11 +578,10 @@ export default {
     .el-table{
       &::v-deep .el-input-number .el-input__inner{
         padding: 0;
-        width: 80px;
+        width: 80px!important;
         position: relative;
         left: -25px;
       }
-
     }
   }
   .materiel-form {

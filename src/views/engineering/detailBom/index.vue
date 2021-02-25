@@ -6,11 +6,11 @@
         <div class="tool">
           <el-button size="mini" disabled>刷新</el-button>
           <el-button size="mini" type="primary" disabled>保存bom</el-button>
-          <div class="summation" v-if="bomCost('bom:price')">物料成本:
+          <div v-if="bomCost('bom:price')" class="summation">物料成本:
             <span class="color-text">{{ Math.round((FMATERIALCOST + Number.EPSILON) *100) / 100 }}元</span>
           </div>
         </div>
-        <div class="organization" v-show="false">
+        <div v-show="false" class="organization">
           <span class="text-margin">创建组织</span>
           <el-select v-model="team" placeholder="请选择" size="mini" class="input-width" disabled />
           <span class="text-margin">使用组织</span>

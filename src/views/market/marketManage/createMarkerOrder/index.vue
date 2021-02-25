@@ -5,8 +5,8 @@
       <el-button type="primary" style="width: 80px;margin-bottom: 10px" size="mini" @click="subMarker('E')">暂存</el-button>
       <el-button type="success" style="width: 80px;margin-bottom: 10px" size="mini" @click="subMarker('A')">下单</el-button>
     </div>
-    <el-tabs type="border-card">
-      <el-tab-pane label="主产品">
+    <el-tabs v-model="activeName" type="border-card">
+      <el-tab-pane label="主产品" name="first">
         <el-form ref="purchaseRef" :model="prodValue" label-width="100px" :rules="prodValueRules">
           <el-form-item label="单据类型" prop="fbillTypeId">
             <el-select
@@ -142,7 +142,7 @@
           @visible="prodOrder"
         />
       </el-tab-pane>
-      <el-tab-pane label="其他">
+      <el-tab-pane label="其他" name="second">
         <jc-marker
           other-height="calc(100vh - 360px)"
           :other-url-object="otherUrlObject"
@@ -159,7 +159,7 @@
           </div>
         </jc-marker>
       </el-tab-pane>
-      <el-tab-pane label="审批图片" class="disRow">
+      <el-tab-pane label="审批图片" name="third" class="disRow">
         <div class="positRe">
           <el-upload
             class="avatar-uploader"
@@ -249,6 +249,7 @@ export default {
   inject: ['reload'],
   data() {
     return {
+      activeName: 'first',
       priview: '', // 预览图片
       imgVisible: false, // 预览图片
       actionURL: '',
@@ -264,6 +265,7 @@ export default {
       billtypes: [], // 单据类型
       teamList: [], // 组织
       prodValue: { // 表单数据
+        fstart: 0,
         fdocumentStatus: '',
         saler: true,
         fsalType: 0, // 订单类型(正常、特批)
@@ -314,7 +316,7 @@ export default {
         ], fpaezCombo: [
           { required: true, message: '请选择品质标准', trigger: 'change' }
         ], fpriceListId: [
-          { required: true, message: '请选择价目表', trigger: 'blur' }
+          { required: false, message: '请选择价目表', trigger: 'blur' }
         ], fdeliveryDate: [
           { required: true, message: '请选择要货时间', trigger: 'change' }
         ]
@@ -350,6 +352,7 @@ export default {
       } else {
         this.prodValue.fsalType = 1
       }
+      // 暂存 / 下单(ev: E/A)
       this.prodValue.fdocumentStatus = ev
       this.$refs.purchaseRef.validate(valid => {
         if (!valid) {
@@ -365,14 +368,10 @@ export default {
             return false
           }
           if (this.prodValue.fsalType === 0) {
-            if (Number(item.fprice) < Number(item.deliveryPrice)) {
-              this.$message.error('销售单价不能小于出厂价')
-              return false
-            }
             if (ev === 'A') {
-              if (Number(item.ftaxAmount) < Number(item.ftaxDownPrice)) {
+              if (Number(item.ftaxPrice) < Number(item.ftaxDownPrice) && Number(item.ftaxDownPrice) !== 0) {
                 this.$alert('物料： ' + item.fmaterialIdName + ' 销售单价小于基准价,请先点击暂存,找蒋总审批后,上传审批' +
-                  '图片,再提交.', '提示', {
+                    '图片,再提交.', '提示', {
                   confirmButtonText: '确定'
                 })
                 return false
@@ -380,11 +379,12 @@ export default {
             }
           } else {
             if (!this.prodValue.fapprovalImage) {
-              this.$message.error('请上传审批图片')
+              this.$message.warning('请上传审批图片')
+              this.activeName = 'third'
               return false
             }
-            if (Number(item.fprice) < Number(item.deliveryPrice)) {
-              this.$message.error('销售单价不能小于出厂价')
+            if (Number(item.fprice) < Number(item.deliveryPrice) && Number(item.deliveryPrice) !== 0) {
+              this.$message.error('销售单价不能小于近成本价')
               return false
             }
           }
@@ -447,10 +447,10 @@ export default {
             this.standardPrice.fid = res.data.fid
             this.prodValue.fpriceListIdName = res.data.fname
           } else {
-            // 失败-该客户未新增销售价目为空
-            this.prodValue.fcustId = ''
-            this.prodValue.fname = ''
-            this.$message.warning(res.message)
+            // 失败-该客户未新增销售价目表为空
+            this.prodValue.fpriceListId = 0
+            this.prodValue.fpriceListIdName = ''
+            // this.$message.warning(res.message)
           }
         })
       } else {
