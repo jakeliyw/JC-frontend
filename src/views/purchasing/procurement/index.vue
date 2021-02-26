@@ -12,7 +12,7 @@
         </el-input>
       </el-form-item>
       <el-form-item label="客户订单号">
-        <el-input v-model="orderNumber.khdh" size="mini" />
+        <el-input v-model.trim="orderNumber.khdh" size="mini" />
       </el-form-item>
       <el-form-item label="成品交期始">
         <el-date-picker
@@ -42,10 +42,10 @@
         </el-input>
       </el-form-item>
       <el-form-item label="物料描述">
-        <el-input v-model="orderNumber.itemname" size="mini" />
+        <el-input v-model.trim="orderNumber.itemname" size="mini" />
       </el-form-item>
       <el-form-item label="型号">
-        <el-input v-model="orderNumber.itemxh" size="mini" />
+        <el-input v-model.trim="orderNumber.itemxh" size="mini" />
       </el-form-item>
       <el-form-item label-width="40px">
         <el-button type="primary" size="mini" @click="gainData()">运算</el-button>

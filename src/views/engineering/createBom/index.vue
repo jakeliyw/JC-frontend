@@ -10,8 +10,8 @@
             <span class="color-text">{{ Math.round((materialScience + Number.EPSILON) *100) / 100 }}元</span>
           </div>
         </div>
-        <div class="organization" v-show="false">
-          <span class="text-margin" >创建组织</span>
+        <div v-show="false" class="organization">
+          <span class="text-margin">创建组织</span>
           <el-select v-model="team" placeholder="请选择" size="mini">
             <el-option
               v-for="item in teamList"
@@ -21,8 +21,8 @@
               class="input-width"
             />
           </el-select>
-          <span class="text-margin" >使用组织</span>
-          <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled/>
+          <span class="text-margin">使用组织</span>
+          <el-input v-model="company" placeholder="请输入组织" size="mini" class="input-width" disabled />
         </div>
         <jc-form :option-value="prodValue" :options="prodOptions" label-width="100px">
           <el-input

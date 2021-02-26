@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <iframe :src="`http://202.105.191.50:8878/Default.aspx?Name=SalErrorOrder&dockey=${id}`" height=850 scrolling="auto" width="1450" frameborder="1" />
+    <iframe :src="`http://202.105.191.50:8878/Default.aspx?Name=SalErrorOrder&dockey=${id}`" height="850" scrolling="auto" width="1450" frameborder="1" />
   </div>
 </template>
 
