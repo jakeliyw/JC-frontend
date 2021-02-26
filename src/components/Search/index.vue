@@ -108,7 +108,7 @@ export default {
   top: 0px;
   width: 395px;
   background: #fff;
-  z-index: 998;
+  z-index: 10;
   .el-icon-remove-outline{
     cursor: pointer;
     color: #1e9fff;

@@ -3,7 +3,13 @@
     <jc-title />
     <el-form :model="orderNumber" label-width="90px">
       <el-form-item label="销售订单号">
-        <el-input v-model.trim="Sonum" size="mini" @keyup.enter.native="gainData()" @blur="gainData()" />
+        <el-input v-model.trim="Sonum" size="mini" @keyup.enter.native="gainData()" @blur="gainData()">
+          <i
+            slot="suffix"
+            class="el-input__icon el-icon-search"
+            @click="orderVisiblit=true"
+          />
+        </el-input>
       </el-form-item>
       <el-form-item label="客户">
         <el-input v-model="orderNumber.customer" disabled size="mini" />
@@ -78,6 +84,8 @@
     <div class="footer">
       <el-button type="primary" @click="InsertMO()">确认下发</el-button>
     </div>
+    <!--  销售单价弹窗-->
+    <order-num v-if="orderVisiblit" :selece="false" @xsddh="orderData" />
     <!--  生产部门-->
     <stork v-if="storkVisiblit" :msg="ddlx" :msg2="itemCode" @stork="storkData" />
     <!--    仓库-->
@@ -122,13 +130,14 @@ import {
   Show_SALOrder
 } from '@/api/mrpView'
 import stork from '@/views/purchasing/procurement/components/stork/index'
+import orderNum from '@/views/purchasing/procurement/components/orderNum/index'
 import jcPagination from '@/components/Pagination'
 import { queryTBdStock } from '@/api/purchaseManagement/createPurchasePrice'
 import {
   export_json_to_excel,
   formatJson
 } from '@/utils/Export2Excel'
-
+import { maxDecimal } from '@/utils/number'
 export default {
   name: 'MrpView',
   components: {
@@ -136,10 +145,12 @@ export default {
     stork,
     jcTitle,
     jcPopup,
+    orderNum,
     jcPagination
   },
   data() {
     return {
+      orderVisiblit: false, // 销售订单号弹窗
       ddlx: '', // 订单类型
       itemCode: '', // 物料编号
       storkVisiblit: false, // 生产部门
@@ -268,11 +279,11 @@ export default {
           item.ck = '杰希仓库'
           item.ckid = '323311'
         }
-        item.qty = Number(item.qty).toFixed(4)
-        item.scQty = Number(item.scQty).toFixed(4)
-        item.rprice = Number(item.rprice).toFixed(4)
-        item.kc = Number(item.kc).toFixed(4)
-        item.hje = Number(item.hje).toFixed(2)
+        item.qty = maxDecimal(item.qty)
+        item.scQty = maxDecimal(item.scQty)
+        item.rprice = maxDecimal(item.rprice)
+        item.kc = maxDecimal(item.kc)
+        item.hje = maxDecimal(item.hje)
       })
       this.tableData = RES.array
       // 筛选
@@ -334,6 +345,13 @@ export default {
           this.$message.error(res.message)
         }
       })
+    },
+    // 接受子组件传值,获取销售订单号
+    orderData(ev) {
+      if (ev.XSDDH.length > 0) {
+        this.Sonum = ev.XSDDH[0]
+      }
+      this.orderVisiblit = false
     },
     // 多选时触发的事件
     selectData(val) {

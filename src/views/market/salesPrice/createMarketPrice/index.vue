@@ -213,6 +213,8 @@ import {
 import jcMarker from '@/components/marker'
 import search from '@/components/Search'
 import searData from '@/components/Search/mixin'
+import { maxDecimal } from '@/utils/number'
+
 export default {
   name: 'CreateMarketPrice',
   components: {
@@ -417,26 +419,26 @@ export default {
       this.prodValue.priceDetails[this.tableIndex].funitName = RES.funitName
       this.prodValue.priceDetails[this.tableIndex].deliveryPrice = RES.deliveryPrice
       this.prodValue.priceDetails[this.tableIndex].fdownPrice = RES.fdownPrice
-      this.prodValue.priceDetails[this.tableIndex].fdownPrice1 = (RES.fdownPrice / 0.5).toFixed(4)
-      this.prodValue.priceDetails[this.tableIndex].fdownPrice2 = (RES.fdownPrice / 0.55).toFixed(4)
-      this.prodValue.priceDetails[this.tableIndex].fdownPrice3 = (RES.fdownPrice / 0.6).toFixed(4)
-      this.prodValue.priceDetails[this.tableIndex].fdownPrice4 = (RES.fdownPrice / 0.65).toFixed(4)
-      this.prodValue.priceDetails[this.tableIndex].fdownPrice5 = (RES.fdownPrice / 0.7).toFixed(4)
-      this.prodValue.priceDetails[this.tableIndex].fdownPrice11 = (RES.fdownPrice / 0.5 * this.rate).toFixed(4)
-      this.prodValue.priceDetails[this.tableIndex].fdownPrice12 = (RES.fdownPrice / 0.55 * this.rate).toFixed(4)
-      this.prodValue.priceDetails[this.tableIndex].fdownPrice13 = (RES.fdownPrice / 0.6 * this.rate).toFixed(4)
-      this.prodValue.priceDetails[this.tableIndex].fdownPrice14 = (RES.fdownPrice / 0.65 * this.rate).toFixed(4)
-      this.prodValue.priceDetails[this.tableIndex].fdownPrice15 = (RES.fdownPrice / 0.7 * this.rate).toFixed(4)
+      this.prodValue.priceDetails[this.tableIndex].fdownPrice1 = maxDecimal(RES.fdownPrice / 0.5)
+      this.prodValue.priceDetails[this.tableIndex].fdownPrice2 = maxDecimal(RES.fdownPrice / 0.55)
+      this.prodValue.priceDetails[this.tableIndex].fdownPrice3 = maxDecimal(RES.fdownPrice / 0.6)
+      this.prodValue.priceDetails[this.tableIndex].fdownPrice4 = maxDecimal(RES.fdownPrice / 0.65)
+      this.prodValue.priceDetails[this.tableIndex].fdownPrice5 = maxDecimal(RES.fdownPrice / 0.7)
+      this.prodValue.priceDetails[this.tableIndex].fdownPrice11 = maxDecimal(RES.fdownPrice / 0.5 * this.rate)
+      this.prodValue.priceDetails[this.tableIndex].fdownPrice12 = maxDecimal(RES.fdownPrice / 0.55 * this.rate)
+      this.prodValue.priceDetails[this.tableIndex].fdownPrice13 = maxDecimal(RES.fdownPrice / 0.6 * this.rate)
+      this.prodValue.priceDetails[this.tableIndex].fdownPrice14 = maxDecimal(RES.fdownPrice / 0.65 * this.rate)
+      this.prodValue.priceDetails[this.tableIndex].fdownPrice15 = maxDecimal(RES.fdownPrice / 0.7 * this.rate)
     },
     priceRate(val) {
       this.rate = 1 + (val / 100)
       this.prodValue.priceDetails.map(item => {
         if (item.fdownPrice) {
-          item.fdownPrice11 = (item.fdownPrice1 * this.rate).toFixed(4)
-          item.fdownPrice12 = (item.fdownPrice2 * this.rate).toFixed(4)
-          item.fdownPrice13 = (item.fdownPrice3 * this.rate).toFixed(4)
-          item.fdownPrice14 = (item.fdownPrice4 * this.rate).toFixed(4)
-          item.fdownPrice15 = (item.fdownPrice5 * this.rate).toFixed(4)
+          item.fdownPrice11 = maxDecimal(item.fdownPrice1 * this.rate)
+          item.fdownPrice12 = maxDecimal(item.fdownPrice2 * this.rate)
+          item.fdownPrice13 = maxDecimal(item.fdownPrice3 * this.rate)
+          item.fdownPrice14 = maxDecimal(item.fdownPrice4 * this.rate)
+          item.fdownPrice15 = maxDecimal(item.fdownPrice5 * this.rate)
         }
       })
     },

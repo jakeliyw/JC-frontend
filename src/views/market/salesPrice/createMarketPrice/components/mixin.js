@@ -1,5 +1,6 @@
 import { querySalPriceMaterial } from '@/api/marketManage/marketPriceList'
 import { querySalOrderLog } from '@/api/marketManage/marketOrder'
+import { maxDecimal } from '@/utils/number'
 
 export default {
   methods: {
@@ -16,19 +17,19 @@ export default {
       this.tableData[this.tableIndex].deliveryPrice = RES.deliveryPrice
       this.tableData[this.tableIndex].fdownPrice = RES.fdownPrice
 
-      this.tableData[this.tableIndex].fdownPrice1 = (RES.fdownPrice / 0.5).toFixed(4)
-      this.tableData[this.tableIndex].fdownPrice2 = (RES.fdownPrice / 0.55).toFixed(4)
-      this.tableData[this.tableIndex].fdownPrice3 = (RES.fdownPrice / 0.6).toFixed(4)
-      this.tableData[this.tableIndex].fdownPrice4 = (RES.fdownPrice / 0.65).toFixed(4)
-      this.tableData[this.tableIndex].fdownPrice5 = (RES.fdownPrice / 0.7).toFixed(4)
+      this.tableData[this.tableIndex].fdownPrice1 = maxDecimal(RES.fdownPrice / 0.5)
+      this.tableData[this.tableIndex].fdownPrice2 = maxDecimal(RES.fdownPrice / 0.55)
+      this.tableData[this.tableIndex].fdownPrice3 = maxDecimal(RES.fdownPrice / 0.6)
+      this.tableData[this.tableIndex].fdownPrice4 = maxDecimal(RES.fdownPrice / 0.65)
+      this.tableData[this.tableIndex].fdownPrice5 = maxDecimal(RES.fdownPrice / 0.7)
 
-      this.tableData[this.tableIndex].fdownPrice11 = (RES.fdownPrice / 0.5 * this.rate).toFixed(4)
-      this.tableData[this.tableIndex].fdownPrice12 = (RES.fdownPrice / 0.55 * this.rate).toFixed(4)
-      this.tableData[this.tableIndex].fdownPrice13 = (RES.fdownPrice / 0.6 * this.rate).toFixed(4)
-      this.tableData[this.tableIndex].fdownPrice14 = (RES.fdownPrice / 0.65 * this.rate).toFixed(4)
-      this.tableData[this.tableIndex].fdownPrice15 = (RES.fdownPrice / 0.7 * this.rate).toFixed(4)
+      this.tableData[this.tableIndex].fdownPrice11 = maxDecimal(RES.fdownPrice / 0.5 * this.rate)
+      this.tableData[this.tableIndex].fdownPrice12 = maxDecimal(RES.fdownPrice / 0.55 * this.rate)
+      this.tableData[this.tableIndex].fdownPrice13 = maxDecimal(RES.fdownPrice / 0.6 * this.rate)
+      this.tableData[this.tableIndex].fdownPrice14 = maxDecimal(RES.fdownPrice / 0.65 * this.rate)
+      this.tableData[this.tableIndex].fdownPrice15 = maxDecimal(RES.fdownPrice / 0.7 * this.rate)
       // // 基准价
-      // this.tableData[this.tableIndex].fdownPrice = (RES.deliveryPrice * (1 + fpriceBase)).toFixed(4)
+      // this.tableData[this.tableIndex].fdownPrice = maxDecimal(RES.deliveryPrice * (1 + fpriceBase))
     },
     // 获取其它
     async handleOther() {

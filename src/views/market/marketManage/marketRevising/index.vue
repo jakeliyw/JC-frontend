@@ -63,7 +63,7 @@
             </el-input>
           </el-form-item>
           <el-form-item label="结算币别" prop="fsettleCurrId">
-            <el-input v-model.trim="prodValue.fsettleCurr" placeholder="请选择结算币别" size="mini">
+            <el-input v-model.trim="prodValue.fsettleCurr" placeholder="请选择结算币别" size="mini" disabled>
               <i
                 slot="suffix"
                 class="el-input__icon el-icon-search"
@@ -286,6 +286,8 @@ export default {
           fisFree: false,
           ftaxRate: '',
           fdownPrice: '',
+          ftaxDownPrice: '',
+          ftaxAmount: '',
           salImage: {
             imageUrl: '', // 图片
             imageUrl1: '', // 图片
@@ -343,7 +345,7 @@ export default {
             return false
           }
           if (Number(item.ftaxPrice) < Number(item.deliveryPrice)) {
-            this.$message.error('销售单价不能小于近成本价')
+            this.$message.error(item.fnumber + '销售单价不能小于近成本价')
             return false
           }
         }
@@ -357,6 +359,7 @@ export default {
           setTimeout(() => {
             this.reload()
           }, 1000)
+          this.$router.push({ path: '/marketNoPass' })
         } else {
           this.$message.error(res.message)
         }

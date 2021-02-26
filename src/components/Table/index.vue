@@ -205,6 +205,9 @@ export default {
   th{
     border-color: #ccc;
     user-select: initial; /* 表头可复制 */
+    .cell{
+      white-space: nowrap;
+    }
   }
   th.is-leaf{
     border-bottom: 1px solid #ccc;

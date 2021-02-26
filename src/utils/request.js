@@ -14,11 +14,20 @@ service.interceptors.request.use(
   config => {
     /* 待给所有接口携带上用户fuserId*/
     const fuserId = window.sessionStorage.getItem('fuserId')
-    /* 审核权限列表-修改数据,不带fuserId   config.url !== '/tJxQuery/updayeTJxQuery'  */
-    if (config.method === 'post' || config.method === 'put' && config.url !== '/tJxQuery/updayeTJxQuery') {
-      //  新增审核权限，不带fuserId
-      if (config.url !== '/tJxQuery/insertTJxQuery') {
-        config.data['fuserId'] = fuserId
+    if (config.method === 'post' || config.method === 'put') {
+      //  新增审核权限、分配/禁止角色，不带fuserId
+      /* 审核权限列表-修改数据,不带fuserId   config.url !== '/tJxQuery/updayeTJxQuery'  */
+      switch (config.url) {
+        case '/tJxQuery/updayeTJxQuery':
+          break
+        case '/tJxQuery/insertTJxQuery':
+          break
+        case '/tJxAdminrole/distributionRole':
+          break
+        case '/tSecUser/updateUserDisable':
+          break
+        default:
+          config.data['fuserId'] = fuserId
       }
     }
     return config

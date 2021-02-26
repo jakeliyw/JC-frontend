@@ -208,6 +208,8 @@ import currency from '@/views/market/marketManage/createMarkerOrder/components/c
 import salPrice from '@/views/market/salesPrice/createMarketPrice/components/mixin' // 其他
 import search from '@/components/Search'
 import searData from '@/components/Search/mixin'
+import { maxDecimal } from '@/utils/number'
+
 export default {
   components: {
     jcTable,
@@ -278,17 +280,17 @@ export default {
         iten.fmaterialIdName = iten.fnumber
       }
       RES.detail.map(item => {
-        item.fdownPrice1 = (item.fdownPrice / 0.5).toFixed(4)
-        item.fdownPrice2 = (item.fdownPrice / 0.55).toFixed(4)
-        item.fdownPrice3 = (item.fdownPrice / 0.6).toFixed(4)
-        item.fdownPrice4 = (item.fdownPrice / 0.65).toFixed(4)
-        item.fdownPrice5 = (item.fdownPrice / 0.7).toFixed(4)
+        item.fdownPrice1 = maxDecimal(item.fdownPrice / 0.5)
+        item.fdownPrice2 = maxDecimal(item.fdownPrice / 0.55)
+        item.fdownPrice3 = maxDecimal(item.fdownPrice / 0.6)
+        item.fdownPrice4 = maxDecimal(item.fdownPrice / 0.65)
+        item.fdownPrice5 = maxDecimal(item.fdownPrice / 0.7)
 
-        item.fdownPrice11 = (item.fdownPrice / 0.5 * this.rate).toFixed(4)
-        item.fdownPrice12 = (item.fdownPrice / 0.55 * this.rate).toFixed(4)
-        item.fdownPrice13 = (item.fdownPrice / 0.6 * this.rate).toFixed(4)
-        item.fdownPrice14 = (item.fdownPrice / 0.65 * this.rate).toFixed(4)
-        item.fdownPrice15 = (item.fdownPrice / 0.7 * this.rate).toFixed(4)
+        item.fdownPrice11 = maxDecimal(item.fdownPrice / 0.5 * this.rate)
+        item.fdownPrice12 = maxDecimal(item.fdownPrice / 0.55 * this.rate)
+        item.fdownPrice13 = maxDecimal(item.fdownPrice / 0.6 * this.rate)
+        item.fdownPrice14 = maxDecimal(item.fdownPrice / 0.65 * this.rate)
+        item.fdownPrice15 = maxDecimal(item.fdownPrice / 0.7 * this.rate)
       })
       this.tableData = RES.detail
       this.organizationValue = RES
@@ -310,11 +312,11 @@ export default {
       this.rate = 1 + (val / 100)
       this.tableData.map(item => {
         if (item.fdownPrice) {
-          item.fdownPrice11 = (item.fdownPrice1 * this.rate).toFixed(4)
-          item.fdownPrice12 = (item.fdownPrice2 * this.rate).toFixed(4)
-          item.fdownPrice13 = (item.fdownPrice3 * this.rate).toFixed(4)
-          item.fdownPrice14 = (item.fdownPrice4 * this.rate).toFixed(4)
-          item.fdownPrice15 = (item.fdownPrice5 * this.rate).toFixed(4)
+          item.fdownPrice11 = maxDecimal(item.fdownPrice1 * this.rate)
+          item.fdownPrice12 = maxDecimal(item.fdownPrice2 * this.rate)
+          item.fdownPrice13 = maxDecimal(item.fdownPrice3 * this.rate)
+          item.fdownPrice14 = maxDecimal(item.fdownPrice4 * this.rate)
+          item.fdownPrice15 = maxDecimal(item.fdownPrice5 * this.rate)
         }
       })
     },
@@ -349,6 +351,7 @@ export default {
       this.tableData[this.tableIndex].foldNumber = item.foldNumber
       this.tableData[this.tableIndex].funitId = item.funitId
       this.isMaterielDialog = false
+      // 获取出厂价(组件 salPrice 中)
       this.querySalPriceMaterial()
     },
     // 打开物料编码
@@ -414,7 +417,7 @@ export default {
       if (this.tableData[this.tableIndex].fmaterialId) {
         const tBase = (this.tableData[this.tableIndex].fpriceBase) / 100
         const tPrice = this.tableData[this.tableIndex].deliveryPrice
-        this.tableData[this.tableIndex].fdownPrice = (tPrice * (1 + tBase)).toFixed(4) // 基准价
+        this.tableData[this.tableIndex].fdownPrice = (tPrice * (1 + tBase)) // 基准价
       }
     }
   }

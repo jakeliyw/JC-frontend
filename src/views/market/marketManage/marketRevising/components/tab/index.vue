@@ -178,6 +178,7 @@ import jumpMateriel from '@/components/JumpMateriel'
 import material from '@/views/market/marketManage/createMarkerOrder/components/material'
 import uploadImg from '@/views/market/marketManage/createMarkerOrder/components/uploadImg'
 import { querySalDownPrice } from '@/api/marketManage/marketOrder'
+import { maxDecimal, maxDecimal2 } from '@/utils/number'
 
 export default {
   components: {
@@ -290,7 +291,7 @@ export default {
             }
           }
           if (!this.isMateria) {
-            item.fdownPrice = (item.fdownPrice * this.shuliang).toFixed(4)
+            item.fdownPrice = maxDecimal(item.fdownPrice * this.shuliang)
             this.material = index
             this.fqtyPrice()
           }
@@ -390,9 +391,9 @@ export default {
       const fqty = this.tabTwo.saleDetails[index].fqty
       const fprice = this.tabTwo.saleDetails[index].fprice
       const ftaxRate = this.tabTwo.saleDetails[index].ftaxRate
-      const ftaxPrice = (fprice * (1 + ftaxRate / 100)).toFixed(4)
-      this.tabTwo.saleDetails[index].famount = (fprice * fqty).toFixed(2)
-      this.tabTwo.saleDetails[index].ftaxAmount = (fqty * ftaxPrice).toFixed(2)
+      const ftaxPrice = maxDecimal(fprice * (1 + ftaxRate / 100))
+      this.tabTwo.saleDetails[index].famount = maxDecimal2(fprice * fqty)
+      this.tabTwo.saleDetails[index].ftaxAmount = maxDecimal2(fqty * ftaxPrice)
       this.fqtyPrice()
       this.$emit('visible', this.tabTwo)
     }, // 监听单价
@@ -401,10 +402,10 @@ export default {
       const fqty = this.tabTwo.saleDetails[index].fqty
       const fprice = this.tabTwo.saleDetails[index].fprice
       const ftaxRate = this.tabTwo.saleDetails[index].ftaxRate
-      const ftaxPrice = (fprice * (1 + ftaxRate / 100)).toFixed(4)
-      this.tabTwo.saleDetails[index].ftaxAmount = (fqty * ftaxPrice).toFixed(2)
+      const ftaxPrice = maxDecimal(fprice * (1 + ftaxRate / 100))
+      this.tabTwo.saleDetails[index].ftaxAmount = maxDecimal2(fqty * ftaxPrice)
       this.tabTwo.saleDetails[index].ftaxPrice = ftaxPrice
-      this.tabTwo.saleDetails[index].famount = (fprice * fqty).toFixed(2)
+      this.tabTwo.saleDetails[index].famount = maxDecimal2(fprice * fqty)
       this.$emit('visible', this.tabTwo)
     },
     // 监听含税单价
@@ -413,9 +414,9 @@ export default {
       const fqty = this.tabTwo.saleDetails[index].fqty
       const ftaxPrice = this.tabTwo.saleDetails[index].ftaxPrice
       const ftaxRate = this.tabTwo.saleDetails[index].ftaxRate
-      this.tabTwo.saleDetails[index].ftaxAmount = (fqty * ftaxPrice).toFixed(2)
-      this.tabTwo.saleDetails[index].fprice = (ftaxPrice / (1 + ftaxRate / 100)).toFixed(4)
-      this.tabTwo.saleDetails[index].famount = (this.tabTwo.saleDetails[index].fprice * fqty).toFixed(2)
+      this.tabTwo.saleDetails[index].ftaxAmount = maxDecimal2(fqty * ftaxPrice)
+      this.tabTwo.saleDetails[index].fprice = maxDecimal(ftaxPrice / (1 + ftaxRate / 100))
+      this.tabTwo.saleDetails[index].famount = maxDecimal2(this.tabTwo.saleDetails[index].fprice * fqty)
       this.$emit('visible', this.tabTwo)
     },
     // 监听税率,修改税率更改销售基准价(含税),不更改单价,含税单价,销售基准价
@@ -428,7 +429,7 @@ export default {
       // const ftaxPrice = (fprice * (1 + ftaxRate / 100)).toFixed(4)
       // this.tabTwo.saleDetails[index].ftaxAmount = (fqty * ftaxPrice).toFixed(2)
       // this.tabTwo.saleDetails[index].ftaxPrice = ftaxPrice
-      this.tabTwo.saleDetails[index].ftaxDownPrice = (fdownPrices * (1 + ftaxRate / 100)).toFixed(4)
+      this.tabTwo.saleDetails[index].ftaxDownPrice = maxDecimal(fdownPrices * (1 + ftaxRate / 100))
       this.$emit('visible', this.tabTwo)
     }, // 监听应收比例
     handleChange2(value) {
@@ -461,7 +462,7 @@ export default {
     async querySalDownPrice() {
       if (this.cutMoney !== '') {
         for (const index in this.tabTwo.saleDetails) {
-          if (this.tabTwo.saleDetails[index].fid) {
+          if (this.tabTwo.saleDetails[index]) {
             this.material = index
             const DATA = {
               fxxchangeTypeId: this.standardPrice.fxxchangeTypeId,
@@ -487,7 +488,7 @@ export default {
           fxxchangeTypeId: this.standardPrice.fxxchangeTypeId,
           fsettleCurrId: this.standardPrice.fsettleCurrId,
           flocalCurrId: this.standardPrice.flocalCurrId,
-          fid: this.tabTwo.saleDetails[this.material].fid,
+          // fid: this.tabTwo.saleDetails[this.material].fid,
           fmaterialId: this.tabTwo.saleDetails[this.material].fmaterialId
         }
         const { data: RES } = await querySalDownPrice(DATA)
@@ -535,8 +536,8 @@ export default {
         this.tabTwo.saleDetails[this.material].fdownPrices = this.tabTwo.saleDetails[this.material].fdownPrice
         return
       }
-      this.tabTwo.saleDetails[this.material].fdownPrice = (fdownPrice / this.shuliang).toFixed(4)
-      this.tabTwo.saleDetails[this.material].ftaxDownPrice = (this.tabTwo.saleDetails[this.material].fdownPrice * (1 + rate / 100)).toFixed(4)
+      this.tabTwo.saleDetails[this.material].fdownPrice = maxDecimal(fdownPrice / this.shuliang)
+      this.tabTwo.saleDetails[this.material].ftaxDownPrice = maxDecimal(this.tabTwo.saleDetails[this.material].fdownPrice * (1 + rate / 100))
     }
   }
 }

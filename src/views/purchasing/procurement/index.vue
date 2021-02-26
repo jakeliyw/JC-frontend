@@ -41,6 +41,12 @@
           />
         </el-input>
       </el-form-item>
+      <el-form-item label="物料描述">
+        <el-input v-model="orderNumber.itemname" size="mini" />
+      </el-form-item>
+      <el-form-item label="型号">
+        <el-input v-model="orderNumber.itemxh" size="mini" />
+      </el-form-item>
       <el-form-item label-width="40px">
         <el-button type="primary" size="mini" @click="gainData()">运算</el-button>
         <el-button type="primary" size="mini" @click="handleExport">导出Excel</el-button>
@@ -155,6 +161,7 @@ import large from '@/views/purchasing/procurement/components/large/index'
 import jcPagination from '@/components/Pagination'
 import { queryTBdStock } from '@/api/purchaseManagement/createPurchasePrice'
 import { export_json_to_excel, formatJson } from '@/utils/Export2Excel'
+import { maxDecimal } from '@/utils/number'
 
 export default {
   name: 'Procurement',
@@ -178,6 +185,8 @@ export default {
         khdh: '',
         sd: '',
         ed: '',
+        itemname: '',
+        itemxh: '',
         lagerCode: ''
       },
       loading: false,
@@ -303,13 +312,13 @@ export default {
           item.fsuppliername = ''
           item.fsupplierid = ''
         }
-        item.qty = Number(item.qty).toFixed(4)
-        item.cgQty = Number(item.cgQty).toFixed(4)
-        item.rprice = Number(item.rprice).toFixed(4)
-        item.kc = Number(item.kc).toFixed(4)
-        item.shs = Number(item.shs).toFixed(4)
-        item.sXprice = Number(item.sXprice).toFixed(4)
-        item.hje = (item.rprice * item.cgQty).toFixed(2)
+        item.qty = maxDecimal(item.qty)
+        item.cgQty = maxDecimal(item.cgQty)
+        item.rprice = maxDecimal(item.rprice)
+        item.kc = maxDecimal(item.kc)
+        item.shs = maxDecimal(item.shs)
+        item.sXprice = maxDecimal(item.sXprice)
+        item.hje = maxDecimal(item.rprice * item.cgQty)
       })
       // 筛选
       this.tableHeader.forEach(res => {

@@ -13,7 +13,7 @@
         <span class="materiel-code">销售订单号</span>
         <el-input v-model.trim="stork.fname" class="input-width" size="mini" placeholder="请输入销售订单号" @keyup.enter.native="storkSearch" />
         <el-button size="mini" type="primary" @click="storkSearch">搜索</el-button>
-        <el-button size="mini" type="primary" @click="affirm">确认</el-button>
+        <el-button v-if="selece" size="mini" type="primary" @click="affirm">确认</el-button>
       </div>
       <jc-table
         :table-data="storklDialogData"
@@ -22,18 +22,12 @@
         serial
         :cell-style="cellStyle"
         @selectionChange="storklSelectRow"
+        @clickRow="storklSelect"
       >
-        <el-table-column type="selection" width="60px" align="center" />
-        <template v-slot:billSlot="clo">
-          <el-link type="primary" @click="detailPurchase(clo.scope.row.fid)">{{ clo.scope.row.fbillNo }}</el-link>
-        </template>
+        <el-table-column v-if="selece" type="selection" width="60px" align="center" />
         <template v-slot:tagSlot="clo">
           <el-tag v-if="clo.scope.row.fcloseStatus==='A'">否</el-tag>
           <el-tag v-else type="danger">是</el-tag>
-        </template>
-        <template v-slot:btnSlot="clo">
-          <el-button type="primary" size="mini" @click="detailPurchase(clo.scope.row.fid)">详情</el-button>
-          <el-button type="danger" size="mini" @click="approvalRejection(clo.scope.row.fid)">反审核</el-button>
         </template>
       </jc-table>
       <jc-pagination
@@ -57,13 +51,9 @@ export default {
     jcPagination
   },
   props: {
-    msg: {
-      type: String,
-      default: ''
-    },
-    msg2: {
-      type: String,
-      default: ''
+    selece: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -80,8 +70,8 @@ export default {
       storkDialogHeader: [
         { label: '订单时间', prop: 'fcreateDate', align: 'center', minWidth: '155px' },
         { label: '单据类型', prop: 'fbillType', align: 'center', minWidth: '110px' },
-        { label: '销售订单号', type: 'bill', align: 'center', minWidth: '110px' },
-        { label: '客户订单号', prop: 'fpaezText', align: 'center', minWidth: '110px' },
+        { label: '销售订单号', prop: 'fbillNo', align: 'center', minWidth: '110px' },
+        { label: '客户订单号', prop: 'fpaezText', align: 'center', minWidth: '110px', filterHeaders: true },
         { label: '客户分组', prop: 'fprimaryGroup', align: 'center' },
         { label: '客户', prop: 'customer', align: 'center' },
         { label: '产品数量', prop: 'fqty', align: 'center' },
@@ -92,7 +82,8 @@ export default {
       ],
       cellStyle: { padding: '10 10' },
       prodValue: { XSDDH: '' },
-      ddlx: ''
+      ddlx: '',
+      val: []
     }
   },
   created() {
@@ -106,6 +97,28 @@ export default {
       this.storklDialogData = RES.array.map(item => {
         return (toMxAmina(item))
       })
+      // 筛选
+      this.storkDialogHeader.forEach(res => {
+        res.filters = []
+        this.storklDialogData.forEach(item => {
+          console.log(item)
+          if (item[res.prop]) {
+            res.filters.push({
+              text: item[res.prop], value: item[res.prop]
+            })
+          }
+        })
+        const obj = {}
+        const result = []
+        res.filters.map(item => {
+          if (!obj[item.text]) {
+            console.log(item)
+            result.push(item)
+            obj[item.text] = true
+          }
+        })
+        res.filters = result
+      })
       this.stork.total = total.total
     },
     // 销售订单弹窗选中
@@ -114,6 +127,11 @@ export default {
         return item.fbillNo
       })
     },
+    storklSelect(item) {
+      this.val.push(item.fbillNo)
+      this.affirm()
+    },
+    // 确认
     affirm() {
       this.prodValue.XSDDH = this.val
       this.prodValue.isstorklDialog = false
