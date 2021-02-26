@@ -262,6 +262,14 @@ export const asyncRouterMap = [
             component: () => import('@/views/market/marketManage/marketOrder/index'),
             meta: { title: '销售订单列表' },
             menu: 'marketOrder'
+          },
+          {
+            path: '/marketForm/:id',
+            name: 'MarketForm',
+            component: () => import('@/views/market/marketManage/marketForm'),
+            meta: { title: '销售报价申请表', noCache: false },
+            hidden: true,
+            menu: 'marketForm'
           }
         ]
       },

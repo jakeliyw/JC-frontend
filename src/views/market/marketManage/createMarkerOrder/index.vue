@@ -367,9 +367,13 @@ export default {
             this.$message.error('表格不能为空或删除空行')
             return false
           }
+          if (Number(item.ftaxDownPrice) === 0) {
+            this.$message.error('该物料未创建BOM,暂时无法下单')
+            return
+          }
           if (this.prodValue.fsalType === 0) {
             if (ev === 'A') {
-              if (Number(item.ftaxPrice) < Number(item.ftaxDownPrice) && Number(item.ftaxDownPrice) !== 0) {
+              if (Number(item.ftaxPrice) < Number(item.ftaxDownPrice)) {
                 this.$alert('物料： ' + item.fmaterialIdName + ' 销售单价小于基准价,请先点击暂存,找蒋总审批后,上传审批' +
                     '图片,再提交.', '提示', {
                   confirmButtonText: '确定'
@@ -383,7 +387,7 @@ export default {
               this.activeName = 'third'
               return false
             }
-            if (Number(item.fprice) < Number(item.deliveryPrice) && Number(item.deliveryPrice) !== 0) {
+            if (Number(item.fprice) < Number(item.deliveryPrice)) {
               this.$message.error('销售单价不能小于近成本价')
               return false
             }

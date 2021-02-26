@@ -224,7 +224,6 @@ import { queryFtypeInfo } from '@/api/engineering/deitalBom'
 import { toMxAmina, Disable } from '@/components/ToMxamineState'
 import search from '@/components/Search'
 import searData from '@/components/Search/mixin'
-
 export default {
   name: 'CreateBom',
   components: {

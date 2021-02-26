@@ -64,14 +64,6 @@
               />
             </template>
           </el-table-column>
-          <el-table-column v-if="false" label="金额" prop="famount" align="center" min-width="100px" />
-          <el-table-column label="销售金额" prop="ftaxAmount" align="center" min-width="100px" />
-          <el-table-column label="结算币别" prop="fsettleCurrId" align="center" min-width="100px">
-            <template>
-              {{ standardprice.fsettleCurrIdName }}
-            </template>
-          </el-table-column>
-          <el-table-column v-if="false" :label="fdownName" prop="fdownPrice" align="center" min-width="160px" />
           <el-table-column :label="fdownName" prop="ftaxDownPrice" align="center" min-width="160px">
             <template slot="header">
               {{ fdownName }}
@@ -80,6 +72,14 @@
               {{ scope.row.ftaxDownPrice }}
             </template>
           </el-table-column>
+          <el-table-column v-if="false" label="金额" prop="famount" align="center" min-width="100px" />
+          <el-table-column label="销售金额" prop="ftaxAmount" align="center" min-width="100px" />
+          <el-table-column label="结算币别" prop="fsettleCurrId" align="center" min-width="100px">
+            <template>
+              {{ standardprice.fsettleCurrIdName }}
+            </template>
+          </el-table-column>
+          <el-table-column v-if="false" :label="fdownName" prop="fdownPrice" align="center" min-width="160px" />
           <el-table-column label="是否赠品" prop="fisFree" align="center">
             <template slot-scope="scope">
               <el-checkbox

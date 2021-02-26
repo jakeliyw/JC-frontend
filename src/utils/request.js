@@ -71,6 +71,13 @@ service.interceptors.response.use(
             duration: 5 * 1000
           })
           break
+        case 502:
+          Message({
+            message: '当前服务器不稳定，请稍后尝试！',
+            type: 'error',
+            duration: 5 * 1000
+          })
+          break
         default:
           Message({
             message: error.response.data.message,

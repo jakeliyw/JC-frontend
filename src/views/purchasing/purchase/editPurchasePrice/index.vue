@@ -182,13 +182,18 @@
       <div class="materiel-form">
         <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="getGetMateriel" />
         <el-button size="mini" type="primary" class="btn" @click="getGetMateriel">搜索</el-button>
+        <el-button size="mini" class="confirm" @click="confirm">确认</el-button>
+        <el-button size="mini" class="confirm" @click="cancel">取消全选</el-button>
       </div>
       <jc-table
+        ref="table"
         :table-data="materielDialogData"
         :table-header="materielDialogHeader"
         :cell-style="cellStyle"
         table-height="calc(100vh - 500px)"
+        table-selection
         @clickRow="materielSelectRow"
+        @selectionChange="handleSelectAll"
       />
       <jc-pagination
         v-show="materielPagination.total > 0"
@@ -255,6 +260,7 @@ export default {
       ftaxRate: 0, // 税率
       openMaterialDialog: false, // 物料弹窗
       FNUMBER: '', // 弹窗编码
+      selectAll: [], // 全选数据
       FDESCRIPTION: '', // 弹窗描述
       FSPECIFICATION: '', // 弹窗物料规格
       cellStyle: { padding: '10 10' }, // 行高
@@ -302,6 +308,37 @@ export default {
       RES.fisIncludedTax = JSON.parse(RES.fisIncludedTax)
       this.purchaseForm = RES
       this.tableData = RES.detail
+    },
+    // 全选
+    handleSelectAll(item) {
+      this.selectAll = item
+    },
+    // 取消全选
+    cancel() {
+      this.$refs.table.$refs.table.clearSelection()
+    },
+    // 确认
+    confirm() {
+      this.selectAll.forEach(item => {
+        this.tableData.push(
+          {
+            fmaterialId: item.FMATERIALID, // 物料编码
+            fnumber: item.FNUMBER,
+            fprice: 0, // 单价
+            ftaxPrice: 0, // 含税单价
+            fminNum: 1, // 最小起订量
+            fupPrice: 0, // 价格上限
+            fdownPrice: 0, // 价格下限
+            feffectiveDate: new Date(), // 生效时间
+            ftaxRate: 0, // 税率
+            fdescripTion: item.FDESCRIPTION, // 描述
+            fspecificaTion: item.FSPECIFICATION, // 物料规格
+            fvolumeUnit: item.FVOLUMEUNIT, // 尺寸单位
+            funit: item.FBASEUNIT // 计价单位
+          }
+        )
+      })
+      this.openMaterialDialog = false
     },
     // 保存采购列表
     preservation() {
@@ -372,9 +409,12 @@ export default {
             fminNum: 1, // 最小起订量
             fupPrice: 0, // 价格上限
             fdownPrice: 0, // 价格下限
-            feffectiveDate: new Date(), // 生效时间
+            feffectiveDate: '', // 生效时间
             ftaxRate: this.ftaxRate, // 税率
-            fdescripTion: '' // 描述
+            fdescripTion: '', // 描述
+            fmodel: '', // 物料规格
+            fvolumeUnit: '', // 尺寸单位
+            FBASEUNIT: '' // 计价单位
           }
         )
       }
@@ -488,11 +528,6 @@ export default {
         width: 10vw;
       }
     }
-
-    .materiel-form {
-      display: flex;
-      flex-direction: row;
-    }
   }
 }
 
@@ -519,6 +554,9 @@ export default {
     transform: translateY(18%);
     margin-left: 410px!important;
     z-index: 999;
+  }
+  .confirm{
+    transform: translateY(18%);
   }
   .materiel-code {
     font-weight: bold;
