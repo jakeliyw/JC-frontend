@@ -176,7 +176,6 @@ export default {
     },
     // 修改权限(修改数据结构)
     handleCheckChange(data, checked, indeterminate) {
-      console.log(checked)
       if (checked) {
         this.treeSubData.children.push({ menuId: data.menuId })
       } else {
@@ -226,7 +225,6 @@ export default {
         type: 'warning'
       }).then(() => {
         deleteRole({ roleId: id }).then(res => {
-          console.log(res)
           if (res.code === 0) {
             this.$message.success(res.message)
             this.getRoleList()
