@@ -109,7 +109,6 @@ export default {
       this.tableData = RES.array.map(item => {
         return (toMxAmina(item))
       })
-      console.log(this.tableData)
       this.total = RES.total
     },
     // 搜索
