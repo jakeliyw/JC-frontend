@@ -588,7 +588,7 @@ export default {
     // 确认
     confirm() {
       this.selectAll.forEach(item => {
-        this.tableData.unshift(
+        this.tableData.push(
           {
             fmaterialId: item.FNUMBER, // 物料编码
             FMATERIALID: item.FMATERIALID, // id
