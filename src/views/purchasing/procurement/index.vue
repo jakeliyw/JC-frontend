@@ -345,16 +345,16 @@ export default {
     // 确认下发
     async InsertMO() {
       this.insetData.insert_MoLists = []
-      for (const index in this.tableData) {
-        if (!this.tableData[index].fsupplierid || !this.tableData[index].ckid) {
+      for (const index in this.val) {
+        if (!this.val[index].fsupplierid || !this.val[index].ckid) {
           this.$message.error(Number(index) + Number(1) + '行供应商或仓库不能为空')
           return
         }
-        if (this.tableData[index].rprice === 0) {
+        if (this.val[index].rprice === 0) {
           this.$message.error(Number(index) + Number(1) + '行采购单价不能为零')
           return
         }
-        if (this.tableData[index].rprice > Number(this.tableData[index].sXprice)) {
+        if (this.val[index].rprice > Number(this.val[index].sXprice)) {
           this.$message.warning(Number(index) + Number(1) + '行采购单价不能超过限价')
           return
         }
@@ -363,7 +363,7 @@ export default {
         if (item.zt === '未转') {
           this.insetData.insert_MoLists.push({
             DDLX: item.ddlx,
-            Qutntity: item.qty,
+            Qutntity: String(item.qty),
             Rprice: String(item.rprice),
             StockID: item.ckid,
             StockName: item.ck,
@@ -384,8 +384,10 @@ export default {
         if (res.data.result) {
           this.$message.success('转单成功')
           this.gainData(res.data.messger)
+        } else if (res.code === 1) {
+          this.$message.error(res.messger)
         } else {
-          this.$message.error(res.data.messger)
+          this.$message.error(res.data.messger || res.messger)
         }
       })
     },
