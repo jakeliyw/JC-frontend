@@ -342,6 +342,12 @@ export default {
     },
     // 保存采购列表
     preservation() {
+      const materielId = this.tableData.findIndex(item => {
+        return item.fmaterialId === undefined || item.fmaterialId === ''
+      })
+      if (materielId !== -1 && this.tableData.length > 1) {
+        this.tableData.splice(materielId, 1)
+      }
       for (const ITEM of this.tableData) {
         if (ITEM.fmaterialId === '' || ITEM.fprice === 0 ||
           ITEM.ftaxPrice === 0 || ITEM.fminNum === 0 || ITEM.feffectiveDate == null) {
@@ -367,7 +373,10 @@ export default {
       }
       updatePurPrice(DATA).then(res => {
         if (res.code !== 0) {
-          this.$message.warning(res.message)
+          const fmateriAalId = this.tableData.findIndex(item => {
+            return item.fmaterialId === res.data.fmateriAalId
+          })
+          this.$message.warning(`第${fmateriAalId + 1}行，${res.message}`)
           return
         }
         this.$message.success(res.message)
@@ -409,7 +418,7 @@ export default {
             fminNum: 1, // 最小起订量
             fupPrice: 0, // 价格上限
             fdownPrice: 0, // 价格下限
-            feffectiveDate: '', // 生效时间
+            feffectiveDate: new Date(), // 生效时间
             ftaxRate: this.ftaxRate, // 税率
             fdescripTion: '', // 描述
             fmodel: '', // 物料规格

@@ -48,7 +48,7 @@
         <el-input v-model.trim="orderNumber.itemxh" size="mini" />
       </el-form-item>
       <el-form-item label-width="40px">
-        <el-button type="primary" size="mini" @click="gainData()">运算</el-button>
+        <el-button type="primary" size="mini" @click="gainData()" >运算</el-button>
         <el-button type="primary" size="mini" @click="handleExport">导出Excel</el-button>
         <el-button type="primary" size="mini" @click="Show_StockInfo">设置默认供应商</el-button>
         <el-button type="primary" size="mini" @click="batch">批量填充供应商</el-button>

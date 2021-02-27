@@ -167,37 +167,37 @@
         </div>
       </div>
       <!--      父表格区域-->
-      <jc-table
-        v-if="isTable === 'parentTableData'"
-        :cell-style="cellStyle"
-        :table-data="parentTableData"
-        table-height="calc(100vh - 404px)"
-        :table-header="parentTableHeader"
-        @clickRow="parentSelectRow"
-      />
+      <div v-if="isTable === 'parentTableData'">
+        <jc-table
+          :cell-style="cellStyle"
+          :table-data="parentTableData"
+          table-height="calc(100vh - 404px)"
+          :table-header="parentTableHeader"
+          @clickRow="parentSelectRow"
+        />
+        <jc-pagination
+          :total="parentPagination.total"
+          :page.sync="parentPagination.pageNum"
+          :limit.sync="parentPagination.size"
+          @pagination="getMaterielList"
+        />
+      </div>
       <!--      子表格区域-->
-      <jc-table
-        v-else
-        :cell-style="cellStyle"
-        :table-data="sonDialogTableData"
-        table-height="calc(100vh - 404px)"
-        :table-header="sonDialogHeaderTable"
-        @clickRow="sonSelectRow"
-      />
-      <jc-pagination
-        v-if="isTable === 'parentTableData'"
-        :total="parentPagination.total"
-        :page.sync="parentPagination.pageNum"
-        :limit.sync="parentPagination.size"
-        @pagination="getMaterielList"
-      />
-      <jc-pagination
-        v-else
-        :total="sonPagination.total"
-        :page.sync="sonPagination.pageNum"
-        :limit.sync="sonPagination.size"
-        @pagination="btnSearch"
-      />
+      <div v-else>
+        <jc-table
+          :cell-style="cellStyle"
+          :table-data="sonDialogTableData"
+          table-height="calc(100vh - 404px)"
+          :table-header="sonDialogHeaderTable"
+          @clickRow="sonSelectRow"
+        />
+        <jc-pagination
+          :total="sonPagination.total"
+          :page.sync="sonPagination.pageNum"
+          :limit.sync="sonPagination.size"
+          @pagination="btnSearch"
+        />
+      </div>
     </el-dialog>
   </div>
 </template>

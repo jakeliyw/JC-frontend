@@ -95,9 +95,9 @@
           class="jcTable"
           table-height="auto"
         >
-          <el-table-column label="物料编码" prop="fmaterialId" align="center" width="200px">
+          <el-table-column label="物料编码" prop="materielCode" align="center" width="200px">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.fmaterialId" placeholder="请选择物料编码" size="mini">
+              <el-input v-model="scope.row.materielCode" placeholder="请选择物料编码" size="mini">
                 <i slot="prefix" class="iconfont icon-jin-rud-ao-bo" @click="sonJumpMateriel(scope.row.fmaterialId)" />
                 <i
                   slot="suffix"
@@ -352,7 +352,7 @@ export default {
       activeName: 'purchase', // 默认在价目
       tableData: [
         {
-          fmaterialId: '', // 物料编码
+          materielCode: '', // 物料编码
           fprice: 0, // 单价
           ftaxPrice: 0, // 含税单价
           fminNum: 1, // 最小起订量
@@ -532,8 +532,18 @@ export default {
     preservation() {
       this.$refs.purchaseRef.validate(valid => {
         if (!valid) return
+        if (this.purchaseForm.fsupplierId === '' || this.purchaseForm.fpaezBase === '' || this.purchaseForm.fcurrencyId === '') {
+          this.$message.warning('供应商，币别，供应商税率必须点击！')
+          return
+        }
+        const materielId = this.tableData.findIndex(item => {
+          return item.FMATERIALID === undefined || item.FMATERIALID === ''
+        })
+        if (materielId !== -1 && this.tableData.length > 1) {
+          this.tableData.splice(materielId, 1)
+        }
         for (const ITEM of this.tableData) {
-          if (ITEM.fmaterialId === '' ||
+          if (ITEM.FMATERIALID === '' ||
             ITEM.fprice === 0 || ITEM.ftaxPrice === 0 || ITEM.fminNum === 0 || ITEM.feffectiveDate == null) {
             this.$message.warning('表格不能为空,或表格值不能为0')
             return
@@ -553,20 +563,27 @@ export default {
           }
         })
         const DATA = {
-          fcreateOrgId: this.purchaseForm.fcreateOrgId,
-          fname: this.purchaseForm.fname,
-          fpriceObject: this.purchaseForm.fpriceObject,
-          fpriceType: this.purchaseForm.fpriceType,
-          fcurrencyId: this.purchaseForm.fcurrencyId,
-          fdescripTion: this.purchaseForm.fdescripTion,
-          fsupplierId: this.purchaseForm.fsupplierId,
-          fisIncludedTax: this.purchaseForm.fisIncludedTax,
-          fpaezBase: this.purchaseForm.fpaezBase,
+          fcreateOrgId: this.purchaseForm.fcreateOrgId, // 创建组织
+          fname: this.purchaseForm.fname, // 名称
+          fpriceObject: this.purchaseForm.fpriceObject, // 价目表对象
+          fpriceType: this.purchaseForm.fpriceType, // 价格类型
+          fcurrencyId: this.purchaseForm.fcurrencyId, // 币别
+          fdescripTion: this.purchaseForm.fdescripTion, // 描述
+          fsupplierId: this.purchaseForm.fsupplierId, // 供应商id
+          fisIncludedTax: this.purchaseForm.fisIncludedTax, // 是否含税
+          fpaezBase: this.purchaseForm.fpaezBase, // 供应商税率
           details: DETAILS
         }
         insertPurPrice(DATA).then(res => {
           if (res.code !== 0) {
-            this.$message.error(res.message)
+            if (res.data == null) {
+              this.$message.warning(res.message)
+              return
+            }
+            const fmateriAalId = this.tableData.findIndex(item => {
+              return item.FMATERIALID === res.data.fmateriAalId
+            })
+            this.$message.warning(`第${fmateriAalId + 1}行，${res.message}`)
             return
           }
           this.purchaseForm.code = res.data
@@ -590,7 +607,7 @@ export default {
       this.selectAll.forEach(item => {
         this.tableData.push(
           {
-            fmaterialId: item.FNUMBER, // 物料编码
+            materielCode: item.FNUMBER, // 物料编码
             FMATERIALID: item.FMATERIALID, // id
             fprice: 0, // 单价
             ftaxPrice: 0, // 含税单价
@@ -642,7 +659,7 @@ export default {
     // 物料弹窗选中
     async materielSelectRow(item) {
       const { data: RES } = await queryMaterialSon({ fmateriAalId: item.FMATERIALID })
-      this.tableData[this.tableIndex].fmaterialId = RES.FNUMBER
+      this.tableData[this.tableIndex].materielCode = RES.FNUMBER
       this.tableData[this.tableIndex].fvolumeUnit = RES.FVOLUMEUNIT
       this.tableData[this.tableIndex].FMATERIALID = RES.FMATERIALID
       this.tableData[this.tableIndex].fmodel = RES.FSPECIFICATION
@@ -720,7 +737,7 @@ export default {
       if (index === this.tableData.length - 1) {
         this.tableData.push(
           {
-            fmaterialId: '', // 物料编码
+            materielCode: '', // 物料编码
             fprice: 0, // 单价
             ftaxPrice: 0, // 含税单价
             fminNum: 1, // 最小起订量
