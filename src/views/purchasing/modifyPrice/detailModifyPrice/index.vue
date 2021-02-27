@@ -15,6 +15,7 @@
         <jc-table
           :table-data="modifyPriceTable"
           :table-header="modifyPriceHeader"
+          serial
           :cell-style="cellStyle"
           table-height="calc(100vh - 400px)"
         />

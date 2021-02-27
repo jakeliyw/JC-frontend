@@ -11,6 +11,7 @@
       <jc-table
         :table-data="tableData"
         :table-header="tableHeader"
+        serial
       >
         <template v-slot:billSlot="clo">
           <el-link type="primary" @click="detailPurchase(clo.scope.row.fid)">{{ clo.scope.row.fbillNo }}</el-link>

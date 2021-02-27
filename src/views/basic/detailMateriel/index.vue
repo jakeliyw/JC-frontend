@@ -68,6 +68,7 @@
           :table-header="logTableHeader"
           :table-data="otherLogTableData"
           :cell-style="cellStyle"
+          serial
           table-height="calc(100vh - 500px)"
         />
         <jc-pagination

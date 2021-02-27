@@ -3,7 +3,7 @@
     <jc-title />
     <el-form :model="orderNumber" label-width="120px">
       <el-form-item label="销售订单号">
-        <el-input v-model.trim="orderNumber.sonum" size="mini">
+        <el-input v-model.trim="orderNumber.sonum" size="mini" @keyup.enter.native="gainData()">
           <i
             slot="suffix"
             class="el-input__icon el-icon-search"
@@ -12,7 +12,7 @@
         </el-input>
       </el-form-item>
       <el-form-item label="客户订单号">
-        <el-input v-model.trim="orderNumber.khdh" size="mini" />
+        <el-input v-model.trim="orderNumber.khdh" size="mini" @keyup.enter.native="gainData()" />
       </el-form-item>
       <el-form-item label="成品交期始">
         <el-date-picker
@@ -21,6 +21,7 @@
           size="mini"
           value-format="yyyy-MM-dd"
           placeholder="选择开始日期"
+          @keyup.enter.native="gainData()"
         />
       </el-form-item>
       <el-form-item label="成品交期至">
@@ -30,10 +31,11 @@
           size="mini"
           value-format="yyyy-MM-dd"
           placeholder="选择结束日期"
+          @keyup.enter.native="gainData()"
         />
       </el-form-item>
       <el-form-item label="大类列表">
-        <el-input v-model.trim="largeName" size="mini">
+        <el-input v-model.trim="largeName" size="mini" @keyup.enter.native="gainData()">
           <i
             slot="suffix"
             class="el-input__icon el-icon-search"
@@ -42,10 +44,10 @@
         </el-input>
       </el-form-item>
       <el-form-item label="物料描述">
-        <el-input v-model.trim="orderNumber.itemname" size="mini" />
+        <el-input v-model.trim="orderNumber.itemname" size="mini" @keyup.enter.native="gainData()" />
       </el-form-item>
       <el-form-item label="型号">
-        <el-input v-model.trim="orderNumber.itemxh" size="mini" />
+        <el-input v-model.trim="orderNumber.itemxh" size="mini" @keyup.enter.native="gainData()" />
       </el-form-item>
       <el-form-item label-width="40px">
         <el-button type="primary" size="mini" @click="gainData()">运算</el-button>
@@ -56,12 +58,13 @@
     </el-form>
     <jc-table
       v-loading="loading"
+      serials
       :table-data="tableData"
       :table-header="tableHeader"
       :cell-style="cellStyle"
       @selectionChange="selectData"
     >
-      <el-table-column type="selection" width="60px" align="center" />
+      <el-table-column type="selection" width="60px" fixed="left" align="center" />
       <!--采购单价-->
       <template v-slot:btnState="col">
         <el-input-number
@@ -128,6 +131,7 @@
       <template v-slot:content>
         <jc-table
           v-show="dialogTitle === '仓库列表'"
+          serial
           :table-data="warehouseData"
           :table-header="warehouseHeader"
           :cell-style="cellStyle"
@@ -194,8 +198,8 @@ export default {
       cellStyle: { padding: '10 10' },
       tableData: [],
       tableHeader: [
-        { label: '状态', prop: 'zt', align: 'center', minWidth: '90px', filterHeaders: true },
-        { label: '客户订单号', prop: 'khdh', align: 'center', minWidth: '130px', filterHeaders: true },
+        { label: '状态', prop: 'zt', align: 'center', minWidth: '90px', fixed: 'left', filterHeaders: true },
+        { label: '客户订单号', prop: 'khdh', align: 'center', minWidth: '130px', fixed: 'left', filterHeaders: true },
         { label: '销售订单号', prop: 'sonum', align: 'center', minWidth: '130px', filterHeaders: true },
         { label: '订单类型', prop: 'ddlx', align: 'center', minWidth: '120px', filterHeaders: true },
         { label: '采购单号', prop: 'cgdh', align: 'center', minWidth: '140px', filterHeaders: true },

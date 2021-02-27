@@ -80,6 +80,7 @@
       <template v-slot:content>
         <jc-table
           v-show="dialogTitle === '供应商列表'"
+          serial
           :table-data="supplierData"
           :table-header="supplierHeader"
           :cell-style="cellStyle"
@@ -110,6 +111,7 @@
       <template v-slot:content>
         <jc-table
           v-show="dialogTitle === '仓库列表'"
+          serial
           :table-data="warehouseData"
           :table-header="warehouseHeader"
           :cell-style="cellStyle"
@@ -140,6 +142,7 @@
       <template v-slot:content>
         <jc-table
           v-show="dialogTitle === '采购类型列表'"
+          serial
           :table-data="purchaseTypeData"
           :table-header="purchaseTypeHeader"
           :cell-style="cellStyle"

@@ -6,7 +6,7 @@
           :table-data="tabTwo.saleDetails"
           :table-header="tableHeader"
           serial
-          table-height="calc(100vh - 500px)"
+          table-height="calc(100vh - 440px)"
           :cell-style="cellStyle"
         >
           <el-table-column label="物料编码" prop="fmaterialId" align="center" width="200px">
@@ -32,7 +32,7 @@
             min-width="300px"
             :show-overflow-tooltip="true"
           />
-          <el-table-column label="物料型号" prop="fmodel" align="center" min-width="100px" />
+          <el-table-column label="物料型号" prop="fmodel" align="center" min-width="100px" :show-overflow-tooltip="true" />
           <el-table-column label="单位" prop="funitName" align="center" />
           <el-table-column label="数量" prop="fqty" min-width="100px" align="center">
             <template slot-scope="scope">
@@ -124,10 +124,10 @@
           :table-data="tabTwo.planDetails"
           :table-header="tableHeader"
           serial
-          table-height="calc(100vh - 500px)"
+          table-height="calc(100vh - 440px)"
           :cell-style="cellStyle"
         >
-          <el-table-column label="是否预收" prop="fqty" align="center" width="80px">
+          <el-table-column label="是否预收" prop="fqty" align="center" min-width="80px">
             <template slot-scope="scope">
               <el-checkbox v-model="scope.row.fneedRecAdvance" :value="scope.row.fneedRecAdvance" @change="check" />
             </template>
@@ -219,7 +219,7 @@ export default {
       isUploadImg: false, // 图纸弹窗
       activeName: 'first', // 标签tabs名
       tableHeader: [],
-      cellStyle: { padding: '10 10' },
+      cellStyle: { padding: '5px 0' },
       tabTwo: {
         saleDetails: [ // 明细信息
           {
@@ -510,6 +510,9 @@ export default {
 }
 </style>
 <style scoped lang="scss">
+.el-tabs ::v-deep .el-tabs__header{
+  margin: 0 0 5px;
+}
 .tab {
   /* 图纸单元格居中 */
   .el-table ::v-deep td{

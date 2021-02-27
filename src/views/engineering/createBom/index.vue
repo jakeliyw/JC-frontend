@@ -169,6 +169,7 @@
       <!--      父表格区域-->
       <jc-table
         v-if="isTable === 'parentTableData'"
+        serial
         :cell-style="cellStyle"
         :table-data="parentTableData"
         table-height="calc(100vh - 404px)"
@@ -182,6 +183,7 @@
         :table-data="sonDialogTableData"
         table-height="calc(100vh - 404px)"
         :table-header="sonDialogHeaderTable"
+        serial
         @clickRow="sonSelectRow"
       />
       <jc-pagination

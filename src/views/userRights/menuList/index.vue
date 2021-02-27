@@ -12,6 +12,7 @@
         :table-data="tableData"
         :table-header="tableHeader"
         :cell-style="cellStyle"
+        serial
       />
     </div>
     <div class="footer">

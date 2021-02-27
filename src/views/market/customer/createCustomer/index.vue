@@ -130,6 +130,7 @@
           :table-data="countryTableData"
           :table-header="countryHeader"
           :table-height="0"
+          serial
           @clickRow="countrySelect"
         />
       </template>
@@ -160,6 +161,7 @@
           :cell-style="cellStyle"
           :table-data="settlementTableData"
           :table-header="settlementHeader"
+          serial
           :table-height="0"
           @clickRow="settlementSelect"
         />
@@ -191,6 +193,7 @@
           :cell-style="cellStyle"
           :table-data="taxRateTableData"
           :table-header="taxRateHeader"
+          serial
           :table-height="0"
           @clickRow="taxRateSelect"
         />
@@ -222,6 +225,7 @@
           :cell-style="cellStyle"
           :table-data="currencyTableData"
           :table-header="currencyHeader"
+          serial
           :table-height="0"
           @clickRow="currencySelect"
         />
@@ -253,6 +257,7 @@
           :cell-style="cellStyle"
           :table-data="collectionTableData"
           :table-header="collectionHeader"
+          serial
           :table-height="0"
           @clickRow="collectionSelect"
         />

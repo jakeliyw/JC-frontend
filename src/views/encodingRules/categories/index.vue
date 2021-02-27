@@ -19,6 +19,7 @@
       <jc-table
         :table-data="tableData"
         :table-header="tableHeader"
+        serial
         :cell-style="cellStyle"
       >
         <el-table-column prop="largeCode" label="一类编码" align="center" width="100px" />

@@ -2,6 +2,7 @@
   <div>
     <jc-form :options="otherOptions" :option-value="otherUrlObject" label-width="100px" />
     <jc-table
+      serial
       :table-header="logTableHeader"
       :table-data="otherLogTableData"
       :cell-style="cellStyle"

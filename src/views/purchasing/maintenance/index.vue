@@ -7,6 +7,7 @@
           <jc-table
             :table-data="tableData"
             :table-header="tableHeader"
+            serial
             :cell-style="cellStyle"
             table-height="calc(100vh - 330px)"
           >

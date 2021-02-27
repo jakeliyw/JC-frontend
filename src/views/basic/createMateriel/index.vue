@@ -135,6 +135,7 @@
       <template v-slot:content>
         <jc-table
           v-show="dialogTitle === '重量单位'"
+          serial
           :cell-style="cellStyle"
           :table-data="weightTableData"
           :table-header="tableHeader"
@@ -166,6 +167,7 @@
       <template v-slot:content>
         <jc-table
           v-show="dialogTitle === '尺寸单位'"
+          serial
           :cell-style="cellStyle"
           :table-data="sizeTableData"
           :table-header="tableHeader"

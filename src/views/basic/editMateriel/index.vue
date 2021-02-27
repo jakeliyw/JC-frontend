@@ -122,6 +122,7 @@
           :table-header="logTableHeader"
           :table-data="otherData"
           :cell-style="cellStyle"
+          serial
           table-height="calc(100vh - 550px)"
         />
         <jc-pagination
@@ -150,6 +151,7 @@
           :table-data="weightTableData"
           :table-header="tableHeader"
           :table-height="0"
+          serial
           @clickRow="weightSelect"
         />
       </template>
@@ -177,6 +179,7 @@
       <template v-slot:content>
         <jc-table
           v-show="dialogTitle === '尺寸单位'"
+          serial
           :cell-style="cellStyle"
           :table-data="sizeTableData"
           :table-header="tableHeader"

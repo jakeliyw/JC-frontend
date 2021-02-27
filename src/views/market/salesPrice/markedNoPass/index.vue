@@ -11,6 +11,7 @@
       <jc-table
         :table-data="tableData"
         :table-header="tableHeader"
+        serial
       >
         <template v-slot:tagSlot="col">
           <el-link type="primary" @click="particulars(col.scope.row.fid)">{{ col.scope.row.fnumber }}</el-link>

@@ -144,7 +144,7 @@
       </el-tab-pane>
       <el-tab-pane label="其他" name="second">
         <jc-marker
-          other-height="calc(100vh - 360px)"
+          other-height="calc(100vh - 330px)"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -302,7 +302,7 @@ export default {
         fbillTypeId: [
           { required: true, message: '请选择单据类型', trigger: 'change' }
         ], fsaleOrgId: [
-          { required: true, message: '请选择销售组织', trigger: 'change' }
+          { required: true, message: '请选择组织', trigger: 'change' }
         ], fcustId: [
           { required: true, message: '请选择客户', trigger: 'change' }
         ], fheadDeliveryWay: [
@@ -318,7 +318,7 @@ export default {
         ], fpriceListId: [
           { required: false, message: '请选择价目表', trigger: 'blur' }
         ], fdeliveryDate: [
-          { required: true, message: '请选择要货时间', trigger: 'change' }
+          { required: true, message: '请 选择日期', trigger: 'change' }
         ]
       },
       pageNum: 1,
@@ -580,7 +580,8 @@ export default {
 </script>
 <style lang="scss">
 .el-form-item__error {
-  top: 33px;
+  top: 11px;
+  left: 15px;
 }
 </style>
 <style scoped lang="scss">
@@ -588,8 +589,11 @@ export default {
   @include listBom;
 
   .el-tabs {
+    &::v-deep .el-tabs__content {
+      padding: 5px 10px;
+    }
     .disRow {
-      height: calc(100vh - 300px);
+      height: calc(100vh - 270px);
 
       .positRe {
         position: relative;
@@ -666,10 +670,13 @@ export default {
       flex-wrap: wrap;
 
       .el-form-item {
+        height: 35px;
         width: 16.6%;
         min-width: 246px;
         margin-bottom: 0px;
-
+        //&::v-deep .el-input--mini .el-input__inner{
+        //  height: 22px;
+        //}
         .btnType {
           margin-right: 20px;
         }
