@@ -13,8 +13,9 @@
             <jc-table
               :table-data="saleDetails"
               :table-header="tableHeader"
+              serial
               :cell-style="cellStyle"
-              table-height="calc(100vh - 460px)"
+              table-height="calc(100vh - 420px)"
             >
               <el-table-column prop="fnumber" label="物料编码" min-width="150px" align="center" :show-overflow-tooltip="true">
                 <template slot-scope="scope">
@@ -57,7 +58,7 @@
             <jc-table
               :table-data="planDetails"
               :table-header="tableHeader1"
-              table-height="calc(100vh - 460px)"
+              table-height="calc(100vh - 420px)"
               serial
               :cell-style="cellStyle"
             >
@@ -93,7 +94,7 @@
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
-          other-height="calc(100vh - 340px)"
+          other-height="calc(100vh - 310px)"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -166,7 +167,7 @@ export default {
       priview: '',
       imgVisible: false,
       // 表头
-      cellStyle: { padding: '10 10' }, // 行高
+      cellStyle: { padding: '5px 0' }, // 行高
       saleDetails: [], // 销售数据
       tableHeader: [],
       planDetails: [], // 收款计划
@@ -298,6 +299,7 @@ export default {
 .Particules{
   .el-form{
     .el-form-item{
+      height: 35px;
       margin-bottom: 0px;
     }
     .el-form-item__label{
@@ -330,8 +332,15 @@ export default {
 .Particules {
   @include listBom;
   .el-tabs {
+    &::v-deep .el-tabs__content {
+      padding: 5px 10px;
+    }
+      .el-tabs ::v-deep .el-tabs__header{
+        margin: 0 0 5px;
+    }
+
     .disRow {
-      height: calc(100vh - 255px);
+      height: calc(100vh - 225px);
       .positRe {
         position: relative;
         margin-left: 100px;
@@ -406,12 +415,16 @@ export default {
       flex-wrap: wrap;
 
       .el-form-item {
+        height: 35px;
         width: 16.6%;
         min-width: 246px;
         margin-bottom: 0px;
         .btnType{
           margin-right: 20px;
         }
+        //&::v-deep .el-input--mini .el-input__inner{
+        //  height: 22px;
+        //}
         .el-date-editor.el-input{
           width: 100% !important;
         }
@@ -420,9 +433,6 @@ export default {
         }
       }
     }
-  }
-  .el-table ::v-deep td{
-    padding: 8px 0;
   }
   .inTheBtn {
     transform: translateY(-15px);

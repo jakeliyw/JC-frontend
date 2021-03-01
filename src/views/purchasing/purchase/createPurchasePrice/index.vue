@@ -91,6 +91,7 @@
         <jc-table
           :table-data="tableData"
           :table-header="tableHeader"
+          serial
           :cell-style="cellStyle"
           class="jcTable"
           table-height="auto"
@@ -200,6 +201,7 @@
           v-show="dialogTitle === '币别列表'"
           :table-data="currencyData"
           :table-header="currencyHeader"
+          serial
           :cell-style="cellStyle"
           @clickRow="currencySelectRow"
         />
@@ -230,6 +232,7 @@
           v-show="dialogTitle === '税率列表'"
           :table-data="taxRateTableData"
           :table-header="taxRateHeader"
+          serial
           :cell-style="cellStyle"
           @clickRow="taxRateSelectRow"
         />
@@ -260,6 +263,7 @@
           v-show="dialogTitle === '供应商列表'"
           :table-data="supplierData"
           :table-header="supplierHeader"
+          serial
           :cell-style="cellStyle"
           @clickRow="supplierSelectRow"
         />
@@ -296,6 +300,7 @@
         ref="table"
         :table-data="materielDialogData"
         :table-header="materielDialogHeader"
+        serial
         :cell-style="cellStyle"
         table-height="calc(100vh - 500px)"
         table-selection

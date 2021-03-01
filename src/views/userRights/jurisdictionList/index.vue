@@ -13,6 +13,7 @@
         :table-data="tableData"
         :table-header="tableHeader"
         :cell-style="cellStyle"
+        serial
       >
         <template v-slot:btnSlot="col">
           <el-button type="warning" size="mini" @click="insertTJQ(col.scope.row)">修改</el-button>

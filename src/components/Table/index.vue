@@ -26,6 +26,7 @@
     />
     <!--    id列-->
     <el-table-column v-if="serial" type="index" label="序号" width="80" align="center" />
+    <el-table-column v-if="serials" type="index" fixed="left" label="序号" width="80" align="center" />
     <slot />
     <el-table-column
       v-for="(col, index) of cpTableHeader"
@@ -106,7 +107,11 @@ export default {
     },
     serial: { // 是否显示序列号
       type: Boolean,
-      default: true
+      default: false
+    },
+    serials: {
+      type: Boolean,
+      default: false
     },
     colAlign: { // 单元格对齐方式
       type: String,

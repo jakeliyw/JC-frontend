@@ -11,6 +11,7 @@
       <jc-table
         :table-data="tableData"
         :table-header="tableHeader"
+        serial
       >
         <template v-slot:btnState="clo">
           <el-steps :active="clo.scope.row.fstatus" align-center class="font-style" finish-status="success" process-status="finish">

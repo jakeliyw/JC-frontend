@@ -70,6 +70,7 @@
         <jc-table
           :table-data="tableData"
           :table-header="tableHeader"
+          serial
           :cell-style="cellStyle"
           class="jcTable"
           table-height="auto"
@@ -189,6 +190,7 @@
         ref="table"
         :table-data="materielDialogData"
         :table-header="materielDialogHeader"
+        serial
         :cell-style="cellStyle"
         table-height="calc(100vh - 500px)"
         table-selection

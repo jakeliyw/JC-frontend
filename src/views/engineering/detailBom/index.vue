@@ -94,6 +94,7 @@
         <jc-table
           :table-header="logTableHeader"
           :table-data="otherLogTableData"
+          serial
           :cell-style="cellStyle"
           table-height="calc(100vh - 720px)"
         />

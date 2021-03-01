@@ -10,7 +10,7 @@
             <span class="color-text">{{ Math.round((materialScience + Number.EPSILON) *100) / 100 }}元</span>
           </div>
         </div>
-        <div class="organization" v-show="false">
+        <div v-show="false" class="organization">
           <span class="text-margin">创建组织</span>
           <el-select v-model="team" placeholder="请选择" size="mini">
             <el-option
@@ -126,6 +126,7 @@
         <jc-table
           :table-header="logTableHeader"
           :table-data="otherLogTableData"
+          serial
           :cell-style="cellStyle"
           table-height="calc(100vh - 720px)"
         />
@@ -164,6 +165,7 @@
       <jc-table
         :table-data="sonDialogTableData"
         :table-header="sonDialogHeaderTable"
+        serial
         :cell-style="cellStyle"
         @clickRow="sonSelectRow"
       />

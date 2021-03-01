@@ -12,6 +12,7 @@
         :table-data="tableData"
         :table-header="tableHeader"
         :cell-style="cellStyle"
+        serial
       >
         <template v-slot:tagSlot="col">
           <el-tag v-if="col.scope.row.roleId">{{ col.scope.row.role }}</el-tag>

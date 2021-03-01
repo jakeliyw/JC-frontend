@@ -12,6 +12,7 @@
       <jc-table
         :table-data="tableData"
         :table-header="tableHeader"
+        serial
         :cell-style="cellStyle"
       >
         <template v-slot:btnSlot="col">

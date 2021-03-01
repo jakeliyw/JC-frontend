@@ -11,6 +11,7 @@
       <jc-table
         :table-data="tableData"
         :table-header="tableHeader"
+        serial
       >
         <el-table-column
           label="物料编码"

@@ -52,6 +52,7 @@
           <jc-table
             :table-data="tableData"
             :table-header="tableHeader"
+            serial
             table-height="calc(100vh - 380px)"
             :cell-style="cellStyle"
           >

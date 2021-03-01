@@ -24,6 +24,7 @@
         <jc-table
           :table-header="materialTableHeader"
           :table-data="materialTableData"
+          serial
           :cell-style="cellStyle"
         >
           <el-table-column

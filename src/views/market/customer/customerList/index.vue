@@ -11,6 +11,7 @@
       <jc-table
         :table-data="tableData"
         :table-header="tableHeader"
+        serial
         :cell-style="cellStyle"
       >
         <!--审核状态-->

@@ -118,7 +118,7 @@
       </el-tab-pane>
       <el-tab-pane label="其他" name="second">
         <jc-marker
-          other-height="calc(100vh - 425px)"
+          other-height="calc(100vh - 390px)"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -230,7 +230,7 @@ export default {
       tableIndex: 0,
       billtypes: [], // 单据类型
       teamList: [], // 组织
-      cellStyle: { padding: '10 10' },
+      cellStyle: { padding: '5px 0' },
       prodValue: { flocalCurrId: '' }, // 表单数据
       fapprovalImage: '',
       saleDetails: [], // 明细数据
@@ -467,8 +467,11 @@ export default {
 .content {
   @include listBom;
   .el-tabs {
+    &::v-deep .el-tabs__content {
+      padding: 5px 10px;
+    }
     .disRow {
-      height: calc(100vh - 300px);
+      height: calc(100vh - 265px);
       .positRe {
         position: relative;
         margin-left: 100px;
@@ -543,12 +546,16 @@ export default {
       flex-wrap: wrap;
 
       .el-form-item {
+        height: 35px;
         width: 16.6%;
         min-width: 246px;
         margin-bottom: 0px;
         .btnType{
           margin-right: 20px;
         }
+        //&::v-deep .el-input--mini .el-input__inner{
+        //  height: 22px;
+        //}
         .el-date-editor.el-input{
           width: 100% !important;
         }

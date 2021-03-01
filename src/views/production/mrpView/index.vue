@@ -30,12 +30,13 @@
     </el-form>
     <jc-table
       id="out-table"
+      serials
       :table-data="tableData"
       :table-header="tableHeader"
       :cell-style="cellStyle"
       @selectionChange="selectData"
     >
-      <el-table-column type="selection" width="60px" sortable="true" align="center" />
+      <el-table-column type="selection" width="60px" sortable="true" fixed="left" align="center" />
       <template v-slot:btnState="col">
         <el-select
           v-model="col.scope.row.sclx"
@@ -101,6 +102,7 @@
       <template v-slot:content>
         <jc-table
           v-show="dialogTitle === '仓库列表'"
+          serial
           :table-data="warehouseData"
           :table-header="warehouseHeader"
           :cell-style="cellStyle"
@@ -162,11 +164,11 @@ export default {
         fdeliveryDate: ''
       },
       indexSelf: '', // 下标
-      cellStyle: { padding: '10 10' },
+      cellStyle: { padding: '5px 0' },
       tableData: [],
       tableHeader: [
-        { label: '状态', prop: 'zt', align: 'center', minWidth: '90px', filterHeaders: true },
-        { label: '客户订单号', prop: 'khdd', align: 'center', minWidth: '130px', filterHeaders: true },
+        { label: '状态', prop: 'zt', align: 'center', minWidth: '90px', fixed: 'left', filterHeaders: true },
+        { label: '客户订单号', prop: 'khdd', align: 'center', minWidth: '130px', fixed: 'left', filterHeaders: true },
         { label: '销售订单号', prop: 'soNum', align: 'center', minWidth: '130px', filterHeaders: true },
         { label: '订单类型', prop: 'ddlx', align: 'center', minWidth: '130px', filterHeaders: true },
         { label: '生产单号', prop: 'ssdh', align: 'center', minWidth: '140px', filterHeaders: true },
