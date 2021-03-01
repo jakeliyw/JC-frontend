@@ -171,7 +171,7 @@
       <div class="materiel-form">
         <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleMaterielSearch" />
         <el-button size="mini" type="primary" class="btn" @click="handleMaterielSearch">搜索</el-button>
-        <!--        <el-button size="mini" type="primary" @click="selectionSub">多选添加</el-button>-->
+        <el-button size="mini" type="primary" @click="selectionSub">多选添加</el-button>
       </div>
       <jc-table
         :table-data="materielDialogData"
@@ -180,8 +180,10 @@
         serial
         :cell-style="cellStyle"
         @clickRow="materielSelectRow"
-      />
-      <!--   @selectionChange="selectionData"     <el-table-column type="selection" width="60px" sortable="true" align="center" />-->
+        @selectionChange="selectionData"
+      >
+        <!--        <el-table-column type="selection" width="60px" sortable="true" fixed="left" align="center" />-->
+      </jc-table>
       <jc-pagination
         v-show="materielPagination.total > 0"
         :total="materielPagination.total"
@@ -343,35 +345,34 @@ export default {
       })
     },
     // 多选时触发的事件
-    // selectionData(val) {
-    //   this.val = val
-    // },
-    // selectionSub() {
-    //   this.val.forEach((item, index) => {
-    //     this.tableIndex = this.index + index
-    //     this.prodValue.priceDetails.push(
-    //       {
-    //         fmaterialId: '', // 物料编码ID
-    //         fmaterialIdName: '', // 物料编码
-    //         funitName: '', // 单位
-    //         funitId: '', // 单位id
-    //         fpriceBase: 13, // 销售系数
-    //         deliveryPrice: '', // 出厂价
-    //         fdownPrice: '' // 净价
-    //       }
-    //     )
-    //     this.materielSelectRow(item, this.tableIndex)
-    //     this.getSalPriceMaterial(item, this.tableIndex)
-    //   })
-    // },
+    selectionData(val) {
+      this.val = val
+    },
+    selectionSub() {
+      this.val.forEach((item, index) => {
+        this.tableIndex = this.index + index
+        this.prodValue.priceDetails.push(
+          {
+            fmaterialId: '', // 物料编码ID
+            fmaterialIdName: '', // 物料编码
+            fdescripTion: '', // 备注
+            funitName: '', // 单位
+            funitId: '', // 单位id
+            fpriceBase: 13, // 销售系数
+            deliveryPrice: '', // 出厂价
+            fdownPrice: '' // 净价
+          }
+        )
+        this.materielSelectRow(item, this.tableIndex)
+        this.isMaterielDialog = false
+      })
+    },
     // 物料弹窗选中
-    async materielSelectRow(item, index) {
-      this.materialId = item.fmaterialId
+    async materielSelectRow(item, indexData) {
+      this.prodValue.priceDetails[this.tableIndex].materialId = item.fmaterialId
       this.prodValue.priceDetails[this.tableIndex].funitId = item.funitId
       this.prodValue.priceDetails[this.tableIndex].foldNumber = item.foldNumber
-      // if (!index) {
       this.getSalPriceMaterial()
-      // }
       this.isMaterielDialog = false
     },
     // 打开物料编码
@@ -410,10 +411,7 @@ export default {
     },
     // 获取出厂价及物料信息
     async getSalPriceMaterial() {
-      // if (item) {
-      //   this.tableIndex = index
-      // }
-      const DATA = { fmaterialId: this.materialId }
+      const DATA = { fmaterialId: this.prodValue.priceDetails[this.tableIndex].materialId }
       const { data: RES } = await querySalPriceMaterial(DATA)
       this.prodValue.priceDetails[this.tableIndex].fmaterialId = RES.fmaterialId
       this.prodValue.priceDetails[this.tableIndex].fmaterialIdName = RES.fnumber
@@ -493,27 +491,31 @@ export default {
 <style scoped lang="scss">
 .content {
   @include listBom;
-  .el-tabs{
-    .el-table {
-      margin-top: 18px;
-      &::v-deep td{
-        padding: 8px 0;
-      }
-      &::v-deep thead.is-group th{
-        padding: 3px 0;
-        .el-input__inner{
-          background: #e6ebfc;
-          color: #909399;
-          font-size: 13px;
-          font-weight: 550;
-          border: none;
-        }
+
+  .el-table {
+    margin-top: 18px;
+
+    &::v-deep td {
+      padding: 8px 0;
+    }
+
+    &::v-deep thead.is-group th {
+      padding: 3px 0;
+
+      .el-input__inner {
+        background: #e6ebfc;
+        color: #909399;
+        font-size: 13px;
+        font-weight: 550;
+        border: none;
       }
     }
   }
+
   .el-form {
     display: flex;
     flex-wrap: wrap;
+
     .el-form-item {
       width: 16.6%;
       min-width: 253px;
@@ -525,33 +527,15 @@ export default {
 .el-input__icon {
   cursor: pointer;
 }
-.materiel-form{
-  position:relative;
-  width: 100%;
-  .btn{
-    transform: translateY(18%);
-    margin-left: 410px!important;
-    z-index: 999;
-  }
-}
+
 .materiel-form {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  margin-bottom: 20px;
+  position: relative;
+  width: 100%;
 
-  .materiel-code {
-    margin-right: 5px;
-    font-weight: bold;
-    font-size: 14px;
-    color: #606266;
-    line-height: 40px;
-    min-width: 65px;
-  }
-
-  .input-width {
-    width: 200px;
-    margin-right: 10px;
+  .btn {
+    transform: translateY(18%);
+    margin-left: 410px !important;
+    z-index: 999;
   }
 }
 </style>

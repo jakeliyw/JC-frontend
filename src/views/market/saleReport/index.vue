@@ -18,7 +18,7 @@
           :table-data="tableData"
           :table-header="tableHeader"
           serial
-          table-height="calc(100vh - 350px)"
+          table-height="calc(100vh - 320px)"
           :cell-style="cellStyle"
         >
           <el-table-column v-if="false" label="价目编码" prop="pricenum" align="center" />

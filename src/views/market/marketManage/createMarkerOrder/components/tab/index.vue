@@ -274,7 +274,7 @@ export default {
     }
   },
   created() {
-    this.tableHeight = window.innerWidth > 1440 ? 'calc(100vh - 400px)' : '500px'
+    this.tableHeight = window.innerWidth > 1440 ? 'calc(100vh - 440px)' : '500px'
   },
   methods: {
     // 打开物料弹窗
