@@ -82,7 +82,7 @@ export default {
     },
     tableHeight: { // 表格高度
       type: [String, Number],
-      default: 'calc(100vh - 300px)'
+      default: 'calc(100vh - 260px)'
       // default: 'auto'
     },
     tableBorder: { // 表格边框
@@ -195,9 +195,21 @@ export default {
 </script>
 
 <style lang="scss">
-@media screen and (max-width: 1366px) {
+@media screen and (max-width: 1440px) {
   .el-table{
     font-size: 12px;
+    th{
+      padding: 5px 0;
+    }
+    td{
+      .el-step__title{
+        line-height: 22px;
+        font-size: 10px;
+      }
+      .el-step__icon.is-text{
+        transform: scale(0.8);
+      }
+    }
   }
 }
 @media screen and (min-width: 1920px) {

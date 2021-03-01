@@ -73,7 +73,7 @@ export default {
       currentPage: 1, // 当前页
       size: 10, // 每页显示多少条数据
       // 表头
-      cellStyle: { padding: '10 10' }, // 行高
+      cellStyle: { padding: '5px 0' }, // 行高
       tableData: [], // 销售数据
       tableHeader: [
         { label: '订单时间', prop: 'fcreateDate', align: 'center', minWidth: '155px' },

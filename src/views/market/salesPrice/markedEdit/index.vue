@@ -53,7 +53,7 @@
             :table-data="tableData"
             :table-header="tableHeader"
             serial
-            table-height="calc(100vh - 380px)"
+            :table-height="tableHeight"
             :cell-style="cellStyle"
           >
             <el-table-column label="物料编码" prop="fmaterialId" align="center" min-width="200px">
@@ -140,7 +140,7 @@
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
-          other-height="calc(100vh - 420px)"
+          :other-height="otherHeight"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -251,9 +251,11 @@ export default {
       // 点击行的序号
       tableIndex: 0,
       // 表头
-      cellStyle: { padding: '10 10' }, // 行高
+      cellStyle: { padding: '5px 0' }, // 行高
       tableData: [], // 价目明细数据
       tableHeader: [],
+      tableHeight: '500px',
+      otherHeight: '500px',
       // 表单
       organizationValue: {}, // 表单组织值
       organization: {}, // 表单组织控件
@@ -268,8 +270,10 @@ export default {
       total: 0
     }
   },
-  mounted() {
+  created() {
     this.queryTSalOrderNtry()
+    this.tableHeight = window.innerWidth > 1440 ? 'calc(100vh - 380px)' : '500px'
+    this.otherHeight = window.innerWidth > 1440 ? 'calc(100vh - 420px)' : '500px'
   },
   methods: {
     // 获取订单列表数据
@@ -429,6 +433,7 @@ export default {
   @include listBom;
   .el-tabs{
     .el-table {
+      margin-top: 18px;
       &::v-deep td{
         padding: 8px 0;
       }

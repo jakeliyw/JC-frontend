@@ -11,6 +11,7 @@
       <jc-table
         :table-data="tableData"
         :table-header="tableHeader"
+        :cell-style="cellStyle"
         serial
       >
         <template v-slot:billSlot="clo">
@@ -95,6 +96,7 @@ export default {
         { label: '审核状态', type: 'state', align: 'center', minWidth: '100px' },
         { label: '操作', type: 'btn', align: 'center', fixed: 'right', minWidth: '230px' }
       ],
+      cellStyle: { padding: '0' },
       // 表格数据
       tableData: []
     }

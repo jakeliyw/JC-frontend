@@ -168,7 +168,6 @@ export default {
       actionURL: '', // 图片上传地址
       imgVisible: false, // 预览图片src
       priview: '', // 预览图片
-      cellStyle: { padding: '10 10' },
       prodValue: {
         imageUrl: '', // 图片
         imageUrl1: '', // 图片

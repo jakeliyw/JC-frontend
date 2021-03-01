@@ -97,7 +97,7 @@ export default {
 <style scoped>
 .pagination-container {
   background: #fff;
-  padding: 16px;
+  padding: 5px 16px;
 }
 .el-pagination{
   text-align: center;

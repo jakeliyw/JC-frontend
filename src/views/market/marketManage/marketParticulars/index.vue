@@ -15,7 +15,7 @@
               :table-header="tableHeader"
               serial
               :cell-style="cellStyle"
-              table-height="calc(100vh - 420px)"
+              :table-height="tableHeight"
             >
               <el-table-column prop="fnumber" label="物料编码" min-width="150px" align="center" :show-overflow-tooltip="true">
                 <template slot-scope="scope">
@@ -58,7 +58,7 @@
             <jc-table
               :table-data="planDetails"
               :table-header="tableHeader1"
-              table-height="calc(100vh - 420px)"
+              :table-height="tableHeight"
               serial
               :cell-style="cellStyle"
             >
@@ -167,11 +167,12 @@ export default {
       priview: '',
       imgVisible: false,
       // 表头
-      cellStyle: { padding: '5px 0' }, // 行高
+      cellStyle: { padding: '1px 0' }, // 行高
       saleDetails: [], // 销售数据
       tableHeader: [],
       planDetails: [], // 收款计划
       tableHeader1: [],
+      tableHeight: '500px',
       // 表单
       organizationValue: {}, // 表单组织值
       organization: {}, // 表单组织控件
@@ -182,8 +183,9 @@ export default {
       total: 0
     }
   },
-  mounted() {
+  created() {
     this.queryTSalOrderNtry()
+    this.tableHeight = window.innerWidth > 1440 ? 'calc(100vh - 420px)' : '500px'
   },
   methods: {
     // 获取订单列表数据
@@ -309,11 +311,11 @@ export default {
       margin-left: 100px!important;
     }
     .el-input__inner{
-      width: 163px;
+      width: 143px;
     }
   }
   .el-col-6{
-    width: 263px;
+    width: 243px;
   }
 }
 </style>

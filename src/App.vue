@@ -29,9 +29,12 @@ export default {
 }
 </script>
 <style lang="scss">
-@media screen and (max-height: 768px){
+@media screen and (max-width: 1440px){
   .el-dialog{
     margin-top: 5vh!important;
+    .el-dialog__body{
+      padding: 0 20px;
+    }
   }
 }
 </style>
