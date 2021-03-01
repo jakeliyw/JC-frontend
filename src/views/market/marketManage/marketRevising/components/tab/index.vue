@@ -7,7 +7,7 @@
           :table-data="tabTwo.saleDetails"
           :table-header="tableHeader"
           serial
-          table-height="calc(100vh - 440px)"
+          :table-height="tableHeight"
           :cell-style="cellStyle"
         >
           <el-table-column label="物料编码" prop="fmaterialId" align="center" width="200px">
@@ -122,7 +122,7 @@
           :table-data="tabTwo.planDetails"
           :table-header="tableHeader"
           serial
-          table-height="calc(100vh - 440px)"
+          :table-height="tableHeight"
           :cell-style="cellStyle"
         >
           <el-table-column label="是否预收" prop="fqty" align="center" width="80px">
@@ -221,6 +221,7 @@ export default {
       isdrawinglDialog: false, // 图纸弹窗
       activeName: 'first',
       tableHeader: [],
+      tableHeight: '500px',
       isMaterielDialog: false,
       cellStyle: { padding: '5px 0' },
       // 点击行的序号
@@ -311,6 +312,9 @@ export default {
       },
       deep: true
     }
+  },
+  created() {
+    this.tableHeight = window.innerWidth > 1440 ? 'calc(100vh - 440px)' : '500px'
   },
   methods: {
     // 物料弹窗选中

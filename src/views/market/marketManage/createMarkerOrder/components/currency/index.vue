@@ -70,7 +70,7 @@ export default {
       },
       currencyDialogData: [],
       currencyDialogHeader: [],
-      cellStyle: { padding: '10 10' },
+      cellStyle: { padding: '5px 0' },
       prodValue: { fsettleCurrIdName: '', fsettleCurrId: '', isCurrencyDialog: true }
     }
   },
@@ -109,26 +109,6 @@ export default {
 <style scoped lang="scss">
 .content {
   @include listBom;
-}
-.materiel-form {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  margin-bottom: 20px;
-
-  .materiel-code {
-    margin-right: 5px;
-    font-weight: bold;
-    font-size: 14px;
-    min-width: 65px;
-    color: #606266;
-    line-height: 40px;
-  }
-
-  .input-width {
-    width: 200px;
-    margin-right: 10px;
-  }
 }
 </style>
 

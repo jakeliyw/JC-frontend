@@ -6,7 +6,7 @@
           :table-data="tabTwo.saleDetails"
           :table-header="tableHeader"
           serial
-          table-height="calc(100vh - 440px)"
+          :table-height="tableHeight"
           :cell-style="cellStyle"
         >
           <el-table-column label="物料编码" prop="fmaterialId" align="center" width="200px">
@@ -249,6 +249,7 @@ export default {
             }
           }
         ],
+        tableHeight: '500px',
         // 收款计划
         planDetails: [{ fneedRecAdvance: false, frecAdvanceRate: '0', frecAdvanCeamount: '0' }],
         shuliang: 0.6 // 数量
@@ -271,6 +272,9 @@ export default {
       },
       deep: true
     }
+  },
+  created() {
+    this.tableHeight = window.innerWidth > 1440 ? 'calc(100vh - 400px)' : '500px'
   },
   methods: {
     // 打开物料弹窗
@@ -548,25 +552,5 @@ export default {
        display: none;
      }
    }
-  .materiel-form {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    margin-bottom: 20px;
-
-    .materiel-code {
-      margin-right: 5px;
-      font-weight: bold;
-      font-size: 14px;
-      min-width: 65px;
-      color: #606266;
-      line-height: 40px;
-    }
-
-    .input-width {
-      width: 200px;
-      margin-right: 10px;
-    }
-  }
 }
 </style>

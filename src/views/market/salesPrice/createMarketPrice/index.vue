@@ -51,7 +51,7 @@
         <jc-table
           :table-data="prodValue.priceDetails"
           :table-header="tableHeader"
-          table-height="calc(100vh - 340px)"
+          :table-height="tableHeight"
           serial
           :cell-style="cellStyle"
         >
@@ -259,6 +259,7 @@ export default {
       // 点击行的序号
       tableIndex: 0,
       tableHeader: [],
+      tableHeight: '500px',
       teamList: [], // 组织
       prodValue: {
         fcreateOrgId: 1, // 销售组织
@@ -280,7 +281,7 @@ export default {
           fdownPrice: '' // 净价
         }]
       },
-      cellStyle: { padding: '10 10' },
+      cellStyle: { padding: '5px 0' },
       prodValueRules: { // 是否填写验证
         fname: [
           { required: true, message: '请输入价目表名称', trigger: 'blue' }
@@ -305,6 +306,7 @@ export default {
   },
   created() {
     this.handleGetPurchase()
+    this.tableHeight = window.innerWidth > 1440 ? 'calc(100vh - 340px)' : '500px'
   },
   methods: {
     // 保存
@@ -493,7 +495,7 @@ export default {
   @include listBom;
   .el-tabs{
     .el-table {
-      margin-top: 10px;
+      margin-top: 18px;
       &::v-deep td{
         padding: 8px 0;
       }

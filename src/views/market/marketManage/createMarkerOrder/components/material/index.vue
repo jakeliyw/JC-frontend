@@ -75,7 +75,7 @@ export default {
         { label: '描述', prop: 'fdescripTion', align: 'center', minWidth: '180px' },
         { label: '创建时间', prop: 'fcreateDate', align: 'center' }
       ],
-      cellStyle: { padding: '10 10' },
+      cellStyle: { padding: '5px 0' },
       prodValue: { isMaterialDialog: false }
     }
   },
@@ -124,6 +124,9 @@ export default {
 <style scoped lang="scss">
 .content {
   @include listBom;
+  .el-table {
+    margin-top: 18px;
+  }
   .materiel-form{
     position:relative;
       width: 100%;
@@ -131,26 +134,6 @@ export default {
       transform: translateY(18%);
       margin-left: 410px!important;
     }
-  }
-}
-.materiel-form {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  margin-bottom: 20px;
-
-  .materiel-code {
-    margin-right: 5px;
-    font-weight: bold;
-    font-size: 14px;
-    min-width: 65px;
-    color: #606266;
-    line-height: 40px;
-  }
-
-  .input-width {
-    width: 200px;
-    margin-right: 10px;
   }
 }
 </style>
