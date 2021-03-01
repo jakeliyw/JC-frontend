@@ -147,7 +147,8 @@
             </template>
           </el-table-column>
           <template v-slot:btnSlot="clo">
-            <el-button type="danger" size="mini" @click="deleteMateriel(clo.scope.row, clo.scope.$index)">删除价目
+            <el-button type="danger" size="mini" @click="deleteMateriel(clo.scope.row, clo.scope.$index)">
+              删除价目
             </el-button>
           </template>
         </jc-table>
