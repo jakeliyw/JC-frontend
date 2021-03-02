@@ -4,9 +4,31 @@
     <el-card class="header-card">
       <el-button size="mini">刷新</el-button>
       <el-button size="mini" type="primary">提交</el-button>
+      <div class="organization">
+        <el-form label-width="100px" size="mini" :model="organization">
+          <el-row :gutter="30" type="flex" justify="start" class="elRow">
+            <el-form-item label="创建组织" prop="fuseOrgId" label-width="100px">
+              <el-select v-model="organization.fuseOrgId" placeholder="请选择活动区域">
+                <el-option
+                  v-for="item in organization.fuseOrgArray"
+                  :key="item.fuseOrgId"
+                  :label="item.largeName"
+                  :value="item.fuseOrgId"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="客户名称" prop="fname">
+              <el-input v-model="organization.fname" class="input-width" placeholder="请输入客户名称" />
+            </el-form-item>
+            <el-form-item label="客户编码" prop="fcode">
+              <el-input v-model="organization.fcode" class="input-width" placeholder="请输入客户编码" disabled />
+            </el-form-item>
+          </el-row>
+        </el-form>
+      </div>
     </el-card>
     <el-tabs v-model="activeName" type="border-card">
-      <el-tab-pane label="基础数据" name="customer" class="customer" >
+      <el-tab-pane label="基础数据" name="customer" class="customer">
         <span class="title-background">基本信息</span>
         <div class="basic-information">
           <el-form label-width="100px" size="mini" :model="basic" class="spacing">
@@ -16,17 +38,17 @@
               </el-input>
             </el-form-item>
             <el-form-item label="地区" prop="fprovincial">
-              <el-input v-model="basic.fprovincial" class="input-width" placeholder="请选择国家">
+              <el-input v-model="basic.fprovincial" class="input-width" placeholder="请选择地区">
                 <i slot="suffix" class="el-input__icon el-icon-search" />
               </el-input>
             </el-form-item>
             <el-form-item label="省份" prop="fprovince">
-              <el-input v-model="basic.fprovince" class="input-width" placeholder="请选择国家">
+              <el-input v-model="basic.fprovince" class="input-width" placeholder="请选择省份">
                 <i slot="suffix" class="el-input__icon el-icon-search" />
               </el-input>
             </el-form-item>
             <el-form-item label="城市" prop="fcity">
-              <el-input v-model="basic.fcity" class="input-width" placeholder="请选择国家">
+              <el-input v-model="basic.fcity" class="input-width" placeholder="请选择城市">
                 <i slot="suffix" class="el-input__icon el-icon-search" />
               </el-input>
             </el-form-item>
@@ -90,7 +112,7 @@
         </div>
         <span class="title-background">联系人</span>
         <div class="basic-information">
-          <jc-contacts/>
+          <jc-contacts />
         </div>
         <span class="title-background">商务信息</span>
         <div>
@@ -118,10 +140,15 @@ export default {
   data() {
     return {
       activeName: 'customer', // 默认基本信息
-      // 表单值
-      basic: {
+      // 头部信息
+      organization: {
+        fuseOrgArray: [],
         fuseOrgId: '', // 创建组织
         fname: '', // 客户名称
+        fcode: '' // 客户编码
+      },
+      // 基础数据
+      basic: {
         fcountry: '', // 国家
         fprovincial: '', // 地区
         fprovince: '', // 省份
@@ -143,6 +170,36 @@ export default {
         fgroup: '', // 客户分组
         fcorrespondorgId: '', // 对应组织
         fdescription: ''// 备注
+      },
+      // 联系人
+      contacts: {
+        flegalContacts: '', // 法人
+        flegalTels: '', // 法人电话
+        flegalMailbox: '', // 法人邮箱
+        fbusinessContacts: '', // 业务联系人
+        fbusinessTels: '', // 业务电话
+        fbusinessMailbox: '', // 业务邮箱
+        ffinanceContacts: '', // 财务联系人
+        ffinanceTels: '', // 财务电话
+        ffinanceMailbox: '' // 财务邮箱
+      },
+      // 商务信息
+      business: {
+        ftradingCurrId: '', // 结算币别  1
+        fsaldeptId: '', // 销售部门
+        fsalgroupId: '', // 销售组
+        fseller: '', // 销售员
+        fsettleTypeId: '', // 结算方式  1
+        freccondiTionId: '', // 收款条件  1
+        fpricelistid: '', // 价目表
+        fdiscountlistid: '', // 折扣表
+        ftransleadTime: '', // 运输提前期
+        ftaxType: '', // 税分类  1
+        finvoiceType: '', // 发票类型   1
+        ftaxRate: '', // 默认税率  1
+        fcontacts: '', // 联系人
+        ftels: '', // 联系人电话
+        fmailbox: ''// 联系人邮箱
       }
     }
   }
@@ -175,6 +232,11 @@ export default {
   flex-direction: column;
   .header-card{
     margin-bottom: 10px;
+    .organization{
+      margin-top: 10px;
+      display: flex;
+      flex-direction: row;
+    }
   }
   .customer{
     display: flex;

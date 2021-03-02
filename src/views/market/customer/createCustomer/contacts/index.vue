@@ -1,14 +1,16 @@
 <template>
   <div>
-    <h2>
-      联系人
-    </h2>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Index'
+  name: 'Index',
+  data() {
+    return {
+
+    }
+  }
 }
 </script>
 
