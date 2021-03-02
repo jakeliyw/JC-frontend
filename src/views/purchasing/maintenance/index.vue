@@ -9,7 +9,7 @@
             :table-header="tableHeader"
             serial
             :cell-style="cellStyle"
-            table-height="calc(100vh - 330px)"
+            table-height="calc(100vh - 310px)"
           >
             <el-table-column prop="fnumber" label="物料编码" align="center" min-width="120px" />
             <el-table-column prop="fdescripTion" label="物料描述" align="center" min-width="400px" />
@@ -148,5 +148,8 @@ export default {
 <style scoped lang="scss">
 .content {
   @include listBom;
+  .pagination-container{
+    padding-top: 10px;
+  }
 }
 </style>

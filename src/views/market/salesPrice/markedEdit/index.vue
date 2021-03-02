@@ -167,6 +167,7 @@
       <div class="materiel-form">
         <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleMaterielSearch" />
         <el-button size="mini" type="primary" class="btn" @click="handleMaterielSearch">搜索</el-button>
+        <el-button size="mini" type="primary" class="btn btn1" @click="selectionSub">多选添加</el-button>
       </div>
       <jc-table
         :table-data="materielDialogData"
@@ -175,7 +176,10 @@
         serial
         :cell-style="cellStyle"
         @clickRow="materielSelectRow"
-      />
+        @selectionChange="selectionData"
+      >
+        <el-table-column type="selection" width="60px" sortable="true" fixed="left" align="center" />
+      </jc-table>
       <jc-pagination
         v-show="materielPagination.total > 0"
         :total="materielPagination.total"
@@ -225,6 +229,7 @@ export default {
   inject: ['reload'],
   data() {
     return {
+      val: [],
       ftype: 0,
       fbillNo: 'fnumber', // 编码
       rate: 1.13, // 销售基准价(默认13%税率)
@@ -350,18 +355,50 @@ export default {
         }
       })
     },
+    // 多选时触发的事件
+    selectionData(val) {
+      this.val = val
+    },
+    selectionSub() {
+      if (this.val.length <= 0) {
+        this.$message.warning('请选择数据!')
+        return
+      }
+      this.val.forEach((item, index) => {
+        this.tableIndex = this.index + index
+        this.tableData.push(
+          {
+            fmaterialId: '', // 物料编码ID
+            fmaterialIdName: '', // 物料编码
+            fdescripTion: '', // 备注
+            funitName: '', // 单位
+            funitId: '', // 单位id
+            fpriceBase: 13, // 销售系数
+            deliveryPrice: '', // 出厂价
+            fdownPrice: '' // 净价
+          }
+        )
+        this.materielSelectRow(item, this.tableIndex)
+      })
+      this.isMaterielDialog = false
+    },
     // 物料弹窗选中
-    async materielSelectRow(item) {
+    async materielSelectRow(item, index) {
       this.tableData[this.tableIndex].fmaterialId = item.fmaterialId
       this.tableData[this.tableIndex].foldNumber = item.foldNumber
       this.tableData[this.tableIndex].funitId = item.funitId
       this.isMaterielDialog = false
       // 获取出厂价(组件 salPrice 中)
-      this.querySalPriceMaterial()
+      if (index) {
+        this.querySalPriceMaterial(index)
+      } else {
+        this.querySalPriceMaterial(this.tableIndex)
+      }
     },
     // 打开物料编码
     async handleGetMateriel(row, index) {
       if (index || index === 0) {
+        this.index = index
         this.tableIndex = index
       }
       if (index === this.tableData.length - 1) {
@@ -464,6 +501,9 @@ export default {
     transform: translateY(18%);
     margin-left: 410px!important;
     z-index: 999;
+  }
+  .btn1 {
+    margin-left: 15px !important;
   }
 }
 .materiel-form {

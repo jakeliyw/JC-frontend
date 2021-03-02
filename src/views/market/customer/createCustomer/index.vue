@@ -12,7 +12,7 @@
             <el-col :span="6">
               <el-form-item label="国家" prop="fcountry">
                 <el-input v-model="basic.fcountry" class="input-width" placeholder="请选择国家">
-                  <i slot="suffix" class="el-input__icon el-icon-search"/>
+                  <i slot="suffix" class="el-input__icon el-icon-search" />
                 </el-input>
               </el-form-item>
             </el-col>
@@ -37,37 +37,37 @@
           <el-row :gutter="30" type="flex" justify="start" class="el-row">
             <el-col :span="6">
               <el-form-item label="联系电话" prop="ftel">
-                <el-input v-model="administration.ftel" placeholder="请输入联系电话" class="input-width"/>
+                <el-input v-model="administration.ftel" placeholder="请输入联系电话" class="input-width" />
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="传真" prop="ffax">
-                <el-input v-model="administration.ffax" placeholder="请输入传真" class="input-width"/>
+                <el-input v-model="administration.ffax" placeholder="请输入传真" class="input-width" />
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="纳税登记号" prop="ftaxregistercode">
-                <el-input v-model="administration.ftaxregistercode" placeholder="请输入纳税登记号" class="input-width"/>
+                <el-input v-model="administration.ftaxregistercode" placeholder="请输入纳税登记号" class="input-width" />
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="公司类别" prop="fcompanyclassify">
                 <el-input v-model="administration.fcompanyclassify" placeholder="请选择公司类别" class="input-width">
-                  <i slot="suffix" class="el-input__icon el-icon-search"/>
+                  <i slot="suffix" class="el-input__icon el-icon-search" />
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="公司性质" prop="fcompanynature">
                 <el-input v-model="administration.fcompanynature" placeholder="请选择公司性质" class="input-width">
-                  <i slot="suffix" class="el-input__icon el-icon-search"/>
+                  <i slot="suffix" class="el-input__icon el-icon-search" />
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="公司规模" prop="fcompanyscale">
                 <el-input v-model="administration.fcompanyscale" placeholder="请选择公司规模" class="input-width">
-                  <i slot="suffix" class="el-input__icon el-icon-search"/>
+                  <i slot="suffix" class="el-input__icon el-icon-search" />
                 </el-input>
               </el-form-item>
             </el-col>
@@ -78,14 +78,14 @@
             <el-col :span="6">
               <el-form-item label="客户类别" prop="fcustTypeId">
                 <el-input v-model="relevant.fcustTypeId" placeholder="请选择客户类别" class="input-width">
-                  <i slot="suffix" class="el-input__icon el-icon-search"/>
+                  <i slot="suffix" class="el-input__icon el-icon-search" />
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="客户分组" prop="fgroup">
                 <el-input v-model="relevant.fgroup" placeholder="请选择客户分组" class="input-width">
-                  <i slot="suffix" class="el-input__icon el-icon-search"/>
+                  <i slot="suffix" class="el-input__icon el-icon-search" />
                 </el-input>
               </el-form-item>
             </el-col>

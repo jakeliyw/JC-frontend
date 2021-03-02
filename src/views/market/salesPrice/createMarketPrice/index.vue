@@ -171,7 +171,7 @@
       <div class="materiel-form">
         <search :options="selectData" :msg="fbillNo" @seek="collect" @hand="handleMaterielSearch" />
         <el-button size="mini" type="primary" class="btn" @click="handleMaterielSearch">搜索</el-button>
-        <el-button size="mini" type="primary" @click="selectionSub">多选添加</el-button>
+        <el-button size="mini" type="primary" class="btn btn1" @click="selectionSub">多选添加</el-button>
       </div>
       <jc-table
         :table-data="materielDialogData"
@@ -182,7 +182,7 @@
         @clickRow="materielSelectRow"
         @selectionChange="selectionData"
       >
-        <!--        <el-table-column type="selection" width="60px" sortable="true" fixed="left" align="center" />-->
+        <el-table-column type="selection" width="60px" sortable="true" fixed="left" align="center" />
       </jc-table>
       <jc-pagination
         v-show="materielPagination.total > 0"
@@ -349,6 +349,10 @@ export default {
       this.val = val
     },
     selectionSub() {
+      if (this.val.length <= 0) {
+        this.$message.warning('请选择数据!')
+        return
+      }
       this.val.forEach((item, index) => {
         this.tableIndex = this.index + index
         this.prodValue.priceDetails.push(
@@ -364,15 +368,19 @@ export default {
           }
         )
         this.materielSelectRow(item, this.tableIndex)
-        this.isMaterielDialog = false
       })
+      this.isMaterielDialog = false
     },
     // 物料弹窗选中
     async materielSelectRow(item, indexData) {
       this.prodValue.priceDetails[this.tableIndex].materialId = item.fmaterialId
       this.prodValue.priceDetails[this.tableIndex].funitId = item.funitId
       this.prodValue.priceDetails[this.tableIndex].foldNumber = item.foldNumber
-      this.getSalPriceMaterial()
+      if (indexData) {
+        this.getSalPriceMaterial(indexData)
+      } else {
+        this.getSalPriceMaterial(this.tableIndex)
+      }
       this.isMaterielDialog = false
     },
     // 打开物料编码
@@ -410,9 +418,10 @@ export default {
       this.handleGetMateriel()
     },
     // 获取出厂价及物料信息
-    async getSalPriceMaterial() {
-      const DATA = { fmaterialId: this.prodValue.priceDetails[this.tableIndex].materialId }
+    async getSalPriceMaterial(index) {
+      const DATA = { fmaterialId: this.prodValue.priceDetails[index].materialId }
       const { data: RES } = await querySalPriceMaterial(DATA)
+      this.tableIndex = index
       this.prodValue.priceDetails[this.tableIndex].fmaterialId = RES.fmaterialId
       this.prodValue.priceDetails[this.tableIndex].fmaterialIdName = RES.fnumber
       this.prodValue.priceDetails[this.tableIndex].fdescripTion = RES.fdescripTion
@@ -536,6 +545,9 @@ export default {
     transform: translateY(18%);
     margin-left: 410px !important;
     z-index: 999;
+  }
+  .btn1 {
+    margin-left: 15px !important;
   }
 }
 </style>

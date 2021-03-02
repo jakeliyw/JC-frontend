@@ -5,9 +5,10 @@ import { maxDecimal } from '@/utils/number'
 export default {
   methods: {
     // 获取出厂价
-    async querySalPriceMaterial() {
-      const DATA = { fmaterialId: this.tableData[this.tableIndex].fmaterialId }
+    async querySalPriceMaterial(index) {
+      const DATA = { fmaterialId: this.tableData[index].fmaterialId }
       const { data: RES } = await querySalPriceMaterial(DATA)
+      this.tableIndex = index
       // 销售系数和表格数据
       // const fpriceBase = (this.tableData[this.tableIndex].fpriceBase) / 100
       this.tableData[this.tableIndex].fmaterialId = RES.fmaterialId
