@@ -396,8 +396,37 @@ export const asyncRouterMap = [
         path: '/saleReport',
         name: 'SaleReport',
         component: () => import('@/views/market/saleReport/index'),
-        meta: { title: '销售报表' },
+        meta: { title: '销售基准价报表' },
         menu: 'saleReport'
+      },
+      {
+        path: '/rankingList',
+        name: 'RankingList',
+        component: () => import('@/views/market/rankingList/index'),
+        meta: { title: '销售排行榜' },
+        children: [
+          {
+            path: '/clientRanking',
+            name: 'ClientRanking',
+            component: () => import('@/views/market/rankingList/clientRanking'),
+            meta: { title: '客户销售排行榜' },
+            menu: 'clientRanking'
+          },
+          {
+            path: '/productRanking',
+            name: 'ProductRanking',
+            component: () => import('@/views/market/rankingList/productRanking'),
+            meta: { title: '产品销售排行榜' },
+            menu: 'productRanking'
+          },
+          {
+            path: '/businessRanking',
+            name: 'BusinessRanking',
+            component: () => import('@/views/market/rankingList/businessRanking'),
+            meta: { title: '业务销售排行榜' },
+            menu: 'businessRanking'
+          }
+        ]
       }
     ]
   },

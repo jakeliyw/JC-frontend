@@ -325,7 +325,7 @@ export default {
         }
         if (this.prodValue.fsalType === 0) {
           if (ev === 'A') {
-            if (Number(item.ftaxPrice) < Number(item.ftaxDownPrice)) {
+            if (Number(item.ftaxPrice) < Number(item.ftaxDownPrice) && !item.fisFree) {
               this.$confirm('物料： ' + item.fnumber + ' 销售单价小于基准价,请先点击暂存,找蒋总审批后,上传审批图片,再提交.', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '套打',

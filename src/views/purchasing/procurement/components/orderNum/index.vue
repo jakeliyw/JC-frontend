@@ -104,7 +104,6 @@ export default {
       this.storkDialogHeader.forEach(res => {
         res.filters = []
         this.storklDialogData.forEach(item => {
-          console.log(item)
           if (item[res.prop]) {
             res.filters.push({
               text: item[res.prop], value: item[res.prop]
@@ -115,7 +114,6 @@ export default {
         const result = []
         res.filters.map(item => {
           if (!obj[item.text]) {
-            console.log(item)
             result.push(item)
             obj[item.text] = true
           }

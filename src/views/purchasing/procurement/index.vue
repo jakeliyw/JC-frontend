@@ -366,15 +366,15 @@ export default {
       for (const item of this.val) {
         if (item.zt === '未转') {
           this.insetData.insert_MoLists.push({
-            DDLX: item.ddlx,
+            DDLX: String(item.ddlx),
             Qutntity: String(item.qty),
             Rprice: String(item.rprice),
-            StockID: item.ckid,
-            StockName: item.ck,
-            SCBMID: item.fsupplierid,
-            SCBM: item.fsuppliername,
-            DueDocdate: item.pjjq,
-            ItemCode: item.itemCode
+            StockID: String(item.ckid),
+            StockName: String(item.ck),
+            SCBMID: String(item.fsupplierid),
+            SCBM: String(item.fsuppliername),
+            DueDocdate: String(item.pjjq),
+            ItemCode: String(item.itemCode)
           })
         }
       }
