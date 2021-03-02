@@ -8,15 +8,7 @@
         serial
         table-height="calc(100vh - 220px)"
         :cell-style="cellStyle"
-      >
-        <el-table-column label="业务编码" align="center" />
-        <el-table-column label="业务名字" align="center" />
-        <el-table-column label="业务联系方式" align="center" />
-        <el-table-column label="业务所属部门" align="center" />
-        <el-table-column label="业务销售业绩" align="center" />
-        <el-table-column label="业务年度任务业绩" align="center" />
-        <el-table-column label="年度任务完成率" align="center" />
-      </jc-table>
+      />
       <div class="footer">
         <jc-pagination
           :total="total"
@@ -43,7 +35,15 @@ export default {
   data() {
     return {
       tableData: [],
-      tableHeader: [],
+      tableHeader: [
+        { label: '业务编码', prop: '', align: 'center' },
+        { label: '业务名字', prop: '', align: 'center' },
+        { label: '业务联系方式', prop: '', align: 'center' },
+        { label: '业务所属部门', prop: '', align: 'center' },
+        { label: '业务销售业绩', prop: '', align: 'center' },
+        { label: '业务年度任务业绩', prop: '', align: 'center' },
+        { label: '年度任务完成率', prop: '', align: 'center' }
+      ],
       cellStyle: { padding: '5px 0' },
       total: 0,
       pageNum: 1,

@@ -373,7 +373,7 @@ export default {
                 this.$message.error('该物料未创建BOM,暂时无法下单')
                 return
               }
-              if (Number(item.ftaxPrice) < Number(item.ftaxDownPrice)) {
+              if (Number(item.ftaxPrice) < Number(item.ftaxDownPrice) && !item.fisFree) {
                 this.$alert('物料： ' + item.fmaterialIdName + ' 销售单价小于基准价,请先点击暂存,找蒋总审批后,上传审批' +
                     '图片,再提交.', '提示', {
                   confirmButtonText: '确定'

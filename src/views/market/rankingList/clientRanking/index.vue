@@ -8,16 +8,7 @@
         serial
         :cell-style="cellStyle"
         table-height="calc(100vh - 220px)"
-      >
-        <el-table-column label="客户编码" prop="" align="center" />
-        <el-table-column label="客户名称" prop="" align="center" />
-        <el-table-column label="所属部门" prop="" align="center" />
-        <el-table-column label="销售收入" prop="" align="center" />
-        <el-table-column label="销售利润" prop="" align="center" />
-        <el-table-column label="毛利润率" prop="" align="center" />
-        <el-table-column label="基准价差异利润" prop="" align="center" />
-        <el-table-column label="销售排名" prop="" align="center" />
-      </jc-table>
+      />
       <div class="footer">
         <jc-pagination
           :total="total"
@@ -44,7 +35,16 @@ export default {
   data() {
     return {
       tableData: [],
-      tableHeader: [],
+      tableHeader: [
+        { label: '客户编码', prop: '', align: 'center' },
+        { label: '客户名称', prop: '', align: 'center' },
+        { label: '所属部门', prop: '', align: 'center' },
+        { label: '销售收入', prop: '', align: 'center' },
+        { label: '销售利润', prop: '', align: 'center' },
+        { label: '毛利润率', prop: '', align: 'center' },
+        { label: '基准价差异利润', prop: '', align: 'center' },
+        { label: '销售排名', prop: '', align: 'center' }
+      ],
       cellStyle: { padding: '5px 0' },
       total: 0,
       pageNum: 1,

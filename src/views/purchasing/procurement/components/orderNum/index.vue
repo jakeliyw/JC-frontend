@@ -11,7 +11,7 @@
     >
       <div class="materiel-form">
         <span class="materiel-code">销售订单号</span>
-        <el-input v-model.trim="stork.fname" class="input-width" size="mini" placeholder="请输入销售订单号" @keyup.enter.native="storkSearch" />
+        <el-input v-model.trim="stork.fbillNo" class="input-width" size="mini" placeholder="请输入销售订单号" @keyup.enter.native="storkSearch" />
         <span class="materiel-code">客户订单号</span>
         <el-input v-model.trim="stork.fpaezText" class="input-width" size="mini" placeholder="请输入客户订单号" @keyup.enter.native="storkSearch" />
         <el-button size="mini" type="primary" @click="storkSearch">搜索</el-button>
@@ -66,7 +66,7 @@ export default {
         total: 0, // 总条目
         pageNum: 1, // 当前页
         pageSize: 10, // 每页显示多少条数据
-        fname: '',
+        fbillNo: '',
         fpaezText: ''
       },
       storklDialogData: [], // 销售数据
@@ -104,7 +104,6 @@ export default {
       this.storkDialogHeader.forEach(res => {
         res.filters = []
         this.storklDialogData.forEach(item => {
-          console.log(item)
           if (item[res.prop]) {
             res.filters.push({
               text: item[res.prop], value: item[res.prop]
@@ -115,7 +114,6 @@ export default {
         const result = []
         res.filters.map(item => {
           if (!obj[item.text]) {
-            console.log(item)
             result.push(item)
             obj[item.text] = true
           }

@@ -8,15 +8,7 @@
         serial
         table-height="calc(100vh - 220px)"
         :cell-style="cellStyle"
-      >
-        <el-table-column label="产品编码" align="center" />
-        <el-table-column label="产品名称" align="center" />
-        <el-table-column label="销售总数量" align="center" />
-        <el-table-column label="内销销售数量" align="center" />
-        <el-table-column label="外销销售数量" align="center" />
-        <el-table-column label="电商销售数量" align="center" />
-        <el-table-column label="产品销售排名" align="center" />
-      </jc-table>
+      />
       <div class="footer">
         <jc-pagination
           :total="total"
@@ -43,7 +35,15 @@ export default {
   data() {
     return {
       tableData: [],
-      tableHeader: [],
+      tableHeader: [
+        { label: '产品编码', prop: '', align: 'center' },
+        { label: '产品名称', prop: '', align: 'center' },
+        { label: '销售总数量', prop: '', align: 'center' },
+        { label: '内销销售数量', prop: '', align: 'center' },
+        { label: '外销销售数量', prop: '', align: 'center' },
+        { label: '电商销售数量', prop: '', align: 'center' },
+        { label: '产品销售排名', prop: '', align: 'center' }
+      ],
       cellStyle: { padding: '5px 0' },
       total: 0,
       pageNum: 1,
