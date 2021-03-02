@@ -240,14 +240,14 @@ export default {
             disabled: 'disabled',
             span: 8
           },
-          fdescripTion: {
+          fname: {
             label: '物料描述',
             disabled: 'disabled',
             span: 10,
             type: 'textarea'
           },
-          fname: {
-            label: '简称',
+          fdescripTion: {
+            label: '物料简称',
             disabled: 'disabled',
             span: 10,
             type: 'textarea'

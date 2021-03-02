@@ -811,7 +811,7 @@ export default {
           type: 'textarea'
         },
         fdescripTion: {
-          label: '简称',
+          label: '物料简称',
           span: 10,
           type: 'textarea'
         }
