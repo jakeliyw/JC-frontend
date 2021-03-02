@@ -1,5 +1,9 @@
 <template>
-  <div>index</div>
+  <div>
+    <h2>
+      联系人
+    </h2>
+  </div>
 </template>
 
 <script>

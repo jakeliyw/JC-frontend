@@ -581,7 +581,7 @@ export default {
         fremarks: this.basicValue.fremarks,
         // 物料简称
         fname: this.basicValue.fname,
-        fdescripTion: this.basicValue.fdescripTion,
+        fdescripTion: this.basicValue.fdescripTion.trim(),
         fvolumeUnitId: this.dimensionalValue.fvolumeUnitId,
         fvolumeunitName: this.dimensionalValue.fvolumeunitName,
         fvolume: this.dimensionalValue.fvolume,

@@ -585,7 +585,7 @@ export default {
         // 物料简称
         fname: this.basicValue.fname,
         fimg: this.imageUrl,
-        fdescripTion: this.basicValue.fdescripTion,
+        fdescripTion: this.basicValue.fdescripTion.trim(),
         fattribtte: JSON.stringify(fattribtte)
       }
       Object.assign(DATA, this.dimensionalValue, this.weightValue, this.information)
