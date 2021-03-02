@@ -12,6 +12,8 @@
     :header-cell-style="{background:'#E6EBFC', fontSize: '13px'}"
     :row-class-name="tabRowClassName"
     :row-key="getRowKeys"
+    :show-summary="showSummary"
+    :summary-method="getSummaries"
     @select="handleSelect"
     @select-all="handleSelectAll"
     @row-dblclick="openDetails"
@@ -92,6 +94,16 @@ export default {
     tableSelection: { // 表格多选
       type: Boolean,
       default: false
+    },
+    showSummary: { // 开启合计行
+      type: Boolean,
+      default: false
+    },
+    getSummaries: { // 定义自己的合计逻辑
+      type: [Array, Function],
+      default: function() {
+        return function() {} || []
+      }
     },
     tooltip: { // 单元格内容过长显示省略号
       type: Boolean,
@@ -223,7 +235,7 @@ export default {
     border-color: #ccc;
     user-select: initial; /* 表头可复制 */
     .cell{
-      white-space: nowrap;
+      // white-space: nowrap;
     }
   }
   th.is-leaf{

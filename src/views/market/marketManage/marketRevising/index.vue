@@ -118,7 +118,7 @@
       </el-tab-pane>
       <el-tab-pane label="其他" name="second">
         <jc-marker
-          other-height="calc(100vh - 390px)"
+          other-height="calc(100vh - 370px)"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >

@@ -431,21 +431,19 @@ export default {
 <style lang="scss" scoped>
 .content {
   @include listBom;
-  .el-tabs{
-    .el-table {
-      margin-top: 18px;
-      &::v-deep td{
-        padding: 8px 0;
-      }
-      &::v-deep thead.is-group th{
-        padding: 3px 0;
-        .el-input__inner{
-          background: #e6ebfc;
-          color: #909399;
-          font-size: 13px;
-          font-weight: 550;
-          border: none;
-        }
+  .el-table {
+    margin-top: 18px;
+    &::v-deep td{
+      padding: 8px 0;
+    }
+    &::v-deep thead.is-group th{
+      padding: 3px 0;
+      .el-input__inner{
+        background: #e6ebfc;
+        color: #909399;
+        font-size: 13px;
+        font-weight: 550;
+        border: none;
       }
     }
   }

@@ -11,8 +11,11 @@
       <jc-table
         :table-data="tableData"
         :table-header="tableHeader"
+        table-height="calc(100vh - 253px)"
         :cell-style="cellStyle"
         serial
+        show-summary
+        :get-summaries="getSummaries"
       >
         <template v-slot:billSlot="clo">
           <el-link type="primary" @click="detailPurchase(clo.scope.row.fid)">{{ clo.scope.row.fbillNo }}</el-link>
@@ -131,6 +134,35 @@ export default {
     // 查看报表
     queryReportForm(FNUMBER) {
       this.$router.push({ path: `/marketForm/${FNUMBER}` })
+    },
+    // 自定义合计行
+    getSummaries(param) {
+      const { columns, data } = param
+      const sums = []
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = '合计'
+          return
+        }
+        if (index === 4 || index === 6) {
+          sums[index] = ''
+          return
+        }
+        const values = data.map(item => Number(item[column.property]))
+        if (!values.every(value => isNaN(value))) {
+          sums[index] = values.reduce((prev, curr) => {
+            const value = Number(curr)
+            if (!isNaN(value)) {
+              return prev + curr
+            } else {
+              return prev
+            }
+          }, 0)
+        } else {
+          sums[index] = ''
+        }
+      })
+      return sums
     }
   }
 }
@@ -138,7 +170,9 @@ export default {
 <style lang="scss" scoped>
 .content {
   @include listBom;
-
+  .el-table{
+    overflow:visible !important;
+  }
   .header {
     position: relative;
 

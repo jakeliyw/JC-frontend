@@ -94,7 +94,7 @@
       </el-tab-pane>
       <el-tab-pane label="其他">
         <jc-marker
-          other-height="calc(100vh - 310px)"
+          other-height="calc(100vh - 290px)"
           :other-url-object="otherUrlObject"
           :other-log-table-data="otherLogTableData"
         >
@@ -340,7 +340,6 @@ export default {
       .el-tabs ::v-deep .el-tabs__header{
         margin: 0 0 5px;
     }
-
     .disRow {
       height: calc(100vh - 225px);
       .positRe {
