@@ -498,12 +498,6 @@ export default {
     },
     // 生成流水号
     SmallCode() {
-      // const SERIAL = this.threeMaterielData.filter(item => {
-      //   return item.value !== ''
-      // })
-      // if (SERIAL.length !== this.threeMaterielData.length) {
-      //   return
-      // }
       const SmallCode = this.threeMaterielData.map(item => item.value)
       return SmallCode
     },
@@ -539,7 +533,7 @@ export default {
       }
       const { data: RES, fdescripTion } = await queryMaterialAttribute(DATA)
       this.fdescripTion = fdescripTion
-      this.basicValue.fdescripTion = fdescripTion
+      this.basicValue.fname = fdescripTion
       this.materielProperty = RES
       this.basicValue.fnumber = this.materialCode
       this.isMaterial = true
@@ -585,6 +579,8 @@ export default {
         fmodel: this.basicValue.fmodel,
         // 物料备注
         fremarks: this.basicValue.fremarks,
+        // 物料简称
+        fname: this.basicValue.fname,
         fdescripTion: this.basicValue.fdescripTion,
         fvolumeUnitId: this.dimensionalValue.fvolumeUnitId,
         fvolumeunitName: this.dimensionalValue.fvolumeunitName,
@@ -875,9 +871,14 @@ export default {
           label: '物料备注',
           span: 16
         },
-        fdescripTion: {
+        fname: {
           label: '物料描述',
           disabled: 'disabled',
+          type: 'textarea',
+          span: 10
+        },
+        fdescripTion: {
+          label: '简称',
           type: 'textarea',
           span: 10
         }

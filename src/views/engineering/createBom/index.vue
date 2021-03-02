@@ -292,14 +292,13 @@ export default {
       sonTableData: [
         {
           FSEQ: 0,
-          FNUMBER: '',
-          FMATERIALID: '',
-          FDESCRIPTION: '',
-          FSPECIFICATION: '',
+          FNUMBER: '', // 物料编码
+          FMATERIALID: '', // 物料id
+          FDESCRIPTION: '', // 描述
+          FSPECIFICATION: '', // 物料规格
           FCREATEDATE: '', // 生效时间
-          FMATERIALTYPE: '1', // 选中值
-          FDOSAGETYPE: '1', // 选中值
-          FISSUETYPE: '1', // 选中值
+          FMATERIALTYPE: '1', // 子项类型
+          FISSUETYPE: '1', // 发料方式
           FPRICE: 0, // 单价
           FDOSAGE: 0, // 用量
           money: 0 // 金额
@@ -367,10 +366,6 @@ export default {
     fun(index, value) {
       const currentLine = this.sonTableData[index]
       this.$set(currentLine, 'FMATERIALTYPE', value)
-    },
-    fun1(index, value) {
-      const type = this.sonTableData[index]
-      this.$set(type, 'FDOSAGETYPE', value)
     },
     fun2(index, value) {
       const mode = this.sonTableData[index]
@@ -461,7 +456,6 @@ export default {
             FDESCRIPTION: null, // 物料描述
             FSPECIFICATION: null, // 物料规格
             FMATERIALTYPE: '1', // 选中值
-            FDOSAGETYPE: '1', // 选中值
             FISSUETYPE: '1', // 选中值
             FPRICE: 0, // 单价
             FDOSAGE: 0, // 用量
@@ -494,20 +488,20 @@ export default {
     // 选中子项弹窗表格行
     async sonSelectRow(item) {
       const { data: RES } = await queryMaterialSon({ fmateriAalId: item.FMATERIALID, fnumber: this.fnumber })
-      this.sonTableData[this.tableIndex].FDOSAGE = RES.FDOSAGE
-      this.sonTableData[this.tableIndex].FMATERIALID = RES.FMATERIALID
-      this.sonTableData[this.tableIndex].FNUMBER = RES.FNUMBER
-      this.sonTableData[this.tableIndex].FPRICE = RES.FPRICE
-      this.sonTableData[this.tableIndex].FDESCRIPTION = RES.FDESCRIPTION
-      this.sonTableData[this.tableIndex].FSPECIFICATION = RES.FSPECIFICATION
+      this.sonTableData[this.tableIndex].FDOSAGE = RES.FDOSAGE // 用量
+      this.sonTableData[this.tableIndex].FMATERIALID = RES.FMATERIALID // 父项物料id
+      this.sonTableData[this.tableIndex].FNUMBER = RES.FNUMBER // 物料编码
+      this.sonTableData[this.tableIndex].FPRICE = RES.FPRICE // 单价
+      this.sonTableData[this.tableIndex].FDESCRIPTION = RES.FDESCRIPTION // 描述
+      this.sonTableData[this.tableIndex].FSPECIFICATION = RES.FSPECIFICATION // 物料规格
       this.parentTableVisible = false
     },
     // 保存列表数据
     async preservation() {
       const fTreeEntity = this.sonTableData.map(item => {
-        const { FCREATEDATE, FDOSAGETYPE, FISSUETYPE, FMATERIALID, FMATERIALTYPE, FSEQ, FDOSAGE, FPRICE } = item
+        const { FCREATEDATE, FISSUETYPE, FMATERIALID, FMATERIALTYPE, FSEQ, FDOSAGE, FPRICE } = item
         item.FCREATEDATE = GMTToStr(item.FCREATEDATE)
-        return { FCREATEDATE, FDOSAGETYPE, FISSUETYPE, FMATERIALID, FMATERIALTYPE, FSEQ, FDOSAGE, FPRICE }
+        return { FCREATEDATE, FISSUETYPE, FMATERIALID, FMATERIALTYPE, FSEQ, FDOSAGE, FPRICE }
       })
       const DATA = {
         flg: this.flg,

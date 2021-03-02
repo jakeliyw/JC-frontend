@@ -129,7 +129,7 @@ export default {
         { label: '日期', prop: 'createDate', align: 'center' },
         { label: '操作人', prop: 'fname', align: 'center' },
         { label: '部门', prop: 'fdeaprt', align: 'center' },
-        { label: 'IP地址', prop: 'fip', align: 'center' },
+        { label: 'IP操作记录', prop: 'fip', align: 'center' },
         { label: '行为', prop: 'fdescribe', align: 'center' }
       ],
       information: {},
@@ -242,6 +242,13 @@ export default {
           },
           fdescripTion: {
             label: '物料描述',
+            disabled: 'disabled',
+            span: 10,
+            type: 'textarea'
+          },
+          fname: {
+            label: '简称',
+            disabled: 'disabled',
             span: 10,
             type: 'textarea'
           }

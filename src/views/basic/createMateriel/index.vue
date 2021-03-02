@@ -407,7 +407,7 @@ export default {
       handler(val) {
         const { flength, fwidth, fheight } = val
         const SIZE = ''
-        this.basicValue.fdescripTion = SIZE.concat(`${this.fdescripTion}*${flength}`, `*${fwidth}`, `*${fheight}`)
+        this.basicValue.fname = SIZE.concat(`${this.fdescripTion}*${flength}`, `*${fwidth}`, `*${fheight}`)
       },
       deep: true
     }
@@ -530,7 +530,7 @@ export default {
       const { data: RES, fdescripTion, fbaseUnitId } = await queryMaterialAttribute(DATA)
       this.basicValue.fbaseUnitId = fbaseUnitId
       this.fdescripTion = fdescripTion
-      this.basicValue.fdescripTion = fdescripTion
+      this.basicValue.fname = fdescripTion
       this.materielProperty = RES
       this.basicValue.fnumber = this.materialCode
       this.isMaterial = true
@@ -582,6 +582,8 @@ export default {
         fmodel: this.basicValue.fmodel,
         // 物料备注
         fremarks: this.basicValue.fremarks,
+        // 物料简称
+        fname: this.basicValue.fname,
         fimg: this.imageUrl,
         fdescripTion: this.basicValue.fdescripTion,
         fattribtte: JSON.stringify(fattribtte)
@@ -762,7 +764,8 @@ export default {
         fprotect: '无',
         fmodel: '',
         fdescripTion: '',
-        fremarks: ''
+        fremarks: '',
+        fname: '' // 物料简称
       }
       this.basic = {
         fmodel: {
@@ -801,9 +804,14 @@ export default {
           label: '物料备注',
           span: 16
         },
-        fdescripTion: {
+        fname: {
           label: '物料描述',
           disabled: 'disabled',
+          span: 10,
+          type: 'textarea'
+        },
+        fdescripTion: {
+          label: '简称',
           span: 10,
           type: 'textarea'
         }

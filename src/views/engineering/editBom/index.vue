@@ -315,10 +315,6 @@ export default {
       const currentLine = this.sonTableData[index]
       this.$set(currentLine, 'FMATERIALTYPE', value)
     },
-    fun1(index, value) {
-      const type = this.sonTableData[index]
-      this.$set(type, 'FDOSAGETYPE', value)
-    },
     fun2(index, value) {
       const mode = this.sonTableData[index]
       this.$set(mode, 'FISSUETYPE', value)
@@ -403,7 +399,6 @@ export default {
             FDESCRIPTION: null,
             FSPECIFICATION: null,
             FMATERIALTYPE: '1', // 选中值
-            FDOSAGETYPE: '1', // 选中值
             FISSUETYPE: '1', // 选中值
             FPRICE: 0,
             FDOSAGE: 0,

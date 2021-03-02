@@ -13,7 +13,6 @@ export const constantRouterMap = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
@@ -196,7 +195,6 @@ export const asyncRouterMap = [
   {
     path: '/market',
     component: Layout,
-    redirect: '/createMarkerOrder',
     name: 'Market',
     meta: {
       title: '销售管理',
@@ -205,7 +203,6 @@ export const asyncRouterMap = [
     children: [
       {
         path: '/marketManage',
-        redirect: '/createMarkerOrder',
         component: () => import('@/views/market/marketManage/index'),
         name: 'MarketManage',
         meta: {
@@ -276,7 +273,6 @@ export const asyncRouterMap = [
       {
         path: '/salesPrice',
         name: 'SalesPrice',
-        redirect: '/createMarketPrice',
         component: () => import('@/views/market/salesPrice/index'),
         meta: {
           title: '销售价目'
@@ -337,7 +333,6 @@ export const asyncRouterMap = [
       },
       {
         path: '/customer',
-        redirect: '/createCustomer',
         component: () => import('@/views/market/customer/index'),
         name: 'Customer',
         meta: {
